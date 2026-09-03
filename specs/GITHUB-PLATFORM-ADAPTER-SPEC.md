@@ -1,0 +1,90 @@
+# GitHub Platform Adapter Specification ("GitHub-light")
+
+## 1. Purpose
+
+This document is the concrete platform adapter for this repository, filling [FRAMEWORK-CONFIGURATION-SPEC.md](FRAMEWORK-CONFIGURATION-SPEC.md) section 13's Platform and Storage Adapters table. It resolves the open question PRD.md section 13 and IMPLEMENTATION-PLAN.md have both carried since early in this repository's build: *which business artifact types are Markdown files, GitHub Issues, GitHub Projects, or another GitHub-native representation?*
+
+The chosen direction, decided 2026-08-31 from a two-option comparison, is **"GitHub-light"**: committed files stay the canonical source of truth for every document-shaped artifact; GitHub Issues, Pull Requests, and labels are a tracking and review layer on top, not a replacement. The richer alternative considered -- GitHub Discussions for analysis review, native Issue Types and sub-issues for Epic/Story hierarchy, Projects v2 custom fields for workflow state -- was set aside as a deliberate future upgrade path, not built now. This mirrors the same "prove it with the minimum first" approach already used for the dry run itself (git deferred until the plain-file version worked) and for this repository's own artifact storage convention.
+
+## 2. Relationship to Other Artifacts
+
+- [ARTIFACT-STORAGE-SPEC.md](ARTIFACT-STORAGE-SPEC.md) already establishes that every document-shaped artifact is a committed file with a self-describing name. This document does not change that -- it defines what sits on top of those files once a real GitHub repository exists.
+- [BUSINESS-REPOSITORY-WORKFLOW.md](BUSINESS-REPOSITORY-WORKFLOW.md)'s "Merge as the Handoff Trigger" section already asserts that Business Owner approval must be "a GitHub review or equivalent attributable approval event" and that a GitHub Action invokes the Technical Agent after verifying the merge. Section 6 below makes that concrete.
+- [CANONICAL-TASK-SPEC.md](CANONICAL-TASK-SPEC.md) and [PRD.md](../PRD.md) section 7.6 already assume Tasks and Spikes are GitHub Issues; this document confirms that assumption as the chosen adapter and extends the same treatment to Epic and Story.
+- [ARTIFACT-RELATIONSHIP-MODEL.md](ARTIFACT-RELATIONSHIP-MODEL.md) governs cardinality between artifact types; nothing here changes it -- an Epic:Story 1:N relationship is still 1:N, just now expressed as one Issue linking to several.
+- [FRAMEWORK-CONFIGURATION-SPEC.md](FRAMEWORK-CONFIGURATION-SPEC.md) section 10 (Role Configuration) is still an unfilled placeholder. Section 6 below flags exactly where this document's automation depends on that being filled in -- this adapter cannot be fully wired up until roles have real names.
+
+## 3. Governing Principle
+
+**Files are canonical. GitHub objects are a projection, not a second source of truth**, per the same rule [DESIGN-ANALYSIS-SPEC.md](DESIGN-ANALYSIS-SPEC.md) and [PRODUCT-SOURCE-MATERIAL-SPEC.md](PRODUCT-SOURCE-MATERIAL-SPEC.md) already apply to source material generally ("must not silently regenerate, rewrite, or replace the authoritative source"). Concretely:
+
+- This repository's own artifact IDs (`SRC-001`, `DA-001`, `REQSET-001`, `BPR-001`, `TASK-001`, ...) stay primary. A GitHub Issue or PR number is recorded as a secondary cross-reference field on the artifact, never the other way around.
+- Every Issue and PR body must include a `Traces to:` line citing the artifact IDs it implements or is implemented by, using the same evidence-chain vocabulary [EVIDENCE-SPEC.md](EVIDENCE-SPEC.md) already defines -- not a new format.
+- If a GitHub object and its underlying file ever disagree, the file wins, and the disagreement itself is a defect to fix, not a state to accept.
+
+## 4. Per-Artifact-Type Mapping
+
+| Artifact Type | GitHub Representation | Notes |
+| --- | --- | --- |
+| Source Material | File only (`sources/...`, per ARTIFACT-STORAGE-SPEC.md) | No Issue. Sources are often external references (Figma, PDFs); nothing to track as work. |
+| Design Handoff Bundle | Versioned files (`design/.../v<version>/`), uploaded via a Pull Request against the business repository | The PR is the upload mechanism, not an optional add-on -- its merge is what triggers the combined Bundle Acceptance and readiness assignment described in section 6.1. Also tagged `<platform-slug>/[<app-slug>/]<feature-slug>@v<version>` matching the bundle's own `bundleId` at merge time, so `git tag`/`git log` gives a second way to browse version history. |
+| Design Analysis | File, committed as part of the Business PR's diff | No Issue, no Discussion (that richer option was set aside -- see section 1). Reviewed as part of the Business PR review, same as Business Requirements. |
+| Business Requirements | File, committed as part of the Business PR's diff | Same as Design Analysis. |
+| Epic | One GitHub Issue | Body follows the Epic content already defined in [BUSINESS-PR-TEMPLATE.md](../templates/BUSINESS-PR-TEMPLATE.md) section 3, plus a `Traces to:` line. Contains a Markdown checklist of its Stories, each linking to that Story's Issue (`- [ ] #124 STORY-001: ...`) -- maintained by hand, since GitHub-light does not use native sub-issues. |
+| Story | One GitHub Issue | Body follows its Story block from BUSINESS-PR-TEMPLATE.md section 3 (As a/I can/so that + Acceptance Criteria), plus `Traces to: BR-<id>` and `Parent Epic: #<issue-number>`. |
+| Business PR | A real GitHub Pull Request | Diff = the new/changed Design Analysis and Business Requirements files for this feature (and, once created, the Epic/Story Issue numbers referenced in the description). Description = BUSINESS-PR-TEMPLATE.md's content, inlined in full -- Stage Trace, scope, assumptions, decisions, all of it, not a summary. |
+| Business Approval | The Business Owner's GitHub PR review, "Approve" | Per BUSINESS-REPOSITORY-WORKFLOW.md's existing rule. The PR's own section 12 ("Business Owner Decision") table in the description is filled in too, redundantly and deliberately -- a GitHub review is easy to lose track of months later; the file's own recorded decision is the durable one, matching how BPR-001.md's approval was recorded in this repository already, before any git existed. |
+| Task | One GitHub Issue, created after the Business PR merges | Per CANONICAL-TASK-SPEC.md and PRD.md section 7.6, confirmed here as the adapter choice. Body follows CANONICAL-TASK-TEMPLATE.md. Supersedes the local-file fallback in ARTIFACT-STORAGE-SPEC.md section 8 for any Task created after this adapter is active -- see section 7 below. |
+| Spike | One GitHub Issue, same trigger as Task | Same treatment as Task. |
+| Technical Plan (optional) | File only, committed alongside the Task(s) it covers | No Issue -- reviewed under the same Architect Review Gate as the Tasks it covers, not a separate one. Most Tasks never produce one; see TECHNICAL-AGENT-WORKFLOW.md section 4.1. |
+| Implementation PR | A PR in the target engineering repository | Unchanged -- already settled by TECHNICAL-HANDOFF.md and PRD.md section 7.8. Out of scope for this adapter, which covers only the business repository. |
+
+## 5. Workflow State: Labels, Kept Deliberately Separate
+
+Every spec in this repository keeps an artifact's own drafting lifecycle (`Status`) structurally apart from a human-approval-gated readiness field (`Readiness` / `Technical Readiness`) -- see DESIGN-HANDOFF-BUNDLE-SPEC.md section 7 and CANONICAL-TASK-SPEC.md section 8. GitHub-light preserves that separation as two label prefixes that must never be merged into one:
+
+| Label prefix | Values | Applies to |
+| --- | --- | --- |
+| `status:` | `draft`, `in-review`, `approved`, `changes-requested`, `rejected`, `superseded`, `withdrawn` | Epic, Story, Task, Spike Issues (Design Analysis/Business Requirements status lives in their own file's metadata table, not a label, since they have no Issue) |
+| `readiness:` | `ready`, `ready-with-limitations`, `blocked`, `not-applicable` | Source registration follow-up, where tracked as an Issue at all |
+| `tech-ready:` | `yes`, `no` | Task, Spike -- mirrors CANONICAL-TASK-SPEC.md's `Technical Readiness` field exactly, kept apart from `status:` for the same reason that field is kept apart from `Status` in the spec itself |
+| `type:` | `epic`, `story`, `task`, `spike` | Every Issue this adapter creates -- stands in for GitHub's native Issue Type feature, which GitHub-light does not use |
+
+A single Issue may carry a `status:` label and, where relevant, a `tech-ready:` label at the same time -- that combination is exactly the point (a Task can be `status:draft` and `tech-ready:no` together, but must never show `tech-ready:yes` while `status:draft`, since Technical Readiness can only follow the Architect Review Gate per CANONICAL-TASK-SPEC.md section 9). Labels do not enforce this rule mechanically; it remains a discipline point until/unless section 8's open decision on validation is resolved.
+
+## 6. Automation Trigger
+
+Per BUSINESS-REPOSITORY-WORKFLOW.md's existing "Merge as the Handoff Trigger" assertion, made concrete:
+
+A GitHub Action, triggered on `pull_request` `closed` where `merged == true` against the business repository's main branch, must verify all of:
+
+1. The PR is labeled or otherwise identified as a Business PR (not an unrelated repository change).
+2. The PR carries an approving review from a user holding the Business Owner role.
+3. The merged diff includes a complete Stage Trace (BUSINESS-PR-SPEC.md section 6) with no technical-detail leak (section 9's quality gate).
+
+Only then does it create (if not already created pre-merge) the Epic and Story Issues per section 4, post a comment on the PR identifying their numbers, and mark the moment as the Technical Agent's entry trigger per TECHNICAL-HANDOFF.md.
+
+**Partially resolved 2026-09-01:** [FRAMEWORK-CONFIGURATION-SPEC.md](FRAMEWORK-CONFIGURATION-SPEC.md) section 10 (Role Configuration) now names who holds the Business Owner role -- `ROLE-001`, Manali, on a personal GitHub account. Check 2 can therefore be specified as "the approving review's author is the GitHub username on file for `ROLE-001`." The remaining, narrower gap: section 10 itself records that username as still TBD, since no repository exists yet to hold one (CLAUDE.md open item 8) -- so this automation is fully specified but not yet wireable to a real check. Once a repository exists, filling that one field is the only remaining step.
+
+## 6.1. Automation Trigger: Design Handoff Bundle Merge
+
+Decided 2026-09-01: uploading a Design Handoff Bundle is itself a Pull Request against the business repository, scoped to paths under `design/<platform-slug>/[<app-slug>/]<feature-slug>/v<version>/`. A second GitHub Action, triggered the same way as section 6's (`pull_request` `closed`, `merged == true`), combines two gates from [FRAMEWORK-CONFIGURATION-SPEC.md](FRAMEWORK-CONFIGURATION-SPEC.md) section 11 into one event, because a Design Handoff Bundle is both an artifact reviewed for acceptance and a source registered for use -- the same commit does both jobs:
+
+1. **`GATE-002`, Design Handoff Bundle Acceptance.** `ROLE-009` verifies the Pre-Registration Checklist (DESIGN-HANDOFF-BUNDLE-TEMPLATE.md Part 4) is checked complete in the PR, and that the PR carries an approving review from the GitHub username on file for `ROLE-004` Design Reviewer -- the same "TBD until a repository exists" gap noted above applies here identically. If both hold, the merge is what moves the bundle's `status:` field from `Draft` to `Approved`; the Action commits that field change as part of the merge, not as a manual follow-up.
+2. **`GATE-001`, Source Readiness Check**, run immediately after, on the same bundle. A Design Handoff Bundle is registered as source material the moment it is Approved (PRODUCT-SOURCE-MATERIAL-SPEC.md section 8), not at some later date, so there is no reason to defer this gate to a separate event. `ROLE-009` sets `readiness` mechanically from the bundle's own `knownLimitations` field, per the readiness outcomes PRODUCT-SOURCE-MATERIAL-SPEC.md section 9 already defines: empty -> `Ready`; non-empty -> `Ready with Limitations`, carrying each listed item forward. (`Blocked` cannot arise here -- a bundle incomplete enough to warrant it fails the Pre-Registration Checklist in step 1 and never reaches merge; `Not Applicable` does not apply to a design source.) `readiness` is written back into `bundle.md`'s own frontmatter field by this Action, not tracked only in the source registry -- resolving DESIGN-HANDOFF-BUNDLE-SPEC.md section 11's open question on that point.
+
+Only once both gates clear does the Action post a comment on the PR recording the new `status` and `readiness` values -- and that comment is the event that satisfies BUSINESS-AGENT-WORKFLOW.md section 3's entry condition. Nothing else gates the Business Agent's start: it does not re-run its own readiness judgment, since one already exists here and a second one would risk drifting out of sync with the mechanical source of truth this Action just wrote. What the Business Agent's own processing step 1 ("Validate source") still does, per that workflow's existing design, is confirm the bundle it is about to read still matches what this Action approved -- a defensive check against the file changing between merge time and agent-run time, not a duplicate of `GATE-001`.
+
+If either check fails, the PR is not merged (or, if merged in error, is reverted); the Producing Designer revises and opens a new PR, per `GATE-002`'s existing failure path in FRAMEWORK-CONFIGURATION-SPEC.md section 11.
+
+## 7. Transition for Canonical Tasks/Spikes Already Filed Locally
+
+[ARTIFACT-STORAGE-SPEC.md](ARTIFACT-STORAGE-SPEC.md) section 8 defined a local-file fallback (`tasks/<platform-slug>/[<app-slug>/]<feature-slug>/canonical-task-...`) for Tasks and Spikes created before a real GitHub setup existed, and left open exactly how a retired local file should link to its replacement Issue. Resolved here: the local file's `Status` field is set to `Superseded`, a line `GitHub Issue: #<issue-number>` is added to it, and the file is kept, never deleted -- the same non-destructive supersession rule ARTIFACT-STORAGE-SPEC.md section 7 already applies to every other versioned artifact. No Task or Spike in this repository has used the local fallback yet (the dry run's Technical Agent stage remained illustrative-only), so this transition has not been exercised for real.
+
+## 8. Open Decisions
+
+- Should any of this adapter's choices be enforced by a repository lint/check (e.g. a GitHub Action that rejects a PR missing a required `status:` label, or flags a Task showing `tech-ready:yes` without `status:approved`), or remain a documented discipline only, as it is today?
+- ~~Section 6's automation is blocked on FRAMEWORK-CONFIGURATION-SPEC.md section 10 being filled in -- who owns unblocking that first?~~ **Resolved 2026-09-01:** section 10 is filled in; both section 6's and section 6.1's automations are now fully specified. The only remaining blocker for either is a real repository existing to hold a GitHub username for `ROLE-001`/`ROLE-004` (CLAUDE.md open item 8).
+- If experience with a real repository shows the manual Epic/Story checklist (section 4) is error-prone, does this repository revisit toward the "GitHub-native" option (native sub-issues, Projects v2 fields) considered and set aside in section 1, or fix the manual process instead?
+- Should Design Analysis and Business Requirements ever get their own Issue (e.g. for standalone review before a Business PR exists), or does GitHub-light's file-only treatment hold up in practice?
+- Exact label colors and a formal label-creation script/template are not defined here -- cosmetic, deferred until a real repository exists to create them in.

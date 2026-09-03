@@ -1,0 +1,5 @@
+flowchart LR
+  PD[Product Detail] -->|Add to Cart| CF[Cart with Items - default]
+  CF -->|Click Remove| RC{Confirm?}
+  RC -->|Confirm| CFR[Cart updated, item removed]
+  RC -->|Cancel| CF
