@@ -1,0 +1,172 @@
+name: Design Handoff Bundle Merge Gate
+
+# GITHUB-PLATFORM-ADAPTER-SPEC.md section 6.1 -- combines GATE-002 (Design
+# Handoff Bundle Acceptance) and GATE-001 (Source Readiness) into one event
+# on the bundle's upload PR.
+#
+#   validate       -- runs on every PR update against paths under design/.
+#                      Fails the check if the Pre-Registration Checklist
+#                      (DESIGN-HANDOFF-BUNDLE-TEMPLATE.md Part 4) isn't
+#                      fully checked in the PR description, or if the
+#                      Design Reviewer (ROLE-004, FRAMEWORK-CONFIGURATION-
+#                      SPEC.md section 10) hasn't approved. This is what
+#                      section 6.1's "the PR is not merged" failure path
+#                      depends on -- but GitHub only actually blocks the
+#                      merge button if this check is marked required in
+#                      the repository's branch protection rules for `main`
+#                      (Settings -> Branches -> Require status checks to
+#                      pass -- "Design Handoff Bundle Merge Gate / validate").
+#                      This workflow file alone can't turn that setting on.
+#   apply-on-merge -- runs only once the PR is actually merged. Re-confirms
+#                      validate's checks against the merged state, then
+#                      writes bundle.md's status/readiness fields and
+#                      comments the result on the PR -- the merge comment
+#                      that satisfies BUSINESS-AGENT-WORKFLOW.md section 3's
+#                      entry condition.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    paths:
+      - "design/**"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+env:
+  DESIGN_REVIEWER_GITHUB_USERNAME: manalimatkar  # ROLE-004, FRAMEWORK-CONFIGURATION-SPEC.md section 10
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install pyyaml
+
+      - name: List changed files
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const files = await github.paginate(github.rest.pulls.listFiles, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+            });
+            fs.writeFileSync('changed_files.json', JSON.stringify(files.map(f => f.filename)));
+
+      - name: Write PR body to file
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: printf '%s\n' "$PR_BODY" > pr_body.md
+
+      - name: Check Pre-Registration Checklist + bundle file
+        run: |
+          python3 .github/scripts/bundle_gate.py check \
+            --changed-files-json changed_files.json \
+            --pr-body-file pr_body.md \
+            --output-json checklist_result.json
+
+      - name: Check Design Reviewer approval
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const reviews = await github.paginate(github.rest.pulls.listReviews, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+            });
+            const reviewer = process.env.DESIGN_REVIEWER_GITHUB_USERNAME;
+            const approved = reviews.some(r => r.user && r.user.login === reviewer && r.state === 'APPROVED');
+            if (!approved) {
+              core.setFailed(`No approving review from Design Reviewer (${reviewer}) found yet -- GATE-002 requires one before merge.`);
+            }
+
+  apply-on-merge:
+    needs: validate
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.ref }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install pyyaml
+
+      - name: List changed files
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const files = await github.paginate(github.rest.pulls.listFiles, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+            });
+            fs.writeFileSync('changed_files.json', JSON.stringify(files.map(f => f.filename)));
+
+      - name: Determine bundle.md path
+        id: find_bundle
+        run: |
+          python3 - <<'PYEOF' >> "$GITHUB_OUTPUT"
+          import json, re
+          files = json.load(open("changed_files.json"))
+          pattern = re.compile(r"^design/.+/v[^/]+/design-handoff-[^/]+\.md$")
+          matches = [f for f in files if pattern.match(f)]
+          assert len(matches) == 1, f"expected exactly one bundle.md match, got {matches}"
+          print(f"bundle_path={matches[0]}")
+          PYEOF
+
+      - name: Apply status/readiness to bundle.md
+        run: |
+          python3 .github/scripts/bundle_gate.py apply \
+            --bundle-path "${{ steps.find_bundle.outputs.bundle_path }}" \
+            --output-json apply_result.json
+
+      - name: Commit bundle.md changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add "${{ steps.find_bundle.outputs.bundle_path }}"
+          if git diff --cached --quiet; then
+            echo "No changes to commit (status/readiness already set)."
+          else
+            git commit -m "Set bundle status/readiness on merge (GATE-002/GATE-001, PR #${{ github.event.pull_request.number }})
+
+          Automated by .github/workflows/design-bundle-merge.yml per GITHUB-PLATFORM-ADAPTER-SPEC.md section 6.1."
+            git push origin HEAD:${{ github.event.pull_request.base.ref }}
+          fi
+
+      - name: Comment on PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const result = JSON.parse(fs.readFileSync('apply_result.json', 'utf8'));
+            const body = [
+              '**Design Handoff Bundle merge gate: passed.**',
+              '',
+              `- \`status\`: ${result.status}`,
+              `- \`readiness\`: ${result.readiness}`,
+              result.known_limitations.length
+                ? `- \`knownLimitations\`: ${result.known_limitations.join(', ')}`
+                : '- `knownLimitations`: none',
+              '',
+              "This comment is the entry-condition trigger for the Business Agent per BUSINESS-AGENT-WORKFLOW.md section 3.",
+            ].join('\n');
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+              body,
+            });

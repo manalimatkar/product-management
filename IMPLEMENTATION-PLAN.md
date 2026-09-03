@@ -219,6 +219,20 @@ The Developer Agent requires a technically ready canonical Task and remains subj
 - expose cross-repo status and traceability
 - validate quality-gate and failure paths
 
+## Automation Roadmap (started 2026-09-03)
+
+Manali's stated goal for this phase: a platform-agnostic automated system (tools/skills/agents runnable on Claude, ChatGPT, or Copilot interchangeably), with the ability to run any single pipeline stage independently, not only a full end-to-end automation. The original 5-item sequence (real repo -> Execution Adapter spec -> Tool Contract -> reference implementation -> runner) was revised the same day: prove a working solution before generalizing, matching this repository's established pattern of proving the minimum first (the dry run, the GitHub-light adapter).
+
+Revised sequence:
+
+1. Wire up the git automation already fully specified in GITHUB-PLATFORM-ADAPTER-SPEC.md sections 6 and 6.1 but never built. **DONE 2026-09-03** -- see `.github/workflows/business-pr-merge.yml` and `.github/workflows/design-bundle-merge.yml`, and their supporting `.github/scripts/*.py`. Enforcing an actual merge block still requires enabling required status checks in the repository's branch protection settings (a GitHub UI/API step, not something a workflow file can do by itself) -- see those files' own header comments.
+2. Run one real feature through the Business Agent on Claude, against the actual repository -- not the illustrative dry run. Not started; needs to run from Manali's own terminal or local Claude Code, since this Cowork session can't reach GitHub.
+3. Confirm item 1's automation actually fires on that real merge.
+4. Repeat for the Technical Agent stage on the same feature.
+5. Only then, write the Tool Contract -- distilled from what steps 2 and 4 actually needed, not speculated in advance.
+
+This supersedes the item-3/item-4 ordering implied by the original roadmap recorded in specs/EXECUTION-ADAPTER-SPEC.md's Open Decisions -- that document's content stays accurate as written (it describes what's still undecided about generalizing to ChatGPT/Copilot), this section is the sequencing decision for how to get there. See CLAUDE.md's numbered open-items list (item 14) for live status.
+
 ## Validation Scenarios
 
 1. A dropped Figma export produces a Business PR with requirements, Epic, Stories, and acceptance criteria.

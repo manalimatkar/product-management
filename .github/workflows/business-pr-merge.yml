@@ -1,0 +1,229 @@
+name: Business PR Merge Gate
+
+# GITHUB-PLATFORM-ADAPTER-SPEC.md section 6 -- verifies a merged Business
+# PR, then creates its Epic/Story Issues.
+#
+#   validate       -- runs on every PR update against paths under
+#                      business-prs/** (that path scope is what identifies
+#                      this as a Business PR -- section 4's mapping table
+#                      defines no separate label for the PR itself). Fails
+#                      the check if the Business Owner (ROLE-001,
+#                      FRAMEWORK-CONFIGURATION-SPEC.md section 10) hasn't
+#                      approved, or if the Required Stage Trace
+#                      (BUSINESS-PR-SPEC.md section 6) has no completed
+#                      rows. As with the bundle gate, turning this into an
+#                      actual merge block requires marking this check
+#                      required in the repository's branch protection
+#                      rules for `main` -- this workflow file alone can't
+#                      turn that setting on.
+#   apply-on-merge -- runs only once merged. Re-checks (to surface any
+#                      technical-detail-scan warning in the merge comment
+#                      -- see business_pr_gate.py's docstring for why that
+#                      scan is a warning, not a hard fail), then parses the
+#                      Epic/Story blocks and creates one GitHub Issue per
+#                      Epic and Story (type:/status: labels, a `Traces to:`
+#                      line per GITHUB-PLATFORM-ADAPTER-SPEC.md section 3),
+#                      and comments the new Issue numbers on the PR. Per
+#                      section 4's mapping table, the Epic issue's own
+#                      Story checklist is maintained by hand, not by this
+#                      workflow.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    paths:
+      - "business-prs/**"
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+env:
+  BUSINESS_OWNER_GITHUB_USERNAME: manalimatkar  # ROLE-001, FRAMEWORK-CONFIGURATION-SPEC.md section 10
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: List changed files
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const files = await github.paginate(github.rest.pulls.listFiles, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+            });
+            fs.writeFileSync('changed_files.json', JSON.stringify(files.map(f => f.filename)));
+
+      - name: Check Business PR identity and Stage Trace completeness
+        run: |
+          python3 .github/scripts/business_pr_gate.py check \
+            --changed-files-json changed_files.json \
+            --output-json check_result.json
+
+      - name: Check Business Owner approval
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const reviews = await github.paginate(github.rest.pulls.listReviews, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+            });
+            const owner = process.env.BUSINESS_OWNER_GITHUB_USERNAME;
+            const approved = reviews.some(r => r.user && r.user.login === owner && r.state === 'APPROVED');
+            if (!approved) {
+              core.setFailed(`No approving review from Business Owner (${owner}) found yet.`);
+            }
+
+  apply-on-merge:
+    needs: validate
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.ref }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: List changed files
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const files = await github.paginate(github.rest.pulls.listFiles, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+            });
+            fs.writeFileSync('changed_files.json', JSON.stringify(files.map(f => f.filename)));
+
+      - name: Determine Business PR file path
+        id: find_bpr
+        run: |
+          python3 - <<'PYEOF' >> "$GITHUB_OUTPUT"
+          import json, re
+          files = json.load(open("changed_files.json"))
+          pattern = re.compile(r"^business-prs/.+/business-pr-[^/]+\.md$")
+          matches = [f for f in files if pattern.match(f)]
+          assert len(matches) == 1, f"expected exactly one business-pr file, got {matches}"
+          print(f"bpr_path={matches[0]}")
+          PYEOF
+
+      - name: Re-check for warnings (surfaced in the merge comment)
+        run: |
+          python3 .github/scripts/business_pr_gate.py check \
+            --changed-files-json changed_files.json \
+            --output-json check_result.json || true
+
+      - name: Parse Epic/Story blocks
+        run: |
+          python3 .github/scripts/business_pr_gate.py apply \
+            --bpr-path "${{ steps.find_bpr.outputs.bpr_path }}" \
+            --output-json parsed.json
+
+      - name: Ensure GitHub-light labels exist
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const labels = [
+              'status:draft', 'status:in-review', 'status:approved', 'status:changes-requested',
+              'status:rejected', 'status:superseded', 'status:withdrawn',
+              'readiness:ready', 'readiness:ready-with-limitations', 'readiness:blocked', 'readiness:not-applicable',
+              'tech-ready:yes', 'tech-ready:no',
+              'type:epic', 'type:story', 'type:task', 'type:spike',
+            ];
+            for (const name of labels) {
+              try {
+                await github.rest.issues.createLabel({
+                  owner: context.repo.owner, repo: context.repo.repo, name, color: 'ededed',
+                });
+              } catch (e) {
+                if (!(e.status === 422)) throw e; // 422 = label already exists, fine
+              }
+            }
+
+      - name: Create Epic and Story Issues
+        id: create_issues
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const parsed = JSON.parse(fs.readFileSync('parsed.json', 'utf8'));
+            const bprRef = `${{ steps.find_bpr.outputs.bpr_path }}`;
+            const created = [];
+
+            for (const epic of parsed.epics) {
+              const epicBody = [`Traces to: ${bprRef}`, '', epic.body].join('\n');
+              const epicIssue = await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: `${epic.id}: ${epic.name}`,
+                body: epicBody,
+                labels: ['type:epic', 'status:draft'],
+              });
+              created.push({ kind: 'epic', id: epic.id, number: epicIssue.data.number });
+
+              for (const story of epic.stories) {
+                const storyBody = [
+                  `Traces to: ${bprRef}`,
+                  `Parent Epic: #${epicIssue.data.number}`,
+                  '',
+                  story.body,
+                ].join('\n');
+                const storyIssue = await github.rest.issues.create({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  title: `${story.id}: ${story.title}`,
+                  body: storyBody,
+                  labels: ['type:story', 'status:draft'],
+                });
+                created.push({ kind: 'story', id: story.id, number: storyIssue.data.number, epic: epic.id });
+              }
+            }
+
+            fs.writeFileSync('created_issues.json', JSON.stringify(created, null, 2));
+
+      - name: Comment on PR with created Issue numbers
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const created = JSON.parse(fs.readFileSync('created_issues.json', 'utf8'));
+            let warningLines = [];
+            try {
+              const checkResult = JSON.parse(fs.readFileSync('check_result.json', 'utf8'));
+              warningLines = (checkResult.warnings || []).map(w => `- ⚠️ ${w}`);
+            } catch (e) { /* no warnings file, fine */ }
+
+            const issueLines = created.map(c =>
+              c.kind === 'epic' ? `- Epic ${c.id}: #${c.number}` : `- Story ${c.id} (${c.epic}): #${c.number}`
+            );
+            const body = [
+              '**Business PR merged -- Epic/Story Issues created.**',
+              '',
+              ...issueLines,
+              '',
+              "Remember: the Epic issue's Story checklist is maintained by hand (GITHUB-PLATFORM-ADAPTER-SPEC.md section 4), not by this workflow.",
+              '',
+              'This is the entry trigger for the Technical Agent per TECHNICAL-HANDOFF.md.',
+              ...(warningLines.length ? ['', '**Heuristic warnings (review manually):**', ...warningLines] : []),
+            ].join('\n');
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+              body,
+            });
