@@ -239,7 +239,7 @@ The Developer Agent requires a technically ready canonical Task and remains subj
 - ~~GitHub Issues, Markdown, Projects, or a hybrid for each artifact type~~ Resolved -- "GitHub-light", see [specs/GITHUB-PLATFORM-ADAPTER-SPEC.md](specs/GITHUB-PLATFORM-ADAPTER-SPEC.md).
 - ~~how target engineering repositories are registered and selected~~ Resolved 2026-09-01 -- [specs/FRAMEWORK-CONFIGURATION-SPEC.md](specs/FRAMEWORK-CONFIGURATION-SPEC.md) section 14 now defines the registration process; a concrete `TARGET-001` instance is pending a real engineering repository (open item 8).
 - ~~exact Technical Plan format~~ Resolved 2026-09-01 -- see [specs/TECHNICAL-AGENT-WORKFLOW.md](specs/TECHNICAL-AGENT-WORKFLOW.md) section 4.1.
-- agent runtime and model selection -- still open, and out of scope for this framework's documentation (an infrastructure/tooling decision, not a governance question).
+- ~~agent runtime and model selection -- still open, and out of scope for this framework's documentation (an infrastructure/tooling decision, not a governance question).~~ Partially resolved 2026-09-03 -- see [specs/EXECUTION-ADAPTER-SPEC.md](specs/EXECUTION-ADAPTER-SPEC.md): which platform (Claude, ChatGPT, Copilot) executes a stage is now a defined invocation contract. Exact model selection within a platform, and credential/config management, stay out of scope -- still an operator/runtime choice.
 - whether Developer Agent execution is enabled in the first release or added after handoff -- still open, a scoping decision.
 
 ## TODOs Before Implementation Planning Is Final

@@ -168,6 +168,7 @@ Organized 2026-09-01 (see ARTIFACT-STORAGE-SPEC.md for how generated instances u
 - [PRODUCT-SOURCE-MATERIAL-SPEC.md](specs/PRODUCT-SOURCE-MATERIAL-SPEC.md) - source registration, authority, versioning, readiness, and change handling
 - [ARTIFACT-STORAGE-SPEC.md](specs/ARTIFACT-STORAGE-SPEC.md) - single naming and folder convention for every generated artifact type
 - [GITHUB-PLATFORM-ADAPTER-SPEC.md](specs/GITHUB-PLATFORM-ADAPTER-SPEC.md) - the chosen GitHub-light platform adapter: how every artifact maps onto Issues, PRs, and labels
+- [EXECUTION-ADAPTER-SPEC.md](specs/EXECUTION-ADAPTER-SPEC.md) - the sibling execution adapter: how a pipeline stage is invoked on Claude, ChatGPT, or Copilot, and how any single stage can be run independently on any of them
 - [BUSINESS-REQUIREMENTS-SPEC.md](specs/BUSINESS-REQUIREMENTS-SPEC.md) - Business Requirements structure, boundaries, evidence, and lifecycle
 - [BUSINESS-PR-SPEC.md](specs/BUSINESS-PR-SPEC.md) - Business PR minimum content, the controlled Design-to-Story transformation, and the required Stage Trace
 - [EVIDENCE-SPEC.md](specs/EVIDENCE-SPEC.md) - the evidence rule: classification quick reference and the required traceability chain from source to Task

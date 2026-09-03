@@ -219,7 +219,7 @@ Implementation remains subject to the engineering repository's existing code rev
 - Every generated artifact, approval, merge-triggered handoff, technical review, and Issue creation event must be auditable.
 - The workflow must be understandable to product, architecture, and engineering stakeholders.
 - The design must support an evolving number of engineering repositories without hardcoding a fixed set.
-- The business artifact model must remain portable beyond a particular automation engine or agent runtime.
+- The business artifact model must remain portable beyond a particular automation engine or agent runtime. (Addressed 2026-09-03 by [specs/EXECUTION-ADAPTER-SPEC.md](specs/EXECUTION-ADAPTER-SPEC.md)'s invocation contract for Claude, ChatGPT, and Copilot.)
 - The system should prefer GitHub-native and lightweight mechanisms where they satisfy the requirements.
 - Failure states, missing approvals, and broken traceability must be visible and actionable.
 

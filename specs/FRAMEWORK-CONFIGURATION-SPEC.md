@@ -294,6 +294,8 @@ This repository's default profile, decided 2026-08-31 ("GitHub-light" -- see [GI
 
 GitHub PRs, Issues, Projects, and Actions may be used as an implementation adapter. They are not requirements of the framework core -- the table above is this repository's chosen instance, not a mandated default for every deployment of this framework.
 
+This table maps *storage* adapters only -- where artifacts are tracked once produced. It has a sibling table for *execution* adapters -- which AI platform actually produces them -- in [EXECUTION-ADAPTER-SPEC.md](EXECUTION-ADAPTER-SPEC.md), added 2026-09-03. The two are independent: a stage executed on Claude, ChatGPT, or Copilot all write to the same storage adapter above, unchanged.
+
 ## 14. Delivery Configuration
 
 Define where approved work is delivered.
