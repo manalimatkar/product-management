@@ -132,6 +132,8 @@ Editorial changes may retain approval only when the configured approval policy p
 
 An agent may prepare a new version, but it may not create approval evidence on behalf of the configured human authority.
 
+This Major/Editorial classification is also reused, unchanged, by [DESIGN-ANALYSIS-REVIEW-SPEC.md](DESIGN-ANALYSIS-REVIEW-SPEC.md) section 18 to route review *depth* (a lightweight, time-boxed path for Editorial revisions vs. the full review path for Material ones) and by [BUSINESS-AGENT-WORKFLOW.md](BUSINESS-AGENT-WORKFLOW.md) section 8.1 to route re-run scope after `Changes Requested` -- one test, two consumers, never a second competing definition.
+
 ## 10. Downstream References
 
 Every downstream artifact that depends on a Business Requirement must reference:

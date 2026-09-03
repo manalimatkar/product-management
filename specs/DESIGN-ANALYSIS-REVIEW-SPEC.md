@@ -14,6 +14,7 @@ The review process ensures that analysis is evidence-based, uncertainty is visib
 - [DESIGN-ANALYSIS-SPEC.md](DESIGN-ANALYSIS-SPEC.md) defines the required analysis content and evidence model.
 - [DESIGN-ANALYSIS-TEMPLATE.md](../templates/DESIGN-ANALYSIS-TEMPLATE.md) provides the reusable output format.
 - Business Requirements are created only from analysis that has passed the configured review gate.
+- [REQUIREMENTS-VERSIONING-SPEC.md](REQUIREMENTS-VERSIONING-SPEC.md) section 9's Major/Editorial classification is reused by section 18 below to route review depth, not only approval validity.
 
 ```text
 Configured Sources
@@ -327,3 +328,16 @@ For this repository's initial profile:
 - GitHub is the initial platform adapter
 
 These are defaults, not universal framework rules. The active framework configuration takes precedence.
+
+## 18. Tiered Review Depth
+
+**Added 2026-09-03**, in response to review-load raised as a critique of this repository's own single-reviewer setup: reuses the Major/Editorial classification [REQUIREMENTS-VERSIONING-SPEC.md](REQUIREMENTS-VERSIONING-SPEC.md) section 9 already defines, to route review *effort*, not only the resumption behavior BUSINESS-AGENT-WORKFLOW.md section 8.1 already uses that same classification for.
+
+- **Editorial-classified revision** (wording/phrasing only; zero new unresolved `Decision Required`/`Technical Unknown` items) -- may use a lightweight path: the configured reviewer is notified with the review package (section 10) plus the reviewer-aid summary (section 18.1), and the revision auto-advances to the next configured stage after a stated objection window (default 24 hours, overridable per initiative) unless the reviewer objects within it. This never means the review step was skipped -- the package must still have been delivered and the window must still have run -- only that a "no objection within the window" outcome substitutes for an explicit `Approved` when the classification and evidence support it.
+- **Material-classified revision** (any new actor, business rule, or unresolved `Decision Required`) -- always uses the full review path (sections 10-13); no shortcut applies, regardless of unresolved-item count.
+- This changes *when* a reviewer must actively act, never *what* they are authorized to decide -- it does not weaken or bypass reviewer authority, and it does not apply to the Design Handoff Bundle's own acceptance gate (`GATE-002`, a different gate), only to Design Analysis / Business Scope review under this specification.
+- An objection, whether during the window or discovered after auto-advance, is handled the same as a `Changes Requested` outcome (section 11) -- auto-advance is not a one-way door.
+
+### 18.1 Reviewer-Aid Summary
+
+The review package (section 10) must be preceded by a short, auto-generated summary: what changed since the last reviewed version, what is new, which items remain unresolved, and which tier (18 above) this revision routed to and why. The summary orients the reviewer's attention -- it carries no approval authority of its own and never substitutes for the review package itself.

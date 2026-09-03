@@ -12,7 +12,7 @@ Two problems this resolves, both found by actually auditing the repo rather than
 ## 2. Relationship to Other Artifacts
 
 - [ARTIFACT-RELATIONSHIP-MODEL.md](ARTIFACT-RELATIONSHIP-MODEL.md) defines the *structural* data model -- artifact types, ID formats, and cardinality between them. This document defines their *physical location and filename* -- a different concern, kept separate rather than folded in.
-- Every artifact-type spec's own storage-convention section (DESIGN-HANDOFF-BUNDLE-SPEC.md §8, DESIGN-ANALYSIS-SPEC.md §2, etc.) now points here rather than defining its own convention independently, so there is exactly one place this can drift out of sync.
+- Every artifact-type spec's own storage-convention section (DESIGN-HANDOFF-BUNDLE-SPEC.md §8, DESIGN-ANALYSIS-SPEC.md §2, etc.) now points here rather than defining its own convention independently, so there is exactly one place this can drift out of sync. The one deliberate exception is section 10 below -- the `design` branch's native-export shape is explicitly *not* governed by this convention.
 - [PRD.md](../PRD.md) section 7.7 requires each Design Handoff Bundle to be committed under a feature-specific `design/` area with an explicit version -- this document is the concrete realization of that requirement, extended consistently to every other artifact type.
 
 ## 3. Naming Convention
@@ -132,7 +132,27 @@ Per [CANONICAL-TASK-SPEC.md](CANONICAL-TASK-SPEC.md) section 2 and [PRD.md](../P
 
 On 2026-08-31 the cart-optimization dry-run files were renamed and moved to match this convention (see section 6) -- this was the first real test of the convention, done immediately rather than left to apply "going forward" only, at the user's explicit direction. Every internal cross-reference (metadata tables, Stage Traces, the Source Registry) was swept and verified afterward.
 
-## 10. Open Decisions
+## 10. The `design` Branch: An Independent Shape
+
+**Added 2026-09-03.** [DESIGN-HANDOFF-BUNDLE-SPEC.md](DESIGN-HANDOFF-BUNDLE-SPEC.md) section 6.2 defines a second design-source location: a persistent `design` branch (not `main`), holding native Claude Design exports untouched. Its folder shape --
+
+```text
+<platform-slug>/[<app-slug>/]design/v<N>/
+```
+
+-- is **not** governed by this document's `<root>/<platform-slug>/[<app-slug>/]<feature-slug>/` convention (sections 3-4), despite the visual similarity. The distinction is deliberate: sections 3-9 above govern where this framework's own *generated, curated* artifacts live once produced -- Design Analysis, Business Requirements, the Business PR, all committed to `main`. A raw export sitting on `design` is unprocessed input the Business Agent reads, structurally the same category as an external Figma file or a PDF, just git-hosted instead of externally hosted -- it becomes a governed artifact only once a `sources/.../source-*.md` registration record (section 4 above) formally cites it. `main`'s own existing `design/<platform-slug>/[<app-slug>/]<feature-slug>/v<version>/` root (section 5) is unaffected and keeps governing the hand-authored bundle path (DESIGN-HANDOFF-BUNDLE-SPEC.md section 6.1) and the one existing dry-run example under it.
+
+**How a `main`-side artifact points back at `design`-branch source.** Since a native export carries no `bundleId`/version frontmatter to cite (unlike a hand-authored `bundle.md`), a `sources/.../source-*.md` record's `Location` field (`PRODUCT-SOURCE-MATERIAL-SPEC.md` section 4) and a Design Analysis's `Source Material` field (`DESIGN-ANALYSIS-SPEC.md` section 3) instead cite a three-part pointer:
+
+```text
+branch: design
+path: <platform-slug>/[<app-slug>/]design/v<N>/
+commit: <merge commit SHA>
+```
+
+A commit SHA pins an exact snapshot even after `design`'s tip advances to a later version -- `git show <SHA>:<path>/README.md` retrieves exactly what was analyzed. Registration is **per feature-slice**, not per version drop (a version can bundle several unrelated features) -- see DESIGN-HANDOFF-BUNDLE-SPEC.md section 6.2 for the full rationale.
+
+## 11. Open Decisions
 
 - Should `feature-slug` be required to be globally unique across all platforms, or only unique within its `platform-slug` (and `app-slug`, where present)? (This convention currently assumes the latter -- two platforms could each have a `cart-optimization` feature without collision, since the platform-slug folder disambiguates them, but no spec states this explicitly yet.)
 - ~~Should the storage hierarchy always include an app level, even for a platform with only one application?~~ Resolved 2026-09-01: no -- app is optional, present only when a platform genuinely has multiple distinct applications. See section 4.

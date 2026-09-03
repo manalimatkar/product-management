@@ -62,7 +62,7 @@ Every registered source must include:
 | Source ID | Stable identifier, such as `SRC-001` |
 | Source Name | Human-readable name |
 | Source Type | Configured source category |
-| Location | Repository path, URL, system reference, or attachment ID |
+| Location | Repository path, URL, system reference, or attachment ID -- for a native Claude Design export on the `design` branch, a `branch`/`path`/commit-SHA pointer (ARTIFACT-STORAGE-SPEC.md section 10) rather than a `main`-relative path |
 | Version | Explicit version or `Not Versioned` |
 | Status | Draft, Active, Superseded, Withdrawn, or Unavailable |
 | Owner | Person, role, team, or external authority |
@@ -174,6 +174,8 @@ A source set is ready for analysis when:
 - known conflicts are recorded
 - limitations are visible
 - the requested outcome or question is stated
+
+For a native Claude Design export, this check is run mechanically by `.github/workflows/design-branch-intake.yml` on merge into the `design` branch, per DESIGN-HANDOFF-BUNDLE-SPEC.md section 6.2 -- readiness is computed the same way (limitations present or absent) as for any other source, just derived from the export's own README.md rather than a hand-authored field.
 
 Readiness outcomes are:
 

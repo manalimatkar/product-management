@@ -1,0 +1,185 @@
+name: Design Branch Intake Gate
+
+# GITHUB-PLATFORM-ADAPTER-SPEC.md section 6.1 -- the `design` branch's own
+# merge gate, for native Claude Design exports (DESIGN-HANDOFF-BUNDLE-SPEC.md
+# section 6.2). Sibling to design-bundle-merge.yml, which stays the legacy
+# path for hand-authored bundle.md content against `main`.
+#
+#   validate       -- runs on every PR update against the `design` branch.
+#                      Fails the check if the version folder isn't
+#                      structurally sound (design_branch_gate.py check) or
+#                      the Design Reviewer (ROLE-004) hasn't approved.
+#                      GitHub only actually blocks the merge button if this
+#                      check is marked required in the repository's branch
+#                      protection rules for `design` -- this workflow file
+#                      alone can't turn that setting on.
+#   apply-on-merge -- runs only once the PR is actually merged into `design`.
+#                      Re-confirms validate's checks, writes _cover-sheet.md's
+#                      machine-written fields (design_branch_gate.py apply),
+#                      and opens the tracked GitHub Issue that is this
+#                      repository's real Business Agent trigger -- deliberately
+#                      not a PR comment nothing reads, which is what
+#                      design-bundle-merge.yml's older trigger comment is.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    branches: [design]
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+env:
+  DESIGN_REVIEWER_GITHUB_USERNAME: manalimatkar  # ROLE-004, FRAMEWORK-CONFIGURATION-SPEC.md section 10
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install pyyaml
+
+      - name: List changed files
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const files = await github.paginate(github.rest.pulls.listFiles, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+            });
+            fs.writeFileSync('changed_files.json', JSON.stringify(files.map(f => f.filename)));
+
+      - name: Check version folder structure
+        run: |
+          python3 .github/scripts/design_branch_gate.py check \
+            --changed-files-json changed_files.json \
+            --output-json checklist_result.json
+
+      - name: Check Design Reviewer approval
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const reviews = await github.paginate(github.rest.pulls.listReviews, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+            });
+            const reviewer = process.env.DESIGN_REVIEWER_GITHUB_USERNAME;
+            const approved = reviews.some(r => r.user && r.user.login === reviewer && r.state === 'APPROVED');
+            if (!approved) {
+              core.setFailed(`No approving review from Design Reviewer (${reviewer}) found yet -- this gate requires one before merge.`);
+            }
+
+  apply-on-merge:
+    needs: validate
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.ref }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install pyyaml
+
+      - name: List changed files
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const files = await github.paginate(github.rest.pulls.listFiles, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+            });
+            fs.writeFileSync('changed_files.json', JSON.stringify(files.map(f => f.filename)));
+
+      - name: Determine version directory
+        id: find_version
+        run: |
+          python3 - <<'PYEOF' >> "$GITHUB_OUTPUT"
+          import json, re
+          files = json.load(open("changed_files.json"))
+          pattern = re.compile(r"^((?:[^/]+/){1,2}design/v\d+)/")
+          matches = sorted({m.group(1) for f in files if (m := pattern.match(f))})
+          assert len(matches) == 1, f"expected exactly one version dir match, got {matches}"
+          print(f"version_dir={matches[0]}")
+          PYEOF
+
+      - name: Apply cover sheet fields
+        id: apply
+        run: |
+          python3 .github/scripts/design_branch_gate.py apply \
+            --version-dir "${{ steps.find_version.outputs.version_dir }}" \
+            --output-json apply_result.json
+
+      - name: Commit cover sheet changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add "${{ steps.find_version.outputs.version_dir }}/_cover-sheet.md"
+          if git diff --cached --quiet; then
+            echo "No changes to commit (cover sheet already up to date)."
+          else
+            git commit -m "Set cover sheet status/readiness on merge (design branch intake, PR #${{ github.event.pull_request.number }})
+
+          Automated by .github/workflows/design-branch-intake.yml per DESIGN-HANDOFF-BUNDLE-SPEC.md section 6.2."
+            git push origin HEAD:${{ github.event.pull_request.base.ref }}
+          fi
+
+      - name: Open Business Agent intake Issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const result = JSON.parse(fs.readFileSync('apply_result.json', 'utf8'));
+            const versionDir = result.version_dir;
+            const parts = versionDir.split('/'); // <platform>[/<app>]/design/v<N>
+            const platform = parts[0];
+            const app = parts.length === 4 ? parts[1] : null;
+            const label = app ? `${platform}/${app}` : platform;
+            const version = versionDir.match(/v(\d+)$/)[1];
+
+            const sha = context.payload.pull_request.merge_commit_sha;
+            const knownLimitations = result.known_limitations.length
+              ? result.known_limitations.map(k => `- ${k}`).join('\n')
+              : '- none';
+
+            const body = [
+              `**Platform/App:** ${label}`,
+              `**Version:** v${version}`,
+              `**Branch:** design`,
+              `**Path:** ${versionDir}/`,
+              `**Commit:** ${sha}`,
+              `**Readiness:** ${result.readiness}`,
+              '',
+              '**Known limitations:**',
+              knownLimitations,
+              '',
+              'Next step: register this drop as Source Material per PRODUCT-SOURCE-MATERIAL-SPEC.md ' +
+              'sections 8-9, one registration record per feature-slice touched by this version ' +
+              '(GITHUB-PLATFORM-ADAPTER-SPEC.md section 6.1) -- not automatically one record for the ' +
+              'whole drop. Feature-slices with no material change since their last Approved Business ' +
+              'PR need neither a new registration nor a new Business PR (DESIGN-HANDOFF-BUNDLE-SPEC.md ' +
+              'section 6.2).',
+            ].join('\n');
+
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `[Design Intake] ${label} v${version} — ready for Business Agent`,
+              labels: ['agent:business', 'status:queued'],
+              body,
+            });

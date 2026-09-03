@@ -1,5 +1,12 @@
 name: Design Handoff Bundle Merge Gate
 
+# LEGACY PATH, kept for the hand-authored bundle.md format only (a bare
+# Figma link, a written spec + screenshots -- DESIGN-HANDOFF-BUNDLE-SPEC.md
+# section 6.1) against `main`. A real, tool-exported Claude Design handoff
+# (README.md + designs/*.dc.html, DESIGN-HANDOFF-BUNDLE-SPEC.md section 6.2)
+# goes through the `design` branch instead -- see design-branch-intake.yml
+# and GITHUB-PLATFORM-ADAPTER-SPEC.md section 6.1's revised text.
+#
 # GITHUB-PLATFORM-ADAPTER-SPEC.md section 6.1 -- combines GATE-002 (Design
 # Handoff Bundle Acceptance) and GATE-001 (Source Readiness) into one event
 # on the bundle's upload PR.
@@ -27,6 +34,9 @@ name: Design Handoff Bundle Merge Gate
 on:
   pull_request:
     types: [opened, synchronize, reopened, closed]
+    branches: [main]  # added -- this workflow previously had no branch filter and would
+                       # also have fired on a PR into `design`, colliding with
+                       # design-branch-intake.yml's own trigger on that same path shape.
     paths:
       - "design/**"
 

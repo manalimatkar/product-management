@@ -85,6 +85,8 @@ The Business Agent consumes the committed bundle. It does not regenerate or rewr
 
 A Story must reference the applicable design handoff bundle and version.
 
+**Two upload paths (specs/DESIGN-HANDOFF-BUNDLE-SPEC.md section 6.2, added 2026-09-03):** a genuine Claude Design export lands untouched on a persistent `design` branch (`<platform-slug>/[<app-slug>/]design/v<N>/`), not `main` -- its merge opens a tracked GitHub Issue that is the real Business Agent trigger. A hand-authored bundle (a bare Figma link, a written spec + screenshots) still goes directly against `main`'s existing `design/` convention, unchanged.
+
 ## Agents and Responsibilities
 
 ### Business Agent

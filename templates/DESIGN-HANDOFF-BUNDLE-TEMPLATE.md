@@ -305,16 +305,49 @@ Once the checks above pass:
 
 ---
 
+## Part 5: `_cover-sheet.md` Template (native Claude Design export, `design` branch)
+
+**File:** `<platform-slug>/[<app-slug> (optional)]/design/v<N>/_cover-sheet.md`
+
+Only for a genuine Claude Design export uploaded to the persistent `design` branch, per [DESIGN-HANDOFF-BUNDLE-SPEC.md](../specs/DESIGN-HANDOFF-BUNDLE-SPEC.md) section 6.2 -- **not** used for Parts 1-4's hand-authored path against `main`. Sits alongside the untouched native files (`README.md`, optionally `PARITY_RULE.md`, `designs/*.dc.html`, `designs/_ds/`); never edit those.
+
+Only the first five fields below are filled in before opening the PR. `status`, `readiness`, `knownLimitations`, and `screens` are left `null`/empty and are written by `.github/workflows/design-branch-intake.yml` on merge -- do not fill them in by hand.
+
+```markdown
+---
+platformSlug: pdf-workflow
+appSlug: workflow-manager        # omit entirely when this platform has no app layer (ARTIFACT-STORAGE-SPEC.md section 4)
+version: 4                        # integer, matches the v<N>/ folder name -- not MAJOR.MINOR (section 6.2)
+priorVersion: 3                   # the last version you're aware was analyzed; null for v1
+sourceTool: Claude Design
+uploadedBy:
+  name: YOUR NAME
+  role: Producing Designer        # Role per the active Role Configuration (FRAMEWORK-CONFIGURATION-SPEC.md section 10)
+uploadedAt: 2026-09-03
+status: null                      # written on merge
+readiness: null                   # written on merge
+knownLimitations: []              # written on merge, scraped from README.md
+screens: []                       # written on merge, from designs/*.dc.html
+---
+```
+
+Before opening the PR into `design`, confirm (the merge gate checks these mechanically, but catching it yourself first avoids a round trip):
+- `README.md` is present and has real content, with at least one `##` heading.
+- At least one `designs/*.dc.html` file is present.
+- Every `.dc.html` file named in backticks in `README.md` actually exists under `designs/`.
+- If `PARITY_RULE.md` is present, every `(Light).dc.html` file has a same-named non-Light counterpart, and vice versa.
+
 ## Summary
 
 | File (shorthand) | Actual filename pattern | Purpose |
 | --- | --- | --- |
-| `bundle.md` | `design-handoff-<feature-slug>-v<version>.md` | Identity, manifest, status, and readiness for the bundle as a whole |
-| `design-spec.md` | `design-spec-<feature-slug>-v<version>.md` | Business-readable narrative: problem, solution, cross-cutting requirements, tokens, acceptance |
-| `screens/*.md` | `screens/screen-<screen-id>-<feature-slug>.md` | Structured screen/state/element/interaction/evidence records (present only when that much detail exists) |
-| `user-flows/*.mmd` | `user-flows/flow-<flow-id>-<feature-slug>.mmd` | Traversable user journeys |
-| `assets/` | (tool-native, unchanged) | Design tokens and content assets, tool-native formats |
+| `bundle.md` | `design-handoff-<feature-slug>-v<version>.md` | Identity, manifest, status, and readiness for the bundle as a whole (hand-authored path, `main`) |
+| `design-spec.md` | `design-spec-<feature-slug>-v<version>.md` | Business-readable narrative: problem, solution, cross-cutting requirements, tokens, acceptance (hand-authored path, `main`) |
+| `screens/*.md` | `screens/screen-<screen-id>-<feature-slug>.md` | Structured screen/state/element/interaction/evidence records (hand-authored path, `main`) |
+| `user-flows/*.mmd` | `user-flows/flow-<flow-id>-<feature-slug>.mmd` | Traversable user journeys (hand-authored path, `main`) |
+| `assets/` | (tool-native, unchanged) | Design tokens and content assets, tool-native formats (hand-authored path, `main`) |
+| `_cover-sheet.md` | unchanged (leading underscore is the actual name) | Status/readiness/version bookkeeping for a native export (native path, `design` branch, section 6.2) |
 
-See [ARTIFACT-STORAGE-SPEC.md](../specs/ARTIFACT-STORAGE-SPEC.md) section 5 for the authoritative naming convention.
+See [ARTIFACT-STORAGE-SPEC.md](../specs/ARTIFACT-STORAGE-SPEC.md) section 5 for the hand-authored path's naming convention, and section 10 for the `design` branch's independent shape.
 
-Designers use the templates in Parts 1-3 as starting points, filling in only as much as the source material actually supports -- see [DESIGN-HANDOFF-BUNDLE-SPEC.md](../specs/DESIGN-HANDOFF-BUNDLE-SPEC.md) section 6.1.
+Designers use the templates in Parts 1-3 as starting points for the hand-authored path, filling in only as much as the source material actually supports -- see [DESIGN-HANDOFF-BUNDLE-SPEC.md](../specs/DESIGN-HANDOFF-BUNDLE-SPEC.md) section 6.1. For a genuine Claude Design export, use Part 5 instead and leave the native files untouched.

@@ -34,6 +34,8 @@ Design Analysis
 
 Entry condition: readiness must be `Ready` or `Ready with Limitations` per [PRODUCT-SOURCE-MATERIAL-SPEC.md](PRODUCT-SOURCE-MATERIAL-SPEC.md) section 9. If readiness is `Blocked`, the Business Agent must not proceed -- it records the blocker and stops (section 8 below).
 
+**Revised 2026-09-03:** for a native Claude Design export, this entry condition is signaled by a tracked GitHub Issue (`agent:business`/`status:queued`, opened by `.github/workflows/design-branch-intake.yml` on merge into the `design` branch) naming the readiness value directly, not by the PR comment GITHUB-PLATFORM-ADAPTER-SPEC.md section 6.1's legacy path used -- see that section and DESIGN-HANDOFF-BUNDLE-SPEC.md section 6.2. The entry condition itself, and everything below in this section, is unchanged.
+
 ## 4. Processing
 
 Steps 1-9 run in order and together produce one coherent Design Analysis. Steps 2-8 must all complete before step 9 is finalized -- a requirement must never be drafted in step 10 from a partially-completed analysis.

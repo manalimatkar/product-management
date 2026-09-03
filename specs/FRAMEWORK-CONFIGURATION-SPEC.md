@@ -296,6 +296,8 @@ GitHub PRs, Issues, Projects, and Actions may be used as an implementation adapt
 
 This table maps *storage* adapters only -- where artifacts are tracked once produced. It has a sibling table for *execution* adapters -- which AI platform actually produces them -- in [EXECUTION-ADAPTER-SPEC.md](EXECUTION-ADAPTER-SPEC.md), added 2026-09-03. The two are independent: a stage executed on Claude, ChatGPT, or Copilot all write to the same storage adapter above, unchanged.
 
+**Added 2026-09-03:** this repository now has a second long-lived branch, `design`, alongside `main` -- a raw landing zone for native Claude Design exports, with its own independent folder shape and its own merge gate (`.github/workflows/design-branch-intake.yml`), deliberately not governed by ARTIFACT-STORAGE-SPEC.md's storage convention above. See DESIGN-HANDOFF-BUNDLE-SPEC.md section 6.2, ARTIFACT-STORAGE-SPEC.md section 10, and GITHUB-PLATFORM-ADAPTER-SPEC.md section 6.1.
+
 ## 14. Delivery Configuration
 
 Define where approved work is delivered.

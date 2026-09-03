@@ -15,6 +15,7 @@ This repository is a product-management and governance framework, not an enginee
 - [BUSINESS-REPOSITORY-WORKFLOW.md](BUSINESS-REPOSITORY-WORKFLOW.md) describes how a committed bundle enters the Business Agent process.
 - [REQUIREMENTS-VERSIONING-SPEC.md](REQUIREMENTS-VERSIONING-SPEC.md) section 4's `MAJOR.MINOR` version format is reused here for bundle versioning, so the same version vocabulary applies across the repository.
 - [FRAMEWORK-CONFIGURATION-SPEC.md](FRAMEWORK-CONFIGURATION-SPEC.md) section 10 governs who may hold which role against this artifact; this document does not hardcode role names.
+- Section 6.2 below (the native Claude Design export shape) has its own storage location -- a persistent `design` branch, not `ARTIFACT-STORAGE-SPEC.md`'s `<root>/<platform-slug>/...` convention -- and its own trigger mechanism, detailed in [GITHUB-PLATFORM-ADAPTER-SPEC.md](GITHUB-PLATFORM-ADAPTER-SPEC.md) section 6.1.
 
 ## 3. Scope
 
@@ -185,6 +186,67 @@ Not every design source is a fully detailed handoff, and this format does not re
 **A fully detailed handoff**: every screen gets its own `screens/<screen-id>.md` file per the schema above, referenced from the Manifest.
 
 In every case, the artifact is registered as a source the same way (`PRODUCT-SOURCE-MATERIAL-SPEC.md` sections 8-9), and Design Analysis can proceed once readiness allows it -- a thinner bundle simply carries more `Assumption` and `Decision Required` classifications forward, and more items in `knownLimitations`, which is exactly what the evidence rule is for.
+
+## 6.2 The Native Claude Design Export Shape (`design` branch)
+
+**Added 2026-09-03.** Sections 5-6.1 above describe a hand-authored bundle -- `bundle.md` frontmatter, a narrative `design-spec.md`, structured `screens/*.md` tables -- filled in by a person, scaling down for lighter sources. That format was never validated against what Claude Design's own canvas export tool actually produces, and it doesn't match it: verified directly against a real export (`pdf-workflow` repository, `workflow-manager/design/`), a real handoff is a rich prose `README.md` (problem statement, per-screen breakdown, interactions, state shape, tokens, accessibility gaps, an implementation-order recommendation -- everything section 6's `design-spec.md` tries to hand-reconstruct, already written), an optional `PARITY_RULE.md`, and self-contained `designs/*.dc.html` canvas artboards (dark + `(Light)` pairs) backed by a design-token bundle under `designs/_ds/`. There is no YAML frontmatter and no per-screen element table anywhere in it.
+
+This section defines how that real shape is handled -- **the primary, recommended path when the source is a genuine Claude Design export**, sitting beside sections 5-6.1's hand-authored shapes rather than replacing them (those stay the right format for a bare Figma link or a written spec with screenshots, per this document's own scalable-not-all-or-nothing framing in section 1).
+
+**Where it lives -- a separate, persistent `design` branch, not `main`.** A native export is uploaded via PR into a long-lived `design` branch, untouched:
+
+```text
+<platform-slug>/[<app-slug>/]design/v<N>/
+  README.md              # byte-identical to the export -- never edited by this framework
+  PARITY_RULE.md          # untouched, when present
+  designs/
+    *.dc.html              # untouched, including "(Light)" variants
+    support.js
+    _ds/<system>-<uuid>/  # untouched (styles.css, _ds_bundle.js)
+  _cover-sheet.md          # the one file this framework adds -- see below
+```
+
+Two small normalizations vs. the raw tool output, both a stated default and overridable: the version folder is a plain `v<N>/` (the platform/app/`design` path segments already carry the app's identity, so a real export's own `design_handoff_<app>_v<N>/` folder name is redundant once nested here), and every version gets an explicit folder including the first (the tool itself leaves v1 unsuffixed). Versions are bare integers (`v1`, `v2`, `v3`, ...), matching Claude Design's own scheme -- **not** the `MAJOR.MINOR` format section 2 cites for the hand-authored path; `PRODUCT-SOURCE-MATERIAL-SPEC.md` section 5 already permits "another configured convention," so this is a documented divergence, not a spec change there.
+
+This branch's folder shape is deliberately **not** governed by `ARTIFACT-STORAGE-SPEC.md`'s `<root>/<platform-slug>/...` convention -- that convention governs curated *outputs* committed to `main` (Design Analysis, Requirements, the Business PR); `design` is a raw landing zone the Business Agent reads from, closer in kind to an external Figma file than to a generated artifact. `main`'s own existing `design/<platform-slug>/[<app-slug>/]<feature-slug>/v<version>/` root (section 8, unchanged) keeps governing the hand-authored path and the one existing dry-run example under it -- not retroactively migrated.
+
+**Scope, default/overridable:** the `design` branch is required only for tool-produced exports (Claude Design being the concrete case today). A hand-authored bundle with no export tool behind it may still be authored directly against `main`'s existing `design/` convention per section 6.1 -- there's nothing raw to protect from reformatting in that case, so the extra branch ceremony isn't earning its cost there.
+
+**`_cover-sheet.md`** -- one small manifest per version folder (default/overridable filename; the leading underscore echoes the native `_ds/` folder's own convention, so it reads as framework-added metadata rather than part of the export). It carries only what the native files structurally can't (status/readiness/version bookkeeping), never duplicating README.md's content:
+
+```yaml
+---
+platformSlug: pdf-workflow
+appSlug: workflow-manager        # omitted when the platform has no app layer (ARTIFACT-STORAGE-SPEC.md section 4)
+version: 4                        # integer, matches the version folder name
+priorVersion: 3                   # null for v1 -- drives incremental, per-feature-slice re-analysis (see below)
+sourceTool: Claude Design
+uploadedBy: { name: Manali, role: Producing Designer }   # ROLE-005
+uploadedAt: 2026-09-03
+status: null                      # written on merge by design-branch-intake.yml: Received
+readiness: null                   # written on merge: Ready / Ready with Limitations (PRODUCT-SOURCE-MATERIAL-SPEC.md section 9; Blocked/Not Applicable can't arise mechanically here)
+knownLimitations: []              # scraped from README.md's "Known UX issues"/"Open Items"-style heading
+screens: []                       # regenerated from designs/*.dc.html at merge time
+---
+```
+
+Only five fields are human-filled before opening the PR (`platformSlug`, `appSlug`, `priorVersion`, `sourceTool`, `uploadedBy`); the rest are machine-written by `.github/workflows/design-branch-intake.yml` on merge (`.github/scripts/design_branch_gate.py`), mirroring how the hand-authored path's `bundle.md` gets its `status`/`readiness` machine-written today (section 9), just on a different branch and a thinner file. Everything else the hand-authored `bundle.md` carries (`experienceRequirements`, `businessContext`, `tags`, per-screen Evidence hints) is not a real gap for this shape -- the native `README.md` already carries that content in prose, which the Business Agent reads directly during Design Analysis.
+
+**Readiness, mechanically assigned** (never a judgment call -- `ROLE-009`'s charter, `FRAMEWORK-CONFIGURATION-SPEC.md` section 10): the merge gate checks the version folder is structurally sound -- `README.md` present and substantial, at least one `designs/*.dc.html` file, every `.dc.html` path `README.md` references in backticks actually exists, and (when `PARITY_RULE.md` is present) every dark/`(Light)` pair is complete -- before it will merge at all. On merge, `knownLimitations` is scraped from README.md's own "Known UX issues" / "Open Items" heading (a real, recurring section in actual exports) and `readiness` follows the same rule as the hand-authored path: empty -> `Ready`; non-empty -> `Ready with Limitations`.
+
+**Trigger:** merge into `design` opens one GitHub Issue (`agent:business` + `status:queued` labels) naming the platform/app/version, branch, path, merge commit SHA, and computed readiness -- a durable, visible work-queue item, not a PR comment nothing consumes (contrast section 6.1's older mechanism on `main`, kept only for the hand-authored path). See `GITHUB-PLATFORM-ADAPTER-SPEC.md` section 6.1 for the full mechanism.
+
+**Incremental, per feature-slice -- not one registration per drop.** A version is a whole-app snapshot spanning unrelated features (a real export can bundle a dashboard, a reporting screen, and an entire unrelated auth flow in one version). `_cover-sheet.md`'s `priorVersion` field lets the Business Agent diff the new version's screen list against whatever it last actually analyzed: `sources/.../source-<feature-slug>-SRC-*.md` registration happens **per feature-slice**, not per drop -- one drop can produce several registration records, each citing the same `branch: design` / `path:` / commit SHA, each with its own readiness judgment. Feature-slices with no material change since their last **Approved** Business PR are left alone entirely -- no re-analysis, no new registration, no new PR.
+
+**Pointer back from `main`.** Since there's no `bundleId`/version frontmatter to cite (unlike the hand-authored path's `bundle.md`), both the `sources/.../source-*.md` registration record and the Design Analysis's `Source Material` field (`DESIGN-ANALYSIS-SPEC.md` section 3, already generic) cite a three-part pointer instead:
+
+```text
+branch: design
+path: pdf-workflow/workflow-manager/design/v4/
+commit: <merge commit SHA>
+```
+
+A commit SHA pins an exact snapshot even after `design`'s tip moves on to a later version -- `git show <SHA>:<path>/README.md` retrieves exactly what was analyzed, satisfying `PRODUCT-SOURCE-MATERIAL-SPEC.md` section 5's retrieval-identity requirement.
 
 ## 7. Status vs. Readiness
 
