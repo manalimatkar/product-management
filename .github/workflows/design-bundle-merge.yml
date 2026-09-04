@@ -33,7 +33,12 @@ name: Design Handoff Bundle Merge Gate
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened, closed]
+    # "edited" added -- the Pre-Registration Checklist lives in the PR
+    # description, so ticking a box is a description edit, not a new
+    # commit; without this type the check never re-runs against the
+    # updated body. Found 2026-09-04 fixing the identical gap in
+    # design-branch-intake.yml.
+    types: [opened, synchronize, reopened, closed, edited]
     branches: [main]  # added -- this workflow previously had no branch filter and would
                        # also have fired on a PR into `design`, colliding with
                        # design-branch-intake.yml's own trigger on that same path shape.

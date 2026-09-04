@@ -337,6 +337,16 @@ Before opening the PR into `design`, confirm (the merge gate checks these mechan
 - Every `.dc.html` file named in backticks in `README.md` actually exists under `designs/`.
 - If `PARITY_RULE.md` is present, every `(Light).dc.html` file has a same-named non-Light counterpart, and vice versa.
 
+## Part 5a: PR Description Sign-off (native path only)
+
+**Added 2026-09-04.** Paste this exact line into the description of every PR opened against the `design` branch, unchecked at first:
+
+```markdown
+- [ ] **Design Reviewer sign-off (ROLE-004):** I have reviewed this drop and accept it.
+```
+
+Check the box only once you have actually reviewed the drop, then merge. This replaces a GitHub PR review as the approval signal for this one gate -- discovered 2026-09-04, GitHub never allows a PR's author to formally Approve their own PR, and this repository has no separate agent/bot GitHub identity, so the account opening an upload PR and the required Design Reviewer are, today, the same account. `design_branch_gate.py check` looks for this exact line (see `REVIEWER_SIGNOFF_RE`) -- a paraphrase won't match, and approving *after* merge does not retroactively satisfy it, since the gate only runs at PR-update and merge time. See DESIGN-HANDOFF-BUNDLE-SPEC.md section 6.2.
+
 ## Summary
 
 | File (shorthand) | Actual filename pattern | Purpose |

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <script src="./image-slot.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: -apple-system, "Inter", Arial, sans-serif; }
+    a { color: var(--wfl-accent); text-decoration: none; }
+    a:hover { opacity: 0.8; }
+    .wf-ic svg { display: block; }
+    .nav { display:flex; align-items:center; gap:11.2px; padding:8.4px 11.2px; border-bottom:1px solid var(--wfl-border); background:var(--wfl-nav-bg); }
+    .nav-brand { display:flex; align-items:center; gap:5.6px; font-size:15px; font-weight:600; color:var(--wfl-text); }
+    .btn { display:inline-flex; align-items:center; justify-content:center; gap:6px; font-size:13px; font-weight:500; padding:8px 14px; border-radius:8px; cursor:pointer; border:1px solid transparent; font-family:inherit; }
+    .btn-primary { border:1px solid var(--wfl-accent); color:var(--wfl-accent); background:transparent; }
+    .btn-primary:hover { background:var(--wfl-accent-bg); }
+    .btn-secondary { border:1px solid var(--wfl-border); color:var(--wfl-text); background:var(--wfl-surface); }
+    .btn-secondary:hover { background:var(--wfl-surface-alt); }
+    .card { background:var(--wfl-surface); border:1px solid var(--wfl-border); border-radius:8px; padding:8.4px; display:flex; flex-direction:column; gap:5.6px; }
+    .elev-sm { box-shadow: 0 1px 2px rgba(0,0,0,0.06); }
+    .field label { display:block; font-size:12.5px; color:var(--wfl-text); margin-bottom:6px; }
+    .field { margin-bottom:16px; }
+    .input { border:1px solid var(--wfl-border); border-radius:8px; padding:8px 12px; font-size:13px; width:100%; background:var(--wfl-input-bg); color:var(--wfl-text); font-family:inherit; }
+    .input:focus { outline:2px solid var(--wfl-accent); outline-offset:1px; }
+    .radio { display:flex; align-items:flex-start; gap:8px; cursor:pointer; }
+    .radio input { position:absolute; opacity:0; width:0; height:0; }
+    .radio .dot { width:16px; height:16px; border-radius:50%; border:1.5px solid var(--wfl-border); flex-shrink:0; margin-top:2px; position:relative; }
+    .radio input:checked + .dot { border-color: var(--wfl-accent); }
+    .radio input:checked + .dot::after { content:''; position:absolute; inset:3px; border-radius:50%; background:var(--wfl-accent); }
+    .wsd-swatch { width: 32px; height: 32px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; display: flex; align-items: center; justify-content: center; }
+    .wsd-swatch.selected { border-color: var(--wfl-text); box-shadow: 0 0 0 2px var(--wfl-bg), 0 0 0 4px var(--wfl-text); }
+    .wsd-section { margin-top: 16px; }
+    .wsd-section-title { font-size: 14px; font-weight: 500; color: var(--wfl-text); margin: 0 0 2px; }
+    .wsd-section-desc { font-size: 12.5px; color: var(--wfl-text-muted); margin: 0 0 12px; max-width: 480px; }
+    .wfl-switch { width:34px; height:20px; border-radius:999px; position:relative; cursor:pointer; flex-shrink:0; }
+    .wfl-switch-knob { position:absolute; top:2px; width:16px; height:16px; border-radius:50%; background:#fff; transition:left 0.15s ease; }
+  </style>
+</helmet>
+
+<div style="min-height:100vh; display:flex; flex-direction:column; background: var(--wfl-bg); --wfl-bg: {{ t.bg }}; --wfl-nav-bg: {{ t.navBg }}; --wfl-surface: {{ t.surface }}; --wfl-surface-alt: {{ t.surfaceAlt }}; --wfl-border: {{ t.border }}; --wfl-text: {{ t.text }}; --wfl-text-muted: {{ t.textMuted }}; --wfl-accent: {{ t.accent }}; --wfl-accent-bg: {{ t.accentBg }}; --wfl-input-bg: {{ t.inputBg }};">
+
+  <nav class="nav">
+    <span class="nav-brand" style="display:flex; align-items:center; gap: 8px;">
+      <a href="#" onClick="{{ onBack }}" style="display:flex; align-items:center; color: var(--wfl-text-muted);">
+        <svg class="wf-ic" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </a>
+      <span style="color: var(--wfl-text-muted); font-weight: 400;">{{ workflowTitle }}</span>
+      <svg class="wf-ic" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--wfl-text-muted)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+      <span>Settings</span>
+    </span>
+    <span style="margin-left:auto; display:flex; align-items:center; gap: 16px;">
+      <span style="display:flex; align-items:center; gap:8px;">
+        <svg class="wf-ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--wfl-text-muted)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="{{ themeIconPath }}"/></svg>
+        <span class="wfl-switch" style="background: {{ switchTrackBg }};" onClick="{{ toggleTheme }}">
+          <span class="wfl-switch-knob" style="left: {{ switchKnobLeft }};"></span>
+        </span>
+      </span>
+      <button type="button" class="btn btn-secondary" onClick="{{ onBack }}">Cancel</button>
+      <button type="button" class="btn btn-primary" onClick="{{ onSave }}">
+        <svg class="wf-ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5 11-11"/></svg> Save changes
+      </button>
+    </span>
+  </nav>
+
+  <div style="flex:1; padding: 17px;">
+    <div style="width: {{ contentWidth }};">
+      <h1 style="font-weight: 500; font-size: 22px; margin: 0 0 3px; color: var(--wfl-text);">Workflow settings</h1>
+      <p style="font-size: 13px; color: var(--wfl-text-muted); margin: 0;">General details, access, and branding for this workflow.</p>
+
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 11px; margin-top: 11px;">
+        <div class="card elev-sm" style="margin-top:0; border: 1px solid var(--wfl-border);">
+          <p class="wsd-section-title">General</p>
+          <p class="wsd-section-desc">The name and description shown across the workflow manager and in submission records.</p>
+          <div style="display:flex; flex-direction:column; gap: 11px;">
+            <div class="field" style="margin-bottom:0;">
+              <label for="wsd-title">Title</label>
+              <input class="input" id="wsd-title" value="{{ title }}" onInput="{{ onTitleInput }}" />
+            </div>
+            <div class="field" style="margin-bottom:0;">
+              <label for="wsd-desc">Description</label>
+              <textarea class="input" id="wsd-desc" rows="3" value="{{ description }}" onInput="{{ onDescriptionInput }}"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="card elev-sm" style="margin-top:0; border: 1px solid var(--wfl-border);">
+          <p class="wsd-section-title">Access</p>
+          <p class="wsd-section-desc">Who can fill this out once the workflow is published.</p>
+          <div style="display:flex; flex-direction:column; gap: 6px;">
+            <label class="radio">
+              <input type="radio" name="wsd-access" checked="{{ isPublic }}" onChange="{{ onAccessChange }}" value="public" />
+              <span class="dot"></span>
+              <span>
+                <span style="display:block; font-size:13px; color: var(--wfl-text);">Anyone with the link</span>
+                <span style="display:block; font-size:11.5px; color: var(--wfl-text-muted);">No login required — the standard choice for public forms.</span>
+              </span>
+            </label>
+            <label class="radio">
+              <input type="radio" name="wsd-access" checked="{{ isOrgOnly }}" onChange="{{ onAccessChange }}" value="org_only" />
+              <span class="dot"></span>
+              <span>
+                <span style="display:block; font-size:13px; color: var(--wfl-text);">Organisation members only</span>
+                <span style="display:block; font-size:11.5px; color: var(--wfl-text-muted);">Respondents must log in with an account in your organisation.</span>
+              </span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="wsd-section card elev-sm" style="border: 1px solid var(--wfl-border);">
+        <p class="wsd-section-title">Branding</p>
+        <p class="wsd-section-desc">Shown to respondents filling out this workflow. Leave unset to use your organisation's default theme.</p>
+
+        <p style="font-size:13px; color: var(--wfl-text); margin: 0 0 2px;">Workflow logo</p>
+        <p style="font-size:11.5px; color: var(--wfl-text-muted); margin: 0 0 6px;">Optional — replaces the org logo for this workflow only.</p>
+        <label
+          style="display:flex; flex-direction:column; align-items:center; gap: 3px; text-align:center; padding: 11px 8px; border-radius: 8px; border: 1.5px dashed {{ logoDropzoneBorder }}; background: {{ logoDropzoneBg }}; cursor:pointer; max-width: 320px; margin-bottom: 11px;"
+          onDrop="{{ onLogoDrop }}" onDragOver="{{ onLogoDragOver }}" onDragLeave="{{ onLogoDragLeave }}">
+          <input type="file" accept="image/*" style="display:none;" onChange="{{ onLogoFileInput }}" />
+          <svg class="wf-ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--wfl-accent)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12M7 11l5 5 5-5"/><path d="M5 19h14"/></svg>
+          <span style="font-size: 12.5px; color: var(--wfl-text);">Drop a logo here, or click to browse</span>
+        </label>
+
+        <span style="display:block; font-size:12.5px; color: var(--wfl-text); margin-bottom: 6px;">Accent color</span>
+        <div style="display:flex; align-items:center; gap: 6px;">
+          <sc-for list="{{ accentSwatches }}" as="sw" hint-placeholder-count="6">
+            <button type="button" class="wsd-swatch {{ sw.selectedClass }}" style="background: {{ sw.color }};" aria-label="{{ sw.label }}" title="{{ sw.label }}" onClick="{{ sw.onSelect }}">
+              <sc-if value="{{ sw.checked }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5 11-11"/></svg></sc-if>
+            </button>
+          </sc-for>
+          <button type="button" class="wsd-swatch {{ defaultSelectedClass }}" style="background: var(--wfl-border); border: 1px dashed var(--wfl-text-muted);" aria-label="Use organisation default" title="Use organisation default" onClick="{{ onSelectDefault }}">
+            <sc-if value="{{ isDefaultSelected }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--wfl-text)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5 11-11"/></svg></sc-if>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer style="border-top: 1px solid var(--wfl-border); padding: 16px 24px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap: 12px;">
+    <span style="font-size: 12px; color: var(--wfl-text-muted);">© 2026 Formwork. All rights reserved.</span>
+    <div style="display:flex; gap: 16px;">
+      <a href="#" style="font-size: 12px;">Documentation</a>
+      <a href="#" style="font-size: 12px;">Support</a>
+      <a href="#" style="font-size: 12px;">Status</a>
+    </div>
+  </footer>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const THEMES = {
+  light: {
+    bg: '#f9fafb', navBg: '#ffffff', border: '#e5e7eb', text: '#111827', textMuted: '#6b7280',
+    surface: '#ffffff', surfaceAlt: '#f9fafb', inputBg: '#ffffff', accent: '#4f46e5', accentBg: '#eef2ff',
+  },
+  dark: {
+    bg: '#14151f', navBg: '#1b1d29', border: '#2a2c3a', text: '#e9e9ed', textMuted: '#9a9aa8',
+    surface: '#1c1e2a', surfaceAlt: '#20222f', inputBg: '#20222f', accent: '#9184d9', accentBg: '#2a2740',
+  },
+};
+
+const ACCENT_OPTIONS = [
+  { id: 'default', label: 'Organisation default', color: 'var(--wfl-accent)' },
+  { id: 'indigo', label: 'Indigo', color: '#4f46e5' },
+  { id: 'teal', label: 'Teal', color: '#0d9488' },
+  { id: 'rose', label: 'Rose', color: '#e11d48' },
+  { id: 'amber', label: 'Amber', color: '#d97706' },
+];
+
+class Component extends DCLogic {
+  state = {
+    title: 'New Hire Onboarding',
+    description: 'Collects tax forms, direct deposit, and emergency contact info for incoming employees.',
+    accessControl: 'org_only',
+    accentId: 'default',
+    theme: 'light',
+    logoDragOver: false,
+  };
+
+  onLogoDrop = (e) => { e.preventDefault(); this.setState({ logoDragOver: false }); };
+  onLogoDragOver = (e) => { e.preventDefault(); this.setState({ logoDragOver: true }); };
+  onLogoDragLeave = () => this.setState({ logoDragOver: false });
+  onLogoFileInput = () => {};
+
+  toggleTheme = () => this.setState((s) => ({ theme: s.theme === 'light' ? 'dark' : 'light' }));
+
+  onTitleInput = (e) => this.setState({ title: e.target.value });
+  onDescriptionInput = (e) => this.setState({ description: e.target.value });
+  onAccessChange = (e) => this.setState({ accessControl: e.target.value });
+  selectAccent(id) { this.setState({ accentId: id }); }
+  onSave = () => {};
+  onBack = () => {};
+
+  renderVals() {
+    const s = this.state;
+    const t = THEMES[s.theme];
+    const isDark = s.theme === 'dark';
+    const accentSwatches = ACCENT_OPTIONS.filter((o) => o.id !== 'default').map((o) => ({
+      ...o,
+      checked: s.accentId === o.id,
+      selectedClass: s.accentId === o.id ? 'selected' : '',
+      onSelect: () => this.selectAccent(o.id),
+    }));
+
+    const layout = this.props.layoutWidth ?? 'full';
+
+    return {
+      contentWidth: layout === 'half' ? '50%' : '100%',
+      logoDropzoneBorder: s.logoDragOver ? 'var(--wfl-accent)' : 'var(--wfl-border)',
+      logoDropzoneBg: s.logoDragOver ? 'var(--wfl-accent-bg)' : 'transparent',
+      onLogoDrop: this.onLogoDrop,
+      onLogoDragOver: this.onLogoDragOver,
+      onLogoDragLeave: this.onLogoDragLeave,
+      onLogoFileInput: this.onLogoFileInput,
+      t,
+      themeIconPath: isDark ? 'M12 3v1M12 20v1M4.2 4.2l.7.7M18.4 18.4l.7.7M3 12h1M20 12h1M4.2 19.8l.7-.7M18.4 5.6l.7-.7M12 7a5 5 0 100 10 5 5 0 000-10z' : 'M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 1 0 10.5 10.5z',
+      switchTrackBg: isDark ? t.accent : '#d1d5db',
+      switchKnobLeft: isDark ? '16px' : '2px',
+      toggleTheme: this.toggleTheme,
+      workflowTitle: s.title,
+      title: s.title,
+      onTitleInput: this.onTitleInput,
+      description: s.description,
+      onDescriptionInput: this.onDescriptionInput,
+      isPublic: s.accessControl === 'public',
+      isOrgOnly: s.accessControl === 'org_only',
+      onAccessChange: this.onAccessChange,
+      accentSwatches,
+      isDefaultSelected: s.accentId === 'default',
+      defaultSelectedClass: s.accentId === 'default' ? 'selected' : '',
+      onSelectDefault: () => this.selectAccent('default'),
+      onSave: this.onSave,
+      onBack: this.onBack,
+    };
+  }
+}
+
+</script>
+</body>
+</html>

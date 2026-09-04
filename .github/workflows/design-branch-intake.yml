@@ -7,8 +7,14 @@ name: Design Branch Intake Gate
 #
 #   validate       -- runs on every PR update against the `design` branch.
 #                      Fails the check if the version folder isn't
-#                      structurally sound (design_branch_gate.py check) or
-#                      the Design Reviewer (ROLE-004) hasn't approved.
+#                      structurally sound, or the PR description doesn't
+#                      carry a checked Design Reviewer (ROLE-004) sign-off
+#                      line -- see design_branch_gate.py's module docstring
+#                      for why this is a PR-description checkbox rather than
+#                      a GitHub PR review: GitHub never lets a PR's author
+#                      approve their own PR, and this repository has no
+#                      separate agent/bot identity yet, so author and
+#                      reviewer are unavoidably the same account today.
 #                      GitHub only actually blocks the merge button if this
 #                      check is marked required in the repository's branch
 #                      protection rules for `design` -- this workflow file
@@ -23,16 +29,18 @@ name: Design Branch Intake Gate
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened, closed]
+    # "edited" is required, not optional, now that the Design Reviewer
+    # sign-off lives in the PR description (see the check step below) --
+    # checking the box is a description edit, not a new commit, so without
+    # this type the check never re-runs against the updated body. Found
+    # 2026-09-04 testing PR #2: a body edit alone did not retrigger validate.
+    types: [opened, synchronize, reopened, closed, edited]
     branches: [design]
 
 permissions:
   contents: write
-  pull-requests: write
+  pull-requests: read
   issues: write
-
-env:
-  DESIGN_REVIEWER_GITHUB_USERNAME: manalimatkar  # ROLE-004, FRAMEWORK-CONFIGURATION-SPEC.md section 10
 
 jobs:
   validate:
@@ -58,26 +66,17 @@ jobs:
             });
             fs.writeFileSync('changed_files.json', JSON.stringify(files.map(f => f.filename)));
 
-      - name: Check version folder structure
+      - name: Write PR body to file
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: printf '%s\n' "$PR_BODY" > pr_body.md
+
+      - name: Check version folder structure and Design Reviewer sign-off
         run: |
           python3 .github/scripts/design_branch_gate.py check \
             --changed-files-json changed_files.json \
+            --pr-body-file pr_body.md \
             --output-json checklist_result.json
-
-      - name: Check Design Reviewer approval
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const reviews = await github.paginate(github.rest.pulls.listReviews, {
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: context.payload.pull_request.number,
-            });
-            const reviewer = process.env.DESIGN_REVIEWER_GITHUB_USERNAME;
-            const approved = reviews.some(r => r.user && r.user.login === reviewer && r.state === 'APPROVED');
-            if (!approved) {
-              core.setFailed(`No approving review from Design Reviewer (${reviewer}) found yet -- this gate requires one before merge.`);
-            }
 
   apply-on-merge:
     needs: validate

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/nocturne-8201375c-a32b-4af1-bd3f-e2be272ae056/styles.css">
+  <script src="_ds/nocturne-8201375c-a32b-4af1-bd3f-e2be272ae056/_ds_bundle.js"></script>
+  <script src="./image-slot.js"></script>
+  <style>
+    body { margin: 0; background: var(--color-bg); }
+    a { color: var(--color-accent-300); text-decoration: none; }
+    a:hover { color: var(--color-accent-200); }
+    .wf-ic svg { display: block; }
+    .wsd-swatch { width: 32px; height: 32px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; display: flex; align-items: center; justify-content: center; }
+    .wsd-swatch.selected { border-color: var(--color-text); box-shadow: 0 0 0 2px var(--color-bg), 0 0 0 4px var(--color-text); }
+    .wsd-section { margin-top: var(--space-4); }
+    .wsd-section-title { font-size: 14px; font-weight: 500; color: var(--color-text); margin: 0 0 2px; }
+    .wsd-section-desc { font-size: 12.5px; color: var(--color-neutral-400); margin: 0 0 var(--space-3); max-width: 480px; }
+  </style>
+</helmet>
+
+<div style="min-height: 100vh; display:flex; flex-direction:column;">
+
+  <nav class="nav">
+    <span class="nav-brand" style="display:flex; align-items:center; gap: var(--space-2);">
+      <a href="#" onClick="{{ onBack }}" style="display:flex; align-items:center; color: var(--color-neutral-400);">
+        <svg class="wf-ic" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </a>
+      <span style="color: var(--color-neutral-400); font-weight: 400;">{{ workflowTitle }}</span>
+      <svg class="wf-ic" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--color-neutral-500)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+      <span>Settings</span>
+    </span>
+    <span style="margin-left:auto; display:flex; align-items:center; gap: var(--space-2);">
+      <button type="button" class="btn btn-secondary" onClick="{{ onBack }}">Cancel</button>
+      <button type="button" class="btn btn-primary" onClick="{{ onSave }}">
+        <svg class="wf-ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5 11-11"/></svg> Save changes
+      </button>
+    </span>
+  </nav>
+
+  <div style="flex:1; padding: var(--space-6);">
+    <div style="width: {{ contentWidth }};">
+      <h1 style="font-family: var(--font-heading); font-weight: 500; font-size: 22px; margin: 0 0 var(--space-1); color: var(--color-text);">Workflow settings</h1>
+      <p style="font-size: 13px; color: var(--color-neutral-300); margin: 0;">General details, access, and branding for this workflow.</p>
+
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); margin-top: var(--space-4);">
+        <div class="card elev-sm" style="margin-top:0; border: 1px solid var(--color-neutral-800);">
+          <p class="wsd-section-title">General</p>
+          <p class="wsd-section-desc">The name and description shown across the workflow manager and in submission records.</p>
+          <div style="display:flex; flex-direction:column; gap: var(--space-4);">
+            <div class="field" style="margin-bottom:0;">
+              <label for="wsd-title">Title</label>
+              <input class="input" id="wsd-title" value="{{ title }}" onInput="{{ onTitleInput }}" />
+            </div>
+            <div class="field" style="margin-bottom:0;">
+              <label for="wsd-desc">Description</label>
+              <textarea class="input" id="wsd-desc" rows="3" value="{{ description }}" onInput="{{ onDescriptionInput }}"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="card elev-sm" style="margin-top:0; border: 1px solid var(--color-neutral-800);">
+          <p class="wsd-section-title">Access</p>
+          <p class="wsd-section-desc">Who can fill this out once the workflow is published.</p>
+          <div style="display:flex; flex-direction:column; gap: var(--space-2);">
+            <label class="radio">
+              <input type="radio" name="wsd-access" checked="{{ isPublic }}" onChange="{{ onAccessChange }}" value="public" />
+              <span class="dot"></span>
+              <span>
+                <span style="display:block; font-size:13px; color: var(--color-text);">Anyone with the link</span>
+                <span style="display:block; font-size:11.5px; color: var(--color-neutral-400);">No login required — the standard choice for public forms.</span>
+              </span>
+            </label>
+            <label class="radio">
+              <input type="radio" name="wsd-access" checked="{{ isOrgOnly }}" onChange="{{ onAccessChange }}" value="org_only" />
+              <span class="dot"></span>
+              <span>
+                <span style="display:block; font-size:13px; color: var(--color-text);">Organisation members only</span>
+                <span style="display:block; font-size:11.5px; color: var(--color-neutral-400);">Respondents must log in with an account in your organisation.</span>
+              </span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="wsd-section card elev-sm" style="border: 1px solid var(--color-neutral-800);">
+        <p class="wsd-section-title">Branding</p>
+        <p class="wsd-section-desc">Shown to respondents filling out this workflow. Leave unset to use your organisation's default theme.</p>
+
+        <p style="font-size:13px; color: var(--color-text); margin: 0 0 2px;">Workflow logo</p>
+        <p style="font-size:11.5px; color: var(--color-neutral-400); margin: 0 0 var(--space-2);">Optional — replaces the org logo for this workflow only.</p>
+        <label
+          style="display:flex; flex-direction:column; align-items:center; gap: var(--space-1); text-align:center; padding: var(--space-4) var(--space-3); border-radius: 8px; border: 1.5px dashed {{ logoDropzoneBorder }}; background: {{ logoDropzoneBg }}; cursor:pointer; max-width: 320px; margin-bottom: var(--space-4);"
+          onDrop="{{ onLogoDrop }}" onDragOver="{{ onLogoDragOver }}" onDragLeave="{{ onLogoDragLeave }}">
+          <input type="file" accept="image/*" style="display:none;" onChange="{{ onLogoFileInput }}" />
+          <svg class="wf-ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent-300)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12M7 11l5 5 5-5"/><path d="M5 19h14"/></svg>
+          <span style="font-size: 12.5px; color: var(--color-text);">Drop a logo here, or click to browse</span>
+        </label>
+
+        <span style="display:block; font-size:12.5px; color: var(--color-text); margin-bottom: var(--space-2);">Accent color</span>
+        <div style="display:flex; align-items:center; gap: var(--space-2);">
+          <sc-for list="{{ accentSwatches }}" as="sw" hint-placeholder-count="6">
+            <button type="button" class="wsd-swatch {{ sw.selectedClass }}" style="background: {{ sw.color }};" aria-label="{{ sw.label }}" title="{{ sw.label }}" onClick="{{ sw.onSelect }}">
+              <sc-if value="{{ sw.checked }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5 11-11"/></svg></sc-if>
+            </button>
+          </sc-for>
+          <button type="button" class="wsd-swatch {{ defaultSelectedClass }}" style="background: var(--color-neutral-800); border: 1px dashed var(--color-neutral-500);" aria-label="Use organisation default" title="Use organisation default" onClick="{{ onSelectDefault }}">
+            <sc-if value="{{ isDefaultSelected }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-text)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5 11-11"/></svg></sc-if>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer style="border-top: 1px solid var(--color-neutral-800); padding: var(--space-4) var(--space-6); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap: var(--space-3);">
+    <span style="font-size: 12px; color: var(--color-neutral-400);">© 2026 Formwork. All rights reserved.</span>
+    <div style="display:flex; gap: var(--space-4);">
+      <a href="#" style="font-size: 12px;">Documentation</a>
+      <a href="#" style="font-size: 12px;">Support</a>
+      <a href="#" style="font-size: 12px;">Status</a>
+    </div>
+  </footer>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;layoutWidth&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;full&quot;,&quot;options&quot;:[&quot;full&quot;,&quot;half&quot;],&quot;tsType&quot;:&quot;'full' | 'half'&quot;,&quot;section&quot;:&quot;Layout&quot;}}">
+const ACCENT_OPTIONS = [
+  { id: 'default', label: 'Organisation default', color: 'var(--color-accent)' },
+  { id: 'indigo', label: 'Indigo', color: '#4f46e5' },
+  { id: 'teal', label: 'Teal', color: '#0d9488' },
+  { id: 'rose', label: 'Rose', color: '#e11d48' },
+  { id: 'amber', label: 'Amber', color: '#d97706' },
+];
+
+class Component extends DCLogic {
+  state = {
+    title: 'New Hire Onboarding',
+    description: 'Collects tax forms, direct deposit, and emergency contact info for incoming employees.',
+    accessControl: 'org_only',
+    accentId: 'default',
+    logoDragOver: false,
+  };
+
+  onLogoDrop = (e) => { e.preventDefault(); this.setState({ logoDragOver: false }); };
+  onLogoDragOver = (e) => { e.preventDefault(); this.setState({ logoDragOver: true }); };
+  onLogoDragLeave = () => this.setState({ logoDragOver: false });
+  onLogoFileInput = () => {};
+
+  onTitleInput = (e) => this.setState({ title: e.target.value });
+  onDescriptionInput = (e) => this.setState({ description: e.target.value });
+  onAccessChange = (e) => this.setState({ accessControl: e.target.value });
+  selectAccent(id) { this.setState({ accentId: id }); }
+  onSave = () => {};
+  onBack = () => {};
+
+  renderVals() {
+    const s = this.state;
+    const accentSwatches = ACCENT_OPTIONS.filter((o) => o.id !== 'default').map((o) => ({
+      ...o,
+      checked: s.accentId === o.id,
+      selectedClass: s.accentId === o.id ? 'selected' : '',
+      onSelect: () => this.selectAccent(o.id),
+    }));
+
+    const layout = this.props.layoutWidth ?? 'full';
+
+    return {
+      contentWidth: layout === 'half' ? '50%' : '100%',
+      logoDropzoneBorder: s.logoDragOver ? 'var(--color-accent)' : 'var(--color-neutral-700)',
+      logoDropzoneBg: s.logoDragOver ? 'var(--color-accent-900)' : 'transparent',
+      onLogoDrop: this.onLogoDrop,
+      onLogoDragOver: this.onLogoDragOver,
+      onLogoDragLeave: this.onLogoDragLeave,
+      onLogoFileInput: this.onLogoFileInput,
+      workflowTitle: s.title,
+      title: s.title,
+      onTitleInput: this.onTitleInput,
+      description: s.description,
+      onDescriptionInput: this.onDescriptionInput,
+      isPublic: s.accessControl === 'public',
+      isOrgOnly: s.accessControl === 'org_only',
+      onAccessChange: this.onAccessChange,
+      accentSwatches,
+      isDefaultSelected: s.accentId === 'default',
+      defaultSelectedClass: s.accentId === 'default' ? 'selected' : '',
+      onSelectDefault: () => this.selectAccent('default'),
+      onSave: this.onSave,
+      onBack: this.onBack,
+    };
+  }
+}
+
+</script>
+</body>
+</html>
