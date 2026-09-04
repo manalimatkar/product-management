@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: -apple-system, "Inter", Arial, sans-serif; }
+    a { text-decoration: none; }
+    .wf-ic svg { display: block; }
+    .mrl-table th, .mrl-table td { white-space: nowrap; padding: 6px; text-align: left; vertical-align: top; }
+    .mrl-table td.wrap { white-space: normal; }
+    .mrl-table thead th { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
+    .mrl-icon-btn { border: none; background: none; cursor: pointer; width: 30px; height: 30px; border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; }
+    .mrl-tag { display: inline-flex; align-items: center; font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 4px; }
+    .mrl-input { border-radius: 6px; padding: 8px 12px; font-size: 13px; width: 100%; font-family: inherit; }
+    .mrl-seg { display: inline-flex; border-radius: 6px; overflow: hidden; border: 1px solid; }
+    .mrl-seg-opt { padding: 7px 14px; font-size: 13px; cursor: pointer; }
+    .mrl-seg-opt input { position: absolute; opacity: 0; width: 0; height: 0; }
+    .mrl-menu-item { width:100%; text-align:left; border:none; background:none; padding: 8px 10px; font-size: 13px; border-radius: 6px; cursor: pointer; display:flex; align-items:center; gap:8px; }
+    .mrl-switch { width: 34px; height: 20px; border-radius: 999px; position: relative; cursor: pointer; flex-shrink: 0; }
+    .mrl-switch-knob { position: absolute; top: 2px; width: 16px; height: 16px; border-radius: 50%; background: #fff; transition: left 0.15s ease; }
+    .mrl-btn { border-radius: 6px; padding: 6px 12px; font-size: 12.5px; font-weight: 500; cursor: pointer; border: none; }
+    .mrl-dialog-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.35); display: flex; align-items: center; justify-content: center; z-index: 40; }
+  </style>
+</helmet>
+
+<div style="min-height: 100vh; display: flex; flex-direction: column; background: {{ t.bg }};">
+
+  <nav style="display:flex; align-items:center; gap: 16px; padding: 14px 24px; background: {{ t.navBg }}; border-bottom: 1px solid {{ t.border }};">
+    <span style="display:flex; align-items:center; gap:8px; font-size:15px; font-weight:600; color: {{ t.text }};">
+      <span style="width:22px; height:22px; border-radius:6px; background: {{ t.accent }}; color:#fff; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; flex-shrink:0;">{{ orgInitial }}</span>
+      {{ orgName }}
+    </span>
+    <span style="margin-left:auto; display:flex; align-items:center; gap:16px;">
+      <span style="position:relative;">
+        <button type="button" onClick="{{ toggleUserMenu }}" style="display:flex; align-items:center; gap:8px; background:none; border:none; cursor:pointer; padding:2px;">
+          <span style="width:26px; height:26px; border-radius:50%; background: {{ t.accent }}; color:#fff; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:600;">{{ userInitials }}</span>
+          <span style="font-size:13px; color: {{ t.text }};">{{ userName }}</span>
+        </button>
+        <sc-if value="{{ userMenuOpen }}">
+          <div style="position:fixed; inset:0; z-index:20;" onClick="{{ closeUserMenu }}"></div>
+          <div style="position:absolute; right:0; top:34px; z-index:21; min-width:220px; padding:6px; background: {{ t.surface }}; border:1px solid {{ t.border }}; border-radius:10px; box-shadow: 0 8px 24px rgba(0,0,0,0.18);">
+            <div style="padding:8px 10px; border-bottom: 1px solid {{ t.border }}; margin-bottom:4px;">
+              <div style="font-size:13px; color: {{ t.text }};">{{ userName }}</div>
+              <div style="font-size:11.5px; color: {{ t.textMuted }};">{{ userEmail }}</div>
+            </div>
+            <div style="display:flex; align-items:center; justify-content:space-between; padding: 8px 10px;">
+              <span style="font-size:13px; color: {{ t.text }}; display:flex; align-items:center; gap:8px;">
+                <svg class="wf-ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="{{ t.textMuted }}" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="{{ themeIconPath }}"/></svg>
+                Dark mode
+              </span>
+              <span class="mrl-switch" style="background: {{ switchTrackBg }};" onClick="{{ toggleTheme }}">
+                <span class="mrl-switch-knob" style="left: {{ switchKnobLeft }};"></span>
+              </span>
+            </div>
+            <hr style="border:none; border-top:1px solid {{ t.border }}; margin: 4px 0;" />
+            <button type="button" class="mrl-menu-item" style="color: {{ t.text }};">Account settings</button>
+            <button type="button" class="mrl-menu-item" style="color: {{ t.text }};">Log out</button>
+          </div>
+        </sc-if>
+      </span>
+      <span style="position:relative;">
+        <button type="button" class="mrl-icon-btn" aria-label="Settings" title="Settings" style="width:32px; height:32px; color: {{ t.textMuted }};" onClick="{{ toggleSettingsMenu }}">
+          <svg class="wf-ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1.04 1.56V21a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 8.96 19.4a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-1.56-1.04H3a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.6 8.96a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.87.34H9a1.7 1.7 0 0 0 1.04-1.56V3a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1.04 1.56 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.87V9a1.7 1.7 0 0 0 1.56 1.04H21a2 2 0 1 1 0 4h-.09A1.7 1.7 0 0 0 19.4 15z"/></svg>
+        </button>
+        <sc-if value="{{ settingsMenuOpen }}">
+          <div style="position:fixed; inset:0; z-index:20;" onClick="{{ closeSettingsMenu }}"></div>
+          <div style="position:absolute; right:0; top:38px; z-index:21; min-width:200px; padding:6px; background: {{ t.surface }}; border:1px solid {{ t.border }}; border-radius:10px; box-shadow: 0 8px 24px rgba(0,0,0,0.18);">
+            <button type="button" class="mrl-menu-item" style="color: {{ t.text }};">Organisation settings</button>
+            <button type="button" class="mrl-menu-item" style="color: {{ t.text }};">Members</button>
+            <button type="button" class="mrl-menu-item" style="color: {{ t.text }};">Billing</button>
+          </div>
+        </sc-if>
+      </span>
+    </span>
+  </nav>
+
+  <div style="padding: 24px 24px 4px;">
+    <a href="Workflow Dashboard (Light).dc.html" style="display:inline-flex; width:fit-content; align-items:center; gap:3px; font-size:13px; color: {{ t.text }}; background:none; border:none; border-radius:6px; padding:6px 8px 6px 4px; margin-bottom: 8px; text-decoration:none;">
+      <svg class="wf-ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+      Back to dashboard
+    </a>
+    <h1 style="font-size: 22px; font-weight: 500; margin: 0 0 3px; color: {{ t.text }};">{{ workflowTitle }}</h1>
+    <p style="font-size: 13px; color: {{ t.textMuted }}; margin: 0 0 17px;">How extracted PDF text was mapped to workflow fields and sections.</p>
+  </div>
+
+  <div style="display:flex; gap: 12px; padding: 0 24px 24px; flex-wrap:wrap;">
+    <sc-for list="{{ stats }}" as="stat" hint-placeholder-count="5">
+      <div style="flex:1; min-width:132px; background: {{ t.surface }}; border:1px solid {{ t.border }}; border-radius:8px; padding: 8px 11px; border-top: 2px solid {{ stat.color }};">
+        <div style="font-size:24px; font-weight:700; color: {{ stat.color }}; line-height:1.2;">{{ stat.value }}</div>
+        <div style="font-size:11.5px; color: {{ t.textMuted }}; margin-top:4px; white-space:nowrap;">{{ stat.label }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="display:flex; flex-direction:column; gap:16px; padding: 0 24px 24px;">
+    <div style="display:flex; align-items:flex-start; gap:16px; flex-wrap:wrap;">
+      <div style="width:50%;">
+        <label for="mrl-search" style="display:block; font-size:12.5px; color: {{ t.text }}; margin-bottom:6px;">Search PDF text</label>
+        <input class="mrl-input" id="mrl-search" placeholder="Search extracted text…" value="{{ searchTerm }}" onInput="{{ onSearchInput }}" style="background: {{ t.inputBg }}; border: 1px solid {{ t.inputBorder }}; color: {{ t.text }};" />
+      </div>
+      <div>
+        <label style="display:block; font-size:12.5px; color: {{ t.text }}; margin-bottom:6px;">View</label>
+        <div class="mrl-seg" style="border-color: {{ t.inputBorder }};">
+          <sc-for list="{{ viewChips }}" as="chip" hint-placeholder-count="2">
+            <label class="mrl-seg-opt" style="color: {{ t.text }}; background: {{ chip.bg }}; border-right: 1px solid {{ t.inputBorder }};">
+              <input type="radio" name="mrl-view" checked="{{ chip.checked }}" onChange="{{ chip.onSelect }}" />
+              {{ chip.label }}
+            </label>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex; align-items:flex-start; gap:16px; flex-wrap:wrap;">
+      <div>
+        <label style="display:block; font-size:12.5px; color: {{ t.text }}; margin-bottom:6px;">Confidence</label>
+        <div class="mrl-seg" style="border-color: {{ t.inputBorder }};">
+          <sc-for list="{{ confidenceChips }}" as="chip" hint-placeholder-count="4">
+            <label class="mrl-seg-opt" style="color: {{ chip.color }}; background: {{ chip.bg }}; border-right: 1px solid {{ t.inputBorder }};">
+              <input type="radio" name="mrl-conf" checked="{{ chip.checked }}" onChange="{{ chip.onSelect }}" />
+              {{ chip.label }}
+            </label>
+          </sc-for>
+        </div>
+      </div>
+      <div>
+        <label style="display:block; font-size:12.5px; color: {{ t.text }}; margin-bottom:6px;">Created from</label>
+        <div class="mrl-seg" style="border-color: {{ t.inputBorder }};">
+          <sc-for list="{{ sourceChips }}" as="chip" hint-placeholder-count="3">
+            <label class="mrl-seg-opt" style="color: {{ t.text }}; background: {{ chip.bg }}; border-right: 1px solid {{ t.inputBorder }};">
+              <input type="radio" name="mrl-source" checked="{{ chip.checked }}" onChange="{{ chip.onSelect }}" />
+              {{ chip.label }}
+            </label>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="flex:1; padding: 0 24px 24px; overflow-x:auto;">
+    <div style="background: {{ t.surface }}; border:1px solid {{ t.border }}; border-radius:8px; overflow:hidden;">
+      <sc-for list="{{ pageGroups }}" as="pg" hint-placeholder-count="3">
+        <div style="border-bottom: 1px solid {{ t.border }}; margin-bottom: {{ pg.marginBottom }};">
+          <button type="button" onClick="{{ pg.toggle }}" style="width:100%; display:flex; align-items:center; gap:8px; padding: 8px 11px; background: {{ t.surfaceAlt }}; border:none; cursor:pointer; text-align:left; color: {{ t.text }};">
+            <sc-if value="{{ pg.expanded }}"><svg class="wf-ic" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></sc-if>
+            <sc-if value="{{ pg.collapsed }}"><svg class="wf-ic" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></sc-if>
+            <span style="font-size:13px; font-weight:600;">Page {{ pg.pageNumber }}</span>
+            <span style="font-size:12px; color: {{ t.textMuted }};">{{ pg.summaryLabel }}</span>
+          </button>
+          <sc-if value="{{ pg.expanded }}">
+            <sc-for list="{{ pg.sections }}" as="sec" hint-placeholder-count="2">
+              <div style="border-top: 1px solid {{ t.border }}; margin-top:6px; padding-top:8px; padding-bottom:8px;">
+                <button type="button" onClick="{{ sec.toggle }}" style="width:100%; display:flex; align-items:center; gap:8px; padding: 8px 11px 8px 17px; background:none; border:none; cursor:pointer; text-align:left; color: {{ t.text }};">
+                  <sc-if value="{{ sec.expanded }}"><svg class="wf-ic" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></sc-if>
+                  <sc-if value="{{ sec.collapsed }}"><svg class="wf-ic" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></sc-if>
+                  <span class="mrl-tag" style="background: {{ t.surface }}; border:1px solid {{ t.accent }}; color: {{ t.accent }};">Section</span>
+                  <span style="font-size:13px; font-weight:500;">{{ sec.label }}</span>
+                  <span style="font-size:12px; color: {{ t.textMuted }};">{{ sec.summaryLabel }}</span>
+                  <span style="margin-left:auto; display:flex; align-items:center; gap:12px;">
+                    <sc-if value="{{ sec.hasHeadingMapping }}">
+                      <span style="font-size:12px; font-weight:600; color: {{ sec.confidenceColor }};">{{ sec.confidencePct }}%</span>
+                    </sc-if>
+                  </span>
+                </button>
+                <sc-if value="{{ sec.expanded }}">
+                  <sc-if value="{{ isTableView }}">
+                  <div style="background: {{ t.bg }};">
+                  <table class="mrl-table" style="width:100%;">
+                    <thead>
+                      <tr style="background: linear-gradient(to right, transparent, {{ t.border }} 48px, {{ t.border }} calc(100% - 48px), transparent) no-repeat bottom / 100% 1px;">
+                        <th style="padding-left: 28px; color: {{ t.textMuted }};">{{ sourceLabel }}</th>
+                        <th style="color: {{ t.textMuted }};">Type</th>
+                        <th style="color: {{ t.textMuted }};">Target Type</th>
+                        <th style="color: {{ t.textMuted }};">Maps to</th>
+                        <th style="color: {{ t.textMuted }};">Confidence</th>
+                        <th style="color: {{ t.textMuted }};">Source</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <sc-for list="{{ sec.fields }}" as="m" hint-placeholder-count="3">
+                        <tr style="background: linear-gradient(to right, transparent, {{ t.border }} 48px, {{ t.border }} calc(100% - 48px), transparent) no-repeat bottom / 100% 1px;" style-hover="background: linear-gradient({{ t.tagBg }}, {{ t.tagBg }}) no-repeat 0 0 / 100% 100%, linear-gradient(to right, transparent, {{ t.border }} 48px, {{ t.border }} calc(100% - 48px), transparent) no-repeat bottom / 100% 1px;">
+                          <td class="wrap" style="padding-left: 28px; font-family: ui-monospace, monospace; font-size:12.5px; max-width: 320px; color: {{ t.text }};">{{ m.originalTextShort }}</td>
+                          <td><span class="mrl-tag" style="background: {{ t.tagBg }}; color: {{ t.textMuted }};">{{ m.kindLabel }}</span></td>
+                          <td><span class="mrl-tag" style="background: {{ t.surface }}; border:1px solid {{ t.accent }}; color: {{ t.accent }};">{{ m.targetType }}</span></td>
+                          <td><span style="font-size:13px; color: {{ t.text }};">{{ m.targetLabel }}</span></td>
+                          <td><span style="font-size:12px; font-weight:600; color: {{ m.confidenceColor }};">{{ m.confidencePct }}%</span></td>
+                          <td>
+                            <span style="display:inline-flex; align-items:center; gap:4px; font-size:12px; color: {{ t.textMuted }};">
+                              <sc-if value="{{ m.isLlm }}"><svg class="wf-ic" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="7" width="14" height="12" rx="2"/><path d="M9 12h.01M15 12h.01M12 3v4"/></svg></sc-if>
+                              <sc-if value="{{ m.isManual }}"><svg class="wf-ic" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c1.5-4 5-5 7-5s5.5 1 7 5"/></svg></sc-if>
+                              {{ m.mappedBy }}
+                            </span>
+                          </td>
+                          <td style="text-align:right;">
+                            <button type="button" class="mrl-icon-btn" aria-label="Edit details" title="Edit details" style="color: {{ t.accent }};" onClick="{{ m.onToggleExpand }}">
+                              <sc-if value="{{ m.isCollapsed }}"><svg class="wf-ic" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l4-1 11-11-3-3L5 16z"/></svg></sc-if>
+                              <sc-if value="{{ m.isExpanded }}"><svg class="wf-ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></sc-if>
+                            </button>
+                            <button type="button" class="mrl-icon-btn" aria-label="Unlink" title="Unlink" style="color: {{ t.accent }};" onClick="{{ m.unlink }}">
+                              <svg class="wf-ic" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5l14 14M19 5L5 19"/></svg>
+                            </button>
+                          </td>
+                        </tr>
+                        <sc-if value="{{ m.isExpanded }}">
+                          <tr>
+                            <td colspan="7" style="padding: 8px 11px 11px 28px; background: {{ t.surfaceAlt }};">
+                              <div style="display:flex; flex-direction:column; gap:10px;">
+                                <sc-if value="{{ m.isTextKind }}">
+                                  <div>
+                                    <label style="display:block; font-size:12px; color: {{ t.textMuted }}; margin-bottom:4px;">Text</label>
+                                    <textarea class="mrl-input" rows="2" value="{{ m.draftLabel }}" onChange="{{ m.onDraftLabelChange }}" style="background: {{ t.inputBg }}; border:1px solid {{ t.inputBorder }}; color: {{ t.text }};"></textarea>
+                                  </div>
+                                </sc-if>
+                                <sc-if value="{{ m.isOtherKind }}">
+                                  <div>
+                                    <label style="display:block; font-size:12px; color: {{ t.textMuted }}; margin-bottom:4px;">Label</label>
+                                    <input class="mrl-input" type="text" value="{{ m.draftLabel }}" onChange="{{ m.onDraftLabelChange }}" style="background: {{ t.inputBg }}; border:1px solid {{ t.inputBorder }}; color: {{ t.text }};" />
+                                  </div>
+                                </sc-if>
+                                <sc-if value="{{ m.isFieldKind }}">
+                                  <div style="display:flex; gap:8px;">
+                                    <div style="flex:1;">
+                                      <label style="display:block; font-size:12px; color: {{ t.textMuted }}; margin-bottom:4px;">Label</label>
+                                      <input class="mrl-input" type="text" value="{{ m.draftLabel }}" onChange="{{ m.onDraftLabelChange }}" style="background: {{ t.inputBg }}; border:1px solid {{ t.inputBorder }}; color: {{ t.text }};" />
+                                    </div>
+                                    <div style="flex:1;">
+                                      <label style="display:block; font-size:12px; color: {{ t.textMuted }}; margin-bottom:4px;">Field type</label>
+                                      <select class="mrl-input" value="{{ m.draftInputType }}" onChange="{{ m.onDraftInputTypeChange }}" style="background: {{ t.inputBg }}; border:1px solid {{ t.inputBorder }}; color: {{ t.text }};">
+                                        <sc-for list="{{ m.inputTypeOptions }}" as="opt" hint-placeholder-count="4">
+                                          <option value="{{ opt.value }}">{{ opt.label }}</option>
+                                        </sc-for>
+                                      </select>
+                                    </div>
+                                  </div>
+                                </sc-if>
+                                <sc-if value="{{ m.isFieldGroupKind }}">
+                                  <div>
+                                    <label style="display:block; font-size:12px; color: {{ t.textMuted }}; margin-bottom:4px;">Label</label>
+                                    <input class="mrl-input" type="text" value="{{ m.draftLabel }}" onChange="{{ m.onDraftLabelChange }}" style="background: {{ t.inputBg }}; border:1px solid {{ t.inputBorder }}; color: {{ t.text }};" />
+                                  </div>
+                                  <div style="display:flex; flex-direction:column; gap:8px;">
+                                    <span style="font-size:11px; color: {{ t.textMuted }};">Fields per item:</span>
+                                    <sc-for list="{{ m.itemFields }}" as="sub" hint-placeholder-count="3">
+                                      <div style="display:flex; align-items:center; gap:8px;">
+                                        <input class="mrl-input" type="text" value="{{ sub.label }}" onChange="{{ sub.onLabelChange }}" style="flex:1; background: {{ t.inputBg }}; border:1px solid {{ t.inputBorder }}; color: {{ t.text }};" />
+                                        <select class="mrl-input" value="{{ sub.inputType }}" onChange="{{ sub.onTypeChange }}" style="flex:1; background: {{ t.inputBg }}; border:1px solid {{ t.inputBorder }}; color: {{ t.text }};">
+                                          <sc-for list="{{ m.inputTypeOptions }}" as="opt" hint-placeholder-count="4">
+                                            <option value="{{ opt.value }}">{{ opt.label }}</option>
+                                          </sc-for>
+                                        </select>
+                                        <button type="button" class="mrl-icon-btn" aria-label="Remove field" title="Remove field" onClick="{{ sub.onRemove }}" style="color: {{ t.accent }}; flex-shrink:0;">
+                                          <svg class="wf-ic" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5l14 14M19 5L5 19"/></svg>
+                                        </button>
+                                      </div>
+                                    </sc-for>
+                                    <button type="button" class="mrl-btn" onClick="{{ m.onAddItemField }}" style="align-self:flex-start; background: {{ t.tagBg }}; color: {{ t.text }};">+ Add field</button>
+                                  </div>
+                                  <div style="display:flex; gap:8px;">
+                                    <div style="flex:1;">
+                                      <label style="display:block; font-size:12px; color: {{ t.textMuted }}; margin-bottom:4px;">Min items</label>
+                                      <input class="mrl-input" type="number" min="0" value="{{ m.minItems }}" onChange="{{ m.onDraftMinChange }}" style="background: {{ t.inputBg }}; border:1px solid {{ t.inputBorder }}; color: {{ t.text }};" />
+                                    </div>
+                                    <div style="flex:1;">
+                                      <label style="display:block; font-size:12px; color: {{ t.textMuted }}; margin-bottom:4px;">Max items</label>
+                                      <input class="mrl-input" type="number" min="1" value="{{ m.maxItems }}" onChange="{{ m.onDraftMaxChange }}" style="background: {{ t.inputBg }}; border:1px solid {{ t.inputBorder }}; color: {{ t.text }};" />
+                                    </div>
+                                  </div>
+                                </sc-if>
+                                <div style="display:flex; justify-content:flex-end; gap:8px;">
+                                  <button type="button" class="mrl-btn" onClick="{{ m.onCancelFieldEdit }}" style="background: {{ t.tagBg }}; color: {{ t.text }};">Cancel</button>
+                                  <button type="button" class="mrl-btn" onClick="{{ m.onSaveFieldEdit }}" style="background: {{ t.accent }}; color:#fff;">Save</button>
+                                </div>
+                              </div>
+                            </td>
+                          </tr>
+                        </sc-if>
+                      </sc-for>
+                    </tbody>
+                  </table>
+                  </div>
+                  </sc-if>
+                  <sc-if value="{{ isCardView }}">
+                    <div style="display:flex; flex-direction:column; gap:8px; padding: 8px 11px 11px 28px;">
+                      <sc-for list="{{ sec.fields }}" as="m" hint-placeholder-count="3">
+                        <div style="background: {{ t.surface }}; border:1px solid {{ t.border }}; border-radius:8px; overflow:hidden;">
+                          <button type="button" onClick="{{ m.onToggleCardCollapse }}" style="display:flex; align-items:center; gap:8px; padding:10px 10px 8px; width:100%; background:transparent; border:none; cursor:pointer; text-align:left;">
+                            <sc-if value="{{ m.isCardCollapsed }}"><svg class="wf-ic" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0; color: {{ t.textMuted }};"><path d="M9 6l6 6-6 6"/></svg></sc-if>
+                            <sc-if value="{{ m.isCardExpanded }}"><svg class="wf-ic" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0; color: {{ t.textMuted }};"><path d="M6 9l6 6 6-6"/></svg></sc-if>
+                            <span class="mrl-tag" style="background: {{ t.tagBg }}; color: {{ t.textMuted }}; font-size:10px; padding:1px 6px;">{{ m.kindLabel }}</span>
+                            <span style="font-size:11.5px; font-weight:600; color: {{ t.accent }};">→</span>
+                            <span class="mrl-tag" style="background: {{ t.surface }}; border:1px solid {{ t.accent }}; color: {{ t.accent }}; font-size:10px; padding:1px 6px;">{{ m.targetType }}</span>
+                            <span style="margin-left:auto; display:flex; align-items:center; gap:8px;">
+                              <span style="display:inline-flex; align-items:center; gap:4px; font-size:11px; color: {{ t.textMuted }};">
+                                <sc-if value="{{ m.isLlm }}"><svg class="wf-ic" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="7" width="14" height="12" rx="2"/><path d="M9 12h.01M15 12h.01M12 3v4"/></svg></sc-if>
+                                <sc-if value="{{ m.isManual }}"><svg class="wf-ic" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c1.5-4 5-5 7-5s5.5 1 7 5"/></svg></sc-if>
+                                {{ m.mappedBy }}
+                              </span>
+                              <span style="font-size:13px; font-weight:600; color: {{ m.confidenceColor }};">{{ m.confidencePct }}%</span>
+                            </span>
+                          </button>
+                          <sc-if value="{{ m.isCardExpanded }}">
+                          <div style="background: {{ t.surfaceAlt }}; padding:10px 12px; border-top:1px solid {{ t.border }};">
+                            <div style="font-family: ui-monospace, monospace; font-size:12.5px; color: {{ t.text }}; line-height:1.5;">{{ m.originalText }}</div>
+                          </div>
+                          <div style="background: {{ t.accent }}; padding:10px 12px; display:flex; align-items:center; gap:8px;">
+                            <sc-if value="{{ m.isCollapsed }}">
+                              <div style="flex:1; display:flex; align-items:baseline; gap:8px; min-width:0;">
+                                <span style="font-size:13.5px; color:#fff; line-height:1.4;">{{ m.targetLabel }}</span>
+                                <sc-if value="{{ m.isFieldKind }}"><span style="font-size:12px; color: rgba(255,255,255,0.7);">{{ m.fieldTypeLabel }}</span></sc-if>
+                              </div>
+                              <button type="button" class="mrl-icon-btn" aria-label="Edit details" title="Edit details" style="color:#fff; background: rgba(255,255,255,0.18); flex-shrink:0;" onClick="{{ m.onToggleExpand }}">
+                                <svg class="wf-ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l4-1 11-11-3-3L5 16z"/></svg>
+                              </button>
+                              <button type="button" class="mrl-icon-btn" aria-label="Unlink" title="Unlink" style="color:#fff; background: rgba(255,255,255,0.18); flex-shrink:0;" onClick="{{ m.unlink }}">
+                                <svg class="wf-ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5l14 14M19 5L5 19"/></svg>
+                              </button>
+                            </sc-if>
+                            <sc-if value="{{ m.isExpanded }}">
+                              <sc-if value="{{ m.isTextKind }}">
+                                <textarea class="mrl-input" rows="2" value="{{ m.draftLabel }}" onChange="{{ m.onDraftLabelChange }}" style="flex:1; min-width:0; background:#fff; border:none; color: {{ t.text }};"></textarea>
+                              </sc-if>
+                              <sc-if value="{{ m.isNotTextKind }}">
+                                <input class="mrl-input" type="text" value="{{ m.draftLabel }}" onChange="{{ m.onDraftLabelChange }}" style="flex:1; min-width:0; background:#fff; border:none; color: {{ t.text }};" />
+                              </sc-if>
+                              <sc-if value="{{ m.isFieldKind }}">
+                                <select class="mrl-input" value="{{ m.draftInputType }}" onChange="{{ m.onDraftInputTypeChange }}" style="flex:1; min-width:0; background:#fff; border:none; color: {{ t.text }};">
+                                  <sc-for list="{{ m.inputTypeOptions }}" as="opt" hint-placeholder-count="4">
+                                    <option value="{{ opt.value }}">{{ opt.label }}</option>
+                                  </sc-for>
+                                </select>
+                              </sc-if>
+                              <button type="button" class="mrl-icon-btn" aria-label="Save" title="Save" style="color:#fff; background: rgba(255,255,255,0.18); flex-shrink:0;" onClick="{{ m.onSaveFieldEdit }}">
+                                <svg class="wf-ic" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+                              </button>
+                              <button type="button" class="mrl-icon-btn" aria-label="Cancel" title="Cancel" style="color:#fff; background: rgba(255,255,255,0.18); flex-shrink:0;" onClick="{{ m.onCancelFieldEdit }}">
+                                <svg class="wf-ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5l14 14M19 5L5 19"/></svg>
+                              </button>
+                            </sc-if>
+                          </div>
+                          </sc-if>
+                          <sc-if value="{{ m.isExpanded }}">
+                            <div style="display:flex; flex-direction:column; gap:8px; background: {{ t.surfaceAlt }}; border-top:1px solid {{ t.border }}; padding:10px 12px 12px;">
+                              <sc-if value="{{ m.isFieldGroupKind }}">
+                                <div style="display:flex; flex-direction:column; gap:8px;">
+                                  <span style="font-size:11px; color: {{ t.textMuted }};">Fields per item:</span>
+                                  <sc-for list="{{ m.itemFields }}" as="sub" hint-placeholder-count="3">
+                                    <div style="display:flex; align-items:center; gap:8px;">
+                                      <input class="mrl-input" type="text" value="{{ sub.label }}" onChange="{{ sub.onLabelChange }}" style="flex:1; background: {{ t.inputBg }}; border:1px solid {{ t.inputBorder }}; color: {{ t.text }};" />
+                                      <select class="mrl-input" value="{{ sub.inputType }}" onChange="{{ sub.onTypeChange }}" style="flex:1; background: {{ t.inputBg }}; border:1px solid {{ t.inputBorder }}; color: {{ t.text }};">
+                                        <sc-for list="{{ m.inputTypeOptions }}" as="opt" hint-placeholder-count="4">
+                                          <option value="{{ opt.value }}">{{ opt.label }}</option>
+                                        </sc-for>
+                                      </select>
+                                      <button type="button" class="mrl-icon-btn" aria-label="Remove field" title="Remove field" onClick="{{ sub.onRemove }}" style="color: {{ t.accent }}; flex-shrink:0;">
+                                        <svg class="wf-ic" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5l14 14M19 5L5 19"/></svg>
+                                      </button>
+                                    </div>
+                                  </sc-for>
+                                  <button type="button" class="mrl-btn" onClick="{{ m.onAddItemField }}" style="align-self:flex-start; background: {{ t.tagBg }}; color: {{ t.text }};">+ Add field</button>
+                                </div>
+                                <div style="display:flex; gap:8px;">
+                                  <div style="flex:1;">
+                                    <label style="display:block; font-size:12px; color: {{ t.textMuted }}; margin-bottom:4px;">Min items</label>
+                                    <input class="mrl-input" type="number" min="0" value="{{ m.minItems }}" onChange="{{ m.onDraftMinChange }}" style="background: {{ t.inputBg }}; border:1px solid {{ t.inputBorder }}; color: {{ t.text }};" />
+                                  </div>
+                                  <div style="flex:1;">
+                                    <label style="display:block; font-size:12px; color: {{ t.textMuted }}; margin-bottom:4px;">Max items</label>
+                                    <input class="mrl-input" type="number" min="1" value="{{ m.maxItems }}" onChange="{{ m.onDraftMaxChange }}" style="background: {{ t.inputBg }}; border:1px solid {{ t.inputBorder }}; color: {{ t.text }};" />
+                                  </div>
+                                </div>
+                              </sc-if>
+                            </div>
+                          </sc-if>
+                        </div>
+                      </sc-for>
+                    </div>
+                  </sc-if>
+                </sc-if>
+              </div>
+            </sc-for>
+          </sc-if>
+        </div>
+      </sc-for>
+
+      <sc-if value="{{ noResults }}">
+        <div style="text-align:center; padding: 32px 0; color: {{ t.textMuted }}; font-size:13px;">No mappings match the current filter.</div>
+      </sc-if>
+    </div>
+  </div>
+
+  <sc-if value="{{ showUnlinkConfirm }}">
+    <div class="mrl-dialog-backdrop">
+      <div style="background: {{ t.surface }}; border:1px solid {{ t.border }}; border-radius:10px; padding:20px; width:360px; box-shadow: 0 12px 32px rgba(0,0,0,0.25);">
+        <div style="font-size:15px; font-weight:600; color: {{ t.text }}; margin-bottom:8px;">Remove this mapping?</div>
+        <div style="font-size:13px; color: {{ t.textMuted }}; margin-bottom:16px;">{{ confirmUnlinkTarget.message }}</div>
+        <div style="display:flex; justify-content:flex-end; gap:8px;">
+          <button type="button" class="mrl-btn" onClick="{{ confirmUnlinkTarget.onCancel }}" style="background: {{ t.tagBg }}; color: {{ t.text }};">Cancel</button>
+          <button type="button" class="mrl-btn" onClick="{{ confirmUnlinkTarget.onConfirm }}" style="background: {{ t.low }}; color:#fff;">Remove</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ showDiscardConfirm }}">
+    <div class="mrl-dialog-backdrop">
+      <div style="background: {{ t.surface }}; border:1px solid {{ t.border }}; border-radius:10px; padding:20px; width:360px; box-shadow: 0 12px 32px rgba(0,0,0,0.25);">
+        <div style="font-size:15px; font-weight:600; color: {{ t.text }}; margin-bottom:8px;">Discard unsaved changes?</div>
+        <div style="font-size:13px; color: {{ t.textMuted }}; margin-bottom:16px;">Your edits to this field haven't been saved. Discarding will lose them.</div>
+        <div style="display:flex; justify-content:flex-end; gap:8px;">
+          <button type="button" class="mrl-btn" onClick="{{ onCancelDiscard }}" style="background: {{ t.tagBg }}; color: {{ t.text }};">Keep editing</button>
+          <button type="button" class="mrl-btn" onClick="{{ onConfirmDiscard }}" style="background: {{ t.low }}; color:#fff;">Discard</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ toast }}">
+    <div style="position: fixed; bottom: 24px; left:50%; transform: translateX(-50%); z-index: 30; background: {{ t.surface }}; border:1px solid {{ t.border }}; border-radius:8px; padding:10px 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.2);">
+      <span style="font-size:13px; color: {{ t.text }}; display:flex; align-items:center; gap:8px;">
+        <svg class="wf-ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="{{ t.accent }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+        {{ toast.text }}
+      </span>
+    </div>
+  </sc-if>
+
+  <footer style="border-top: 1px solid {{ t.border }}; padding: 16px 24px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; background: {{ t.navBg }};">
+    <span style="font-size:12px; color: {{ t.textMuted }};">© 2026 Formwork. All rights reserved.</span>
+    <div style="display:flex; gap:16px;">
+      <a href="#" style="font-size:12px; color: {{ t.accent }};">Documentation</a>
+      <a href="#" style="font-size:12px; color: {{ t.accent }};">Support</a>
+      <a href="#" style="font-size:12px; color: {{ t.accent }};">Status</a>
+    </div>
+  </footer>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+function shorten(text) {
+  return text.length > 60 ? text.slice(0, 60) + '\u2026' : text;
+}
+
+const THEMES = {
+  light: {
+    bg: '#f9fafb', navBg: '#ffffff', border: '#e5e7eb', text: '#111827', textMuted: '#6b7280',
+    surface: '#ffffff', surfaceAlt: '#f9fafb', inputBg: '#ffffff', inputBorder: '#d1d5db',
+    tagBg: '#f3f4f6', accent: '#4f46e5', accentBg: '#eef2ff', trackBg: '#e5e7eb',
+    high: '#16a34a', medium: '#d97706', low: '#dc2626',
+  },
+  dark: {
+    bg: '#14151f', navBg: '#1b1d29', border: '#2a2c3a', text: '#e9e9ed', textMuted: '#9a9aa8',
+    surface: '#1c1e2a', surfaceAlt: '#20222f', inputBg: '#20222f', inputBorder: '#34364a',
+    tagBg: '#262838', accent: '#9184d9', accentBg: '#2a2740', trackBg: '#34364a',
+    high: '#4ade80', medium: '#fbbf24', low: '#f87171',
+  },
+};
+
+// Workflow-side targets. targetType is the discriminant: Section | Content (static
+// title/description, collects no data) | Field (single input) | FieldGroup
+// (repeating set, e.g. multiple phone numbers) | Custom (Angular component).
+const SEED_TARGETS = [
+  { id: 'sec-1', label: 'Personal Information', targetType: 'Section' },
+  { id: 'c-desc-1', label: 'Instructions', targetType: 'Content', contentKind: 'description' },
+  { id: 'f-1', label: 'Full name', targetType: 'Field', inputType: 'text' },
+  { id: 'f-2', label: 'Date of birth', targetType: 'Field', inputType: 'date' },
+  { id: 'f-3', label: 'Social Security Number', targetType: 'Field', inputType: 'text' },
+  { id: 'sec-2', label: 'Employment Details', targetType: 'Section' },
+  { id: 'f-4', label: 'Job title', targetType: 'Field', inputType: 'text' },
+  { id: 'f-5', label: 'Start date', targetType: 'Field', inputType: 'date' },
+  { id: 'f-6', label: 'Department', targetType: 'Field', inputType: 'select' },
+  { id: 'sec-2b', label: 'Compensation', targetType: 'Section' },
+  { id: 'f-10', label: 'Annual salary', targetType: 'Field', inputType: 'number' },
+  { id: 'f-11', label: 'Pay frequency', targetType: 'Field', inputType: 'select' },
+  { id: 'sec-3', label: 'Emergency Contact', targetType: 'Section' },
+  { id: 'fg-1', label: 'Emergency contacts', targetType: 'FieldGroup', itemFields: [{ label: 'Name', inputType: 'text' }, { label: 'Relationship', inputType: 'text' }, { label: 'Phone', inputType: 'text' }], minItems: 1, maxItems: 3 },
+  { id: 'cu-1', label: 'Signature pad', targetType: 'Custom', componentSelector: 'app-signature-pad' },
+];
+
+const KIND_META = {
+  heading: { label: 'Heading', targetType: 'Content' },
+  description: { label: 'Text', targetType: 'Content' },
+  field: { label: 'Field', targetType: 'Field' },
+  'field-group': { label: 'List', targetType: 'FieldGroup' },
+  custom: { label: 'Custom', targetType: 'Custom' },
+};
+
+const detailFor = (tg, inputType) => {
+  if (!tg) return '';
+  if (tg.targetType === 'Field') return inputType || tg.inputType;
+  if (tg.targetType === 'FieldGroup') return `${tg.itemFields.length}x`;
+  if (tg.targetType === 'Custom') return tg.componentSelector;
+  if (tg.targetType === 'Content') return tg.contentKind;
+  return '';
+};
+
+const SEED = [
+  { pdfElementId: 'e1', pageNumber: 1, originalText: 'Section II \u2014 Personal Information', kind: 'heading', targetId: 'sec-1', confidence: 0.99, mappedBy: 'llm' },
+  { pdfElementId: 'e2', pageNumber: 1, originalText: 'Please complete all fields marked with an asterisk.', kind: 'description', targetId: 'c-desc-1', confidence: 0.72, mappedBy: 'llm' },
+  { pdfElementId: 'e3', pageNumber: 1, originalText: 'Employee Full Legal Name (as it appears on government ID)', kind: 'field', targetId: 'f-1', confidence: 0.96, mappedBy: 'llm' },
+  { pdfElementId: 'e4', pageNumber: 1, originalText: 'Date of Birth (MM/DD/YYYY)', kind: 'field', targetId: 'f-2', confidence: 0.94, mappedBy: 'llm' },
+  { pdfElementId: 'e5', pageNumber: 1, originalText: 'SSN \u2014 for tax withholding purposes only', kind: 'field', targetId: 'f-3', confidence: 0.61, mappedBy: 'llm' },
+  { pdfElementId: 'e6', pageNumber: 2, originalText: 'Section III \u2014 Employment Details', kind: 'heading', targetId: 'sec-2', confidence: 0.98, mappedBy: 'llm' },
+  { pdfElementId: 'e7', pageNumber: 2, originalText: 'Position / Job Title applied for or currently held', kind: 'field', targetId: 'f-4', confidence: 0.88, mappedBy: 'llm' },
+  { pdfElementId: 'e8', pageNumber: 2, originalText: 'Anticipated Start Date', kind: 'field', targetId: 'f-5', confidence: 0.42, mappedBy: 'llm' },
+  { pdfElementId: 'e9', pageNumber: 2, originalText: 'Dept / Cost Center Code', kind: 'field', targetId: 'f-6', confidence: 0.55, mappedBy: 'manual' },
+  { pdfElementId: 'e10', pageNumber: 2, originalText: 'Section III-B \u2014 Compensation', kind: 'heading', targetId: 'sec-2b', confidence: 0.95, mappedBy: 'llm' },
+  { pdfElementId: 'e11', pageNumber: 2, originalText: 'Base Annual Salary (USD)', kind: 'field', targetId: 'f-10', confidence: 0.82, mappedBy: 'llm' },
+  { pdfElementId: 'e12', pageNumber: 2, originalText: 'Pay Frequency (Weekly/Biweekly/Monthly)', kind: 'field', targetId: 'f-11', confidence: 0.67, mappedBy: 'llm' },
+  { pdfElementId: 'e13', pageNumber: 3, originalText: 'Section IV \u2014 Emergency Contact', kind: 'heading', targetId: 'sec-3', confidence: 0.97, mappedBy: 'llm' },
+  { pdfElementId: 'e14', pageNumber: 3, originalText: 'List every emergency contact with name, relationship, and phone.', kind: 'field-group', targetId: 'fg-1', confidence: 0.74, mappedBy: 'llm' },
+  { pdfElementId: 'e15', pageNumber: 3, originalText: 'Employee signature', kind: 'custom', targetId: 'cu-1', confidence: 0.83, mappedBy: 'manual' },
+];
+
+const FIELD_TYPE_OPTIONS = ['text', 'number', 'date', 'email', 'select', 'checkbox', 'textarea'].map((v) => ({ value: v, label: v[0].toUpperCase() + v.slice(1) }));
+
+class Component extends DCLogic {
+  state = {
+    mappings: SEED,
+    searchTerm: '',
+    confidenceFilter: 'all',
+    collapsedPages: [],
+    collapsedSections: [],
+    collapsedFieldIds: [],
+    userMenuOpen: false,
+    settingsMenuOpen: false,
+    expandedId: null,
+    draft: { label: '', inputType: '', itemFields: [], minItems: 1, maxItems: 1 },
+    originalDraft: null,
+    pendingDiscardId: null,
+    pendingDiscardTarget: null,
+    toast: null,
+    fieldOverrides: {},
+    viewMode: 'table',
+    sourceKind: 'pdf',
+    confirmUnlinkId: null,
+    theme: 'light',
+  };
+
+  componentDidMount() {
+    this._beforeUnload = (e) => { if (this.state.expandedId && this.isDraftDirty()) { e.preventDefault(); e.returnValue = ''; } };
+    window.addEventListener('beforeunload', this._beforeUnload);
+  }
+  componentWillUnmount() {
+    window.removeEventListener('beforeunload', this._beforeUnload);
+  }
+
+  setViewMode = (value) => this.setState({ viewMode: value });
+  setSourceKind = (value) => this.setState({ sourceKind: value });
+  toggleTheme = () => this.setState((s) => ({ theme: s.theme === 'light' ? 'dark' : 'light' }));
+
+  toggleUserMenu = () => this.setState((s) => ({ userMenuOpen: !s.userMenuOpen, settingsMenuOpen: false }));
+  closeUserMenu = () => this.setState({ userMenuOpen: false });
+  toggleSettingsMenu = () => this.setState((s) => ({ settingsMenuOpen: !s.settingsMenuOpen, userMenuOpen: false }));
+  closeSettingsMenu = () => this.setState({ settingsMenuOpen: false });
+
+  onSearchInput = (e) => this.setState({ searchTerm: e.target.value });
+  setFilter(value) { this.setState({ confidenceFilter: value }); }
+
+  togglePage(pn) {
+    this.setState((s) => ({ collapsedPages: s.collapsedPages.includes(pn) ? s.collapsedPages.filter((x) => x !== pn) : [...s.collapsedPages, pn] }));
+  }
+  toggleSection(sid) {
+    this.setState((s) => ({ collapsedSections: s.collapsedSections.includes(sid) ? s.collapsedSections.filter((x) => x !== sid) : [...s.collapsedSections, sid] }));
+  }
+  toggleFieldCollapse(id) {
+    this.setState((s) => ({ collapsedFieldIds: s.collapsedFieldIds.includes(id) ? s.collapsedFieldIds.filter((x) => x !== id) : [...s.collapsedFieldIds, id] }));
+  }
+
+  toggleRowExpand(m, current) {
+    if (this.state.expandedId && this.state.expandedId !== m.pdfElementId && this.isDraftDirty()) {
+      this.setState({ pendingDiscardId: m.pdfElementId, pendingDiscardTarget: { m, current } });
+      return;
+    }
+    this.setState((s) => s.expandedId === m.pdfElementId
+      ? { expandedId: null, originalDraft: null }
+      : this.buildExpandState(m, current));
+  }
+  buildExpandState(m, current) {
+    const draft = {
+      label: current.label, inputType: current.inputType || '',
+      itemFields: (current.itemFields || []).map((f) => ({ ...f })),
+      minItems: current.minItems ?? 1, maxItems: current.maxItems ?? 1,
+    };
+    return { expandedId: m.pdfElementId, draft, originalDraft: JSON.parse(JSON.stringify(draft)) };
+  }
+  isDraftDirty() {
+    return JSON.stringify(this.state.draft) !== JSON.stringify(this.state.originalDraft);
+  }
+  requestCancelFieldEdit = () => {
+    if (this.isDraftDirty()) { this.setState({ pendingDiscardId: 'cancel' }); return; }
+    this.cancelFieldEdit();
+  };
+  cancelDiscard = () => this.setState({ pendingDiscardId: null, pendingDiscardTarget: null });
+  confirmDiscard = () => {
+    const pendingTarget = this.state.pendingDiscardTarget;
+    if (pendingTarget) {
+      this.setState({ pendingDiscardId: null, pendingDiscardTarget: null, ...this.buildExpandState(pendingTarget.m, pendingTarget.current) });
+    } else {
+      this.setState({ pendingDiscardId: null, expandedId: null, originalDraft: null });
+    }
+  };
+  showToast(text) {
+    clearTimeout(this._toastTimer);
+    this.setState({ toast: { text } });
+    this._toastTimer = setTimeout(() => this.setState({ toast: null }), 2400);
+  }
+  onDraftLabelChange = (e) => this.setState((s) => ({ draft: { ...s.draft, label: e.target.value } }));
+  onDraftInputTypeChange = (e) => this.setState((s) => ({ draft: { ...s.draft, inputType: e.target.value } }));
+  onDraftMinChange = (e) => this.setState((s) => ({ draft: { ...s.draft, minItems: Math.max(0, parseInt(e.target.value, 10) || 0) } }));
+  onDraftMaxChange = (e) => this.setState((s) => ({ draft: { ...s.draft, maxItems: Math.max(1, parseInt(e.target.value, 10) || 1) } }));
+  onItemFieldLabelChange(idx, e) {
+    this.setState((s) => ({ draft: { ...s.draft, itemFields: s.draft.itemFields.map((f, i) => (i === idx ? { ...f, label: e.target.value } : f)) } }));
+  }
+  onItemFieldTypeChange(idx, e) {
+    this.setState((s) => ({ draft: { ...s.draft, itemFields: s.draft.itemFields.map((f, i) => (i === idx ? { ...f, inputType: e.target.value } : f)) } }));
+  }
+  addItemField = () => this.setState((s) => ({ draft: { ...s.draft, itemFields: [...s.draft.itemFields, { label: 'New field', inputType: 'text' }] } }));
+  removeItemField(idx) {
+    this.setState((s) => ({ draft: { ...s.draft, itemFields: s.draft.itemFields.filter((_, i) => i !== idx) } }));
+  }
+  cancelFieldEdit = () => this.setState({ expandedId: null, originalDraft: null });
+  saveFieldEdit(m) {
+    this.setState((s) => ({ fieldOverrides: { ...s.fieldOverrides, [m.pdfElementId]: { ...s.draft, itemFields: s.draft.itemFields.map((f) => ({ ...f })) } }, expandedId: null, originalDraft: null }));
+    this.showToast('Changes saved');
+  }
+
+  requestUnlink = (m) => this.setState({ confirmUnlinkId: m.pdfElementId });
+  cancelUnlinkConfirm = () => this.setState({ confirmUnlinkId: null });
+  confirmUnlink = (m) => {
+    this.setState((s) => ({
+      mappings: s.mappings.filter((x) => x.pdfElementId !== m.pdfElementId),
+      confirmUnlinkId: null,
+    }));
+    this.showToast('Mapping removed');
+  };
+
+  renderVals() {
+    const s = this.state;
+    const t = THEMES[s.theme];
+    const isDark = s.theme === 'dark';
+    const cap = (str) => (str ? str[0].toUpperCase() + str.slice(1) : str);
+
+    const matches = (m) => {
+      const term = !s.searchTerm || m.originalText.toLowerCase().includes(s.searchTerm.toLowerCase());
+      if (!term) return false;
+      if (s.confidenceFilter === 'high') return m.confidence >= 0.8;
+      if (s.confidenceFilter === 'medium') return m.confidence >= 0.5 && m.confidence < 0.8;
+      if (s.confidenceFilter === 'low') return m.confidence < 0.5;
+      return true;
+    };
+
+    const bandColor = (c) => (c >= 0.8 ? t.high : c >= 0.5 ? t.medium : t.low);
+
+    const sectionOfField = {};
+    { let cur = null; for (const tg of SEED_TARGETS) { if (tg.targetType === 'Section') cur = tg.id; else if (cur) sectionOfField[tg.id] = cur; } }
+
+    const decorate = (m) => {
+      const pct = Math.round(m.confidence * 100);
+      const meta = KIND_META[m.kind];
+      const target = SEED_TARGETS.find((tg) => tg.id === m.targetId) || { label: '(unmapped)', targetType: meta.targetType };
+      const override = s.fieldOverrides[m.pdfElementId];
+      const isTextKind = m.kind === 'heading' || m.kind === 'description';
+      const isFieldKind = m.kind === 'field';
+      const isFieldGroupKind = m.kind === 'field-group';
+      const isExpanded = s.expandedId === m.pdfElementId;
+      const effectiveLabel = override ? override.label : (isTextKind ? m.originalText : target.label);
+      const effectiveInputType = override && override.inputType ? override.inputType : target.inputType;
+      const displayTargetType = m.kind === 'description' ? 'Text' : m.kind === 'field-group' ? 'Field-List' : target.targetType;
+      const rawDetail = m.kind === 'description' ? '' : detailFor(target, effectiveInputType);
+      const targetTypeTag = rawDetail ? `${displayTargetType}-${cap(rawDetail)}` : displayTargetType;
+      return {
+        ...m,
+        originalTextShort: shorten(m.originalText),
+        confidencePct: pct,
+        confidenceColor: bandColor(m.confidence),
+        isLlm: m.mappedBy === 'llm',
+        isManual: m.mappedBy === 'manual',
+        kindLabel: meta.label,
+        targetType: targetTypeTag,
+        targetLabel: effectiveLabel,
+        isTextKind, isFieldKind, isFieldGroupKind,
+        isNotTextKind: !isTextKind,
+        isOtherKind: !isTextKind && !isFieldKind && !isFieldGroupKind,
+        isExpanded, isCollapsed: !isExpanded,
+        fieldTypeLabel: (FIELD_TYPE_OPTIONS.find((o) => o.value === (effectiveInputType || '')) || {}).label || '',
+        isCardCollapsed: s.collapsedFieldIds.includes(m.pdfElementId),
+        isCardExpanded: !s.collapsedFieldIds.includes(m.pdfElementId),
+        onToggleCardCollapse: () => this.toggleFieldCollapse(m.pdfElementId),
+        draftLabel: isExpanded ? s.draft.label : effectiveLabel,
+        draftInputType: isExpanded ? s.draft.inputType : (effectiveInputType || ''),
+        minItems: isExpanded ? s.draft.minItems : (override && override.minItems != null ? override.minItems : target.minItems),
+        maxItems: isExpanded ? s.draft.maxItems : (override && override.maxItems != null ? override.maxItems : target.maxItems),
+        itemFields: (isExpanded ? s.draft.itemFields : (override && override.itemFields ? override.itemFields : (target.itemFields || [])))
+          .map((f, idx) => ({
+            ...f,
+            onLabelChange: (e) => this.onItemFieldLabelChange(idx, e),
+            onTypeChange: (e) => this.onItemFieldTypeChange(idx, e),
+            onRemove: () => this.removeItemField(idx),
+          })),
+        inputTypeOptions: FIELD_TYPE_OPTIONS,
+        onToggleExpand: () => this.toggleRowExpand(m, {
+          label: effectiveLabel, inputType: effectiveInputType,
+          itemFields: override && override.itemFields ? override.itemFields : target.itemFields,
+          minItems: override && override.minItems != null ? override.minItems : target.minItems,
+          maxItems: override && override.maxItems != null ? override.maxItems : target.maxItems,
+        }),
+        onDraftLabelChange: this.onDraftLabelChange,
+        onDraftInputTypeChange: this.onDraftInputTypeChange,
+        onDraftMinChange: this.onDraftMinChange,
+        onDraftMaxChange: this.onDraftMaxChange,
+        onAddItemField: this.addItemField,
+        onCancelFieldEdit: this.requestCancelFieldEdit,
+        onSaveFieldEdit: () => this.saveFieldEdit(m),
+        unlink: () => this.requestUnlink(m),
+      };
+    };
+
+    const headings = s.mappings.filter((m) => m.kind === 'heading');
+    const fields = s.mappings.filter((m) => m.kind !== 'heading');
+    const pageNumbers = [...new Set(s.mappings.map((m) => m.pageNumber))].sort((a, b) => a - b);
+
+    const pageGroups = pageNumbers.map((pn) => {
+      const pageHeadings = headings.filter((h) => h.pageNumber === pn);
+      const pageFields = fields.filter((f) => f.pageNumber === pn);
+      const sectionIds = [...new Set(pageFields.map((f) => sectionOfField[f.targetId]).filter(Boolean))];
+      pageHeadings.forEach((h) => { if (!sectionIds.includes(h.targetId)) sectionIds.push(h.targetId); });
+
+      const sections = sectionIds.map((sid) => {
+        const headingMapping = pageHeadings.find((h) => h.targetId === sid);
+        const fieldsInSection = pageFields.filter((f) => sectionOfField[f.targetId] === sid);
+        const visibleFields = fieldsInSection.filter(matches);
+        const headingMatches = headingMapping ? matches(headingMapping) : false;
+        const target = SEED_TARGETS.find((tg) => tg.id === sid);
+        const expanded = !s.collapsedSections.includes(sid);
+        return {
+          sid,
+          visible: visibleFields.length > 0 || headingMatches,
+          label: target ? target.label : 'Section',
+          summaryLabel: `${visibleFields.length} field${visibleFields.length !== 1 ? 's' : ''}`,
+          hasHeadingMapping: !!headingMapping,
+          confidencePct: headingMapping ? Math.round(headingMapping.confidence * 100) : 0,
+          confidenceColor: headingMapping ? bandColor(headingMapping.confidence) : t.low,
+          fields: visibleFields.map(decorate),
+          expanded,
+          collapsed: !expanded,
+          toggle: () => this.toggleSection(sid),
+        };
+      }).filter((sec) => sec.visible);
+
+      const visibleFieldCount = sections.reduce((a, se) => a + se.fields.length, 0);
+      const expanded = !s.collapsedPages.includes(pn);
+      return {
+        pageNumber: pn,
+        sections,
+        visible: sections.length > 0,
+        summaryLabel: `${sections.length} section${sections.length !== 1 ? 's' : ''} \u00b7 ${visibleFieldCount} field${visibleFieldCount !== 1 ? 's' : ''}`,
+        visibleFieldCount,
+        expanded,
+        collapsed: !expanded,
+        toggle: () => this.togglePage(pn),
+      };
+    }).filter((pg) => pg.visible);
+    pageGroups.forEach((pg, i) => { pg.marginBottom = i === pageGroups.length - 1 ? '0px' : '11px'; });
+
+    const all = s.mappings;
+    const highCount = all.filter((m) => m.confidence >= 0.8).length;
+    const mediumCount = all.filter((m) => m.confidence >= 0.5 && m.confidence < 0.8).length;
+    const lowCount = all.filter((m) => m.confidence < 0.5).length;
+    const avg = all.length ? Math.round(all.reduce((sum, m) => sum + m.confidence, 0) / all.length * 100) : 0;
+
+    const stats = [
+      { label: 'Total', value: all.length, color: t.text },
+      { label: 'High \u2265 80%', value: highCount, color: t.high },
+      { label: 'Medium 50\u201379%', value: mediumCount, color: t.medium },
+      { label: 'Low < 50%', value: lowCount, color: t.low },
+      { label: 'Avg confidence', value: avg + '%', color: t.accent },
+    ];
+
+    const confidenceChips = [
+      { value: 'all', label: 'All', color: t.text },
+      { value: 'high', label: 'High', color: t.high },
+      { value: 'medium', label: 'Medium', color: t.medium },
+      { value: 'low', label: 'Low', color: t.low },
+    ].map((c) => ({ ...c, checked: s.confidenceFilter === c.value, bg: s.confidenceFilter === c.value ? t.accentBg : t.surface, onSelect: () => this.setFilter(c.value) }));
+
+    const sourceChips = [
+      { value: 'pdf', label: 'PDF' },
+      { value: 'instructions', label: 'LLM' },
+      { value: 'manual', label: 'Manual' },
+    ].map((v) => ({ ...v, checked: s.sourceKind === v.value, bg: s.sourceKind === v.value ? t.accentBg : t.surface, onSelect: () => this.setSourceKind(v.value) }));
+
+    const viewChips = [
+      { value: 'table', label: 'Table' },
+      { value: 'card', label: 'Cards' },
+    ].map((v) => ({ ...v, checked: s.viewMode === v.value, bg: s.viewMode === v.value ? t.accentBg : t.surface, onSelect: () => this.setViewMode(v.value) }));
+
+    return {
+      t,
+      orgName: 'Formwork',
+      orgInitial: 'F',
+      userName: 'Alex Rivera',
+      userInitials: 'AR',
+      userEmail: 'alex@formwork.io',
+      userMenuOpen: s.userMenuOpen,
+      settingsMenuOpen: s.settingsMenuOpen,
+      toggleUserMenu: this.toggleUserMenu,
+      closeUserMenu: this.closeUserMenu,
+      toggleSettingsMenu: this.toggleSettingsMenu,
+      closeSettingsMenu: this.closeSettingsMenu,
+      toggleTheme: this.toggleTheme,
+      themeIconPath: isDark ? 'M12 3v1M12 20v1M4.2 4.2l.7.7M18.4 18.4l.7.7M3 12h1M20 12h1M4.2 19.8l.7-.7M18.4 5.6l.7-.7M12 7a5 5 0 100 10 5 5 0 000-10z' : 'M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 1 0 10.5 10.5z',
+      switchTrackBg: isDark ? t.accent : '#d1d5db',
+      switchKnobLeft: isDark ? '16px' : '2px',
+      workflowTitle: 'New Hire Onboarding',
+      stats,
+      searchTerm: s.searchTerm,
+      onSearchInput: this.onSearchInput,
+      confidenceChips,
+      sourceChips,
+      viewChips,
+      isTableView: s.viewMode === 'table',
+      isCardView: s.viewMode === 'card',
+      sourceLabel: s.sourceKind === 'pdf' ? 'From PDF' : s.sourceKind === 'instructions' ? 'From LLM' : 'From manual entry',
+      pageGroups,
+      noResults: pageGroups.length === 0,
+      confirmUnlinkTarget: (() => {
+        const m = s.mappings.find((x) => x.pdfElementId === s.confirmUnlinkId);
+        if (!m) return null;
+        const d = decorate(m);
+        return {
+          label: d.targetLabel,
+          message: d.isFieldGroupKind
+            ? `This will remove "${d.targetLabel}" and its ${d.itemFields.length} sub-fields. This can't be undone.`
+            : `Remove the mapping for "${d.targetLabel}"? This can't be undone.`,
+          onConfirm: () => this.confirmUnlink(m),
+          onCancel: this.cancelUnlinkConfirm,
+        };
+      })(),
+      showUnlinkConfirm: !!s.confirmUnlinkId,
+      showDiscardConfirm: !!s.pendingDiscardId,
+      onCancelDiscard: this.cancelDiscard,
+      onConfirmDiscard: this.confirmDiscard,
+      toast: s.toast,
+    };
+  }
+}
+
+</script>
+</body>
+</html>
