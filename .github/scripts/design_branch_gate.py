@@ -14,7 +14,9 @@ file, _cover-sheet.md.
 
 Two modes, same split as bundle_gate.py:
   check  -- pre-merge validation. Exits non-zero if the version folder isn't
-            structurally sound. Never touches file content beyond reading it.
+            structurally sound, or the PR description doesn't carry a
+            checked Design Reviewer sign-off line. Never touches file
+            content beyond reading it.
   apply  -- post-merge: regenerates _cover-sheet.md's machine-written fields
             (screens, knownLimitations, readiness, status) from the native
             files. Never edits README.md, PARITY_RULE.md, or anything under
@@ -24,6 +26,17 @@ This is a mechanical pre-check (ROLE-009, FRAMEWORK-CONFIGURATION-SPEC.md
 section 10), not a judgment call -- it never substitutes for the human
 Design Reviewer's actual approval, only verifies the drop is structurally
 complete enough to read.
+
+**Reviewer sign-off is a PR-description checkbox, not a GitHub PR review.**
+Discovered 2026-09-04: GitHub never allows a PR's author to formally
+Approve their own PR, on any plan, with no setting to disable it -- and
+this repository has no separate agent/bot GitHub identity, so the upload
+PR's author and the required Design Reviewer are, today, unavoidably the
+same account. A `listReviews`-based check can therefore never pass. The
+required signal instead is an explicit, exact checkbox line in the PR
+description (DESIGN-HANDOFF-BUNDLE-SPEC.md section 6.2), the same pattern
+bundle_gate.py already uses for the Pre-Registration Checklist -- see
+`REVIEWER_SIGNOFF_RE` below for the exact required text.
 """
 import argparse
 import json
@@ -48,6 +61,15 @@ KNOWN_LIMITATIONS_HEADING_RE = re.compile(
 )
 LIST_ITEM_RE = re.compile(r"^\s*(?:[-*]|\d+\.)\s+(.*)$", re.MULTILINE)
 
+# The exact required PR-description line, checked vs. unchecked. Copy this
+# verbatim from templates/DESIGN-HANDOFF-BUNDLE-TEMPLATE.md Part 5a --
+# matching is deliberately strict (exact phrase, case-insensitive on the
+# word "Design Reviewer sign-off" only) so a paraphrase doesn't silently pass.
+REVIEWER_SIGNOFF_RE = re.compile(
+    r"^\s*-\s*\[( |x|X)\]\s*\*\*Design Reviewer sign-off \(ROLE-004\):?\*\*",
+    re.MULTILINE,
+)
+
 
 def find_version_dirs(changed_files):
     dirs = set()
@@ -61,8 +83,25 @@ def find_version_dirs(changed_files):
 def check(args):
     changed_files = json.loads(Path(args.changed_files_json).read_text())
     repo_root = Path(args.repo_root)
+    pr_body = Path(args.pr_body_file).read_text(encoding="utf-8") if args.pr_body_file else ""
 
     problems = []
+
+    signoff_match = REVIEWER_SIGNOFF_RE.search(pr_body)
+    if not signoff_match:
+        problems.append(
+            "PR description has no 'Design Reviewer sign-off (ROLE-004)' checkbox line "
+            "(DESIGN-HANDOFF-BUNDLE-TEMPLATE.md Part 5a). Paste it into the PR description "
+            "before merging -- GitHub cannot substitute a PR review here, since the author "
+            "and the required reviewer are the same account until this repository has a "
+            "separate agent identity (see this script's module docstring)."
+        )
+    elif signoff_match.group(1).lower() != "x":
+        problems.append(
+            "The 'Design Reviewer sign-off (ROLE-004)' checkbox is present but unchecked. "
+            "Check it only once you have actually reviewed and accept this drop."
+        )
+
     version_dirs = find_version_dirs(changed_files)
 
     if len(version_dirs) == 0:
@@ -193,6 +232,7 @@ def main():
 
     p_check = sub.add_parser("check")
     p_check.add_argument("--changed-files-json", required=True)
+    p_check.add_argument("--pr-body-file", required=True)
     p_check.add_argument("--output-json", required=True)
     p_check.add_argument("--repo-root", default=".")
     p_check.set_defaults(func=check)
