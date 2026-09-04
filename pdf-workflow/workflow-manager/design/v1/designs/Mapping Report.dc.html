@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/nocturne-8201375c-a32b-4af1-bd3f-e2be272ae056/styles.css">
+  <script src="_ds/nocturne-8201375c-a32b-4af1-bd3f-e2be272ae056/_ds_bundle.js"></script>
+  <style>
+    body { margin: 0; background: var(--color-bg); }
+    a { color: var(--color-accent-300); text-decoration: none; }
+    a:hover { color: var(--color-accent-200); }
+    .wf-ic svg { display: block; }
+    .mr-table th, .mr-table td { white-space: nowrap; }
+    .mr-table td.wrap { white-space: normal; }
+    .mr-stat-tile { background: var(--color-surface); border: 1px solid var(--color-neutral-800); border-radius: var(--radius-md); padding: var(--space-3) var(--space-4); min-width: 132px; }
+    .mr-page-group { margin-bottom: var(--space-4); }
+    .mr-page-group:last-child { margin-bottom: 0; }
+    .mr-section-group { margin-top: var(--space-2); padding-top: var(--space-3); padding-bottom: var(--space-3); }
+    .wf-seg .seg-opt:first-child { border-radius: var(--radius-md) 0 0 var(--radius-md); }
+    .wf-seg .seg-opt:last-child { border-radius: 0 var(--radius-md) var(--radius-md) 0; }
+  </style>
+</helmet>
+
+<div style="min-height: 100vh; display: flex; flex-direction: column;">
+
+  <nav class="nav" style="padding-top: var(--space-4); padding-bottom: var(--space-4);">
+    <span class="nav-brand" style="display:flex; align-items:center; gap: var(--space-2);">
+      <span style="width:22px; height:22px; border-radius:6px; background: var(--color-accent-700); color: var(--color-accent-100); display:flex; align-items:center; justify-content:center; font-size:0.6875rem; font-weight:600; flex-shrink:0;">{{ orgInitial }}</span>
+      {{ orgName }}
+    </span>
+    <span style="margin-left:auto; display:flex; align-items:center; gap: var(--space-3);">
+      <span style="position:relative;">
+        <button type="button" style="display:flex; align-items:center; gap: var(--space-2); background:none; border:none; cursor:pointer; padding: 4px 6px 4px 4px; border-radius: 999px;" onClick="{{ toggleUserMenu }}">
+          <span style="width:26px; height:26px; border-radius:50%; background: var(--color-accent-700); color: var(--color-accent-100); display:flex; align-items:center; justify-content:center; font-size:0.6875rem; font-weight:500;">{{ userInitials }}</span>
+          <span style="font-size:0.7813rem; color: var(--color-text);">{{ userName }}</span>
+        </button>
+        <sc-if value="{{ userMenuOpen }}">
+          <div style="position: fixed; inset: 0; z-index: 20;" onClick="{{ closeUserMenu }}"></div>
+          <div class="card elev-lg" style="position:absolute; right:0; top:36px; z-index:21; min-width:200px; padding: var(--space-1);">
+            <div style="padding: var(--space-2) var(--space-3); border-bottom: 1px solid var(--color-neutral-800); margin-bottom: var(--space-1);">
+              <div style="font-size:0.8125rem; color: var(--color-text);">{{ userName }}</div>
+              <div style="font-size:0.7188rem; color: var(--color-neutral-400);">{{ userEmail }}</div>
+            </div>
+            <button type="button" class="btn btn-ghost btn-block" style="justify-content:flex-start; font-size:0.8125rem;">Account settings</button>
+            <hr class="hr" style="margin: var(--space-1) 0;" />
+            <button type="button" class="btn btn-ghost btn-block" style="justify-content:flex-start; font-size:0.8125rem;">Log out</button>
+          </div>
+        </sc-if>
+      </span>
+      <span style="position:relative;">
+        <button type="button" class="btn btn-ghost btn-icon" aria-label="Settings" onClick="{{ toggleSettingsMenu }}">
+          <svg class="wf-ic" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1.04 1.56V21a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 8.96 19.4a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-1.56-1.04H3a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.6 8.96a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.87.34H9a1.7 1.7 0 0 0 1.04-1.56V3a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1.04 1.56 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.87V9a1.7 1.7 0 0 0 1.56 1.04H21a2 2 0 1 1 0 4h-.09A1.7 1.7 0 0 0 19.4 15z"/></svg>
+        </button>
+        <sc-if value="{{ settingsMenuOpen }}">
+          <div style="position: fixed; inset: 0; z-index: 20;" onClick="{{ closeSettingsMenu }}"></div>
+          <div class="card elev-lg" style="position:absolute; right:0; top:36px; z-index:21; min-width:200px; padding: var(--space-1);">
+            <button type="button" class="btn btn-ghost btn-block" style="justify-content:flex-start; font-size:0.8125rem;">Organisation settings</button>
+            <button type="button" class="btn btn-ghost btn-block" style="justify-content:flex-start; font-size:0.8125rem;">Members</button>
+            <button type="button" class="btn btn-ghost btn-block" style="justify-content:flex-start; font-size:0.8125rem;">Billing</button>
+          </div>
+        </sc-if>
+      </span>
+    </span>
+  </nav>
+
+  <div style="padding-top: var(--space-6); padding-left: var(--space-6); padding-right: var(--space-6);">
+    <h1 style="font-family: var(--font-heading); font-weight: 500; font-size:1.375rem; margin: 0 0 var(--space-1); color: var(--color-text);">{{ workflowTitle }}</h1>
+    <p style="font-size:0.8125rem; color: var(--color-neutral-300); margin: 0 0 var(--space-6);">How extracted PDF text was mapped to workflow fields and sections.</p>
+  </div>
+
+  <div class="mr-stats" style="display:flex; gap: var(--space-3); padding-left: var(--space-6); padding-right: var(--space-6); padding-bottom: var(--space-6); flex-wrap:wrap;">
+    <sc-for list="{{ stats }}" as="stat" hint-placeholder-count="5">
+      <div class="mr-stat-tile" style="flex: 1; border-top: 2px solid {{ stat.color }};">
+        <div style="font-size:1.5rem; font-weight: 500; color: {{ stat.color }}; line-height:1.2;">{{ stat.value }}</div>
+        <div style="font-size:0.7188rem; color: var(--color-neutral-400); margin-top: 4px; white-space:nowrap;">{{ stat.label }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="display:flex; align-items:flex-start; gap: var(--space-4); padding: var(--space-2) var(--space-6) var(--space-6); flex-wrap:wrap;">
+    <div class="field" style="width: 50%;">
+      <label for="mr-search">Search PDF text</label>
+      <input class="input" id="mr-search" placeholder="Search extracted text…" value="{{ searchTerm }}" onInput="{{ onSearchInput }}" />
+    </div>
+    <div class="field" style="margin-bottom:0;">
+      <label id="mr-conf-label">Confidence</label>
+      <div class="seg wf-seg" role="radiogroup" aria-labelledby="mr-conf-label">
+        <sc-for list="{{ confidenceChips }}" as="chip" hint-placeholder-count="4">
+          <label class="seg-opt" style="color: {{ chip.color }};">
+            <input type="radio" name="mr-conf" checked="{{ chip.checked }}" onChange="{{ chip.onSelect }}" />
+            {{ chip.label }}
+          </label>
+        </sc-for>
+      </div>
+    </div>
+    <div class="field" style="margin-bottom:0;">
+      <label id="mr-view-label">View</label>
+      <div class="seg wf-seg" role="radiogroup" aria-labelledby="mr-view-label">
+        <sc-for list="{{ viewChips }}" as="chip" hint-placeholder-count="2">
+          <label class="seg-opt">
+            <input type="radio" name="mr-view" checked="{{ chip.checked }}" onChange="{{ chip.onSelect }}" />
+            {{ chip.label }}
+          </label>
+        </sc-for>
+      </div>
+    </div>
+    <div class="field" style="margin-bottom:0;">
+      <label id="mr-source-label">Created from</label>
+      <div class="seg wf-seg" role="radiogroup" aria-labelledby="mr-source-label">
+        <sc-for list="{{ sourceChips }}" as="chip" hint-placeholder-count="2">
+          <label class="seg-opt">
+            <input type="radio" name="mr-source" checked="{{ chip.checked }}" onChange="{{ chip.onSelect }}" />
+            {{ chip.label }}
+          </label>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <div style="flex:1; padding: 0 var(--space-6) var(--space-6); overflow-x:auto;">
+    <div class="card elev-sm" style="padding:0; overflow:hidden;">
+      <sc-for list="{{ pageGroups }}" as="pg" hint-placeholder-count="3">
+        <div class="mr-page-group" style="border-bottom: 1px solid var(--color-neutral-800);">
+          <button type="button" onClick="{{ pg.toggle }}" style="width:100%; display:flex; align-items:center; gap: var(--space-2); padding: var(--space-3) var(--space-4); background: var(--color-neutral-900); border:none; cursor:pointer; text-align:left; color: var(--color-text);">
+            <sc-if value="{{ pg.expanded }}"><svg class="wf-ic" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></sc-if>
+            <sc-if value="{{ pg.collapsed }}"><svg class="wf-ic" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></sc-if>
+            <span style="font-size:0.8125rem; font-weight:500; color: var(--color-text);">Page {{ pg.pageNumber }}</span>
+            <span style="font-size:0.75rem; color: var(--color-neutral-400);">{{ pg.summaryLabel }}</span>
+          </button>
+          <sc-if value="{{ pg.expanded }}">
+            <sc-for list="{{ pg.sections }}" as="sec" hint-placeholder-count="2">
+              <div class="mr-section-group" style="border-top: 1px solid var(--color-neutral-800);">
+                <button type="button" onClick="{{ sec.toggle }}" style="width:100%; display:flex; align-items:center; gap: var(--space-2); padding: var(--space-3) var(--space-4) var(--space-3) var(--space-6); background: var(--color-neutral-850, var(--color-bg)); border:none; cursor:pointer; text-align:left; color: var(--color-text);">
+                  <sc-if value="{{ sec.expanded }}"><svg class="wf-ic" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></sc-if>
+                  <sc-if value="{{ sec.collapsed }}"><svg class="wf-ic" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></sc-if>
+                  <span class="tag tag-outline">Section</span>
+                  <span style="font-size:0.8125rem; color: var(--color-text);">{{ sec.label }}</span>
+                  <span style="font-size:0.75rem; color: var(--color-neutral-400);">{{ sec.summaryLabel }}</span>
+                  <span style="margin-left:auto; display:flex; align-items:center; gap: var(--space-3);">
+                    <sc-if value="{{ sec.hasHeadingMapping }}">
+                      <span style="display:flex; align-items:center; gap: var(--space-2);">
+                        <span style="font-size:0.75rem; font-weight:500; color: {{ sec.confidenceColor }};">{{ sec.confidencePct }}%</span>
+                      </span>
+                    </sc-if>
+                  </span>
+                </button>
+                <sc-if value="{{ sec.expanded }}">
+                  <sc-if value="{{ isTableView }}">
+                  <table class="table mr-table" style="width:100%; margin-bottom: var(--space-2);">
+                    <thead>
+                      <tr>
+                        <th style="padding-left: calc(var(--space-6) + var(--space-4));">{{ sourceLabel }}</th>
+                        <th>Type</th>
+                        <th>Target Type</th>
+                        <th>Maps to</th>
+                        <th>Confidence</th>
+                        <th>Source</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <sc-for list="{{ sec.fields }}" as="m" hint-placeholder-count="3">
+                        <tr>
+                          <td class="wrap" style="padding-left: calc(var(--space-6) + var(--space-4)); font-family: ui-monospace, monospace; font-size:0.7813rem; max-width: 320px;">{{ m.originalTextShort }}</td>
+                          <td><span class="tag tag-neutral">{{ m.kindLabel }}</span></td>
+                          <td>
+                            <span class="tag tag-outline">{{ m.targetType }}</span>
+                          </td>
+                          <td>
+                            <span style="font-size:0.8125rem; color: var(--color-text);">{{ m.targetLabel }}</span>
+                          </td>
+                          <td>
+                            <span style="font-size:0.7813rem; font-weight:500; color: {{ m.confidenceColor }};">{{ m.confidencePct }}%</span>
+                          </td>
+                          <td>
+                            <span style="display:inline-flex; align-items:center; gap:4px; font-size:0.75rem; color: var(--color-neutral-300);">
+                              <sc-if value="{{ m.isLlm }}"><svg class="wf-ic" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="7" width="14" height="12" rx="2"/><path d="M9 12h.01M15 12h.01M12 3v4"/></svg></sc-if>
+                              <sc-if value="{{ m.isManual }}"><svg class="wf-ic" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c1.5-4 5-5 7-5s5.5 1 7 5"/></svg></sc-if>
+                              {{ m.mappedBy }}
+                            </span>
+                          </td>
+                          <td style="text-align:right;">
+                            <button type="button" class="btn btn-ghost btn-icon" aria-label="Edit details" style="width:30px;height:30px; color: var(--color-accent-300);" onClick="{{ m.onToggleExpand }}">
+                              <sc-if value="{{ m.isCollapsed }}"><svg class="wf-ic" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l4-1 11-11-3-3L5 16z"/></svg></sc-if>
+                              <sc-if value="{{ m.isExpanded }}"><svg class="wf-ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></sc-if>
+                            </button>
+                            <button type="button" class="btn btn-ghost btn-icon" aria-label="Unlink" style="width:30px;height:30px; color: var(--color-accent-300);" onClick="{{ m.unlink }}">
+                              <svg class="wf-ic" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5l14 14M19 5L5 19"/></svg>
+                            </button>
+                          </td>
+                        </tr>
+                        <sc-if value="{{ m.isExpanded }}">
+                          <tr>
+                            <td colspan="7" style="padding: var(--space-3) var(--space-4) var(--space-4) calc(var(--space-6) + var(--space-4)); background: var(--color-neutral-900);">
+                              <div style="display:flex; flex-direction:column; gap: var(--space-2);">
+                                <sc-if value="{{ m.isTextKind }}">
+                                  <div class="field" style="margin-bottom:0;">
+                                    <label>Text</label>
+                                    <textarea class="input" rows="2" value="{{ m.draftLabel }}" onChange="{{ m.onDraftLabelChange }}"></textarea>
+                                  </div>
+                                </sc-if>
+                                <sc-if value="{{ m.isOtherKind }}">
+                                  <div class="field" style="margin-bottom:0;">
+                                    <label>Label</label>
+                                    <input class="input" type="text" value="{{ m.draftLabel }}" onChange="{{ m.onDraftLabelChange }}"></input>
+                                  </div>
+                                </sc-if>
+                                <sc-if value="{{ m.isFieldKind }}">
+                                  <div class="field" style="margin-bottom:0;">
+                                    <label>Label</label>
+                                    <input class="input" type="text" value="{{ m.draftLabel }}" onChange="{{ m.onDraftLabelChange }}"></input>
+                                  </div>
+                                  <div class="field" style="margin-bottom:0;">
+                                    <label>Field type</label>
+                                    <select class="input" value="{{ m.draftInputType }}" onChange="{{ m.onDraftInputTypeChange }}">
+                                      <sc-for list="{{ m.inputTypeOptions }}" as="opt" hint-placeholder-count="4">
+                                        <option value="{{ opt.value }}">{{ opt.label }}</option>
+                                      </sc-for>
+                                    </select>
+                                  </div>
+                                </sc-if>
+                                <sc-if value="{{ m.isFieldGroupKind }}">
+                                  <div class="field" style="margin-bottom:0;">
+                                    <label>Label</label>
+                                    <input class="input" type="text" value="{{ m.draftLabel }}" onChange="{{ m.onDraftLabelChange }}"></input>
+                                  </div>
+                                  <div style="display:flex; flex-direction:column; gap: var(--space-2);">
+                                    <span style="font-size:0.6875rem; color: var(--color-neutral-400);">Fields per item:</span>
+                                    <sc-for list="{{ m.itemFields }}" as="sub" hint-placeholder-count="3">
+                                      <div style="display:flex; align-items:center; gap: var(--space-2);">
+                                        <input class="input" type="text" value="{{ sub.label }}" onChange="{{ sub.onLabelChange }}" style="flex:1;"></input>
+                                        <select class="input" value="{{ sub.inputType }}" onChange="{{ sub.onTypeChange }}" style="flex:1;">
+                                          <sc-for list="{{ m.inputTypeOptions }}" as="opt" hint-placeholder-count="4">
+                                            <option value="{{ opt.value }}">{{ opt.label }}</option>
+                                          </sc-for>
+                                        </select>
+                                        <button type="button" class="btn btn-ghost btn-icon" aria-label="Remove field" onClick="{{ sub.onRemove }}" style="width:28px;height:28px; color: var(--color-accent-300); flex-shrink:0;">
+                                          <svg class="wf-ic" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5l14 14M19 5L5 19"/></svg>
+                                        </button>
+                                      </div>
+                                    </sc-for>
+                                    <button type="button" class="btn btn-secondary" onClick="{{ m.onAddItemField }}" style="font-size:0.75rem; padding: 4px 10px; height:auto; align-self:flex-start;">+ Add field</button>
+                                  </div>
+                                  <div style="display:flex; gap: var(--space-2);">
+                                    <div class="field" style="margin-bottom:0; flex:1;">
+                                      <label>Min items</label>
+                                      <input class="input" type="number" min="0" value="{{ m.minItems }}" onChange="{{ m.onDraftMinChange }}"></input>
+                                    </div>
+                                    <div class="field" style="margin-bottom:0; flex:1;">
+                                      <label>Max items</label>
+                                      <input class="input" type="number" min="1" value="{{ m.maxItems }}" onChange="{{ m.onDraftMaxChange }}"></input>
+                                    </div>
+                                  </div>
+                                </sc-if>
+                                <div style="display:flex; justify-content:flex-end; gap: var(--space-2);">
+                                  <button type="button" class="btn btn-ghost" onClick="{{ m.onCancelFieldEdit }}" style="font-size:0.75rem; padding: 4px 10px; height:auto;">Cancel</button>
+                                  <button type="button" class="btn btn-secondary" onClick="{{ m.onSaveFieldEdit }}" style="font-size:0.75rem; padding: 4px 10px; height:auto;">Save</button>
+                                </div>
+                              </div>
+                            </td>
+                          </tr>
+                        </sc-if>
+                      </sc-for>
+                    </tbody>
+                  </table>
+                  </sc-if>
+                  <sc-if value="{{ isCardView }}">
+                    <div style="display:flex; flex-direction:column; gap: var(--space-3); padding: var(--space-3) var(--space-4) var(--space-4) calc(var(--space-6) + var(--space-4));">
+                      <sc-for list="{{ sec.fields }}" as="m" hint-placeholder-count="3">
+                        <div class="card elev-sm" style="padding: var(--space-3); display:flex; flex-direction:column; gap: var(--space-2);">
+                          <div style="display:flex; align-items:center; justify-content:space-between; gap: var(--space-2); flex-wrap:wrap;">
+                            <span style="font-size:0.75rem; color: var(--color-neutral-300);">{{ sourceLabelUpper }} <span class="tag tag-neutral">{{ m.kindLabel }}</span> MAPS TO <span class="tag tag-outline">{{ m.targetType }}</span></span>
+                            <span style="display:inline-flex; align-items:center; gap: var(--space-2); flex-shrink:0;">
+                              <span style="font-size:0.7188rem; font-weight:500; color: {{ m.confidenceColor }};">{{ m.confidencePct }}%</span>
+                              <span style="display:inline-flex; align-items:center; gap:4px; font-size:0.6875rem; color: var(--color-neutral-300);">
+                                <sc-if value="{{ m.isLlm }}"><svg class="wf-ic" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="7" width="14" height="12" rx="2"/><path d="M9 12h.01M15 12h.01M12 3v4"/></svg></sc-if>
+                                <sc-if value="{{ m.isManual }}"><svg class="wf-ic" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c1.5-4 5-5 7-5s5.5 1 7 5"/></svg></sc-if>
+                                {{ m.mappedBy }}
+                              </span>
+                            </span>
+                          </div>
+                          <span style="font-family: ui-monospace, monospace; font-size:0.75rem; color: var(--color-text); line-height:1.5;">{{ m.originalText }}</span>
+                          <div style="background: var(--color-neutral-900); border-radius: var(--radius-md); padding: var(--space-2);">
+                            <span style="font-size:0.7813rem; color: var(--color-text);">{{ m.targetLabel }}</span>
+                          </div>
+                          <div style="display:flex; justify-content:flex-end; gap: var(--space-1); border-top: 1px solid var(--color-neutral-800); margin-top: var(--space-1); padding-top: var(--space-2);">
+                            <button type="button" class="btn btn-ghost btn-icon" aria-label="Edit details" style="width:30px;height:30px; color: var(--color-accent-300);" onClick="{{ m.onToggleExpand }}">
+                              <sc-if value="{{ m.isCollapsed }}"><svg class="wf-ic" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l4-1 11-11-3-3L5 16z"/></svg></sc-if>
+                              <sc-if value="{{ m.isExpanded }}"><svg class="wf-ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></sc-if>
+                            </button>
+                            <button type="button" class="btn btn-ghost btn-icon" aria-label="Unlink" style="width:30px;height:30px; color: var(--color-accent-300);" onClick="{{ m.unlink }}">
+                              <svg class="wf-ic" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5l14 14M19 5L5 19"/></svg>
+                            </button>
+                          </div>
+                          <sc-if value="{{ m.isExpanded }}">
+                            <div style="display:flex; flex-direction:column; gap: var(--space-2); background: var(--color-neutral-900); border-radius: var(--radius-md); padding: var(--space-3) var(--space-4) var(--space-4);">
+                              <sc-if value="{{ m.isTextKind }}">
+                                <div class="field" style="margin-bottom:0;">
+                                  <label>Text</label>
+                                  <textarea class="input" rows="2" value="{{ m.draftLabel }}" onChange="{{ m.onDraftLabelChange }}"></textarea>
+                                </div>
+                              </sc-if>
+                              <sc-if value="{{ m.isOtherKind }}">
+                                <div class="field" style="margin-bottom:0;">
+                                  <label>Label</label>
+                                  <input class="input" type="text" value="{{ m.draftLabel }}" onChange="{{ m.onDraftLabelChange }}"></input>
+                                </div>
+                              </sc-if>
+                              <sc-if value="{{ m.isFieldKind }}">
+                                <div class="field" style="margin-bottom:0;">
+                                  <label>Label</label>
+                                  <input class="input" type="text" value="{{ m.draftLabel }}" onChange="{{ m.onDraftLabelChange }}"></input>
+                                </div>
+                                <div class="field" style="margin-bottom:0;">
+                                  <label>Field type</label>
+                                  <select class="input" value="{{ m.draftInputType }}" onChange="{{ m.onDraftInputTypeChange }}">
+                                    <sc-for list="{{ m.inputTypeOptions }}" as="opt" hint-placeholder-count="4">
+                                      <option value="{{ opt.value }}">{{ opt.label }}</option>
+                                    </sc-for>
+                                  </select>
+                                </div>
+                              </sc-if>
+                              <sc-if value="{{ m.isFieldGroupKind }}">
+                                <div class="field" style="margin-bottom:0;">
+                                  <label>Label</label>
+                                  <input class="input" type="text" value="{{ m.draftLabel }}" onChange="{{ m.onDraftLabelChange }}"></input>
+                                </div>
+                                <div style="display:flex; flex-direction:column; gap: var(--space-2);">
+                                  <span style="font-size:0.6875rem; color: var(--color-neutral-400);">Fields per item:</span>
+                                  <sc-for list="{{ m.itemFields }}" as="sub" hint-placeholder-count="3">
+                                    <div style="display:flex; align-items:center; gap: var(--space-2);">
+                                      <input class="input" type="text" value="{{ sub.label }}" onChange="{{ sub.onLabelChange }}" style="flex:1;"></input>
+                                      <select class="input" value="{{ sub.inputType }}" onChange="{{ sub.onTypeChange }}" style="flex:1;">
+                                        <sc-for list="{{ m.inputTypeOptions }}" as="opt" hint-placeholder-count="4">
+                                          <option value="{{ opt.value }}">{{ opt.label }}</option>
+                                        </sc-for>
+                                      </select>
+                                      <button type="button" class="btn btn-ghost btn-icon" aria-label="Remove field" onClick="{{ sub.onRemove }}" style="width:28px;height:28px; color: var(--color-accent-300); flex-shrink:0;">
+                                        <svg class="wf-ic" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5l14 14M19 5L5 19"/></svg>
+                                      </button>
+                                    </div>
+                                  </sc-for>
+                                  <button type="button" class="btn btn-secondary" onClick="{{ m.onAddItemField }}" style="font-size:0.75rem; padding: 4px 10px; height:auto; align-self:flex-start;">+ Add field</button>
+                                </div>
+                                <div style="display:flex; gap: var(--space-2);">
+                                  <div class="field" style="margin-bottom:0; flex:1;">
+                                    <label>Min items</label>
+                                    <input class="input" type="number" min="0" value="{{ m.minItems }}" onChange="{{ m.onDraftMinChange }}"></input>
+                                  </div>
+                                  <div class="field" style="margin-bottom:0; flex:1;">
+                                    <label>Max items</label>
+                                    <input class="input" type="number" min="1" value="{{ m.maxItems }}" onChange="{{ m.onDraftMaxChange }}"></input>
+                                  </div>
+                                </div>
+                              </sc-if>
+                              <div style="display:flex; justify-content:flex-end; gap: var(--space-2);">
+                                <button type="button" class="btn btn-ghost" onClick="{{ m.onCancelFieldEdit }}" style="font-size:0.75rem; padding: 4px 10px; height:auto;">Cancel</button>
+                                <button type="button" class="btn btn-secondary" onClick="{{ m.onSaveFieldEdit }}" style="font-size:0.75rem; padding: 4px 10px; height:auto;">Save</button>
+                              </div>
+                            </div>
+                          </sc-if>
+                        </div>
+                      </sc-for>
+                    </div>
+                  </sc-if>
+                </sc-if>
+              </div>
+            </sc-for>
+          </sc-if>
+        </div>
+      </sc-for>
+
+      <sc-if value="{{ noResults }}">
+        <div style="text-align:center; padding: var(--space-6) 0; color: var(--color-neutral-400); font-size:0.8125rem;">No mappings match the current filter.</div>
+      </sc-if>
+    </div>
+  </div>
+
+  <footer style="border-top: 1px solid var(--color-neutral-800); padding: var(--space-4) var(--space-6); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap: var(--space-3);">
+    <span style="font-size:0.75rem; color: var(--color-neutral-400);">© 2026 Formwork. All rights reserved.</span>
+    <div style="display:flex; gap: var(--space-4);">
+      <a href="#" style="font-size:0.75rem;">Documentation</a>
+      <a href="#" style="font-size:0.75rem;">Support</a>
+      <a href="#" style="font-size:0.75rem;">Status</a>
+    </div>
+  </footer>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+function shorten(text) {
+  return text.length > 60 ? text.slice(0, 60) + '\u2026' : text;
+}
+
+// Workflow-side targets. targetType is the discriminant: Section | Content (static
+// title/description, collects no data) | Field (single input) | FieldGroup
+// (repeating set, e.g. multiple phone numbers) | Custom (Angular component).
+const SEED_TARGETS = [
+  { id: 'sec-1', label: 'Personal Information', targetType: 'Section' },
+  { id: 'c-desc-1', label: 'Instructions', targetType: 'Content', contentKind: 'description' },
+  { id: 'f-1', label: 'Full name', targetType: 'Field', inputType: 'text' },
+  { id: 'f-2', label: 'Date of birth', targetType: 'Field', inputType: 'date' },
+  { id: 'f-3', label: 'Social Security Number', targetType: 'Field', inputType: 'text' },
+  { id: 'sec-2', label: 'Employment Details', targetType: 'Section' },
+  { id: 'f-4', label: 'Job title', targetType: 'Field', inputType: 'text' },
+  { id: 'f-5', label: 'Start date', targetType: 'Field', inputType: 'date' },
+  { id: 'f-6', label: 'Department', targetType: 'Field', inputType: 'select' },
+  { id: 'sec-2b', label: 'Compensation', targetType: 'Section' },
+  { id: 'f-10', label: 'Annual salary', targetType: 'Field', inputType: 'number' },
+  { id: 'f-11', label: 'Pay frequency', targetType: 'Field', inputType: 'select' },
+  { id: 'sec-3', label: 'Emergency Contact', targetType: 'Section' },
+  { id: 'fg-1', label: 'Emergency contacts', targetType: 'FieldGroup', itemFields: [{ label: 'Name', inputType: 'text' }, { label: 'Relationship', inputType: 'text' }, { label: 'Phone', inputType: 'text' }], minItems: 1, maxItems: 3 },
+  { id: 'cu-1', label: 'Signature pad', targetType: 'Custom', componentSelector: 'app-signature-pad' },
+];
+
+// kind = what the PDF element actually is; drives which SEED_TARGETS it can map to.
+const KIND_META = {
+  heading: { label: 'Heading', targetType: 'Content' },
+  description: { label: 'Text', targetType: 'Content' },
+  field: { label: 'Field', targetType: 'Field' },
+  'field-group': { label: 'List', targetType: 'FieldGroup' },
+  custom: { label: 'Custom', targetType: 'Custom' },
+};
+
+const detailFor = (t, inputType) => {
+  if (!t) return '';
+  if (t.targetType === 'Field') return inputType || t.inputType;
+  if (t.targetType === 'FieldGroup') return `${t.itemFields.length}x`;
+  if (t.targetType === 'Custom') return t.componentSelector;
+  if (t.targetType === 'Content') return t.contentKind;
+  return '';
+};
+
+const SEED = [
+  { pdfElementId: 'e1', pageNumber: 1, originalText: 'Section II — Personal Information', kind: 'heading', targetId: 'sec-1', confidence: 0.99, mappedBy: 'llm' },
+  { pdfElementId: 'e2', pageNumber: 1, originalText: 'Please complete all fields marked with an asterisk.', kind: 'description', targetId: 'c-desc-1', confidence: 0.72, mappedBy: 'llm' },
+  { pdfElementId: 'e3', pageNumber: 1, originalText: 'Employee Full Legal Name (as it appears on government ID)', kind: 'field', targetId: 'f-1', confidence: 0.96, mappedBy: 'llm' },
+  { pdfElementId: 'e4', pageNumber: 1, originalText: 'Date of Birth (MM/DD/YYYY)', kind: 'field', targetId: 'f-2', confidence: 0.94, mappedBy: 'llm' },
+  { pdfElementId: 'e5', pageNumber: 1, originalText: 'SSN — for tax withholding purposes only', kind: 'field', targetId: 'f-3', confidence: 0.61, mappedBy: 'llm' },
+  { pdfElementId: 'e6', pageNumber: 2, originalText: 'Section III — Employment Details', kind: 'heading', targetId: 'sec-2', confidence: 0.98, mappedBy: 'llm' },
+  { pdfElementId: 'e7', pageNumber: 2, originalText: 'Position / Job Title applied for or currently held', kind: 'field', targetId: 'f-4', confidence: 0.88, mappedBy: 'llm' },
+  { pdfElementId: 'e8', pageNumber: 2, originalText: 'Anticipated Start Date', kind: 'field', targetId: 'f-5', confidence: 0.42, mappedBy: 'llm' },
+  { pdfElementId: 'e9', pageNumber: 2, originalText: 'Dept / Cost Center Code', kind: 'field', targetId: 'f-6', confidence: 0.55, mappedBy: 'manual' },
+  { pdfElementId: 'e10', pageNumber: 2, originalText: 'Section III-B — Compensation', kind: 'heading', targetId: 'sec-2b', confidence: 0.95, mappedBy: 'llm' },
+  { pdfElementId: 'e11', pageNumber: 2, originalText: 'Base Annual Salary (USD)', kind: 'field', targetId: 'f-10', confidence: 0.82, mappedBy: 'llm' },
+  { pdfElementId: 'e12', pageNumber: 2, originalText: 'Pay Frequency (Weekly/Biweekly/Monthly)', kind: 'field', targetId: 'f-11', confidence: 0.67, mappedBy: 'llm' },
+  { pdfElementId: 'e13', pageNumber: 3, originalText: 'Section IV — Emergency Contact', kind: 'heading', targetId: 'sec-3', confidence: 0.97, mappedBy: 'llm' },
+  { pdfElementId: 'e14', pageNumber: 3, originalText: 'List every emergency contact with name, relationship, and phone.', kind: 'field-group', targetId: 'fg-1', confidence: 0.74, mappedBy: 'llm' },
+  { pdfElementId: 'e15', pageNumber: 3, originalText: 'Employee signature', kind: 'custom', targetId: 'cu-1', confidence: 0.83, mappedBy: 'manual' },
+];
+
+const FIELD_TYPE_OPTIONS = ['text', 'number', 'date', 'email', 'select', 'checkbox', 'textarea'].map((v) => ({ value: v, label: v[0].toUpperCase() + v.slice(1) }));
+
+class Component extends DCLogic {
+  state = {
+    mappings: SEED,
+    searchTerm: '',
+    confidenceFilter: 'all',
+    collapsedPages: [],
+    collapsedSections: [],
+    userMenuOpen: false,
+    settingsMenuOpen: false,
+    expandedId: null,
+    draft: { label: '', inputType: '', itemFields: [], minItems: 1, maxItems: 1 },
+    fieldOverrides: {},
+    viewMode: 'table',
+    sourceKind: 'pdf',
+  };
+
+  setViewMode = (value) => this.setState({ viewMode: value });
+  setSourceKind = (value) => this.setState({ sourceKind: value });
+
+  toggleUserMenu = () => this.setState((s) => ({ userMenuOpen: !s.userMenuOpen, settingsMenuOpen: false }));
+  closeUserMenu = () => this.setState({ userMenuOpen: false });
+  toggleSettingsMenu = () => this.setState((s) => ({ settingsMenuOpen: !s.settingsMenuOpen, userMenuOpen: false }));
+  closeSettingsMenu = () => this.setState({ settingsMenuOpen: false });
+
+  onSearchInput = (e) => this.setState({ searchTerm: e.target.value });
+  setFilter(value) { this.setState({ confidenceFilter: value }); }
+
+  togglePage(pn) {
+    this.setState((s) => ({ collapsedPages: s.collapsedPages.includes(pn) ? s.collapsedPages.filter((x) => x !== pn) : [...s.collapsedPages, pn] }));
+  }
+  toggleSection(sid) {
+    this.setState((s) => ({ collapsedSections: s.collapsedSections.includes(sid) ? s.collapsedSections.filter((x) => x !== sid) : [...s.collapsedSections, sid] }));
+  }
+
+  toggleRowExpand(m, current) {
+    this.setState((s) => s.expandedId === m.pdfElementId
+      ? { expandedId: null }
+      : {
+          expandedId: m.pdfElementId,
+          draft: {
+            label: current.label, inputType: current.inputType || '',
+            itemFields: (current.itemFields || []).map((f) => ({ ...f })),
+            minItems: current.minItems ?? 1, maxItems: current.maxItems ?? 1,
+          },
+        });
+  }
+  onDraftLabelChange = (e) => this.setState((s) => ({ draft: { ...s.draft, label: e.target.value } }));
+  onDraftInputTypeChange = (e) => this.setState((s) => ({ draft: { ...s.draft, inputType: e.target.value } }));
+  onDraftMinChange = (e) => this.setState((s) => ({ draft: { ...s.draft, minItems: Math.max(0, parseInt(e.target.value, 10) || 0) } }));
+  onDraftMaxChange = (e) => this.setState((s) => ({ draft: { ...s.draft, maxItems: Math.max(1, parseInt(e.target.value, 10) || 1) } }));
+  onItemFieldLabelChange(idx, e) {
+    this.setState((s) => ({ draft: { ...s.draft, itemFields: s.draft.itemFields.map((f, i) => (i === idx ? { ...f, label: e.target.value } : f)) } }));
+  }
+  onItemFieldTypeChange(idx, e) {
+    this.setState((s) => ({ draft: { ...s.draft, itemFields: s.draft.itemFields.map((f, i) => (i === idx ? { ...f, inputType: e.target.value } : f)) } }));
+  }
+  addItemField = () => this.setState((s) => ({ draft: { ...s.draft, itemFields: [...s.draft.itemFields, { label: 'New field', inputType: 'text' }] } }));
+  removeItemField(idx) {
+    this.setState((s) => ({ draft: { ...s.draft, itemFields: s.draft.itemFields.filter((_, i) => i !== idx) } }));
+  }
+  cancelFieldEdit = () => this.setState({ expandedId: null });
+  saveFieldEdit(m) {
+    this.setState((s) => ({ fieldOverrides: { ...s.fieldOverrides, [m.pdfElementId]: { ...s.draft, itemFields: s.draft.itemFields.map((f) => ({ ...f })) } }, expandedId: null }));
+  }
+
+  unlink(m) {
+    this.setState((s) => ({ mappings: s.mappings.filter((x) => x.pdfElementId !== m.pdfElementId) }));
+  }
+
+  renderVals() {
+    const s = this.state;
+    const matches = (m) => {
+      const term = !s.searchTerm || m.originalText.toLowerCase().includes(s.searchTerm.toLowerCase());
+      if (!term) return false;
+      if (s.confidenceFilter === 'high') return m.confidence >= 0.8;
+      if (s.confidenceFilter === 'medium') return m.confidence >= 0.5 && m.confidence < 0.8;
+      if (s.confidenceFilter === 'low') return m.confidence < 0.5;
+      return true;
+    };
+
+    const sectionOfField = {};
+    { let cur = null; for (const t of SEED_TARGETS) { if (t.targetType === 'Section') cur = t.id; else if (cur) sectionOfField[t.id] = cur; } }
+
+    const decorate = (m) => {
+      const pct = Math.round(m.confidence * 100);
+      const color = m.confidence >= 0.8 ? 'var(--color-accent-300)' : m.confidence >= 0.5 ? 'var(--color-accent-600)' : 'var(--color-neutral-500)';
+      const meta = KIND_META[m.kind];
+      const target = SEED_TARGETS.find((t) => t.id === m.targetId) || { label: '(unmapped)', targetType: meta.targetType };
+      const override = s.fieldOverrides[m.pdfElementId];
+      const isTextKind = m.kind === 'heading' || m.kind === 'description';
+      const isFieldKind = m.kind === 'field';
+      const isFieldGroupKind = m.kind === 'field-group';
+      const isExpanded = s.expandedId === m.pdfElementId;
+      const effectiveLabel = override ? override.label : (isTextKind ? m.originalText : target.label);
+      const effectiveInputType = override && override.inputType ? override.inputType : target.inputType;
+      const displayTargetType = m.kind === 'description' ? 'Text' : m.kind === 'field-group' ? 'Field-List' : target.targetType;
+      const rawDetail = m.kind === 'description' ? '' : detailFor(target, effectiveInputType);
+      const targetTypeTag = rawDetail ? `${displayTargetType}-${rawDetail[0].toUpperCase()}${rawDetail.slice(1)}` : displayTargetType;
+      return {
+        ...m,
+        originalTextShort: shorten(m.originalText),
+        confidencePct: pct,
+        confidenceColor: color,
+        isLlm: m.mappedBy === 'llm',
+        isManual: m.mappedBy === 'manual',
+        kindLabel: meta.label,
+        targetType: targetTypeTag,
+        targetLabel: effectiveLabel,
+        isTextKind, isFieldKind, isFieldGroupKind,
+        isOtherKind: !isTextKind && !isFieldKind && !isFieldGroupKind,
+        isExpanded, isCollapsed: !isExpanded,
+        draftLabel: isExpanded ? s.draft.label : effectiveLabel,
+        draftInputType: isExpanded ? s.draft.inputType : (effectiveInputType || ''),
+        minItems: isExpanded ? s.draft.minItems : (override && override.minItems != null ? override.minItems : target.minItems),
+        maxItems: isExpanded ? s.draft.maxItems : (override && override.maxItems != null ? override.maxItems : target.maxItems),
+        itemFields: (isExpanded ? s.draft.itemFields : (override && override.itemFields ? override.itemFields : (target.itemFields || [])))
+          .map((f, idx) => ({
+            ...f,
+            onLabelChange: (e) => this.onItemFieldLabelChange(idx, e),
+            onTypeChange: (e) => this.onItemFieldTypeChange(idx, e),
+            onRemove: () => this.removeItemField(idx),
+          })),
+        inputTypeOptions: FIELD_TYPE_OPTIONS,
+        onToggleExpand: () => this.toggleRowExpand(m, {
+          label: effectiveLabel, inputType: effectiveInputType,
+          itemFields: override && override.itemFields ? override.itemFields : target.itemFields,
+          minItems: override && override.minItems != null ? override.minItems : target.minItems,
+          maxItems: override && override.maxItems != null ? override.maxItems : target.maxItems,
+        }),
+        onDraftLabelChange: this.onDraftLabelChange,
+        onDraftInputTypeChange: this.onDraftInputTypeChange,
+        onDraftMinChange: this.onDraftMinChange,
+        onDraftMaxChange: this.onDraftMaxChange,
+        onAddItemField: this.addItemField,
+        onCancelFieldEdit: this.cancelFieldEdit,
+        onSaveFieldEdit: () => this.saveFieldEdit(m),
+        unlink: () => this.unlink(m),
+      };
+    };
+
+    const headings = s.mappings.filter((m) => m.kind === 'heading');
+    const fields = s.mappings.filter((m) => m.kind !== 'heading');
+    const pageNumbers = [...new Set(s.mappings.map((m) => m.pageNumber))].sort((a, b) => a - b);
+
+    const pageGroups = pageNumbers.map((pn) => {
+      const pageHeadings = headings.filter((h) => h.pageNumber === pn);
+      const pageFields = fields.filter((f) => f.pageNumber === pn);
+      const sectionIds = [...new Set(pageFields.map((f) => sectionOfField[f.targetId]).filter(Boolean))];
+      pageHeadings.forEach((h) => { if (!sectionIds.includes(h.targetId)) sectionIds.push(h.targetId); });
+
+      const sections = sectionIds.map((sid) => {
+        const headingMapping = pageHeadings.find((h) => h.targetId === sid);
+        const fieldsInSection = pageFields.filter((f) => sectionOfField[f.targetId] === sid);
+        const visibleFields = fieldsInSection.filter(matches);
+        const headingMatches = headingMapping ? matches(headingMapping) : false;
+        const target = SEED_TARGETS.find((t) => t.id === sid);
+        const expanded = !s.collapsedSections.includes(sid);
+        return {
+          sid,
+          visible: visibleFields.length > 0 || headingMatches,
+          label: target ? target.label : 'Section',
+          summaryLabel: `${visibleFields.length} field${visibleFields.length !== 1 ? 's' : ''}`,
+          hasHeadingMapping: !!headingMapping,
+          confidencePct: headingMapping ? Math.round(headingMapping.confidence * 100) : 0,
+          confidenceColor: headingMapping ? (headingMapping.confidence >= 0.8 ? 'var(--color-accent-300)' : headingMapping.confidence >= 0.5 ? 'var(--color-accent-600)' : 'var(--color-neutral-500)') : 'var(--color-neutral-500)',
+          fields: visibleFields.map(decorate),
+          expanded,
+          collapsed: !expanded,
+          toggle: () => this.toggleSection(sid),
+        };
+      }).filter((sec) => sec.visible);
+
+      const visibleFieldCount = sections.reduce((a, se) => a + se.fields.length, 0);
+      const expanded = !s.collapsedPages.includes(pn);
+      return {
+        pageNumber: pn,
+        sections,
+        visible: sections.length > 0,
+        summaryLabel: `${sections.length} section${sections.length !== 1 ? 's' : ''} · ${visibleFieldCount} field${visibleFieldCount !== 1 ? 's' : ''}`,
+        visibleFieldCount,
+        expanded,
+        collapsed: !expanded,
+        toggle: () => this.togglePage(pn),
+      };
+    }).filter((pg) => pg.visible);
+
+    const totalVisibleFields = pageGroups.reduce((a, pg) => a + pg.visibleFieldCount, 0);
+
+    const all = s.mappings;
+    const highCount = all.filter((m) => m.confidence >= 0.8).length;
+    const mediumCount = all.filter((m) => m.confidence >= 0.5 && m.confidence < 0.8).length;
+    const lowCount = all.filter((m) => m.confidence < 0.5).length;
+    const avg = all.length ? Math.round(all.reduce((sum, m) => sum + m.confidence, 0) / all.length * 100) : 0;
+
+    const stats = [
+      { label: 'Total', value: all.length, color: 'var(--color-text)' },
+      { label: 'High \u2265 80%', value: highCount, color: 'var(--color-accent-300)' },
+      { label: 'Medium 50\u201379%', value: mediumCount, color: 'var(--color-accent-600)' },
+      { label: 'Low < 50%', value: lowCount, color: 'var(--color-neutral-500)' },
+      { label: 'Avg confidence', value: avg + '%', color: 'var(--color-text)' },
+    ];
+
+    const confidenceChips = [
+      { value: 'all', label: 'All', color: 'var(--color-text)' },
+      { value: 'high', label: 'High', color: 'var(--color-accent-300)' },
+      { value: 'medium', label: 'Medium', color: 'var(--color-accent-600)' },
+      { value: 'low', label: 'Low', color: 'var(--color-neutral-500)' },
+    ].map((c) => ({ ...c, checked: s.confidenceFilter === c.value, onSelect: () => this.setFilter(c.value) }));
+
+    return {
+      orgName: 'Formwork',
+      orgInitial: 'F',
+      userName: 'Alex Rivera',
+      userInitials: 'AR',
+      userEmail: 'alex@formwork.io',
+      userMenuOpen: s.userMenuOpen,
+      settingsMenuOpen: s.settingsMenuOpen,
+      toggleUserMenu: this.toggleUserMenu,
+      closeUserMenu: this.closeUserMenu,
+      toggleSettingsMenu: this.toggleSettingsMenu,
+      closeSettingsMenu: this.closeSettingsMenu,
+      workflowTitle: 'New Hire Onboarding',
+      stats,
+      searchTerm: s.searchTerm,
+      onSearchInput: this.onSearchInput,
+      confidenceChips,
+      isTableView: s.viewMode === 'table',
+      isCardView: s.viewMode === 'card',
+      viewChips: [
+        { value: 'table', label: 'Table' },
+        { value: 'card', label: 'Cards' },
+      ].map((v) => ({ ...v, checked: s.viewMode === v.value, onSelect: () => this.setViewMode(v.value) })),
+      sourceChips: [
+        { value: 'pdf', label: 'PDF' },
+        { value: 'instructions', label: 'Instructions' },
+      ].map((v) => ({ ...v, checked: s.sourceKind === v.value, onSelect: () => this.setSourceKind(v.value) })),
+      sourceLabel: s.sourceKind === 'pdf' ? 'From PDF' : 'From instructions',
+      sourceLabelUpper: s.sourceKind === 'pdf' ? 'FROM PDF' : 'FROM INSTRUCTIONS',
+      pageGroups,
+      noResults: pageGroups.length === 0,
+    };
+  }
+}
+
+</script>
+</body>
+</html>
