@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: -apple-system, "Inter", Arial, sans-serif; }
+    a { text-decoration: none; }
+    .wf-ic svg { display: block; }
+    .mrl-table th, .mrl-table td { white-space: nowrap; padding: 10px 14px; text-align: left; }
+    .mrl-table td.wrap { white-space: normal; }
+    .mrl-table thead th { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; }
+    .mrl-icon-btn { border: none; background: none; cursor: pointer; width: 30px; height: 30px; border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; }
+    .mrl-tag { display: inline-flex; align-items: center; font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 4px; }
+    .mrl-input { border-radius: 6px; padding: 8px 12px; font-size: 13px; width: 100%; }
+    .mrl-seg { display: inline-flex; border-radius: 6px; overflow: hidden; border: 1px solid; }
+    .mrl-seg-opt { padding: 7px 14px; font-size: 13px; cursor: pointer; }
+    .mrl-seg-opt input { position: absolute; opacity: 0; width: 0; height: 0; }
+    .mrl-menu-item { width:100%; text-align:left; border:none; background:none; padding: 8px 10px; font-size: 13px; border-radius: 6px; cursor: pointer; display:flex; align-items:center; gap:8px; }
+    .mrl-switch { width: 34px; height: 20px; border-radius: 999px; position: relative; cursor: pointer; flex-shrink: 0; }
+    .mrl-switch-knob { position: absolute; top: 2px; width: 16px; height: 16px; border-radius: 50%; background: #fff; transition: left 0.15s ease; }
+  </style>
+</helmet>
+
+<div style="min-height: 100vh; display: flex; flex-direction: column; background: {{ t.bg }};">
+
+  <nav style="display:flex; align-items:center; gap: 16px; padding: 14px 24px; background: {{ t.navBg }}; border-bottom: 1px solid {{ t.border }};">
+    <span style="display:flex; align-items:center; gap:8px; font-size:15px; font-weight:600; color: {{ t.text }};">
+      <span style="width:22px; height:22px; border-radius:6px; background: {{ t.accent }}; color:#fff; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; flex-shrink:0;">{{ orgInitial }}</span>
+      {{ orgName }}
+    </span>
+    <span style="margin-left:auto; display:flex; align-items:center; gap:16px;">
+      <span style="position:relative;">
+        <button type="button" onClick="{{ toggleUserMenu }}" style="display:flex; align-items:center; gap:8px; background:none; border:none; cursor:pointer; padding:2px;">
+          <span style="width:26px; height:26px; border-radius:50%; background: {{ t.accent }}; color:#fff; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:600;">{{ userInitials }}</span>
+          <span style="font-size:13px; color: {{ t.text }};">{{ userName }}</span>
+        </button>
+        <sc-if value="{{ userMenuOpen }}">
+          <div style="position:fixed; inset:0; z-index:20;" onClick="{{ closeUserMenu }}"></div>
+          <div style="position:absolute; right:0; top:34px; z-index:21; min-width:220px; padding:6px; background: {{ t.surface }}; border:1px solid {{ t.border }}; border-radius:10px; box-shadow: 0 8px 24px rgba(0,0,0,0.18);">
+            <div style="padding:8px 10px; border-bottom: 1px solid {{ t.border }}; margin-bottom:4px;">
+              <div style="font-size:13px; color: {{ t.text }};">{{ userName }}</div>
+              <div style="font-size:11.5px; color: {{ t.textMuted }};">alex&#64;formwork.io</div>
+            </div>
+            <div style="display:flex; align-items:center; justify-content:space-between; padding: 8px 10px;">
+              <span style="font-size:13px; color: {{ t.text }}; display:flex; align-items:center; gap:8px;">
+                <svg class="wf-ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="{{ t.textMuted }}" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="{{ themeIconPath }}"/></svg>
+                Dark mode
+              </span>
+              <span class="mrl-switch" style="background: {{ switchTrackBg }};" onClick="{{ toggleTheme }}">
+                <span class="mrl-switch-knob" style="left: {{ switchKnobLeft }};"></span>
+              </span>
+            </div>
+            <hr style="border:none; border-top:1px solid {{ t.border }}; margin: 4px 0;" />
+            <button type="button" class="mrl-menu-item" style="color: {{ t.text }};">Account settings</button>
+            <button type="button" class="mrl-menu-item" style="color: {{ t.text }};">Log out</button>
+          </div>
+        </sc-if>
+      </span>
+      <svg class="wf-ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="{{ t.textMuted }}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1.04 1.56V21a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 8.96 19.4a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-1.56-1.04H3a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.6 8.96a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.87.34H9a1.7 1.7 0 0 0 1.04-1.56V3a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1.04 1.56 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.87V9a1.7 1.7 0 0 0 1.56 1.04H21a2 2 0 1 1 0 4h-.09A1.7 1.7 0 0 0 19.4 15z"/></svg>
+    </span>
+  </nav>
+
+  <div style="padding: 24px 24px 4px;">
+    <h1 style="font-size: 22px; font-weight: 700; margin: 0 0 4px; color: {{ t.text }};">{{ workflowTitle }}</h1>
+    <p style="font-size: 13px; color: {{ t.textMuted }}; margin: 0 0 24px;">How extracted PDF text was mapped to workflow fields and sections.</p>
+  </div>
+
+  <div style="display:flex; gap: 12px; padding: 0 24px 24px; flex-wrap:wrap;">
+    <sc-for list="{{ stats }}" as="stat" hint-placeholder-count="5">
+      <div style="flex:1; min-width:132px; background: {{ t.surface }}; border:1px solid {{ t.border }}; border-radius:8px; padding: 12px 16px; border-top: 3px solid {{ stat.color }};">
+        <div style="font-size:24px; font-weight:700; color: {{ stat.color }}; line-height:1.2;">{{ stat.value }}</div>
+        <div style="font-size:11.5px; color: {{ t.textMuted }}; margin-top:4px; white-space:nowrap;">{{ stat.label }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="display:flex; align-items:flex-start; gap:16px; padding: 0 24px 24px; flex-wrap:wrap;">
+    <div style="width:50%;">
+      <label for="mrl-search" style="display:block; font-size:12.5px; color: {{ t.text }}; margin-bottom:6px;">Search PDF text</label>
+      <input class="mrl-input" id="mrl-search" placeholder="Search extracted text…" value="{{ searchTerm }}" onInput="{{ onSearchInput }}" style="background: {{ t.inputBg }}; border: 1px solid {{ t.inputBorder }}; color: {{ t.text }};" />
+    </div>
+    <div>
+      <label style="display:block; font-size:12.5px; color: {{ t.text }}; margin-bottom:6px;">Confidence</label>
+      <div class="mrl-seg" style="border-color: {{ t.inputBorder }};">
+        <sc-for list="{{ confidenceChips }}" as="chip" hint-placeholder-count="4">
+          <label class="mrl-seg-opt" style="color: {{ chip.color }}; background: {{ chip.bg }}; border-right: 1px solid {{ t.inputBorder }};">
+            <input type="radio" name="mrl-conf" checked="{{ chip.checked }}" onChange="{{ chip.onSelect }}" />
+            {{ chip.label }}
+          </label>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <div style="flex:1; padding: 0 24px 24px; overflow-x:auto;">
+    <div style="background: {{ t.surface }}; border:1px solid {{ t.border }}; border-radius:8px; overflow:hidden;">
+      <sc-for list="{{ pageGroups }}" as="pg" hint-placeholder-count="3">
+        <div style="border-bottom: 1px solid {{ t.border }}; margin-bottom: 12px;">
+          <button type="button" onClick="{{ pg.toggle }}" style="width:100%; display:flex; align-items:center; gap:8px; padding: 12px 16px; background: {{ t.surfaceAlt }}; border:none; cursor:pointer; text-align:left; color: {{ t.text }};">
+            <sc-if value="{{ pg.expanded }}"><svg class="wf-ic" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></sc-if>
+            <sc-if value="{{ pg.collapsed }}"><svg class="wf-ic" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></sc-if>
+            <span style="font-size:13px; font-weight:600;">Page {{ pg.pageNumber }}</span>
+            <span style="font-size:12px; color: {{ t.textMuted }};">{{ pg.summaryLabel }}</span>
+          </button>
+          <sc-if value="{{ pg.expanded }}">
+            <sc-for list="{{ pg.sections }}" as="sec" hint-placeholder-count="2">
+              <div style="border-top: 1px solid {{ t.border }}; margin-top:8px; padding-top:10px; padding-bottom:10px;">
+                <button type="button" onClick="{{ sec.toggle }}" style="width:100%; display:flex; align-items:center; gap:8px; padding: 10px 16px 10px 40px; background:none; border:none; cursor:pointer; text-align:left; color: {{ t.text }};">
+                  <sc-if value="{{ sec.expanded }}"><svg class="wf-ic" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></sc-if>
+                  <sc-if value="{{ sec.collapsed }}"><svg class="wf-ic" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></sc-if>
+                  <span class="mrl-tag" style="background: {{ t.surface }}; border:1px solid {{ t.accent }}; color: {{ t.accent }};">Section</span>
+                  <span style="font-size:13px; font-weight:500;">{{ sec.label }}</span>
+                  <span style="font-size:12px; color: {{ t.textMuted }};">{{ sec.summaryLabel }}</span>
+                  <span style="margin-left:auto; display:flex; align-items:center; gap:12px;">
+                    <sc-if value="{{ sec.hasHeadingMapping }}">
+                      <span style="display:flex; align-items:center; gap:8px;">
+                        <div style="width:48px; height:5px; border-radius:3px; background: {{ t.trackBg }}; overflow:hidden;">
+                          <div style="height:100%; border-radius:3px; width: {{ sec.confidencePct }}%; background: {{ sec.confidenceColor }};"></div>
+                        </div>
+                        <span style="font-size:12px; font-weight:600; color: {{ sec.confidenceColor }};">{{ sec.confidencePct }}%</span>
+                      </span>
+                    </sc-if>
+                  </span>
+                </button>
+                <sc-if value="{{ sec.expanded }}">
+                  <table class="mrl-table" style="width:100%;">
+                    <thead>
+                      <tr style="border-bottom: 1px solid {{ t.border }};">
+                        <th style="padding-left: 56px; color: {{ t.textMuted }};">PDF text</th>
+                        <th style="color: {{ t.textMuted }};">Type</th>
+                        <th style="color: {{ t.textMuted }};">Mapped to</th>
+                        <th style="color: {{ t.textMuted }};">Confidence</th>
+                        <th style="color: {{ t.textMuted }};">Source</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <sc-for list="{{ sec.fields }}" as="m" hint-placeholder-count="3">
+                        <tr style="border-bottom: 1px solid {{ t.border }};">
+                          <td class="wrap" style="padding-left: 56px; font-family: ui-monospace, monospace; font-size:12.5px; max-width: 320px; color: {{ t.text }};">{{ m.originalTextShort }}</td>
+                          <td><span class="mrl-tag" style="background: {{ t.tagBg }}; color: {{ t.textMuted }};">{{ m.elementType }}</span></td>
+                          <td>
+                            <sc-if value="{{ m.isEditing }}">
+                              <select class="mrl-input" style="width:200px; padding:6px 8px; background: {{ t.inputBg }}; border:1px solid {{ t.inputBorder }}; color: {{ t.text }};" value="{{ editTargetId }}" onChange="{{ onEditTargetChange }}">
+                                <option value="">— Unlink —</option>
+                                <sc-for list="{{ allTargets }}" as="tg" hint-placeholder-count="4">
+                                  <option value="{{ tg.id }}">{{ tg.type }} · {{ tg.label }}</option>
+                                </sc-for>
+                              </select>
+                            </sc-if>
+                            <sc-if value="{{ m.isNotEditing }}">
+                              <span style="display:inline-flex; align-items:center; gap:6px;">
+                                <span class="mrl-tag" style="background: {{ t.surface }}; border:1px solid {{ t.accent }}; color: {{ t.accent }};">{{ m.targetType }}</span>
+                                <span style="font-size:13px; color: {{ t.text }};">{{ m.targetLabel }}</span>
+                              </span>
+                            </sc-if>
+                          </td>
+                          <td>
+                            <div style="display:flex; align-items:center; gap:8px;">
+                              <div style="width:60px; height:5px; border-radius:3px; background: {{ t.trackBg }}; overflow:hidden;">
+                                <div style="height:100%; border-radius:3px; width: {{ m.confidencePct }}%; background: {{ m.confidenceColor }};"></div>
+                              </div>
+                              <span style="font-size:12px; font-weight:600; color: {{ m.confidenceColor }};">{{ m.confidencePct }}%</span>
+                            </div>
+                          </td>
+                          <td>
+                            <span style="display:inline-flex; align-items:center; gap:4px; font-size:12px; color: {{ t.textMuted }};">
+                              <sc-if value="{{ m.isLlm }}"><svg class="wf-ic" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="7" width="14" height="12" rx="2"/><path d="M9 12h.01M15 12h.01M12 3v4"/></svg></sc-if>
+                              <sc-if value="{{ m.isManual }}"><svg class="wf-ic" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c1.5-4 5-5 7-5s5.5 1 7 5"/></svg></sc-if>
+                              {{ m.mappedBy }}
+                            </span>
+                          </td>
+                          <td style="text-align:right;">
+                            <sc-if value="{{ m.isEditing }}">
+                              <button type="button" class="mrl-icon-btn" aria-label="Save" style="color: {{ t.accent }};" onClick="{{ m.save }}">
+                                <svg class="wf-ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5 11-11"/></svg>
+                              </button>
+                              <button type="button" class="mrl-icon-btn" aria-label="Cancel" style="color: {{ t.accent }};" onClick="{{ cancelEdit }}">
+                                <svg class="wf-ic" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg>
+                              </button>
+                            </sc-if>
+                            <sc-if value="{{ m.isNotEditing }}">
+                              <button type="button" class="mrl-icon-btn" aria-label="Edit mapping" style="color: {{ t.accent }};" onClick="{{ m.startEdit }}">
+                                <svg class="wf-ic" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l4-1 11-11-3-3L5 16z"/></svg>
+                              </button>
+                              <button type="button" class="mrl-icon-btn" aria-label="Unlink" style="color: {{ t.accent }};" onClick="{{ m.unlink }}">
+                                <svg class="wf-ic" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5l14 14M19 5L5 19"/></svg>
+                              </button>
+                            </sc-if>
+                          </td>
+                        </tr>
+                      </sc-for>
+                    </tbody>
+                  </table>
+                </sc-if>
+              </div>
+            </sc-for>
+          </sc-if>
+        </div>
+      </sc-for>
+
+      <sc-if value="{{ noResults }}">
+        <div style="text-align:center; padding: 32px 0; color: {{ t.textMuted }}; font-size:13px;">No mappings match the current filter.</div>
+      </sc-if>
+    </div>
+  </div>
+
+  <footer style="border-top: 1px solid {{ t.border }}; padding: 16px 24px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; background: {{ t.navBg }};">
+    <span style="font-size:12px; color: {{ t.textMuted }};">© 2026 Formwork. All rights reserved.</span>
+    <div style="display:flex; gap:16px;">
+      <a href="#" style="font-size:12px; color: {{ t.accent }};">Documentation</a>
+      <a href="#" style="font-size:12px; color: {{ t.accent }};">Support</a>
+      <a href="#" style="font-size:12px; color: {{ t.accent }};">Status</a>
+    </div>
+  </footer>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+function shorten(text) {
+  return text.length > 60 ? text.slice(0, 60) + '\u2026' : text;
+}
+
+const THEMES = {
+  light: {
+    bg: '#f9fafb', navBg: '#ffffff', border: '#e5e7eb', text: '#111827', textMuted: '#6b7280',
+    surface: '#ffffff', surfaceAlt: '#f9fafb', inputBg: '#ffffff', inputBorder: '#d1d5db',
+    tagBg: '#f3f4f6', accent: '#4f46e5', accentBg: '#eef2ff', trackBg: '#e5e7eb',
+    high: '#16a34a', medium: '#d97706', low: '#dc2626',
+  },
+  dark: {
+    bg: '#14151f', navBg: '#1b1d29', border: '#2a2c3a', text: '#e9e9ed', textMuted: '#9a9aa8',
+    surface: '#1c1e2a', surfaceAlt: '#20222f', inputBg: '#20222f', inputBorder: '#34364a',
+    tagBg: '#262838', accent: '#9184d9', accentBg: '#2a2740', trackBg: '#34364a',
+    high: '#4ade80', medium: '#fbbf24', low: '#f87171',
+  },
+};
+
+const SEED_TARGETS = [
+  { id: 'sec-1', label: 'Personal Information', type: 'Section' },
+  { id: 'f-1', label: 'Full name', type: 'Field' },
+  { id: 'f-2', label: 'Date of birth', type: 'Field' },
+  { id: 'f-3', label: 'Social Security Number', type: 'Field' },
+  { id: 'sec-2', label: 'Employment Details', type: 'Section' },
+  { id: 'f-4', label: 'Job title', type: 'Field' },
+  { id: 'f-5', label: 'Start date', type: 'Field' },
+  { id: 'f-6', label: 'Department', type: 'Field' },
+  { id: 'sec-3', label: 'Emergency Contact', type: 'Section' },
+  { id: 'f-7', label: 'Contact name', type: 'Field' },
+  { id: 'f-8', label: 'Relationship', type: 'Field' },
+  { id: 'f-9', label: 'Phone number', type: 'Field' },
+];
+
+const SEED = [
+  { pdfElementId: 'e1', pageNumber: 1, originalText: 'Employee Full Legal Name (as it appears on government ID)', elementType: 'label', targetId: 'f-1', targetLabel: 'Full name', targetType: 'Field', confidence: 0.96, mappedBy: 'llm' },
+  { pdfElementId: 'e2', pageNumber: 1, originalText: 'Date of Birth (MM/DD/YYYY)', elementType: 'label', targetId: 'f-2', targetLabel: 'Date of birth', targetType: 'Field', confidence: 0.94, mappedBy: 'llm' },
+  { pdfElementId: 'e3', pageNumber: 1, originalText: 'SSN — for tax withholding purposes only', elementType: 'label', targetId: 'f-3', targetLabel: 'Social Security Number', targetType: 'Field', confidence: 0.61, mappedBy: 'llm' },
+  { pdfElementId: 'e4', pageNumber: 1, originalText: 'Section II — Personal Information', elementType: 'heading', targetId: 'sec-1', targetLabel: 'Personal Information', targetType: 'Section', confidence: 0.99, mappedBy: 'llm' },
+  { pdfElementId: 'e5', pageNumber: 2, originalText: 'Position / Job Title applied for or currently held', elementType: 'label', targetId: 'f-4', targetLabel: 'Job title', targetType: 'Field', confidence: 0.88, mappedBy: 'llm' },
+  { pdfElementId: 'e6', pageNumber: 2, originalText: 'Anticipated Start Date', elementType: 'label', targetId: 'f-5', targetLabel: 'Start date', targetType: 'Field', confidence: 0.42, mappedBy: 'llm' },
+  { pdfElementId: 'e7', pageNumber: 2, originalText: 'Dept / Cost Center Code', elementType: 'label', targetId: 'f-6', targetLabel: 'Department', targetType: 'Field', confidence: 0.55, mappedBy: 'manual' },
+  { pdfElementId: 'e8', pageNumber: 2, originalText: 'Section III — Employment Details', elementType: 'heading', targetId: 'sec-2', targetLabel: 'Employment Details', targetType: 'Section', confidence: 0.98, mappedBy: 'llm' },
+  { pdfElementId: 'e9', pageNumber: 3, originalText: 'In case of emergency, who should we contact?', elementType: 'label', targetId: 'f-7', targetLabel: 'Contact name', targetType: 'Field', confidence: 0.91, mappedBy: 'llm' },
+  { pdfElementId: 'e10', pageNumber: 3, originalText: 'Relationship to Employee', elementType: 'label', targetId: 'f-8', targetLabel: 'Relationship', targetType: 'Field', confidence: 0.79, mappedBy: 'llm' },
+  { pdfElementId: 'e11', pageNumber: 3, originalText: 'Best Contact Phone Number', elementType: 'label', targetId: 'f-9', targetLabel: 'Phone number', targetType: 'Field', confidence: 0.35, mappedBy: 'llm' },
+  { pdfElementId: 'e12', pageNumber: 3, originalText: 'Section IV — Emergency Contact', elementType: 'heading', targetId: 'sec-3', targetLabel: 'Emergency Contact', targetType: 'Section', confidence: 0.97, mappedBy: 'llm' },
+];
+
+class Component extends DCLogic {
+  state = {
+    mappings: SEED,
+    searchTerm: '',
+    confidenceFilter: 'all',
+    editingId: null,
+    editTargetId: '',
+    collapsedPages: [],
+    collapsedSections: [],
+    userMenuOpen: false,
+    theme: 'light',
+  };
+
+  toggleUserMenu = () => this.setState((s) => ({ userMenuOpen: !s.userMenuOpen }));
+  closeUserMenu = () => this.setState({ userMenuOpen: false });
+  toggleTheme = () => this.setState((s) => ({ theme: s.theme === 'light' ? 'dark' : 'light' }));
+
+  onSearchInput = (e) => this.setState({ searchTerm: e.target.value });
+  setFilter(value) { this.setState({ confidenceFilter: value }); }
+  startEdit(m) { this.setState({ editingId: m.pdfElementId, editTargetId: m.targetId }); }
+  cancelEdit = () => this.setState({ editingId: null, editTargetId: '' });
+  onEditTargetChange = (e) => this.setState({ editTargetId: e.target.value });
+
+  togglePage(pn) {
+    this.setState((s) => ({ collapsedPages: s.collapsedPages.includes(pn) ? s.collapsedPages.filter((x) => x !== pn) : [...s.collapsedPages, pn] }));
+  }
+  toggleSection(sid) {
+    this.setState((s) => ({ collapsedSections: s.collapsedSections.includes(sid) ? s.collapsedSections.filter((x) => x !== sid) : [...s.collapsedSections, sid] }));
+  }
+
+  saveEdit(m) {
+    const targetId = this.state.editTargetId;
+    if (!targetId || targetId === m.targetId) { this.cancelEdit(); return; }
+    const target = SEED_TARGETS.find((t) => t.id === targetId);
+    this.setState((s) => ({
+      mappings: s.mappings.map((x) => (x.pdfElementId === m.pdfElementId
+        ? { ...x, targetId, targetLabel: target ? target.label : x.targetLabel, targetType: target ? target.type : x.targetType, mappedBy: 'manual', confidence: 1 }
+        : x)),
+      editingId: null, editTargetId: '',
+    }));
+  }
+
+  unlink(m) {
+    this.setState((s) => ({ mappings: s.mappings.filter((x) => x.pdfElementId !== m.pdfElementId) }));
+  }
+
+  renderVals() {
+    const s = this.state;
+    const t = THEMES[s.theme];
+    const isDark = s.theme === 'dark';
+
+    const matches = (m) => {
+      const term = !s.searchTerm || m.originalText.toLowerCase().includes(s.searchTerm.toLowerCase());
+      if (!term) return false;
+      if (s.confidenceFilter === 'high') return m.confidence >= 0.8;
+      if (s.confidenceFilter === 'medium') return m.confidence >= 0.5 && m.confidence < 0.8;
+      if (s.confidenceFilter === 'low') return m.confidence < 0.5;
+      return true;
+    };
+
+    const bandColor = (c) => (c >= 0.8 ? t.high : c >= 0.5 ? t.medium : t.low);
+
+    const decorate = (m) => {
+      const pct = Math.round(m.confidence * 100);
+      return {
+        ...m,
+        originalTextShort: shorten(m.originalText),
+        confidencePct: pct,
+        confidenceColor: bandColor(m.confidence),
+        isLlm: m.mappedBy === 'llm',
+        isManual: m.mappedBy === 'manual',
+        isEditing: s.editingId === m.pdfElementId,
+        isNotEditing: s.editingId !== m.pdfElementId,
+        startEdit: () => this.startEdit(m),
+        save: () => this.saveEdit(m),
+        unlink: () => this.unlink(m),
+      };
+    };
+
+    const sectionOfField = {};
+    { let cur = null; for (const tg of SEED_TARGETS) { if (tg.type === 'Section') cur = tg.id; else if (cur) sectionOfField[tg.id] = cur; } }
+
+    const headings = s.mappings.filter((m) => m.elementType === 'heading');
+    const fields = s.mappings.filter((m) => m.elementType !== 'heading');
+    const pageNumbers = [...new Set(s.mappings.map((m) => m.pageNumber))].sort((a, b) => a - b);
+
+    const pageGroups = pageNumbers.map((pn) => {
+      const pageHeadings = headings.filter((h) => h.pageNumber === pn);
+      const pageFields = fields.filter((f) => f.pageNumber === pn);
+      const sectionIds = [...new Set(pageFields.map((f) => sectionOfField[f.targetId]).filter(Boolean))];
+      pageHeadings.forEach((h) => { if (!sectionIds.includes(h.targetId)) sectionIds.push(h.targetId); });
+
+      const sections = sectionIds.map((sid) => {
+        const headingMapping = pageHeadings.find((h) => h.targetId === sid);
+        const fieldsInSection = pageFields.filter((f) => sectionOfField[f.targetId] === sid);
+        const visibleFields = fieldsInSection.filter(matches);
+        const headingMatches = headingMapping ? matches(headingMapping) : false;
+        const target = SEED_TARGETS.find((tg) => tg.id === sid);
+        const expanded = !s.collapsedSections.includes(sid);
+        return {
+          sid,
+          visible: visibleFields.length > 0 || headingMatches,
+          label: target ? target.label : 'Section',
+          summaryLabel: `${visibleFields.length} field${visibleFields.length !== 1 ? 's' : ''}`,
+          hasHeadingMapping: !!headingMapping,
+          confidencePct: headingMapping ? Math.round(headingMapping.confidence * 100) : 0,
+          confidenceColor: headingMapping ? bandColor(headingMapping.confidence) : t.low,
+          fields: visibleFields.map(decorate),
+          expanded,
+          collapsed: !expanded,
+          toggle: () => this.toggleSection(sid),
+        };
+      }).filter((sec) => sec.visible);
+
+      const visibleFieldCount = sections.reduce((a, se) => a + se.fields.length, 0);
+      const expanded = !s.collapsedPages.includes(pn);
+      return {
+        pageNumber: pn,
+        sections,
+        visible: sections.length > 0,
+        summaryLabel: `${sections.length} section${sections.length !== 1 ? 's' : ''} · ${visibleFieldCount} field${visibleFieldCount !== 1 ? 's' : ''}`,
+        visibleFieldCount,
+        expanded,
+        collapsed: !expanded,
+        toggle: () => this.togglePage(pn),
+      };
+    }).filter((pg) => pg.visible);
+
+    const all = s.mappings;
+    const highCount = all.filter((m) => m.confidence >= 0.8).length;
+    const mediumCount = all.filter((m) => m.confidence >= 0.5 && m.confidence < 0.8).length;
+    const lowCount = all.filter((m) => m.confidence < 0.5).length;
+    const avg = all.length ? Math.round(all.reduce((sum, m) => sum + m.confidence, 0) / all.length * 100) : 0;
+
+    const stats = [
+      { label: 'Total', value: all.length, color: t.text },
+      { label: 'High \u2265 80%', value: highCount, color: t.high },
+      { label: 'Medium 50\u201379%', value: mediumCount, color: t.medium },
+      { label: 'Low < 50%', value: lowCount, color: t.low },
+      { label: 'Avg confidence', value: avg + '%', color: t.accent },
+    ];
+
+    const confidenceChips = [
+      { value: 'all', label: 'All', color: t.text },
+      { value: 'high', label: 'High', color: t.high },
+      { value: 'medium', label: 'Medium', color: t.medium },
+      { value: 'low', label: 'Low', color: t.low },
+    ].map((c) => ({ ...c, checked: s.confidenceFilter === c.value, bg: s.confidenceFilter === c.value ? t.accentBg : t.surface, onSelect: () => this.setFilter(c.value) }));
+
+    return {
+      t,
+      orgName: 'Formwork',
+      orgInitial: 'F',
+      userName: 'Alex Rivera',
+      userInitials: 'AR',
+      userMenuOpen: s.userMenuOpen,
+      toggleUserMenu: this.toggleUserMenu,
+      closeUserMenu: this.closeUserMenu,
+      toggleTheme: this.toggleTheme,
+      themeIconPath: isDark ? 'M12 3v1M12 20v1M4.2 4.2l.7.7M18.4 18.4l.7.7M3 12h1M20 12h1M4.2 19.8l.7-.7M18.4 5.6l.7-.7M12 7a5 5 0 100 10 5 5 0 000-10z' : 'M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 1 0 10.5 10.5z',
+      switchTrackBg: isDark ? t.accent : '#d1d5db',
+      switchKnobLeft: isDark ? '16px' : '2px',
+      workflowTitle: 'New Hire Onboarding',
+      stats,
+      searchTerm: s.searchTerm,
+      onSearchInput: this.onSearchInput,
+      confidenceChips,
+      pageGroups,
+      noResults: pageGroups.length === 0,
+      allTargets: SEED_TARGETS,
+      editTargetId: s.editTargetId,
+      onEditTargetChange: this.onEditTargetChange,
+      cancelEdit: this.cancelEdit,
+    };
+  }
+}
+
+</script>
+</body>
+</html>
