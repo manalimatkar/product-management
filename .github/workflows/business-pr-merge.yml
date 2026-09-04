@@ -7,15 +7,24 @@ name: Business PR Merge Gate
 #                      business-prs/** (that path scope is what identifies
 #                      this as a Business PR -- section 4's mapping table
 #                      defines no separate label for the PR itself). Fails
-#                      the check if the Business Owner (ROLE-001,
-#                      FRAMEWORK-CONFIGURATION-SPEC.md section 10) hasn't
-#                      approved, or if the Required Stage Trace
-#                      (BUSINESS-PR-SPEC.md section 6) has no completed
-#                      rows. As with the bundle gate, turning this into an
-#                      actual merge block requires marking this check
-#                      required in the repository's branch protection
-#                      rules for `main` -- this workflow file alone can't
-#                      turn that setting on.
+#                      the check if the PR description doesn't carry a
+#                      checked Business Owner (ROLE-001) sign-off checkbox,
+#                      or if the Required Stage Trace (BUSINESS-PR-SPEC.md
+#                      section 6) has no completed rows. **Revised
+#                      2026-09-04**: this was originally a `listReviews`
+#                      approving-review check; live testing on the design
+#                      branch found GitHub blocks a PR author from ever
+#                      approving their own PR, and this repository has no
+#                      separate agent identity, so a PR-description
+#                      checkbox (business_pr_gate.py's
+#                      BUSINESS_OWNER_SIGNOFF_RE) replaces it -- see
+#                      GITHUB-PLATFORM-ADAPTER-SPEC.md section 8. As with
+#                      the bundle gate, turning this into an actual merge
+#                      block requires marking this check required in the
+#                      repository's branch protection rules for `main` --
+#                      this workflow file alone can't turn that setting on
+#                      (also currently unavailable on this private repo's
+#                      GitHub plan, confirmed 2026-09-04).
 #   apply-on-merge -- runs only once merged. Re-checks (to surface any
 #                      technical-detail-scan warning in the merge comment
 #                      -- see business_pr_gate.py's docstring for why that
@@ -30,17 +39,19 @@ name: Business PR Merge Gate
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened, closed]
+    # "edited" required -- the Business Owner sign-off lives in the PR
+    # description, so checking the box is a description edit, not a new
+    # commit; without this type the check never re-runs against the
+    # updated body (found 2026-09-04 fixing the identical gap in
+    # design-branch-intake.yml).
+    types: [opened, synchronize, reopened, closed, edited]
     paths:
       - "business-prs/**"
 
 permissions:
   contents: read
-  pull-requests: write
+  pull-requests: read
   issues: write
-
-env:
-  BUSINESS_OWNER_GITHUB_USERNAME: manalimatkar  # ROLE-001, FRAMEWORK-CONFIGURATION-SPEC.md section 10
 
 jobs:
   validate:
@@ -64,26 +75,17 @@ jobs:
             });
             fs.writeFileSync('changed_files.json', JSON.stringify(files.map(f => f.filename)));
 
-      - name: Check Business PR identity and Stage Trace completeness
+      - name: Write PR body to file
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: printf '%s\n' "$PR_BODY" > pr_body.md
+
+      - name: Check Business PR identity, Stage Trace completeness, and Business Owner sign-off
         run: |
           python3 .github/scripts/business_pr_gate.py check \
             --changed-files-json changed_files.json \
+            --pr-body-file pr_body.md \
             --output-json check_result.json
-
-      - name: Check Business Owner approval
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const reviews = await github.paginate(github.rest.pulls.listReviews, {
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: context.payload.pull_request.number,
-            });
-            const owner = process.env.BUSINESS_OWNER_GITHUB_USERNAME;
-            const approved = reviews.some(r => r.user && r.user.login === owner && r.state === 'APPROVED');
-            if (!approved) {
-              core.setFailed(`No approving review from Business Owner (${owner}) found yet.`);
-            }
 
   apply-on-merge:
     needs: validate
@@ -122,10 +124,16 @@ jobs:
           print(f"bpr_path={matches[0]}")
           PYEOF
 
+      - name: Write PR body to file
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: printf '%s\n' "$PR_BODY" > pr_body.md
+
       - name: Re-check for warnings (surfaced in the merge comment)
         run: |
           python3 .github/scripts/business_pr_gate.py check \
             --changed-files-json changed_files.json \
+            --pr-body-file pr_body.md \
             --output-json check_result.json || true
 
       - name: Parse Epic/Story blocks

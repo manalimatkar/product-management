@@ -27,6 +27,14 @@ import yaml
 BUNDLE_PATH_RE = re.compile(r"^design/.+/v[^/]+/design-handoff-[^/]+\.md$")
 CHECKLIST_HEADING_RE = re.compile(r"#+\s*Pre-Registration Checklist", re.IGNORECASE)
 UNCHECKED_RE = re.compile(r"^\s*-\s*\[\s*\]", re.MULTILINE)
+# Same PR-description sign-off pattern as design_branch_gate.py's
+# REVIEWER_SIGNOFF_RE -- added 2026-09-04 after live testing found GitHub
+# blocks a PR author from ever approving their own PR (see that script's
+# module docstring for the full rationale).
+REVIEWER_SIGNOFF_RE = re.compile(
+    r"^\s*-\s*\[( |x|X)\]\s*\*\*Design Reviewer sign-off \(ROLE-004\):?\*\*",
+    re.MULTILINE,
+)
 
 
 def find_bundle_path(changed_files):
@@ -55,6 +63,20 @@ def check(args):
         bundle_path = bundle_matches[0]
     else:
         bundle_path = bundle_matches[0]
+
+    signoff_match = REVIEWER_SIGNOFF_RE.search(body)
+    if not signoff_match:
+        problems.append(
+            "PR description has no 'Design Reviewer sign-off (ROLE-004)' checkbox line. "
+            "Paste it into the PR description before merging -- GitHub cannot substitute a "
+            "PR review here, since the author and the required reviewer are the same account "
+            "until this repository has a separate agent identity."
+        )
+    elif signoff_match.group(1).lower() != "x":
+        problems.append(
+            "The 'Design Reviewer sign-off (ROLE-004)' checkbox is present but unchecked. "
+            "Check it only once you have actually reviewed and accept this bundle."
+        )
 
     heading_match = CHECKLIST_HEADING_RE.search(body)
     if not heading_match:

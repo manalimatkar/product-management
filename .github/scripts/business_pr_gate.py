@@ -3,16 +3,17 @@
 Business PR merge gate -- GITHUB-PLATFORM-ADAPTER-SPEC.md section 6.
 
 Two modes:
-  check  -- pre-merge validation. Business Owner approval is checked
-            separately, in the workflow, via the GitHub API. Here: the
-            Business PR file must exist and its Required Stage Trace
-            (BUSINESS-PR-SPEC.md section 6) must have at least one
-            completed (non-placeholder) row. A small technical-detail
-            keyword scan is reported as a WARNING only, never a hard
-            fail -- FRAMEWORK-CONFIGURATION-SPEC.md section 10 is explicit
-            that ROLE-009 runs *mechanical* checks, not judgment calls, and
-            a keyword scan is not reliable enough to stand in for the
-            actual judgment BUSINESS-PR-SPEC.md section 9 requires.
+  check  -- pre-merge validation. The Business PR file must exist and its
+            Required Stage Trace (BUSINESS-PR-SPEC.md section 6) must have
+            at least one completed (non-placeholder) row, and the PR
+            description must carry a checked Business Owner sign-off
+            checkbox (see BUSINESS_OWNER_SIGNOFF_RE below). A small
+            technical-detail keyword scan is reported as a WARNING only,
+            never a hard fail -- FRAMEWORK-CONFIGURATION-SPEC.md section 10
+            is explicit that ROLE-009 runs *mechanical* checks, not
+            judgment calls, and a keyword scan is not reliable enough to
+            stand in for the actual judgment BUSINESS-PR-SPEC.md section 9
+            requires.
   apply  -- post-merge: parses the Epic/Story blocks so the workflow can
             create one GitHub Issue per Epic and Story.
 
@@ -20,6 +21,15 @@ Business PR identity itself is established by *where* this workflow is
 triggered (paths: business-prs/**, per GITHUB-PLATFORM-ADAPTER-SPEC.md
 section 4's mapping table) -- no separate label is defined for the PR
 itself in that table, so none is invented here.
+
+**Business Owner sign-off is a PR-description checkbox, not a GitHub PR
+review.** Same finding as design_branch_gate.py, discovered 2026-09-04:
+GitHub never lets a PR's author formally Approve their own PR, and this
+repository has no separate agent/bot identity, so a `listReviews`-based
+check can never pass whenever the same account both opens the Business PR
+and is the accountable Business Owner. See GITHUB-PLATFORM-ADAPTER-SPEC.md
+section 8 and DESIGN-HANDOFF-BUNDLE-SPEC.md section 6.2 for the fuller
+rationale; this script applies the identical fix.
 """
 import argparse
 import json
@@ -28,6 +38,12 @@ import sys
 from pathlib import Path
 
 BPR_PATH_RE = re.compile(r"^business-prs/.+/business-pr-[^/]+\.md$")
+# Exact required PR-description line, checked vs. unchecked -- same pattern
+# and same rationale as design_branch_gate.py's REVIEWER_SIGNOFF_RE.
+BUSINESS_OWNER_SIGNOFF_RE = re.compile(
+    r"^\s*-\s*\[( |x|X)\]\s*\*\*Business Owner sign-off \(ROLE-001\):?\*\*",
+    re.MULTILINE,
+)
 STAGE_TRACE_HEADING_RE = re.compile(r"^##\s*\d+\.\s*Required Stage Trace\s*$", re.MULTILINE)
 EPIC_HEADING_RE = re.compile(r"^##\s*\d+\.\s*Epic:\s*`([^`]+)`\s*--\s*(.+?)\s*$", re.MULTILINE)
 STORY_HEADING_RE = re.compile(r"^###\s*Story\s*`([^`]+)`:\s*(.+?)\s*$", re.MULTILINE)
@@ -69,11 +85,26 @@ def stage_trace_completed_rows(content):
 
 def check(args):
     changed_files = json.loads(Path(args.changed_files_json).read_text())
+    pr_body = Path(args.pr_body_file).read_text(encoding="utf-8") if args.pr_body_file else ""
     bpr_matches = find_bpr_path(changed_files)
 
     problems = []
     warnings = []
     bpr_path = None
+
+    signoff_match = BUSINESS_OWNER_SIGNOFF_RE.search(pr_body)
+    if not signoff_match:
+        problems.append(
+            "PR description has no 'Business Owner sign-off (ROLE-001)' checkbox line "
+            "(BUSINESS-PR-TEMPLATE.md). Paste it into the PR description before merging -- "
+            "GitHub cannot substitute a PR review here, since the author and the required "
+            "reviewer are the same account until this repository has a separate agent identity."
+        )
+    elif signoff_match.group(1).lower() != "x":
+        problems.append(
+            "The 'Business Owner sign-off (ROLE-001)' checkbox is present but unchecked. "
+            "Check it only once you have actually reviewed and accept this Business PR."
+        )
 
     if len(bpr_matches) == 0:
         problems.append("No business-pr-*.md file found under business-prs/.../ in this PR.")
@@ -153,6 +184,7 @@ def main():
 
     p_check = sub.add_parser("check")
     p_check.add_argument("--changed-files-json", required=True)
+    p_check.add_argument("--pr-body-file", required=True)
     p_check.add_argument("--output-json", required=True)
     p_check.set_defaults(func=check)
 

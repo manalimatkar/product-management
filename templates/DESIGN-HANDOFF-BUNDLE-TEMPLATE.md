@@ -294,6 +294,7 @@ designTokensUsed: [color-primary, color-error, typography-heading-2, typography-
 - [ ] Owner is identified in bundle.md
 - [ ] Any design-level reviewedBy entries carry a role and timestamp
 - [ ] knownLimitations lists anything incomplete, excluded, unclear, or -- for a lightweight reference -- not yet broken down at all
+- [ ] **Design Reviewer sign-off (ROLE-004):** I have reviewed this bundle and accept it. *(Added 2026-09-04 -- this exact checked line, pasted into the PR description, is what bundle_gate.py's merge gate checks; not a GitHub PR review, since GitHub never lets a PR's author formally approve their own PR. Check only once genuinely reviewed. See GITHUB-PLATFORM-ADAPTER-SPEC.md section 8.)*
 
 ## Ready to Register?
 Once the checks above pass:
