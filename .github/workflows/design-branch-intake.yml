@@ -29,7 +29,12 @@ name: Design Branch Intake Gate
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened, closed]
+    # "edited" is required, not optional, now that the Design Reviewer
+    # sign-off lives in the PR description (see the check step below) --
+    # checking the box is a description edit, not a new commit, so without
+    # this type the check never re-runs against the updated body. Found
+    # 2026-09-04 testing PR #2: a body edit alone did not retrigger validate.
+    types: [opened, synchronize, reopened, closed, edited]
     branches: [design]
 
 permissions:
