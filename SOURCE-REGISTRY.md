@@ -7,6 +7,7 @@ This file is an index, not a record -- add one row per registered source here; p
 | Source ID | Name | Type | Version | Status | Readiness | Owner | Record |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | `SRC-001` | Cart Optimization Redesign -- Design Handoff Bundle v1.0 | Design material | 1.0 | Active | Ready with Limitations | Manali, Product Designer | [sources/checkout/cart-optimization/source-cart-optimization-SRC-001.md](sources/checkout/cart-optimization/source-cart-optimization-SRC-001.md) |
+| `SRC-002` | Mapping Report -- Design Handoff v2 (pdf-workflow/workflow-manager, native Claude Design export on `design` branch) | Design material | 2 | Active | Ready with Limitations | Manali, Producing Designer | [sources/pdf-workflow/workflow-manager/mapping-report/source-mapping-report-SRC-002.md](sources/pdf-workflow/workflow-manager/mapping-report/source-mapping-report-SRC-002.md) |
 
 ## Adding a Source
 
