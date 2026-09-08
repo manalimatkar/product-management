@@ -13,10 +13,10 @@
 | Analysis Version | `1.0` |
 | Created By | Business Agent workflow -- second real run, replacing the retracted v2-based `DA-002` |
 | Created At | 2026-09-08 |
-| Status | `In Review` -- 4/4 Decisions resolved via `PR #17` review comments 2026-09-08 (section 12, section 19); 2 Technical Unknowns remain (not a blocker -- Technical Agent stage). Awaiting final Business Owner outcome. |
-| Related Epic | Not yet created -- pending this analysis's review outcome |
-| Related Stories | Not yet created |
-| Business Owner Approval | Pending |
+| Status | `Approved` -- 16/16 requirements, `BR-003` revised per direct feedback after `PR #17` merged (see section 19) |
+| Related Epic | Pending -- created at the Business PR stage |
+| Related Stories | Pending -- created at the Business PR stage |
+| Business Owner Approval | Approved 2026-09-08 -- see section 19 |
 
 **Supersedes `DA-002` in intent, not in the formal sense** -- `DA-002` was deleted, not marked `Superseded`, since it was built against the wrong source version entirely (see CLAUDE.md open item 17), not a legitimate prior version of this same analysis. This document is a fresh run, `DA-003`, not `DA-002`'s successor version.
 
@@ -162,6 +162,7 @@ No second role or permission distinction is represented anywhere in the Mapping 
 | `OBS-022` | Manali, PR #17 review comment, 2026-09-08 | "For [a] new workflow, [the] user experience is to first go to [the] workflow settings page, and then on save[,] user will land on [the] workflow mapping page where they start by adding [a] page." | Human Provided | High | Establishes the real navigation trigger and empty-state entry flow for a brand-new workflow -- resolves the previously-undocumented zero-mappings empty state | None |
 | `OBS-023` | Manali, PR #17 review comment, 2026-09-08 | "Keep table horizontal scroll." | Human Provided | High | Resolves the mobile/tablet layout choice the source explicitly deferred -- horizontal scroll, not a stacked-card layout | None |
 | `OBS-024` | Manali, PR #17 review comment, 2026-09-08 | "This is deferred for later when login capability is enabled." (re: org role/permission distinctions for reviewing or editing mappings) | Human Provided | High | No permission/role layer is to be built now; the single-role experience already reflected in `ROLE-001` is correct for the current phase, explicitly pending a not-yet-built login/auth capability | None |
+| `OBS-025` | Manali, PR #17 review comment (Review Outcome, `BR-003` left unchecked), 2026-09-08 | "For now work on table view." | Human Provided | High | Card view (`OBS-003`, `OBS-007`) is deferred for this phase, not rejected -- only Table view is being built now | See `GAP-004`; narrows `BR-003` |
 
 ## 6. User Journeys and Workflows
 
@@ -352,19 +353,21 @@ No second role or permission distinction is represented anywhere in the Mapping 
 - **Decisions:** None
 - **Acceptance Criteria:** `AC-002`
 
-### Requirement `BR-003`: Table and Card Views Stay in Sync
+### Requirement `BR-003`: Table View, With State That Would Survive a Future View Toggle
 
-- **Statement:** The product must let the reviewer switch between Table and Card views of the same data without resetting search, confidence filter, or an in-progress edit.
+- **Statement:** The product must provide the mapping review as a Table view, with search, confidence filter, and in-progress-edit state modeled independently of presentation -- so that a Card view, if and when it's built, can be added without restructuring this state.
 - **Actor:** `ACTOR-001`
 - **Capability:** `CAP-003`
-- **Business Outcome:** View preference is a presentation choice only, never a second, divergent state
-- **Evidence:** `OBS-003`
-- **Classification:** Explicit
+- **Business Outcome:** Table view ships now; the underlying state shape doesn't have to be redone if Card view is picked up later
+- **Evidence:** `OBS-003`, `OBS-025`
+- **Classification:** Explicit (Table/Card sync design), narrowed by Human Provided (Table-only for now)
 - **Confidence:** High
 - **Business Rules:** `BRULE-005`
 - **Assumptions:** None
 - **Decisions:** None
 - **Acceptance Criteria:** `AC-003`
+
+**Revised 2026-09-08, narrowed rather than removed -- PR #17 review:** the source describes a fully-built Card view (`OBS-003`, `OBS-007`) as a first-class second rendering of the same data. Direct feedback on this PR ("For now work on table view") scopes the *build* to Table view only for this phase -- Card view is real in the design and not rejected, just deferred. `BRULE-005` (Table/Card must show identical filtered/grouped data and share all state) is kept as the modeling constraint for *when* Card view is picked up, so Table view's state isn't built in a shape that would need rework later. See `GAP-004` and the Exclusions section.
 
 ### Requirement `BR-004`: Search and Filter by Confidence, With Hierarchical Visibility
 
@@ -570,11 +573,11 @@ And a page correctly shows more than one section when the source data has more t
 
 ### Criteria `AC-003` for `BR-003`
 ```text
-Given the reviewer has an active search term, a confidence filter, and a field row expanded for edit in Table view
-When the reviewer switches to Card view
-Then the same search term, filter, and expanded-edit state are still active
-And no data is lost or reset by the view switch
+Given the reviewer has an active search term, a confidence filter, or a field row expanded for edit
+Then that state is held independently of how it's rendered (not coupled to Table-view-specific markup)
+And Table view is the only rendering built and shown in this phase -- no Card view toggle is presented
 ```
+Note: the source's own criterion (switching Table<->Card without losing state) becomes the acceptance test for whenever Card view is picked up later -- not dropped, just not exercised by this phase's build.
 
 ### Criteria `AC-004` for `BR-004`
 ```text
@@ -732,11 +735,13 @@ All four Decisions were answered directly on `PR #17`'s review (inline comments 
 | `GAP-001` | Unclear Behavior | The exact trigger that opens the Mapping Report, and where it goes on exit/back, are never stated in the design document itself | `SRC-003` | `SCR-001`'s Entry/Exit fields and `NAV-001` were inferred (`ASM-001`), not confirmed by the design source alone | **Resolved 2026-09-08** via `DEC-001` -- Human Provided evidence (`OBS-021`), not the design document |
 | `GAP-002` | Missing Source | No empty state is described for a workflow with zero mappings entirely (only per-page/per-section empty states are shown) | `SRC-003` | `BR-001`/`BR-002` had no stated zero-state behavior | **Resolved 2026-09-08** via `DEC-002` -- Human Provided evidence (`OBS-022`) |
 | `GAP-003` | Conflict, human-provided evidence vs. design source | The design source's own "Scope note" states manually-created workflows get no report at all ("don't build one"); `OBS-021` (Human Provided) instead describes the underlying structure editor as reused across all creation paths, including from-scratch | `SRC-003` (Scope note text) vs. `OBS-021`/`OBS-022` | `BR-015`'s original framing was too broad -- narrowed rather than removed; `BR-016` added | **Resolved 2026-09-08** -- per PRODUCT-SOURCE-MATERIAL-SPEC.md section 6's authority rules, a direct Business Owner clarification on actual product behavior takes precedence over a design document's own scope text where they diverge. Recorded explicitly here, not silently merged -- see `BR-015`'s revision note. |
+| `GAP-004` | Scope narrowing, human-provided evidence vs. design source | The design source presents Card view (`OBS-003`, `OBS-007`) as a fully-built, first-class second rendering, on equal footing with Table view; `OBS-025` (Human Provided, from the Review Outcome checklist) scopes the *build* to Table view only for this phase | `SRC-003` (Card view content) vs. `OBS-025` | `BR-003`'s original framing (build both, kept in sync) was too broad for this phase -- narrowed, not removed; `BRULE-005` kept as the modeling constraint for whenever Card view is picked up | **Resolved 2026-09-08** -- same authority basis as `GAP-003`. Card view is not rejected -- it remains fully specified in the source for whenever it's prioritized -- only deferred out of the current build. |
 
 **No contradiction-type gap remains open in this analysis.** The retracted `DA-002`'s internal-text contradictions (`GAP-001`/`GAP-002` in that document) were re-verified directly against v4 and found resolved -- see section 2's correction note; carrying them forward here would have misrepresented the actual source. `GAP-003` above is a different kind of finding -- a real, newly-discovered tension between the design document and direct Business Owner input, resolved by evidence authority, not a leftover from the prior analysis.
 
 ## 15. Exclusions and Limitations
 
+- Card view (`OBS-003`, `OBS-007`) is fully specified in the source but explicitly deferred for this phase -- `BR-003` covers Table view only, "for now work on table view" (`OBS-025`, `GAP-004`). Not rejected; revisit when prioritized.
 - The LLM-based workflow-creation path is explicitly named in the source as a future reuse target for this same component, not built now -- no requirement in this analysis covers it.
 - All technical implementation (extraction mechanism, reorder-list storage/sync, save persistence) is intentionally excluded and deferred to the Technical Agent stage per `TECH-001` and `TECH-002`.
 - Org-level role/permission distinctions for reviewing or editing mappings are explicitly out of scope for now, not merely unrepresented -- deferred until a login/auth capability exists (`DEC-004`, `OBS-024`). No requirement in this analysis builds a permissions layer; revisit when that capability is scoped.
@@ -749,7 +754,7 @@ All four Decisions were answered directly on `PR #17`'s review (inline comments 
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | `SRC-003` | `OBS-001` | `CAP-001` | -- | `BR-001` | `AC-001` | *(pending Epic/Story stage)* | -- |
 | `SRC-003` | `OBS-006`, `OBS-007` | `CAP-001` | -- | `BR-002` | `AC-002` | *(pending)* | -- |
-| `SRC-003` | `OBS-003` | `CAP-003` | `BRULE-005` | `BR-003` | `AC-003` | *(pending)* | -- |
+| `SRC-003` | `OBS-003`, `OBS-025` | `CAP-003` | `BRULE-005` | `BR-003` | `AC-003` | *(pending)* | `GAP-004` (resolved) |
 | `SRC-003` | `OBS-002`, `OBS-013` | `CAP-002` | `BRULE-004` | `BR-004` | `AC-004` | *(pending)* | -- |
 | `SRC-003` | `OBS-004`, `OBS-005` | `CAP-004` | `BRULE-001` | `BR-005` | `AC-005` | *(pending)* | -- |
 | `SRC-003` | `OBS-008`, `OBS-009`, `OBS-010` | `CAP-004` | -- | `BR-006` | `AC-006` | *(pending)* | -- |
@@ -780,7 +785,7 @@ All four Decisions were answered directly on `PR #17`'s review (inline comments 
 - [x] Technical unknowns are handed to the Technical Agent.
 - [x] Requirements are atomic, observable, and testable.
 - [x] Acceptance criteria describe business behavior, not implementation.
-- [x] Conflicts and missing information are visible (`GAP-001`, `GAP-002` -- both genuine, neither a mistaken carry-forward).
+- [x] Conflicts and missing information are visible (`GAP-001`-`GAP-004`, all genuine, none a mistaken carry-forward from the retracted `DA-002`).
 - [x] Requirements map to capabilities and design evidence (Story column pending Epic/Story stage -- this run stops after this analysis per section 4.1's pause, see section 1).
 - [x] Technical implementation choices are excluded.
 
@@ -799,6 +804,6 @@ Enabled modules for this analysis:
 
 | Review Item | Outcome | Reviewer | Date | Notes |
 | --- | --- | --- | --- | --- |
-| Design Analysis | In Review -- 4/4 Decisions resolved | Manali | 2026-09-08 | All four Decisions (`DEC-001`-`004`) answered directly on `PR #17`'s review (inline comments), incorporated as `Human Provided` evidence throughout this document -- new `NAV-004`/`NAV-005`, `BRULE-008`, `BR-016`/`AC-016`, and a revision to `BR-015`'s scope. Only `TECH-001`/`TECH-002` (Technical Unknowns, not business decisions) remain -- those are for the Technical Agent stage, not a blocker to Business Requirements. Awaiting your final outcome (Approved / Changes Requested) and the sign-off checkbox on `PR #17` to close this out. |
+| Design Analysis | Approved -- 16/16 requirements, after one revision | Manali | 2026-09-08 | `PR #17` merged with 15/16 requirements checked directly; `BR-003` was left unchecked with an inline note ("For now work on table view") -- incorporated as `OBS-025` (Human Provided), `BR-003` narrowed to Table view only (`GAP-004`, resolved the same way as `GAP-003`), Card view kept in the source record as deferred, not rejected. All four Decisions (`DEC-001`-`004`) were also resolved via `PR #17`'s review comments, incorporated as `Human Provided` evidence throughout -- new `NAV-004`/`NAV-005`, `BRULE-008`, `BR-016`/`AC-016`, and `BR-015` narrowed. Only `TECH-001`/`TECH-002` (Technical Unknowns, not business decisions) remain, for the Technical Agent stage -- not a blocker. Proceeding to Business Requirements. |
 | Business Requirements | Not started | -- | -- | Awaiting this Design Analysis's final review outcome. |
 | Design Version | Not yet accepted | -- | -- | Awaiting review. |
