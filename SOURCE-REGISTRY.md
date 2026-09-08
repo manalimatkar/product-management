@@ -6,9 +6,9 @@ This file is an index, not a record -- add one row per registered source here; p
 
 | Source ID | Name | Type | Version | Status | Readiness | Owner | Record |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| *(none currently registered)* | | | | | | | |
+| `SRC-003` | Mapping Report -- Design Handoff v4 (pdf-workflow/workflow-manager, native Claude Design export on `design` branch) | Design material | 4 | Active | Ready with Limitations | Manali, Producing Designer | [pdf-workflow/workflow-manager/sources/mapping-report/source-mapping-report-SRC-003.md](pdf-workflow/workflow-manager/sources/mapping-report/source-mapping-report-SRC-003.md) |
 
-**Cleared 2026-09-08.** The illustrative `checkout/cart-optimization` dry run (`SRC-001`) and the `pdf-workflow/workflow-manager` Mapping Report analysis built against the wrong drop version (`SRC-002`, based on v2 -- should have used v4) were both removed, along with all their downstream artifacts (Design Analysis, Business Requirements, Business PR) and the `design`-branch content they pointed at. Next real registration starts fresh against v4. See CLAUDE.md open item 18.
+**`SRC-001`/`SRC-002` cleared 2026-09-08**, not reused. `SRC-001` (illustrative `checkout/cart-optimization` dry run) and `SRC-002` (a Mapping Report analysis mistakenly built against the `design` branch's v2 test drop, not the specified v4) were both removed along with all downstream artifacts. `SRC-003` above is the real, correctly-sourced replacement. See CLAUDE.md open items 17-19.
 
 ## Adding a Source
 
