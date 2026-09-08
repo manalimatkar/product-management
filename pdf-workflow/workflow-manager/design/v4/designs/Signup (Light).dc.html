@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+
+<helmet>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: -apple-system, "Inter", Arial, sans-serif; }
+    a { text-decoration: none; }
+    .wf-ic svg { display: block; }
+    .mrl-input { border-radius: 6px; padding: 10px 12px; font-size: 13.5px; width: 100%; font-family: inherit; }
+    .mrl-btn { border-radius: 6px; padding: 11px 12px; font-size: 14px; font-weight: 600; cursor: pointer; border: none; width: 100%; }
+    .mrl-icon-btn { border: none; background: none; cursor: pointer; width: 34px; height: 34px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; }
+  </style>
+</helmet>
+
+<div style="min-height: 100vh; display:flex; align-items:center; justify-content:center; padding:24px; background: {{ t.bg }}; position:relative;">
+  <button type="button" class="mrl-icon-btn" aria-label="Toggle theme" title="Toggle theme" style="position:fixed; top:20px; right:20px; color: {{ t.textMuted }};" onClick="{{ toggleTheme }}">
+    <svg class="wf-ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="{{ themeIconPath }}"></path></svg>
+  </button>
+
+  <div style="width:100%; max-width:420px;">
+    <div style="display:flex; align-items:center; gap:8px; justify-content:center; margin-bottom:28px;">
+      <span style="width:28px; height:28px; border-radius:7px; background: {{ t.accent }}; color:#fff; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700;">F</span>
+      <span style="font-size:17px; font-weight:700; color: {{ t.text }};">Formwork</span>
+    </div>
+
+    <div style="background: {{ t.surface }}; border:1px solid {{ t.border }}; border-radius:12px; padding:32px; box-shadow: 0 8px 24px rgba(0,0,0,0.08);">
+      <h1 style="font-size:20px; font-weight:700; color: {{ t.text }}; margin:0 0 4px;">Create your account</h1>
+      <p style="font-size:13px; color: {{ t.textMuted }}; margin:0 0 24px;">Set up your organisation's workspace.</p>
+
+      <form onSubmit="{{ onSubmit }}" style="display:flex; flex-direction:column; gap:16px;">
+        <div style="display:flex; gap:12px;">
+          <div style="flex:1;">
+            <label for="su-name" style="display:block; font-size:12.5px; color: {{ t.text }}; margin-bottom:6px;">Full name</label>
+            <input class="mrl-input" id="su-name" type="text" required placeholder="Jane Cooper" value="{{ fullName }}" onInput="{{ onFullNameChange }}" style="background: {{ t.inputBg }}; border:1px solid {{ t.inputBorder }}; color: {{ t.text }};">
+          </div>
+          <div style="flex:1;">
+            <label for="su-role" style="display:block; font-size:12.5px; color: {{ t.text }}; margin-bottom:6px;">Role / title</label>
+            <input class="mrl-input" id="su-role" type="text" placeholder="Operations Lead" value="{{ role }}" onInput="{{ onRoleChange }}" style="background: {{ t.inputBg }}; border:1px solid {{ t.inputBorder }}; color: {{ t.text }};">
+          </div>
+        </div>
+        <div>
+          <label for="su-org" style="display:block; font-size:12.5px; color: {{ t.text }}; margin-bottom:6px;">Company / organisation name</label>
+          <input class="mrl-input" id="su-org" type="text" required placeholder="Acme Inc." value="{{ orgName }}" onInput="{{ onOrgNameChange }}" style="background: {{ t.inputBg }}; border:1px solid {{ t.inputBorder }}; color: {{ t.text }};">
+        </div>
+        <div>
+          <label for="su-email" style="display:block; font-size:12.5px; color: {{ t.text }}; margin-bottom:6px;">Email</label>
+          <input class="mrl-input" id="su-email" type="email" required placeholder="you@company.com" value="{{ email }}" onInput="{{ onEmailChange }}" style="background: {{ t.inputBg }}; border:1px solid {{ t.inputBorder }}; color: {{ t.text }};">
+        </div>
+        <div>
+          <label for="su-password" style="display:block; font-size:12.5px; color: {{ t.text }}; margin-bottom:6px;">Password</label>
+          <input class="mrl-input" id="su-password" type="password" required placeholder="At least 8 characters" value="{{ password }}" onInput="{{ onPasswordChange }}" style="background: {{ t.inputBg }}; border:1px solid {{ t.inputBorder }}; color: {{ t.text }};">
+        </div>
+        <div>
+          <label for="su-invite" style="display:block; font-size:12.5px; color: {{ t.text }}; margin-bottom:6px;">Invite code <span style="color: {{ t.textMuted }}; font-weight:400;">(optional)</span></label>
+          <input class="mrl-input" id="su-invite" type="text" placeholder="e.g. FORM-4XPQ" value="{{ inviteCode }}" onInput="{{ onInviteCodeChange }}" style="background: {{ t.inputBg }}; border:1px solid {{ t.inputBorder }}; color: {{ t.text }};">
+        </div>
+        <sc-if value="{{ error }}"><div style="font-size:12.5px; color: {{ t.low }};">{{ error }}</div></sc-if>
+        <button type="submit" class="mrl-btn" disabled="{{ !canSubmit }}" style="background: {{ t.accent }}; color:#fff; opacity: {{ submitOpacity }};">Create account</button>
+      </form>
+
+      <p style="text-align:center; font-size:13px; color: {{ t.textMuted }}; margin: 20px 0 0;">Already have an account? <a href="Login (Light).dc.html" style="color: {{ t.accent }}; font-weight:600;">Log in</a></p>
+    </div>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const THEMES = {
+  light: { bg: '#f9fafb', border: '#e5e7eb', text: '#111827', textMuted: '#6b7280', surface: '#ffffff', inputBg: '#ffffff', inputBorder: '#d1d5db', accent: '#4f46e5', low: '#dc2626' },
+  dark: { bg: '#14151f', border: '#2a2c3a', text: '#e9e9ed', textMuted: '#9a9aa8', surface: '#1c1e2a', inputBg: '#20222f', inputBorder: '#34364a', accent: '#9184d9', low: '#f87171' },
+};
+
+class Component extends DCLogic {
+  state = { theme: 'light', fullName: '', role: '', orgName: '', email: '', password: '', inviteCode: '', error: '' };
+  onFullNameChange = (e) => this.setState({ fullName: e.target.value, error: '' });
+  onRoleChange = (e) => this.setState({ role: e.target.value });
+  onOrgNameChange = (e) => this.setState({ orgName: e.target.value, error: '' });
+  onEmailChange = (e) => this.setState({ email: e.target.value, error: '' });
+  onPasswordChange = (e) => this.setState({ password: e.target.value, error: '' });
+  onInviteCodeChange = (e) => this.setState({ inviteCode: e.target.value });
+  toggleTheme = () => this.setState((s) => ({ theme: s.theme === 'light' ? 'dark' : 'light' }));
+  onSubmit = (e) => {
+    e.preventDefault();
+    const s = this.state;
+    if (!s.fullName.trim() || !s.orgName.trim() || !s.email.includes('@') || s.password.length < 8) {
+      this.setState({ error: 'Fill in your name, organisation, a valid email, and an 8+ character password.' });
+    }
+  };
+  renderVals() {
+    const s = this.state;
+    const t = THEMES[s.theme];
+    const isDark = s.theme === 'dark';
+    const canSubmit = !!(s.fullName.trim() && s.orgName.trim() && s.email.includes('@') && s.password.length >= 8);
+    return {
+      t, theme: s.theme, toggleTheme: this.toggleTheme,
+      themeIconPath: isDark ? 'M12 3v1M12 20v1M4.2 4.2l.7.7M18.4 18.4l.7.7M3 12h1M20 12h1M4.2 19.8l.7-.7M18.4 5.6l.7-.7M12 7a5 5 0 100 10 5 5 0 000-10z' : 'M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 1 0 10.5 10.5z',
+      fullName: s.fullName, role: s.role, orgName: s.orgName, email: s.email, password: s.password, inviteCode: s.inviteCode, error: s.error,
+      onFullNameChange: this.onFullNameChange, onRoleChange: this.onRoleChange, onOrgNameChange: this.onOrgNameChange,
+      onEmailChange: this.onEmailChange, onPasswordChange: this.onPasswordChange, onInviteCodeChange: this.onInviteCodeChange, onSubmit: this.onSubmit,
+      canSubmit, submitOpacity: canSubmit ? 1 : 0.55,
+    };
+  }
+}
+</script>
+</body>
+</html>
