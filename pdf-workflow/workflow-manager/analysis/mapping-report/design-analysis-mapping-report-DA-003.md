@@ -13,7 +13,7 @@
 | Analysis Version | `1.0` |
 | Created By | Business Agent workflow -- second real run, replacing the retracted v2-based `DA-002` |
 | Created At | 2026-09-08 |
-| Status | `In Review` -- submitted per section 4.1's mandatory pause (6 unresolved Decision Required/Technical Unknown items, well over the 3-item threshold; source readiness is also `Ready with Limitations`) |
+| Status | `In Review` -- 4/4 Decisions resolved via `PR #17` review comments 2026-09-08 (section 12, section 19); 2 Technical Unknowns remain (not a blocker -- Technical Agent stage). Awaiting final Business Owner outcome. |
 | Related Epic | Not yet created -- pending this analysis's review outcome |
 | Related Stories | Not yet created |
 | Business Owner Approval | Pending |
@@ -87,9 +87,11 @@ No second role or permission distinction is represented anywhere in the Mapping 
 
 | Navigation ID | From | Action or Trigger | To | Condition | Source Reference |
 | --- | --- | --- | --- | --- | --- |
-| `NAV-001` | Workflow list (Dashboard) | Presumed: opening a PDF-created workflow | `SCR-001` | Workflow's creation source is PDF | `SRC-003` (Strongly Implied -- the connecting action itself is not stated; see `ASM-001`) |
+| `NAV-001` | Workflow list (Dashboard) | Opening a PDF-created workflow (extraction already processed) | `SCR-001`, populated with extracted mappings | Workflow's creation source is PDF | `OBS-021` (Human Provided -- resolves what was `ASM-001`) |
 | `NAV-002` | `SCR-001`, a field row's edit panel | Clicking the pencil (edit) icon | Same row, expanded in place | No other row already expanded, or the previously expanded one collapses first | `SRC-003` |
 | `NAV-003` | `SCR-001` -> Workflow Page Editor | `pageEditorHref`, for full field-property editing beyond the Mapping Report's lightweight inline subset | Out of scope for this feature-slice (Page Editor is a separate screen, registered separately if taken up) | -- | `SRC-003` (noted for completeness only) |
+| `NAV-004` | Workflow Settings page | User saves a new workflow's settings | `SCR-001`, empty (`STATE-006`) | Workflow is newly created, not yet processed via PDF | `OBS-021`, `OBS-022` (Human Provided) |
+| `NAV-005` | Elsewhere in the product | User reopens a workflow to review its mapping again | `SCR-001`, populated | Workflow was previously processed | `OBS-021` (Human Provided) |
 
 ### Controls and Actions
 
@@ -118,7 +120,7 @@ No second role or permission distinction is represented anywhere in the Mapping 
 | `STATE-003` | Field row | Editing | Row (Table) or card (Cards) expands in place with kind-specific controls; all other rows uneditable while this is open | Pencil clicked | Save, Cancel, or a discard-confirmation on navigating away | `SRC-003` |
 | `STATE-004` | Field row | Pending unlink confirmation | Confirmation dialog naming the removal cost | Unlink (×) clicked | Confirmed (mapping removed) or dismissed (unchanged) | `SRC-003` |
 | `STATE-005` | Page or Section | Empty (newly added or emptied) | Delete (trash) icon becomes available next to its expand toggle | Added with no children yet, or its last child removed | A child is added (delete option disappears), or it is deleted | `SRC-003` |
-| `STATE-006` | Page | Add-section prompt | A page with zero sections shows only a "+ Add section" affordance | Page just added via `ACT-009`, or all its sections removed | A section is added | `SRC-003` |
+| `STATE-006` | Page | Add-section prompt | A page with zero sections shows only a "+ Add section" affordance | Page just added via `ACT-009`, or all its sections removed; also the entry state for a brand-new workflow (`NAV-004` -- user lands here immediately after saving Workflow Settings, with no page yet, and starts by adding one) | A section is added | `SRC-003`, `OBS-022` (Human Provided) |
 
 ### Roles and Permissions
 
@@ -155,7 +157,11 @@ No second role or permission distinction is represented anywhere in the Mapping 
 | `OBS-017` | `SRC-003` | Delete (trash) icon on a page/section appears only when it has zero children; deleting removes the target and any tied mapping; no confirmation dialog ("nothing to lose") | Explicit | High | Deletion is only ever offered on genuinely empty structure | None |
 | `OBS-018` | `SRC-003` | Every page, section, and field row has up/down reorder chevrons; order is stored as an explicit override list per level, falling back to natural order for anything not yet moved | Explicit | High | Reordering must be a targeted, per-level override, not a full re-index every time | Exact storage mechanism is a Technical Unknown, not a business concern -- see `TECH-002` |
 | `OBS-019` | `SRC-003` | This report only applies to PDF-created workflows; manually-created workflows get no report; the LLM path is named as an explicit future reuse target, not built now | Explicit | High | The report must not appear, or must be meaningless, for non-PDF workflows | None |
-| `OBS-020` | `SRC-003` | The mapping table's mobile/tablet behavior (horizontal scroll vs. stacked cards) is explicitly left as an undecided choice: "decide with the user ... Don't silently pick one" | Explicit | High | This is a real, source-flagged open business decision, not an omission | See `DEC-003` |
+| `OBS-020` | `SRC-003` | The mapping table's mobile/tablet behavior (horizontal scroll vs. stacked cards) is explicitly left as an undecided choice: "decide with the user ... Don't silently pick one" | Explicit | High | This is a real, source-flagged open business decision, not an omission | Resolved -- see `OBS-023` |
+| `OBS-021` | Manali, PR #17 review comment, 2026-09-08 | "Mapping Report is view used to see workflow-page structure. It can be triggered by [the] process of pdf to workflow conversion on pdf upload, or it can also load an existing mapping for review, or it can also act as a start from scratch for workflow creation." | Human Provided | High | The Mapping Report screen is not exclusively a PDF-extraction-review surface -- its underlying page/section/field structure view is reused as the general workflow-structure editor across at least three entry scenarios, not one | Refines `SRC-003`'s own "Scope note" text (which frames the report as PDF-path-only) -- see section 14 |
+| `OBS-022` | Manali, PR #17 review comment, 2026-09-08 | "For [a] new workflow, [the] user experience is to first go to [the] workflow settings page, and then on save[,] user will land on [the] workflow mapping page where they start by adding [a] page." | Human Provided | High | Establishes the real navigation trigger and empty-state entry flow for a brand-new workflow -- resolves the previously-undocumented zero-mappings empty state | None |
+| `OBS-023` | Manali, PR #17 review comment, 2026-09-08 | "Keep table horizontal scroll." | Human Provided | High | Resolves the mobile/tablet layout choice the source explicitly deferred -- horizontal scroll, not a stacked-card layout | None |
+| `OBS-024` | Manali, PR #17 review comment, 2026-09-08 | "This is deferred for later when login capability is enabled." (re: org role/permission distinctions for reviewing or editing mappings) | Human Provided | High | No permission/role layer is to be built now; the single-role experience already reflected in `ROLE-001` is correct for the current phase, explicitly pending a not-yet-built login/auth capability | None |
 
 ## 6. User Journeys and Workflows
 
@@ -271,10 +277,10 @@ No second role or permission distinction is represented anywhere in the Mapping 
 
 ### Capability `CAP-006`: Manually Add Structure
 
-- **Business Purpose:** Let the reviewer fill in whatever the PDF extraction missed
+- **Business Purpose:** Let the reviewer fill in whatever the PDF extraction missed, and let a new workflow begin from the same structure editor regardless of creation path
 - **Actors:** `ACTOR-001`
-- **Design References:** `OBS-014`, `OBS-015`, `OBS-016`, `OBS-012`
-- **Related Requirements:** `BR-009`, `BR-010`, `BR-011`
+- **Design References:** `OBS-014`, `OBS-015`, `OBS-016`, `OBS-012`, `OBS-021`, `OBS-022`
+- **Related Requirements:** `BR-009`, `BR-010`, `BR-011`, `BR-016`
 - **Unresolved Decisions:** None
 
 #### Behaviors
@@ -314,6 +320,7 @@ No second role or permission distinction is represented anywhere in the Mapping 
 | `BRULE-005` | Table view and Card view must show identical filtered/grouped data and share all state | Mapping Report | Explicit | High | `OBS-003` | `BR-003` |
 | `BRULE-006` | This report applies only to workflows created via the PDF path | Mapping Report | Explicit | High | `OBS-019` | `BR-015` |
 | `BRULE-007` | Structural edits (add page/section/field, delete empty page/section, reorder) never require confirmation; unlinking a mapping is the sole exception | Mapping Report | Explicit | High | `OBS-012` | `BR-008`, `BR-009`-`BR-013` |
+| `BRULE-008` | Below ~900px, the mapping table uses horizontal scroll -- never a stacked-card row layout | Mapping Report, responsive behavior | Human Provided | High | `OBS-023` | `BR-002`, `BR-004`, `BR-006` |
 
 ## 9. Business Requirements
 
@@ -513,12 +520,12 @@ No second role or permission distinction is represented anywhere in the Mapping 
 - **Decisions:** None
 - **Acceptance Criteria:** `AC-014`
 
-### Requirement `BR-015`: Restrict the Report to PDF-Created Workflows
+### Requirement `BR-015`: Restrict Confidence-Review Chrome to PDF-Created Workflows
 
-- **Statement:** The product must show this Mapping Report only for workflows created via the PDF path; manually-created workflows must not get a report (no mapping to review), and an LLM-created path, if built later, is a separate future scope decision, not this report unconditionally.
+- **Statement:** The product must show the confidence-review elements of this screen -- stat tiles, confidence filter, source (llm/manual) tags -- only for workflows created via the PDF path; these are meaningless without an extraction step to review. An LLM-created path, if built later, is a separate future scope decision, not this unconditionally.
 - **Actor:** `ACTOR-001`
 - **Capability:** N/A (a scope-defining rule rather than a capability of its own)
-- **Business Outcome:** The report only appears where confidence/source review is actually meaningful
+- **Business Outcome:** Confidence/source review chrome only appears where it's actually meaningful
 - **Evidence:** `OBS-019`
 - **Classification:** Explicit
 - **Confidence:** High
@@ -526,6 +533,22 @@ No second role or permission distinction is represented anywhere in the Mapping 
 - **Assumptions:** None
 - **Decisions:** None
 - **Acceptance Criteria:** `AC-015`
+
+**Revised 2026-09-08, narrowed rather than removed:** the retracted `DA-002` and this analysis's own first draft both read the source's "Scope note" ("Manually-created workflows: no report needed... don't build one") as meaning the *entire screen* is PDF-only. `OBS-021` (Human Provided, Manali) directly refines this: the underlying page/section/field structure editor -- the accordion, the Add page/section/field affordances -- is reused as the general workflow-structure editing surface across all creation paths, including brand-new/manually-started workflows (`BR-016`). Only the confidence-review-specific chrome this requirement describes is genuinely PDF-only. Recorded as a refinement of the source's own text rather than a silent override -- see section 14.
+
+### Requirement `BR-016`: Provide the Structure Editor as the Starting Surface for a New Workflow
+
+- **Statement:** The product must, after a new workflow's settings are saved, land the user on the same page/section/field structure editor used for PDF-mapping review (empty, `STATE-006`), letting them begin building structure via "+ Add page" -- regardless of the workflow's eventual creation path.
+- **Actor:** `ACTOR-001`
+- **Capability:** `CAP-006`
+- **Business Outcome:** A new workflow has one consistent starting point for building its structure by hand, reusing the same editor rather than a separate authoring surface
+- **Evidence:** `OBS-021`, `OBS-022`
+- **Classification:** Human Provided
+- **Confidence:** High
+- **Business Rules:** None
+- **Assumptions:** None
+- **Decisions:** None
+- **Acceptance Criteria:** `AC-016`
 
 ## 10. Acceptance Criteria
 
@@ -656,32 +679,44 @@ Given a workflow created via the "Upload PDF" path
 Then its Mapping Report is available and meaningful (confidence, source, kind all populated)
 
 Given a workflow created via "Manually create"
-Then no Mapping Report is shown for it
+Then the confidence-review chrome (stat tiles, confidence filter, source tags) is not shown --
+but see AC-016: the underlying structure editor is still used as its starting surface
+```
+
+### Criteria `AC-016` for `BR-016`
+```text
+Given a new workflow's settings have just been saved
+When the user is returned to the workflow
+Then they land on the page/section/field structure editor, empty, showing only a "+ Add section" prompt (STATE-006)
+And they can begin building structure immediately via "+ Add page" / "+ Add section"
 ```
 
 Additional cases to consider:
 - **Validation:** Represented for "+ Add section"/"+ Add field" (Add disabled until required field filled) (`AC-010`, `AC-011`); not represented for the field-group Min/Max items inputs (no stated validation rule between them).
 - **Loading:** Not represented in source -- how the report behaves while extraction/confidence data is still loading is not described.
-- **Empty:** A workflow with zero mappings entirely is not explicitly described (only "page/section with zero children" is) -- see `GAP-002`.
+- **Empty:** Resolved -- a new workflow's empty state is reached via Workflow Settings -> Save -> the structure editor (`STATE-006`, `NAV-004`), per `OBS-022` (Human Provided).
 - **Success:** Represented for edit-save (toast, `OBS-011`) and for add-page/section/field (immediate appearance).
 - **Error:** Not represented -- no failure case is shown for save, add, delete, or reorder (e.g. a network failure mid-save).
-- **Permissions:** Not represented -- see `DEC-004`.
+- **Permissions:** Resolved -- no permission/role layer is built now; explicitly deferred until a login/auth capability exists (`OBS-024`, Human Provided). Not a remaining open question, but also not yet actionable as a requirement.
 - **Recovery:** Represented via Cancel (`PATH-001`) and a discard-confirmation (`PATH-002`).
+- **Responsive (mobile/tablet):** Resolved -- horizontal scroll below ~900px, not stacked cards (`BRULE-008`, `OBS-023`, Human Provided).
 
 ## 11. Assumptions
 
 | Assumption ID | Statement | Evidence or Reasoning | Impact if False | Owner | Status |
 | --- | --- | --- | --- | --- | --- |
-| `ASM-001` | The Mapping Report is entered from the Dashboard's workflow list by opening a workflow whose creation source is PDF (e.g. via its "Open" button) | The wider README's Dashboard section describes per-workflow-card Open/Preview buttons; Mapping Report's own material never states the connecting action | The actual entry trigger might differ (e.g. a dedicated "Review Mapping" action) -- affects `NAV-001` only, not any Business Requirement above | Design | Open |
+| `ASM-001` | The Mapping Report is entered from the Dashboard's workflow list by opening a workflow whose creation source is PDF | Originally inferred from the wider README's Dashboard section (Open/Preview buttons); confirmed in substance by `OBS-021` (Human Provided) -- the PDF-conversion entry path is real, alongside two others (`NAV-004`, `NAV-005`) not previously known | N/A -- confirmed | Business Owner | Confirmed |
 
 ## 12. Decisions Required and Open Questions
 
 | Decision ID | Question or Choice | Why It Matters | Affected Capability or Requirement | Evidence of Gap | Owner | Due Date | Status |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `DEC-001` | What is the actual navigation trigger into the Mapping Report from elsewhere in the product? | `NAV-001` is inferred, not stated; needed before `SCR-001`'s entry condition can be treated as confirmed | `SCR-001`, `NAV-001` | `ASM-001`, `GAP-001` | Business Owner (with Design) | `<not set>` | Open |
-| `DEC-002` | Is there a defined empty state for a workflow with zero mappings at all (as opposed to an individual empty page/section)? | Affects whether `BR-001`'s stat tiles and `BR-002`'s hierarchy have a stated behavior at zero, or need one defined | `BR-001`, `BR-002` | `GAP-002` | Business Owner (with Design) | `<not set>` | Open |
-| `DEC-003` | Should the mapping table, below ~900px, horizontally scroll (matches desktop reference, simpler) or collapse each row into a stacked card (better mobile UX, more work)? The source explicitly defers this rather than leaving it merely undocumented. | Affects the mobile/tablet experience of `BR-002`, `BR-004`, `BR-006` | `BR-002`, `BR-004`, `BR-006` | Explicit in `SRC-003` ("Don't silently pick one") | Business Owner | `<not set>` | Open |
-| `DEC-004` | Does reviewing or editing a workflow's mapping require a specific org role/permission, given the wider product shows org-level Members/Billing controls? | Affects whether `ROLE-001` needs to be split into multiple roles before requirements are finalized | `ROLE-001` | No role distinction shown anywhere in `SRC-003` | Business Owner | `<not set>` | Open |
+| `DEC-001` | What is the actual navigation trigger into the Mapping Report from elsewhere in the product? | `NAV-001` is inferred, not stated; needed before `SCR-001`'s entry condition can be treated as confirmed | `SCR-001`, `NAV-001` | `ASM-001` | Business Owner | -- | **Resolved 2026-09-08** -- see `OBS-021`, `NAV-001`/`NAV-004`/`NAV-005`. Three real entry paths: PDF conversion, reopening an existing mapping, and starting a new workflow from scratch. |
+| `DEC-002` | Is there a defined empty state for a workflow with zero mappings at all (as opposed to an individual empty page/section)? | Affects whether `BR-001`'s stat tiles and `BR-002`'s hierarchy have a stated behavior at zero, or need one defined | `BR-001`, `BR-002` | -- | Business Owner | -- | **Resolved 2026-09-08** -- see `OBS-022`, `NAV-004`, `BR-016`. New workflow: Workflow Settings -> Save -> lands on the empty structure editor (`STATE-006`), starts via "+ Add page". |
+| `DEC-003` | Should the mapping table, below ~900px, horizontally scroll (matches desktop reference, simpler) or collapse each row into a stacked card (better mobile UX, more work)? The source explicitly defers this rather than leaving it merely undocumented. | Affects the mobile/tablet experience of `BR-002`, `BR-004`, `BR-006` | `BR-002`, `BR-004`, `BR-006` | -- | Business Owner | -- | **Resolved 2026-09-08** -- see `OBS-023`, `BRULE-008`. Horizontal scroll, not stacked cards. |
+| `DEC-004` | Does reviewing or editing a workflow's mapping require a specific org role/permission, given the wider product shows org-level Members/Billing controls? | Affects whether `ROLE-001` needs to be split into multiple roles before requirements are finalized | `ROLE-001` | -- | Business Owner | -- | **Resolved (deferred) 2026-09-08** -- see `OBS-024`. No permission layer now; explicitly pending a not-yet-built login/auth capability. Revisit when that capability is scoped. |
+
+All four Decisions were answered directly on `PR #17`'s review (inline comments on this table, 2026-09-08), per Manali's stated preference that resolution happen inside the PR review itself, not in chat or as separate Issues. Each answer is recorded above as evidence in section 5 (`OBS-021`-`OBS-024`, classified `Human Provided`) and propagated to every affected requirement -- not just noted here in isolation.
 
 ## 13. Technical Unknowns
 
@@ -694,17 +729,17 @@ Additional cases to consider:
 
 | Gap ID | Type | Conflicting or Missing Information | Sources Affected | Impact | Required Action |
 | --- | --- | --- | --- | --- | --- |
-| `GAP-001` | Unclear Behavior | The exact trigger that opens the Mapping Report, and where it goes on exit/back, are never stated | `SRC-003` | `SCR-001`'s Entry/Exit fields and `NAV-001` are inferred (`ASM-001`), not confirmed | `DEC-001` |
-| `GAP-002` | Missing Source | No empty state is described for a workflow with zero mappings entirely (only per-page/per-section empty states are shown) | `SRC-003` | `BR-001`/`BR-002` have no stated zero-state behavior | `DEC-002` |
+| `GAP-001` | Unclear Behavior | The exact trigger that opens the Mapping Report, and where it goes on exit/back, are never stated in the design document itself | `SRC-003` | `SCR-001`'s Entry/Exit fields and `NAV-001` were inferred (`ASM-001`), not confirmed by the design source alone | **Resolved 2026-09-08** via `DEC-001` -- Human Provided evidence (`OBS-021`), not the design document |
+| `GAP-002` | Missing Source | No empty state is described for a workflow with zero mappings entirely (only per-page/per-section empty states are shown) | `SRC-003` | `BR-001`/`BR-002` had no stated zero-state behavior | **Resolved 2026-09-08** via `DEC-002` -- Human Provided evidence (`OBS-022`) |
+| `GAP-003` | Conflict, human-provided evidence vs. design source | The design source's own "Scope note" states manually-created workflows get no report at all ("don't build one"); `OBS-021` (Human Provided) instead describes the underlying structure editor as reused across all creation paths, including from-scratch | `SRC-003` (Scope note text) vs. `OBS-021`/`OBS-022` | `BR-015`'s original framing was too broad -- narrowed rather than removed; `BR-016` added | **Resolved 2026-09-08** -- per PRODUCT-SOURCE-MATERIAL-SPEC.md section 6's authority rules, a direct Business Owner clarification on actual product behavior takes precedence over a design document's own scope text where they diverge. Recorded explicitly here, not silently merged -- see `BR-015`'s revision note. |
 
-**No contradiction-type gap exists in this analysis.** The retracted `DA-002`'s `GAP-001`/`GAP-002` (both internal contradictions in the source text) were re-verified directly against v4 and found resolved -- see section 2's correction note. Carrying them forward here would misrepresent the actual source.
+**No contradiction-type gap remains open in this analysis.** The retracted `DA-002`'s internal-text contradictions (`GAP-001`/`GAP-002` in that document) were re-verified directly against v4 and found resolved -- see section 2's correction note; carrying them forward here would have misrepresented the actual source. `GAP-003` above is a different kind of finding -- a real, newly-discovered tension between the design document and direct Business Owner input, resolved by evidence authority, not a leftover from the prior analysis.
 
 ## 15. Exclusions and Limitations
 
 - The LLM-based workflow-creation path is explicitly named in the source as a future reuse target for this same component, not built now -- no requirement in this analysis covers it.
 - All technical implementation (extraction mechanism, reorder-list storage/sync, save persistence) is intentionally excluded and deferred to the Technical Agent stage per `TECH-001` and `TECH-002`.
-- Mobile/tablet layout for the mapping table is not resolved by this analysis -- see `DEC-003`; the source explicitly defers this choice.
-- Org-level role/permission distinctions for reviewing or editing mappings are not represented and are not assumed -- see `DEC-004`.
+- Org-level role/permission distinctions for reviewing or editing mappings are explicitly out of scope for now, not merely unrepresented -- deferred until a login/auth capability exists (`DEC-004`, `OBS-024`). No requirement in this analysis builds a permissions layer; revisit when that capability is scoped.
 - This analysis covers only the Mapping Report feature-slice of the v4 drop. The same drop's other seven screens (Dashboard, Settings Dialog, Page Editor, full auth flow) are out of scope here and, per DESIGN-HANDOFF-BUNDLE-SPEC.md section 6.2, registered and analyzed separately if/when taken up.
 - Error/failure states for save, add, delete, and reorder actions are not represented in the source and are not assumed.
 
@@ -727,6 +762,7 @@ Additional cases to consider:
 | `SRC-003` | `OBS-018` | `CAP-008` | `BRULE-007` | `BR-013` | `AC-013` | *(pending)* | -- |
 | `SRC-003` | `OBS-011` | `CAP-004` | -- | `BR-014` | `AC-014` | *(pending)* | -- |
 | `SRC-003` | `OBS-019` | -- | `BRULE-006` | `BR-015` | `AC-015` | *(pending)* | -- |
+| `SRC-003` | `OBS-021`, `OBS-022` | `CAP-006` | -- | `BR-016` | `AC-016` | *(pending)* | `DEC-001`, `DEC-002` (resolved) |
 
 ## 17. Quality Checklist
 
@@ -763,6 +799,6 @@ Enabled modules for this analysis:
 
 | Review Item | Outcome | Reviewer | Date | Notes |
 | --- | --- | --- | --- | --- |
-| Design Analysis | Pending | Manali | -- | This run stops here per BUSINESS-AGENT-WORKFLOW.md section 4.1 -- 6 unresolved Decision Required/Technical Unknown items (`DEC-001`-`004`, `TECH-001`-`002`), well over the 3-item threshold, and source readiness is `Ready with Limitations`. Both conditions independently trigger the mandatory pause before Business Requirements are drafted. |
-| Business Requirements | Not started | -- | -- | Awaiting this Design Analysis's review outcome. |
+| Design Analysis | In Review -- 4/4 Decisions resolved | Manali | 2026-09-08 | All four Decisions (`DEC-001`-`004`) answered directly on `PR #17`'s review (inline comments), incorporated as `Human Provided` evidence throughout this document -- new `NAV-004`/`NAV-005`, `BRULE-008`, `BR-016`/`AC-016`, and a revision to `BR-015`'s scope. Only `TECH-001`/`TECH-002` (Technical Unknowns, not business decisions) remain -- those are for the Technical Agent stage, not a blocker to Business Requirements. Awaiting your final outcome (Approved / Changes Requested) and the sign-off checkbox on `PR #17` to close this out. |
+| Business Requirements | Not started | -- | -- | Awaiting this Design Analysis's final review outcome. |
 | Design Version | Not yet accepted | -- | -- | Awaiting review. |
