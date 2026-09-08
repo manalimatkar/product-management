@@ -13,10 +13,10 @@
 | Analysis Version | `1.0` |
 | Created By | Business Agent workflow -- first real (non-illustrative) run |
 | Created At | 2026-09-04 |
-| Status | `In Review` -- submitted per section 4.1's mandatory pause (source readiness is `Ready with Limitations`; BUSINESS-AGENT-WORKFLOW.md must stop here before drafting Business Requirements) |
-| Related Epic | Not yet created -- pending this analysis's review outcome |
-| Related Stories | Not yet created |
-| Business Owner Approval | Pending |
+| Status | `Approved` (see section 19) -- unresolved Decisions carried forward as backlog, not resolved by this approval |
+| Related Epic | `EPIC-002` (see business-prs/pdf-workflow/workflow-manager/mapping-report/business-pr-mapping-report-BPR-002.md) |
+| Related Stories | `STORY-001` through `STORY-009` |
+| Business Owner Approval | Approved 2026-09-04 -- see section 19 |
 
 ## 2. Source Summary
 
@@ -761,6 +761,6 @@ Enabled modules for this analysis:
 
 | Review Item | Outcome | Reviewer | Date | Notes |
 | --- | --- | --- | --- | --- |
-| Design Analysis | Pending | Manali | -- | This run stops here per BUSINESS-AGENT-WORKFLOW.md section 4.1 -- source readiness was `Ready with Limitations`, so the agent must pause for review before drafting Business Requirements, rather than proceeding straight through. Two real source contradictions (`GAP-001`, `GAP-002`) make this pause especially warranted, not just procedurally required. |
-| Business Requirements | Not started | -- | -- | Awaiting this Design Analysis's review outcome. |
-| Design Version | Not yet accepted | -- | -- | Awaiting review. |
+| Design Analysis | Approved | Manali | 2026-09-04 | Approved to proceed. `DEC-001`-`DEC-006` (section 12) are explicitly **not** resolved by this approval -- per direction, unresolved items are kept as a visible backlog rather than blocking progress, matching the precedent already established by BPR-001's own DEC-001..DEC-004 carry-forward. Drafting proceeds on this analysis's stated working assumptions for `GAP-001`/`DEC-001` (in-place expand panel, not the dropdown) and `GAP-002`/`DEC-002` (confirmation dialogs exist for unlink and discard) -- both remain provisional, and `BR-005`, `BR-006`, `BR-008`, `BR-014` (and the Stories built on them) are flagged accordingly wherever they appear downstream, not silently treated as settled. |
+| Business Requirements | Approved | Manali | 2026-09-04 | See `REQSET-002` and `BPR-002`, carrying this analysis's Business Requirements forward. |
+| Design Version | Accepted | Manali | 2026-09-04 | Version `2` (Mapping Report feature-slice) accepted as the reviewed source. |
