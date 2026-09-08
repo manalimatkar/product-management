@@ -3,11 +3,11 @@ Template for a standalone Design Analysis review PR (diff = a Design Analysis
 file only, no Business Requirements/Epic/Story/Business PR yet -- per
 BUSINESS-AGENT-WORKFLOW.md section 4.1's review pause).
 
-Note: GitHub's own Review button (Approve / Request changes / Comment) can't
-be used on these PRs -- GitHub never lets a PR's author approve their own PR,
-and every PR in this repo is opened under the same account. The checkbox
-below is the actual mechanism; it's read and applied into the Design
-Analysis's own section 19 by hand (or by a future automation, not built yet).
+GitHub blocks a PR's author from submitting an "Approve" review on their own
+PR -- confirmed directly (PR #1/#2). "Request changes" and "Comment" are NOT
+blocked for the author, only "Approve" is -- so use GitHub's real Review
+button for those two. Only "Approved" (and the two states GitHub's Review
+button doesn't offer at all, "Rejected"/"Blocked") need the checkbox below.
 -->
 
 **Design Analysis:** `DA-<id>` -- `<path to the file>`
@@ -20,10 +20,11 @@ Analysis's own section 19 by hand (or by a future automation, not built yet).
 
 ## Review Outcome
 
-Check exactly one:
+**If you want changes made:** use GitHub's own **Review changes** button (top right of the "Files changed" tab) -> **Request changes**, with your inline comments attached. That's a real, native GitHub review -- not blocked for the PR's own author, only "Approve" is.
+
+**If you're approving, rejecting, or the analysis is blocked on something outside this PR:** GitHub won't let you submit a native "Approve" review on your own PR, so record it here instead -- check exactly one:
 
 - [ ] **Approved**
-- [ ] **Changes Requested** -- leave inline comments on what needs to change
 - [ ] **Rejected**
 - [ ] **Blocked** -- note the blocker below
 
