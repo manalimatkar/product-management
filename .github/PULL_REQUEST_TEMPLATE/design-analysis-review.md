@@ -3,13 +3,12 @@ Template for a standalone Design Analysis review PR (diff = a Design Analysis
 file only, no Business Requirements/Epic/Story/Business PR yet -- per
 BUSINESS-AGENT-WORKFLOW.md section 4.1's review pause).
 
-GitHub does not render a clickable checkbox inside a table cell -- verified
-directly (POST /markdown: "[ ]" in a <td> stays literal text, never becomes
-<input type="checkbox">). Only a plain list item ("- [ ]") renders as a real,
-clickable checkbox. So this uses a table for the readable overview, paired
-with a real checklist right under it -- one Approved/Needs Changes pair per
-row, matching the table by ID. This is the standard model for every review
-PR template in this repo going forward, not just this one.
+Note on the table below: GitHub does not render "[ ]" inside a table cell as
+a clickable checkbox (verified directly -- it stays literal text, unlike a
+plain list item's "- [ ]"). Mark a row by editing its cell directly -- change
+"[ ]" to "[x]" in whichever column applies -- the same way you'd edit any
+other cell in this table. This is the standard model for every review PR
+template in this repo going forward, not just this one.
 -->
 
 **Design Analysis:** `DA-<id>` -- `<path to the file>`
@@ -22,22 +21,15 @@ PR template in this repo going forward, not just this one.
 
 ## Review Outcome
 
-One row per Business Requirement this analysis produced:
+Mark exactly one column per row -- `[x]` in **Approved** or **Needs Changes**, not both:
 
-| Requirement | Statement |
-| --- | --- |
-| `BR-<id>` | `<short statement>` |
+| Requirement | Statement | Approved | Needs Changes |
+| --- | --- | :---: | :---: |
+| `BR-<id>` | `<short statement>` | [ ] | [ ] |
 
 <!-- Duplicate the row above for every Business Requirement. -->
 
-For each requirement above, check exactly one -- same order as the table:
-
-- [ ] `BR-<id>`: Approved
-- [ ] `BR-<id>`: Needs Changes
-
-<!-- Duplicate the checkbox pair above for every Business Requirement. -->
-
-If any requirement is marked **Needs Changes**, also leave an inline comment on that requirement's section in "Files changed" explaining what needs to change.
+If any row is marked **Needs Changes**, also leave an inline comment on that requirement's section in "Files changed" explaining what needs to change.
 
 ## Notes
 
@@ -45,4 +37,4 @@ If any requirement is marked **Needs Changes**, also leave an inline comment on 
 
 ---
 
-- [ ] **Business Owner sign-off (ROLE-001):** I have reviewed this Design Analysis. If every requirement above is Approved, this is my acceptance of the whole analysis; if any are marked Needs Changes, this confirms I've recorded all the feedback I have for this pass.
+- [ ] **Business Owner sign-off (ROLE-001):** I have reviewed this Design Analysis. If every row above is Approved, this is my acceptance of the whole analysis; if any are marked Needs Changes, this confirms I've recorded all the feedback I have for this pass.
