@@ -14,7 +14,7 @@ this repo going forward, not just this one.
 
 **Summary:** `<one or two sentences: what this analysis covers, and anything unusual about it>`
 
-**Open Decisions needing your input, if any:** `<list Decision IDs, or "None">` -- leave inline comments on the specific rows in the "Files changed" tab to answer them; see the file's own section 12.
+**Open Decisions needing your input, if any:** `<list Decision IDs, or "None">` -- leave inline comments on the specific line in the "Files changed" tab to answer them; see the file's own "Open Decisions" section (each Decision's full detail is in "Evidence and Traceability" further down, per DESIGN-ANALYSIS-TEMPLATE.md's format).
 
 ---
 
