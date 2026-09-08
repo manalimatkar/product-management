@@ -3,12 +3,11 @@ Template for a standalone Design Analysis review PR (diff = a Design Analysis
 file only, no Business Requirements/Epic/Story/Business PR yet -- per
 BUSINESS-AGENT-WORKFLOW.md section 4.1's review pause).
 
-Note on the table below: GitHub does not render "[ ]" inside a table cell as
-a clickable checkbox (verified directly -- it stays literal text, unlike a
-plain list item's "- [ ]"). Mark a row by editing its cell directly -- change
-"[ ]" to "[x]" in whichever column applies -- the same way you'd edit any
-other cell in this table. This is the standard model for every review PR
-template in this repo going forward, not just this one.
+Review Outcome below is a plain task list -- one real, clickable checkbox per
+requirement, text right next to it. (GitHub can't render a clickable checkbox
+inside a table cell -- verified directly, twice -- so this deliberately
+isn't a table.) This is the standard model for every review PR template in
+this repo going forward, not just this one.
 -->
 
 **Design Analysis:** `DA-<id>` -- `<path to the file>`
@@ -21,15 +20,11 @@ template in this repo going forward, not just this one.
 
 ## Review Outcome
 
-Mark exactly one column per row -- `[x]` in **Approved** or **Needs Changes**, not both:
+Check off each requirement once approved. Leave one unchecked -- and leave an inline comment on that requirement's section in "Files changed" explaining what needs to change -- for anything that needs changes.
 
-| Requirement | Statement | Approved | Needs Changes |
-| --- | --- | :---: | :---: |
-| `BR-<id>` | `<short statement>` | [ ] | [ ] |
+- [ ] `BR-<id>`: `<short statement>`
 
-<!-- Duplicate the row above for every Business Requirement. -->
-
-If any row is marked **Needs Changes**, also leave an inline comment on that requirement's section in "Files changed" explaining what needs to change.
+<!-- Duplicate the line above for every Business Requirement. -->
 
 ## Notes
 
@@ -37,4 +32,4 @@ If any row is marked **Needs Changes**, also leave an inline comment on that req
 
 ---
 
-- [ ] **Business Owner sign-off (ROLE-001):** I have reviewed this Design Analysis. If every row above is Approved, this is my acceptance of the whole analysis; if any are marked Needs Changes, this confirms I've recorded all the feedback I have for this pass.
+- [ ] **Business Owner sign-off (ROLE-001):** I have reviewed this Design Analysis. If every requirement above is checked, this is my acceptance of the whole analysis; if any are left unchecked, this confirms I've recorded all the feedback I have for this pass.
