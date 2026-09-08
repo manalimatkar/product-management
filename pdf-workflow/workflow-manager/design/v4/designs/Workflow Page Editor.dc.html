@@ -1,0 +1,1495 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/nocturne-8201375c-a32b-4af1-bd3f-e2be272ae056/styles.css">
+  <script src="_ds/nocturne-8201375c-a32b-4af1-bd3f-e2be272ae056/_ds_bundle.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    .mrl-checkbox { display:inline-flex; align-items:center; gap:8px; cursor:pointer; font-size:14px; color:var(--color-text); user-select:none; }
+    .mrl-checkbox input { position:absolute; opacity:0; width:0; height:0; pointer-events:none; }
+    .mrl-checkbox .box { width:16px; height:16px; flex:none; border-radius:var(--radius-sm); border:1.5px solid var(--color-divider); background:var(--color-surface); display:inline-flex; align-items:center; justify-content:center; }
+    .mrl-checkbox .box svg { display:none; }
+    .mrl-checkbox:hover .box { border-color: var(--color-accent); }
+    .mrl-checkbox input:checked + .box { border-color: var(--color-accent); background: var(--color-accent); }
+    .mrl-checkbox input:checked + .box svg { display:block; }
+    .mrl-checkbox input:focus-visible + .box { outline:2px solid var(--color-accent); outline-offset:2px; }
+    .mrl-fieldrow-toggle:hover { background: color-mix(in srgb, var(--color-text) 5%, transparent); }
+    select.input {
+      appearance: none;
+      -webkit-appearance: none;
+      padding-right: 36px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='none' stroke='%23e9e9ed' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3.5 5.25l3.5 3.5 3.5-3.5'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+    }
+  </style>
+</helmet>
+
+<div style="min-height:100vh; background:var(--color-bg); color:var(--color-text); font-family:var(--font-body); display:flex; flex-direction:column;">
+  <nav class="nav" style="padding-top: var(--space-4); padding-bottom: var(--space-4); border-bottom:1px solid var(--color-divider);">
+    <span class="nav-brand" style="display:flex; align-items:center; gap: var(--space-2);">
+      <span style="width:22px; height:22px; border-radius:6px; background: var(--color-accent-700); color: var(--color-accent-100); display:flex; align-items:center; justify-content:center; font-size:0.6875rem; font-weight:600; flex-shrink:0;">{{ orgInitial }}</span>
+      {{ orgName }}
+    </span>
+    <span style="margin-left:auto; display:flex; align-items:center; gap: var(--space-3);">
+      <span style="position:relative;">
+        <button type="button" style="display:flex; align-items:center; gap: var(--space-2); background:none; border:none; cursor:pointer; padding: 4px 6px 4px 4px; border-radius: 999px;" onClick="{{ toggleUserMenu }}">
+          <span style="width:26px; height:26px; border-radius:50%; background: var(--color-accent-700); color: var(--color-accent-100); display:flex; align-items:center; justify-content:center; font-size:0.6875rem; font-weight:500;">{{ userInitials }}</span>
+          <span style="font-size:0.7813rem; color: var(--color-text);">{{ userName }}</span>
+        </button>
+        <sc-if value="{{ userMenuOpen }}">
+          <div style="position: fixed; inset: 0; z-index: 20;" onClick="{{ closeUserMenu }}"></div>
+          <div class="card elev-lg" style="position:absolute; right:0; top:36px; z-index:21; min-width:200px; padding: var(--space-1);">
+            <div style="padding: var(--space-2) var(--space-3); border-bottom: 1px solid var(--color-neutral-800); margin-bottom: var(--space-1);">
+              <div style="font-size:0.8125rem; color: var(--color-text);">{{ userName }}</div>
+              <div style="font-size:0.7188rem; color: var(--color-neutral-400);">{{ userEmail }}</div>
+            </div>
+            <button type="button" class="btn btn-ghost btn-block" style="justify-content:flex-start; font-size:0.8125rem;">Account settings</button>
+            <hr class="hr" style="margin: var(--space-1) 0;">
+            <button type="button" class="btn btn-ghost btn-block" style="justify-content:flex-start; font-size:0.8125rem;">Log out</button>
+          </div>
+        </sc-if>
+      </span>
+      <span style="position:relative;">
+        <button type="button" class="btn btn-ghost btn-icon" aria-label="Settings" title="Settings" onClick="{{ toggleSettingsMenu }}">
+          <svg class="wf-ic" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1.04 1.56V21a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 8.96 19.4a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-1.56-1.04H3a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.6 8.96a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.87.34H9a1.7 1.7 0 0 0 1.04-1.56V3a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1.04 1.56 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.87V9a1.7 1.7 0 0 0 1.56 1.04H21a2 2 0 1 1 0 4h-.09A1.7 1.7 0 0 0 19.4 15z"></path></svg>
+        </button>
+        <sc-if value="{{ settingsMenuOpen }}">
+          <div style="position: fixed; inset: 0; z-index: 20;" onClick="{{ closeSettingsMenu }}"></div>
+          <div class="card elev-lg" style="position:absolute; right:0; top:36px; z-index:21; min-width:200px; padding: var(--space-1);">
+            <button type="button" class="btn btn-ghost btn-block" style="justify-content:flex-start; font-size:0.8125rem;">Organisation settings</button>
+            <button type="button" class="btn btn-ghost btn-block" style="justify-content:flex-start; font-size:0.8125rem;">Members</button>
+            <button type="button" class="btn btn-ghost btn-block" style="justify-content:flex-start; font-size:0.8125rem;">Billing</button>
+          </div>
+        </sc-if>
+      </span>
+    </span>
+  </nav>
+
+  <div style="padding: var(--space-4) var(--space-8) 0;">
+    <div style="display:flex; align-items:center; gap:6px; font-size:0.8125rem;">
+      <a href="Workflow Dashboard.dc.html" style="color: var(--color-neutral-400); text-decoration:none;">Dashboard</a>
+      <sc-if value="{{ cameFromMappingReport }}">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--color-neutral-400); flex-shrink:0;"><path d="M9 6l6 6-6 6"></path></svg>
+        <a href="Mapping Report.dc.html" style="color: var(--color-neutral-400); text-decoration:none;">Workflow Details</a>
+      </sc-if>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--color-neutral-400); flex-shrink:0;"><path d="M9 6l6 6-6 6"></path></svg>
+      <span style="color: var(--color-text);">Workflow page editor</span>
+    </div>
+  </div>
+
+  <div style="flex:1; overflow-y:auto; padding: var(--space-8); display:flex; justify-content:center;">
+    <div style="width:100%; max-width:720px;">
+      <div style="margin-bottom:var(--space-4);">
+        <div class="field" style="margin-bottom:var(--space-2);">
+          <label>Page</label>
+          <select class="input" style="white-space:normal; word-wrap:break-word;" onChange="{{ onPageSelect }}">
+            <sc-for list="{{ pagesList }}" as="p" hint-placeholder-count="3">
+              <option value="{{ p.number }}" selected="{{ p.selected }}" style="white-space:normal; word-wrap:break-word;">{{ p.label }}</option>
+            </sc-for>
+            <option value="__add__" selected="{{ newPageFormOpen }}">+ Add page</option>
+          </select>
+        </div>
+        <sc-if value="{{ newPageFormOpen }}">
+          <div style="display:flex; flex-direction:column; gap:var(--space-2); width:100%;">
+            <input class="input" type="text" required="" placeholder="Page title *" value="{{ draftPageTitle }}" onInput="{{ onDraftPageTitleChange }}" style="width:100%;">
+            <textarea class="input" rows="2" placeholder="Description (optional)" value="{{ draftPageDescription }}" onInput="{{ onDraftPageDescriptionChange }}" style="width:100%;"></textarea>
+            <div style="display:flex; justify-content:flex-end; gap:var(--space-2);">
+              <button type="button" class="btn btn-ghost" onClick="{{ cancelAddPage }}" style="font-size:0.75rem; padding:4px 10px; height:auto;">Cancel</button>
+              <button type="button" class="btn btn-secondary" onClick="{{ saveAddPage }}" disabled="{{ !addPageCanSave }}" style="font-size:0.75rem; padding:4px 10px; height:auto;">Add</button>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+      <sc-if value="{{ showPageContent }}">
+      <div style="display:flex; align-items:center; gap:var(--space-2); margin-bottom: var(--space-1);">
+        <span class="tag tag-outline">Page</span>
+        <span style="font-size:16px; font-weight:500;">{{ page.title }}</span>
+        <div style="flex:1;"></div>
+        <button type="button" class="btn btn-ghost btn-icon" aria-label="Edit page" title="Edit page" style="width:26px;height:26px; color: var(--color-accent); flex-shrink:0;" onClick="{{ onTogglePageEdit }}">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg>
+        </button>
+        <button type="button" class="btn btn-ghost btn-icon" aria-label="Move page" title="Move to…" style="width:26px;height:26px; color: var(--color-accent);" onClick="{{ openMovePage }}">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 9l-3 3 3 3"></path><path d="M9 5l3-3 3 3"></path><path d="M15 19l3 3 3-3"></path><path d="M19 9l3 3-3 3"></path><path d="M2 12h20"></path><path d="M12 2v20"></path></svg>
+        </button>
+        <button type="button" class="btn btn-ghost btn-icon" aria-label="Copy page" title="Copy page" style="width:26px;height:26px; color: var(--color-accent);" onClick="{{ openCopyPage }}">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        </button>
+        <button type="button" class="btn btn-ghost btn-icon" aria-label="Delete page" title="Delete page" style="width:26px;height:26px; color: var(--color-accent);" onClick="{{ requestDeletePage }}">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path><path d="M10 11v6M14 11v6"></path></svg>
+        </button>
+      </div>
+      <sc-if value="{{ page.hasDescription }}">
+        <p style="font-size:13px; color:var(--color-neutral-400); margin: 0 0 var(--space-6) 0;">{{ page.description }}</p>
+      </sc-if>
+      <sc-if value="{{ page.hasNoDescription }}">
+        <div style="margin-bottom: var(--space-6);"></div>
+      </sc-if>
+      <sc-if value="{{ pageEditExpanded }}">
+        <div style="border:1px solid var(--color-divider); border-radius:var(--radius-md); overflow:hidden; background:var(--color-surface); margin-bottom:var(--space-6); padding: var(--space-4); display:flex; flex-direction:column; gap: var(--space-3);">
+          <div class="field">
+            <label>Page title</label>
+            <input class="input" type="text" value="{{ pageTitleDraft }}" onChange="{{ onPageTitleDraftChange }}">
+          </div>
+          <div class="field">
+            <label>Description</label>
+            <textarea class="input" rows="2" placeholder="Description (optional)" value="{{ pageDescDraft }}" onChange="{{ onPageDescDraftChange }}"></textarea>
+          </div>
+          <div style="display:flex; justify-content:flex-end; gap:var(--space-2);">
+            <button type="button" class="btn btn-ghost" onClick="{{ onCancelPageEdit }}" style="font-size:0.75rem; padding:4px 10px; height:auto;">Cancel</button>
+            <button type="button" class="btn btn-secondary" disabled="{{ !pageTitleCanSave }}" onClick="{{ onSavePageEdit }}" style="font-size:0.75rem; padding:4px 10px; height:auto;">Save</button>
+          </div>
+        </div>
+      </sc-if>
+
+      <div style="display:flex; flex-direction:column; gap:var(--space-6);">
+        <sc-for list="{{ sectionsList }}" as="sec" hint-placeholder-count="2">
+          <div style="padding-left:var(--space-4); border-left:2px solid var(--color-divider);">
+            <div style="display:flex; align-items:center; gap:var(--space-2); margin-bottom:var(--space-3);">
+              <span class="tag tag-outline">Section</span>
+              <button type="button" class="btn btn-ghost btn-icon" aria-label="Toggle section" title="Toggle section" style="width:26px;height:26px; color: var(--color-accent);" onClick="{{ sec.onToggleCollapse }}">
+                <sc-if value="{{ sec.expanded }}"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg></sc-if>
+                <sc-if value="{{ sec.collapsed }}"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"></path></svg></sc-if>
+              </button>
+              <span style="font-size:13px; font-weight:400; opacity:0.85;">{{ sec.label }}</span>
+              <div style="flex:1;"></div>
+              <button type="button" class="btn btn-ghost btn-icon" aria-label="Edit section" title="Edit section" style="width:26px;height:26px; color: var(--color-accent);" onClick="{{ sec.onToggleEdit }}">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg>
+              </button>
+              <button type="button" class="btn btn-ghost btn-icon" aria-label="Move section to page" title="Move to…" style="width:26px;height:26px; color: var(--color-accent);" onClick="{{ sec.onMoveTo }}">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 9l-3 3 3 3"></path><path d="M9 5l3-3 3 3"></path><path d="M15 19l3 3 3-3"></path><path d="M19 9l3 3-3 3"></path><path d="M2 12h20"></path><path d="M12 2v20"></path></svg>
+              </button>
+              <button type="button" class="btn btn-ghost btn-icon" aria-label="Copy section to page" title="Copy to…" style="width:26px;height:26px; color: var(--color-accent);" onClick="{{ sec.onCopyTo }}">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              </button>
+              <button type="button" class="btn btn-ghost btn-icon" aria-label="Delete section" title="Delete section" style="width:26px;height:26px; color: var(--color-accent);" onClick="{{ sec.onDelete }}">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path><path d="M10 11v6M14 11v6"></path></svg>
+              </button>
+            </div>
+            <sc-if value="{{ sec.expanded }}">
+
+            <sc-if value="{{ sec.editExpanded }}">
+              <div style="border:1px solid var(--color-divider); border-radius:var(--radius-md); overflow:hidden; background:var(--color-surface); margin-bottom:var(--space-3); padding: var(--space-4); display:flex; flex-direction:column; gap: var(--space-3);">
+                <div class="field">
+                  <label>Section title</label>
+                  <input class="input" type="text" value="{{ sec.titleDraft }}" onChange="{{ sec.onTitleDraftChange }}">
+                </div>
+                <div class="field">
+                  <label>Description</label>
+                  <textarea class="input" rows="2" placeholder="Description (optional)" value="{{ sec.descDraft }}" onChange="{{ sec.onDescDraftChange }}"></textarea>
+                </div>
+                <div style="display:flex; justify-content:flex-end; gap:var(--space-2);">
+                  <button type="button" class="btn btn-ghost" onClick="{{ sec.onCancelEdit }}" style="font-size:0.75rem; padding:4px 10px; height:auto;">Cancel</button>
+                  <button type="button" class="btn btn-secondary" disabled="{{ !sec.titleCanSave }}" onClick="{{ sec.onSaveEdit }}" style="font-size:0.75rem; padding:4px 10px; height:auto;">Save</button>
+                </div>
+              </div>
+            </sc-if>
+
+            <div style="display:flex; flex-direction:column; gap:var(--space-2); padding-left:var(--space-4); border-left:2px solid var(--color-divider);">
+              <sc-for list="{{ sec.fields }}" as="f" hint-placeholder-count="2">
+                <div style="border:1px solid var(--color-divider); border-radius:var(--radius-md); overflow:hidden; background:var(--color-surface);">
+                  <div style="display:flex; align-items:center; gap:2px; padding-right:4px;">
+                  <button type="button" class="mrl-fieldrow-toggle" onClick="{{ f.onToggle }}" style="flex:1; display:flex; align-items:center; gap:var(--space-2); padding:12px 14px; background:none; border:none; cursor:pointer; text-align:left; color:var(--color-text); min-width:0;">
+                    <sc-if value="{{ f.expanded }}"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none; opacity:0.6;"><path d="M6 9l6 6 6-6"></path></svg></sc-if>
+                    <sc-if value="{{ f.collapsed }}"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none; opacity:0.6;"><path d="M9 6l6 6-6 6"></path></svg></sc-if>
+                    <span style="flex:1; font-size:14px; font-weight:500;">{{ f.label }}</span>
+                    <span class="tag tag-neutral">{{ f.typeLabel }}</span>
+                  </button>
+                  <button type="button" class="btn btn-ghost btn-icon" aria-label="Edit field" title="Edit field" style="width:26px;height:26px; color: var(--color-accent); flex-shrink:0;" onClick="{{ f.onEdit }}">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg>
+                  </button>
+                  <button type="button" class="btn btn-ghost btn-icon" aria-label="Move field to page or section" title="Move to…" style="width:26px;height:26px; color: var(--color-accent); flex-shrink:0;" onClick="{{ f.onMoveTo }}">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 9l-3 3 3 3"></path><path d="M9 5l3-3 3 3"></path><path d="M15 19l3 3 3-3"></path><path d="M19 9l3 3-3 3"></path><path d="M2 12h20"></path><path d="M12 2v20"></path></svg>
+                  </button>
+                  <button type="button" class="btn btn-ghost btn-icon" aria-label="Copy field to page or section" title="Copy to…" style="width:26px;height:26px; color: var(--color-accent); flex-shrink:0;" onClick="{{ f.onCopyTo }}">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                  </button>
+                  <button type="button" class="btn btn-ghost btn-icon" aria-label="Delete field" title="Delete field" style="width:26px;height:26px; color: var(--color-accent); flex-shrink:0;" onClick="{{ f.onDeleteRow }}">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path><path d="M10 11v6M14 11v6"></path></svg>
+                  </button>
+                  </div>
+
+                  <sc-if value="{{ f.expanded }}">
+                    <div style="padding: var(--space-4); border-top:1px solid var(--color-divider); display:flex; flex-direction:column; gap: var(--space-4);">
+
+                      <div class="field">
+                        <label>Label</label>
+                        <input class="input" type="text" value="{{ f.editor.label }}" onChange="{{ f.editor.onLabelChange }}">
+                      </div>
+
+                      <div class="field">
+                        <label>Field type</label>
+                        <select class="input" onChange="{{ f.editor.onTypeChange }}">
+                          <sc-for list="{{ f.editor.typeOptions }}" as="t" hint-placeholder-count="13">
+                            <option value="{{ t.value }}" selected="{{ t.selected }}">{{ t.label }}</option>
+                          </sc-for>
+                        </select>
+                      </div>
+
+                      <label class="mrl-checkbox">
+                        <input type="checkbox" checked="{{ f.editor.required }}" onChange="{{ f.editor.toggleRequired }}">
+                        <span class="box"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#161826" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"></path></svg></span>
+                        Required field
+                      </label>
+
+                      <sc-if value="{{ f.editor.showPlaceholder }}">
+                        <div class="field">
+                          <label>Placeholder</label>
+                          <input class="input" type="text" value="{{ f.editor.placeholder }}" onChange="{{ f.editor.onPlaceholderChange }}">
+                        </div>
+                      </sc-if>
+
+                      <div class="field">
+                        <label>Help text</label>
+                        <input class="input" type="text" value="{{ f.editor.helpText }}" onChange="{{ f.editor.onHelpTextChange }}">
+                      </div>
+
+                      <sc-if value="{{ f.editor.showDefault }}">
+                        <div class="field">
+                          <label>Default value</label>
+                          <input class="input" type="text" value="{{ f.editor.defaultValue }}" onChange="{{ f.editor.onDefaultChange }}">
+                        </div>
+                      </sc-if>
+
+                      <sc-if value="{{ f.editor.showOptions }}">
+                        <div class="hr"></div>
+                        <div>
+                          <p style="font-size:11px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; opacity:0.6; margin:0 0 var(--space-3);">Options</p>
+                          <div style="display:flex; flex-direction:column; gap:var(--space-2);">
+                            <sc-for list="{{ f.editor.options }}" as="opt" hint-placeholder-count="3">
+                              <div style="display:flex; align-items:center; gap:var(--space-2);">
+                                <input class="input" style="flex:1;" type="text" value="{{ opt.label }}" onChange="{{ opt.onLabelChange }}">
+                                <span class="tag tag-outline" style="flex:none;">{{ opt.value }}</span>
+                                <button type="button" class="btn btn-icon btn-ghost" style="width:28px; height:28px;" onClick="{{ opt.onRemove }}" aria-label="Remove option">
+                                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+                                </button>
+                              </div>
+                            </sc-for>
+                          </div>
+                          <div style="display:flex; align-items:center; gap:var(--space-2); margin-top:var(--space-3);">
+                            <input class="input" style="flex:1; border-style:dashed;" placeholder="Add option…" type="text" value="{{ f.editor.draftOption.label }}" onChange="{{ f.editor.onOptionDraftLabel }}">
+                            <input class="input" style="width:96px; border-style:dashed;" placeholder="value" type="text" value="{{ f.editor.draftOption.value }}" onChange="{{ f.editor.onOptionDraftValue }}">
+                            <button type="button" class="btn btn-icon btn-ghost" style="width:32px; height:32px; flex:none;" onClick="{{ f.editor.addOptionFromDraft }}" aria-label="Add option">
+                              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>
+                            </button>
+                          </div>
+                        </div>
+                      </sc-if>
+
+                      <sc-if value="{{ f.editor.isFieldGroup }}">
+                        <div class="hr"></div>
+                        <div style="display:flex; flex-direction:column; gap:var(--space-3);">
+                          <p style="font-size:11px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; opacity:0.6; margin:0;">Field group settings</p>
+                          <div class="field">
+                            <label>Item label (e.g. "Beneficiary")</label>
+                            <input class="input" type="text" value="{{ f.editor.itemLabel }}" onChange="{{ f.editor.onItemLabelChange }}">
+                          </div>
+                          <div class="field">
+                            <label>Add button label</label>
+                            <input class="input" type="text" value="{{ f.editor.addButtonLabel }}" onChange="{{ f.editor.onAddButtonLabelChange }}">
+                          </div>
+                          <div style="display:flex; gap:var(--space-3);">
+                            <div class="field" style="flex:1;">
+                              <label>Min items</label>
+                              <input class="input" type="number" value="{{ f.editor.minItems }}" onChange="{{ f.editor.onMinItemsChange }}">
+                            </div>
+                            <div class="field" style="flex:1;">
+                              <label>Max items</label>
+                              <input class="input" type="number" value="{{ f.editor.maxItemsDisplay }}" onChange="{{ f.editor.onMaxItemsChange }}">
+                            </div>
+                          </div>
+
+                          <div>
+                            <p style="font-size:11px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; opacity:0.6; margin:0 0 var(--space-2);">Fields in each item</p>
+                            <div style="display:flex; flex-direction:column; gap:var(--space-3);">
+                              <sc-for list="{{ f.editor.subFields }}" as="sub" hint-placeholder-count="3">
+                                <div style="display:flex; flex-direction:column; gap:var(--space-2);">
+                                  <div style="display:flex; align-items:center; gap:var(--space-2);">
+                                    <input class="input" style="flex:1;" type="text" value="{{ sub.label }}" onChange="{{ sub.onLabelChange }}">
+                                    <select class="input" style="width:118px; flex:none;" onChange="{{ sub.onTypeChange }}">
+                                      <sc-for list="{{ sub.typeOptions }}" as="t" hint-placeholder-count="13">
+                                        <option value="{{ t.value }}" selected="{{ t.selected }}">{{ t.label }}</option>
+                                      </sc-for>
+                                    </select>
+                                    <button type="button" class="btn btn-icon btn-ghost" style="width:28px; height:28px; flex:none;" onClick="{{ sub.onRemove }}" aria-label="Remove field">
+                                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+                                    </button>
+                                  </div>
+
+                                  <sc-if value="{{ sub.isFieldGroup }}">
+                                    <div style="margin-left:var(--space-4); padding-left:var(--space-3); border-left:2px solid var(--color-divider); display:flex; flex-direction:column; gap:var(--space-2);">
+                                      <p style="font-size:10px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; opacity:0.45; margin:0;">Fields in each {{ sub.itemNoun }}</p>
+
+                                      <sc-for list="{{ sub.subFields }}" as="leaf" hint-placeholder-count="2">
+                                        <div style="display:flex; align-items:center; gap:var(--space-2);">
+                                          <input class="input" style="flex:1;" type="text" value="{{ leaf.label }}" onChange="{{ leaf.onLabelChange }}">
+                                          <select class="input" style="width:118px; flex:none;" onChange="{{ leaf.onTypeChange }}">
+                                            <sc-for list="{{ leaf.typeOptions }}" as="t" hint-placeholder-count="12">
+                                              <option value="{{ t.value }}" selected="{{ t.selected }}">{{ t.label }}</option>
+                                            </sc-for>
+                                          </select>
+                                          <button type="button" class="btn btn-icon btn-ghost" style="width:28px; height:28px; flex:none;" onClick="{{ leaf.onRemove }}" aria-label="Remove field">
+                                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+                                          </button>
+                                        </div>
+                                      </sc-for>
+
+                                      <div style="display:flex; align-items:center; gap:var(--space-2);">
+                                        <input class="input" style="flex:1; border-style:dashed;" placeholder="Add field…" type="text" value="{{ sub.nestedDraft.label }}" onChange="{{ sub.onNestedDraftLabel }}">
+                                        <select class="input" style="width:118px; flex:none; border-style:dashed;" onChange="{{ sub.onNestedDraftType }}">
+                                          <sc-for list="{{ sub.nestedDraftOptions }}" as="t" hint-placeholder-count="12">
+                                            <option value="{{ t.value }}" selected="{{ t.selected }}">{{ t.label }}</option>
+                                          </sc-for>
+                                        </select>
+                                        <button type="button" class="btn btn-icon btn-ghost" style="width:32px; height:32px; flex:none;" onClick="{{ sub.onAddLeaf }}" aria-label="Add field">
+                                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </sc-if>
+                                </div>
+                              </sc-for>
+                            </div>
+
+                            <div style="display:flex; align-items:center; gap:var(--space-2); margin-top:var(--space-3);">
+                              <input class="input" style="flex:1; border-style:dashed;" placeholder="Add field…" type="text" value="{{ f.editor.draftSubTop.label }}" onChange="{{ f.editor.onSubTopDraftLabel }}">
+                              <select class="input" style="width:118px; flex:none; border-style:dashed;" onChange="{{ f.editor.onSubTopDraftType }}">
+                                <sc-for list="{{ f.editor.subTopTypeOptions }}" as="t" hint-placeholder-count="13">
+                                  <option value="{{ t.value }}" selected="{{ t.selected }}">{{ t.label }}</option>
+                                </sc-for>
+                              </select>
+                              <button type="button" class="btn btn-icon btn-ghost" style="width:32px; height:32px; flex:none;" onClick="{{ f.editor.addSubTopFromDraft }}" aria-label="Add field">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </sc-if>
+
+                      <sc-if value="{{ f.editor.showValidation }}">
+                        <div class="hr"></div>
+                        <div style="display:flex; flex-direction:column; gap:var(--space-3);">
+                          <p style="font-size:11px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; opacity:0.6; margin:0;">Validation</p>
+                          <div style="display:flex; gap:var(--space-3);">
+                            <div class="field" style="flex:1;">
+                              <label>Min length</label>
+                              <input class="input" type="number" value="{{ f.editor.minLengthDisplay }}" onChange="{{ f.editor.onMinLengthChange }}">
+                            </div>
+                            <div class="field" style="flex:1;">
+                              <label>Max length</label>
+                              <input class="input" type="number" value="{{ f.editor.maxLengthDisplay }}" onChange="{{ f.editor.onMaxLengthChange }}">
+                            </div>
+                          </div>
+                          <div class="field">
+                            <label>Regex pattern</label>
+                            <input class="input" type="text" value="{{ f.editor.pattern }}" onChange="{{ f.editor.onPatternChange }}">
+                          </div>
+                        </div>
+                      </sc-if>
+
+                      <div class="hr"></div>
+                      <button type="button" class="btn btn-secondary btn-block" onClick="{{ f.editor.deleteField }}">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V4h6v3m-8 0l1 13h10l1-13"></path></svg>
+                        Delete field
+                      </button>
+                    </div>
+                  </sc-if>
+                </div>
+              </sc-for>
+              <div style="padding-top:var(--space-2);">
+                <sc-if value="{{ sec.showAddFieldForm }}">
+                  <div style="display:flex; align-items:center; gap:var(--space-2);">
+                    <input class="input" type="text" required="" placeholder="Field label *" value="{{ sec.addFieldDraftLabel }}" onInput="{{ sec.onAddFieldLabelChange }}" style="flex:1;">
+                    <select class="input" value="{{ sec.addFieldDraftType }}" onChange="{{ sec.onAddFieldTypeChange }}" style="flex:1;">
+                      <sc-for list="{{ sec.fieldTypeOptionsForAdd }}" as="opt" hint-placeholder-count="13">
+                        <option value="{{ opt.value }}">{{ opt.label }}</option>
+                      </sc-for>
+                    </select>
+                    <button type="button" class="btn btn-secondary" onClick="{{ sec.saveAddField }}" disabled="{{ !sec.addFieldCanSave }}" style="font-size:0.75rem; padding:4px 10px; height:auto;">Add</button>
+                    <button type="button" class="btn btn-ghost" onClick="{{ sec.cancelAddField }}" style="font-size:0.75rem; padding:4px 10px; height:auto;">Cancel</button>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ sec.showAddFieldButton }}">
+                  <button type="button" class="btn btn-ghost" onClick="{{ sec.openAddField }}" style="font-size:0.75rem; padding:4px 10px; height:auto; color: var(--color-accent);">+ Add field</button>
+                </sc-if>
+              </div>
+            </div>
+            </sc-if>
+          </div>
+        </sc-for>
+        <div>
+          <sc-if value="{{ showAddSectionForm }}">
+            <div style="display:flex; flex-direction:column; gap:var(--space-2); max-width:420px;">
+              <input class="input" type="text" required="" placeholder="Section title *" value="{{ addSectionDraftLabel }}" onInput="{{ onAddSectionLabelChange }}">
+              <textarea class="input" rows="2" placeholder="Description (optional)" value="{{ addSectionDraftDescription }}" onInput="{{ onAddSectionDescriptionChange }}"></textarea>
+              <div style="display:flex; justify-content:flex-end; gap:var(--space-2);">
+                <button type="button" class="btn btn-ghost" onClick="{{ cancelAddSection }}" style="font-size:0.75rem; padding:4px 10px; height:auto;">Cancel</button>
+                <button type="button" class="btn btn-secondary" onClick="{{ saveAddSection }}" disabled="{{ !addSectionCanSave }}" style="font-size:0.75rem; padding:4px 10px; height:auto;">Add</button>
+              </div>
+            </div>
+          </sc-if>
+          <sc-if value="{{ showAddSectionButton }}">
+            <button type="button" class="btn btn-ghost" onClick="{{ openAddSection }}" style="font-size:0.75rem; padding:4px 10px; height:auto; color: var(--color-accent);">+ Add section</button>
+          </sc-if>
+        </div>
+      </div>
+      </sc-if>
+    </div>
+  </div>
+
+  <sc-if value="{{ showDeleteSectionConfirm }}">
+    <div class="dialog-backdrop">
+      <div class="dialog">
+        <div class="dialog-title" style="border-bottom:1px solid var(--color-divider); padding-bottom: var(--space-3); margin-bottom: var(--space-3);">Delete this section?</div>
+        <div class="dialog-body">{{ deleteSectionMessage }}</div>
+        <div class="dialog-actions">
+          <button type="button" class="btn btn-ghost" onClick="{{ cancelDeleteSection }}">Cancel</button>
+          <button type="button" class="btn btn-primary" onClick="{{ confirmDeleteSectionNow }}">Delete</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ showDeletePageConfirm }}">
+    <div class="dialog-backdrop">
+      <div class="dialog">
+        <div class="dialog-title" style="border-bottom:1px solid var(--color-divider); padding-bottom: var(--space-3); margin-bottom: var(--space-3);">Delete this page?</div>
+        <div class="dialog-body">{{ deletePageMessage }}</div>
+        <div class="dialog-actions">
+          <button type="button" class="btn btn-ghost" onClick="{{ cancelDeletePage }}">Cancel</button>
+          <button type="button" class="btn btn-primary" onClick="{{ confirmDeletePageNow }}">Delete</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ showCopyPageDialog }}">
+    <div class="dialog-backdrop">
+      <div class="dialog">
+        <div class="dialog-title" style="border-bottom:1px solid var(--color-divider); padding-bottom: var(--space-3); margin-bottom: var(--space-3);">Copy page to…</div>
+        <div class="dialog-body">
+          <div class="field">
+            <label>Destination workflow</label>
+            <select class="input" onChange="{{ onCopyPageDestinationChange }}">
+              <sc-for list="{{ copyPageDestinationOptions }}" as="opt" hint-placeholder-count="3">
+                <option value="{{ opt.value }}" selected="{{ opt.selected }}">{{ opt.label }}</option>
+              </sc-for>
+            </select>
+          </div>
+        </div>
+        <div class="dialog-actions">
+          <button type="button" class="btn btn-ghost" onClick="{{ closeCopyPage }}">Cancel</button>
+          <button type="button" class="btn btn-primary" onClick="{{ confirmCopyPage }}">Copy</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ showMovePageDialog }}">
+    <div class="dialog-backdrop">
+      <div class="dialog">
+        <div class="dialog-title" style="border-bottom:1px solid var(--color-divider); padding-bottom: var(--space-3); margin-bottom: var(--space-3);">Move page to…</div>
+        <div class="dialog-body" style="display:flex; flex-direction:column; gap:var(--space-3);">
+          <div class="field">
+            <label>Workflow</label>
+            <select class="input" onChange="{{ onMovePageWorkflowChange }}">
+              <sc-for list="{{ movePageWorkflowOptions }}" as="wf" hint-placeholder-count="3">
+                <option value="{{ wf.value }}" selected="{{ wf.selected }}">{{ wf.label }}</option>
+              </sc-for>
+            </select>
+          </div>
+          <div class="field">
+            <label>Position</label>
+            <select class="input" onChange="{{ onMovePageTargetChange }}">
+              <sc-for list="{{ movePagePositionOptions }}" as="opt" hint-placeholder-count="3">
+                <option value="{{ opt.value }}" selected="{{ opt.selected }}">{{ opt.label }}</option>
+              </sc-for>
+            </select>
+          </div>
+        </div>
+        <div class="dialog-actions">
+          <button type="button" class="btn btn-ghost" onClick="{{ closeMovePage }}">Cancel</button>
+          <button type="button" class="btn btn-primary" onClick="{{ confirmMovePage }}">Move</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ showMoveCopySection }}">
+    <div class="dialog-backdrop">
+      <div class="dialog">
+        <div class="dialog-title" style="border-bottom:1px solid var(--color-divider); padding-bottom: var(--space-3); margin-bottom: var(--space-3);">{{ moveCopySectionTitle }}</div>
+        <div class="dialog-body" style="display:flex; flex-direction:column; gap:var(--space-3);">
+          <div class="field">
+            <label>Workflow</label>
+            <select class="input" onChange="{{ onMoveCopySectionWorkflowChange }}">
+              <sc-for list="{{ moveCopySectionWorkflowOptions }}" as="wf" hint-placeholder-count="3">
+                <option value="{{ wf.value }}" selected="{{ wf.selected }}">{{ wf.label }}</option>
+              </sc-for>
+            </select>
+          </div>
+          <div class="field">
+            <label>Page</label>
+            <select class="input" onChange="{{ onMoveCopySectionTargetPageChange }}">
+              <sc-for list="{{ moveCopySectionPagesList }}" as="p" hint-placeholder-count="3">
+                <option value="{{ p.number }}" selected="{{ p.selected }}">{{ p.label }}</option>
+              </sc-for>
+            </select>
+          </div>
+        </div>
+        <div class="dialog-actions">
+          <button type="button" class="btn btn-ghost" onClick="{{ closeMoveCopySection }}">Cancel</button>
+          <button type="button" class="btn btn-primary" onClick="{{ confirmMoveCopySection }}">{{ moveCopySectionActionLabel }}</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ showMoveCopyField }}">
+    <div class="dialog-backdrop">
+      <div class="dialog">
+        <div class="dialog-title" style="border-bottom:1px solid var(--color-divider); padding-bottom: var(--space-3); margin-bottom: var(--space-3);">{{ moveCopyTitle }}</div>
+        <div class="dialog-body" style="display:flex; flex-direction:column; gap:var(--space-3);">
+          <div class="field">
+            <label>Workflow</label>
+            <select class="input" onChange="{{ onMoveCopyWorkflowChange }}">
+              <sc-for list="{{ moveCopyWorkflowOptions }}" as="wf" hint-placeholder-count="3">
+                <option value="{{ wf.value }}" selected="{{ wf.selected }}">{{ wf.label }}</option>
+              </sc-for>
+            </select>
+          </div>
+          <div class="field">
+            <label>Page</label>
+            <select class="input" onChange="{{ onMoveCopyTargetPageChange }}">
+              <sc-for list="{{ moveCopyPagesList }}" as="p" hint-placeholder-count="3">
+                <option value="{{ p.number }}" selected="{{ p.selected }}">{{ p.label }}</option>
+              </sc-for>
+            </select>
+          </div>
+          <div class="field">
+            <label>Section</label>
+            <sc-if value="{{ moveCopyNoSections }}">
+              <div style="font-size:0.8125rem; color: var(--color-neutral-400); padding: var(--space-2) 0;">This page has no sections yet.</div>
+            </sc-if>
+            <sc-if value="{{ !moveCopyNoSections }}">
+              <select class="input" onChange="{{ onMoveCopyTargetSectionChange }}">
+                <sc-for list="{{ moveCopySectionsList }}" as="sec" hint-placeholder-count="2">
+                  <option value="{{ sec.id }}" selected="{{ sec.selected }}">{{ sec.label }}</option>
+                </sc-for>
+              </select>
+            </sc-if>
+          </div>
+        </div>
+        <div class="dialog-actions">
+          <button type="button" class="btn btn-ghost" onClick="{{ closeMoveCopyField }}">Cancel</button>
+          <button type="button" class="btn btn-primary" disabled="{{ !moveCopyCanConfirm }}" onClick="{{ confirmMoveCopyField }}">{{ moveCopyActionLabel }}</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ toast }}">
+    <div style="position: fixed; bottom: var(--space-5); left:50%; transform: translateX(-50%); z-index: 30;" class="card elev-lg">
+      <span style="font-size:0.8125rem; color: var(--color-text); display:flex; align-items:center; gap: var(--space-2); padding: var(--space-2) var(--space-3);">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
+        {{ toast.text }}
+      </span>
+    </div>
+  </sc-if>
+
+  <footer style="border-top: 1px solid var(--color-divider); padding: var(--space-4) var(--space-6); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap: var(--space-3);">
+    <span style="font-size:0.75rem; color: var(--color-neutral-400);">© 2026 Formwork. All rights reserved.</span>
+    <div style="display:flex; gap: var(--space-4);">
+      <a href="#" style="font-size:0.75rem;">Documentation</a>
+      <a href="#" style="font-size:0.75rem;">Support</a>
+      <a href="#" style="font-size:0.75rem;">Status</a>
+    </div>
+  </footer>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1200,&quot;height&quot;:900},&quot;defaultPage&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:2,&quot;options&quot;:[1,2,3],&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Behavior&quot;},&quot;expandAllByDefault&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Behavior&quot;}}">
+const FIELD_TYPES = [
+  { value: 'text',           label: 'Text Input' },
+  { value: 'textarea',       label: 'Text' },
+  { value: 'email',          label: 'Email' },
+  { value: 'number',         label: 'Number' },
+  { value: 'date',           label: 'Date' },
+  { value: 'select',         label: 'Dropdown' },
+  { value: 'multiselect',    label: 'Multi-select' },
+  { value: 'radio',          label: 'Radio buttons' },
+  { value: 'checkbox',       label: 'Single checkbox' },
+  { value: 'checkbox_group', label: 'Checkbox group' },
+  { value: 'file',           label: 'File upload' },
+  { value: 'signature',      label: 'Signature' },
+  { value: 'field_group',    label: 'Field Group' },
+];
+const LEAF_FIELD_TYPES = FIELD_TYPES.filter(t => t.value !== 'field_group');
+const TYPE_LABEL = Object.fromEntries(FIELD_TYPES.map(t => [t.value, t.label]));
+const HAS_OPTIONS = ['select', 'multiselect', 'radio', 'checkbox_group'];
+const HAS_PLACEHOLDER = ['text', 'email', 'number', 'textarea'];
+const HAS_DEFAULT = ['text', 'email', 'number'];
+const HAS_VALIDATION = ['text', 'email', 'textarea'];
+
+// A page is a set of sections; fields belong to a section, never directly to
+// the page — mirrors the Mapping Report's real Page → Section → Field
+// hierarchy. Each page carries its own sections + fields.
+const PAGES = {
+  1: {
+    number: 1, title: 'Applicant Information',
+    sections: [
+      { id: 'p1-sec-basic', label: 'Basic Info', description: 'Core identity details used to verify the applicant.', fieldIds: ['fname', 'dob'] },
+      { id: 'p1-sec-contact', label: 'Contact', description: 'How we\u2019ll reach the applicant about this policy.', fieldIds: ['email', 'phone'] },
+    ],
+    fields: {
+      fname: { id: 'fname', label: 'Full name', fieldType: 'text', required: true, placeholder: 'Jane Doe', helpText: 'As it appears on the policy.', defaultValue: '', minLength: 2, maxLength: 80, pattern: '' },
+      dob: { id: 'dob', label: 'Date of birth', fieldType: 'date', required: true, helpText: '' },
+      email: { id: 'email', label: 'Email address', fieldType: 'email', required: true, placeholder: 'jane@example.com', helpText: '', defaultValue: '' },
+      phone: { id: 'phone', label: 'Phone number', fieldType: 'text', required: false, placeholder: '(555) 555-5555', helpText: '', defaultValue: '', minLength: null, maxLength: 20, pattern: '' },
+    },
+  },
+  2: {
+    number: 2, title: 'Beneficiary Details',
+    sections: [
+      { id: 'sec-applicant', label: 'Applicant Information', description: 'Confirm the policyholder\u2019s basic details.', fieldIds: ['fullname', 'marital'] },
+      { id: 'sec-docs', label: 'Documentation', description: 'Upload identifying documents and add beneficiaries.', fieldIds: ['photoid', 'beneficiaries'] },
+    ],
+    fields: {
+      fullname: { id: 'fullname', label: 'Full name', fieldType: 'text', required: true, placeholder: 'Jane Doe', helpText: 'As it appears on the policy.', defaultValue: '', minLength: 2, maxLength: 80, pattern: '' },
+      marital: { id: 'marital', label: 'Marital status', fieldType: 'select', required: true, helpText: '', options: [{ value: 'single', label: 'Single' }, { value: 'married', label: 'Married' }, { value: 'divorced', label: 'Divorced' }] },
+      photoid: { id: 'photoid', label: 'Photo ID', fieldType: 'file', required: true, helpText: 'Upload a government-issued ID.' },
+      beneficiaries: {
+        id: 'beneficiaries', label: 'Beneficiaries', fieldType: 'field_group', required: false,
+        helpText: 'Add each person receiving a share of the policy.',
+        itemLabel: 'Beneficiary', addButtonLabel: 'Add beneficiary', minItems: 1, maxItems: 5,
+        subFields: [
+          { id: 'sf1', label: 'Full name', fieldType: 'text' },
+          { id: 'sf2', label: 'Relationship', fieldType: 'select' },
+          { id: 'sf3', label: 'Supporting documents', fieldType: 'field_group', subFields: [
+            { id: 'lf1', label: 'Document type', fieldType: 'select' },
+            { id: 'lf2', label: 'File', fieldType: 'file' },
+          ] },
+        ],
+      },
+    },
+  },
+  3: {
+    number: 3, title: 'Review & Signature',
+    sections: [
+      { id: 'p3-sec-sig', label: 'Signature', description: 'Review the application and confirm accuracy.', fieldIds: ['sig', 'confirm'] },
+    ],
+    fields: {
+      sig: { id: 'sig', label: 'Applicant signature', fieldType: 'signature', required: true, helpText: 'Sign to confirm the information above is accurate.' },
+      confirm: { id: 'confirm', label: 'I confirm this application is accurate', fieldType: 'checkbox', required: true, helpText: '' },
+    },
+  },
+};
+
+const EMPTY_DRAFT_OPTION = { label: '', value: '' };
+const EMPTY_DRAFT_SUBTOP = { label: '', type: 'text' };
+const OTHER_WORKFLOWS = ['Auto Claim Intake', 'Property Damage Report', 'Life Insurance Application'];
+const OTHER_WORKFLOW_PAGES = {
+  'Auto Claim Intake': [{ number: 1, title: 'Claimant Details' }, { number: 2, title: 'Incident Description' }],
+  'Property Damage Report': [{ number: 1, title: 'Property Information' }, { number: 2, title: 'Damage Assessment' }],
+  'Life Insurance Application': [{ number: 1, title: 'Applicant Details' }, { number: 2, title: 'Beneficiary Information' }],
+};
+const OTHER_WORKFLOW_SECTIONS = {
+  'Auto Claim Intake': {
+    1: [{ id: 'oc-1-1', label: 'Claimant Info' }, { id: 'oc-1-2', label: 'Contact Details' }],
+    2: [{ id: 'oc-2-1', label: 'Incident Summary' }],
+  },
+  'Property Damage Report': {
+    1: [{ id: 'pd-1-1', label: 'Property Address' }],
+    2: [{ id: 'pd-2-1', label: 'Damage Photos' }, { id: 'pd-2-2', label: 'Repair Estimate' }],
+  },
+  'Life Insurance Application': {
+    1: [{ id: 'li-1-1', label: 'Personal Info' }],
+    2: [{ id: 'li-2-1', label: 'Beneficiary List' }],
+  },
+};
+
+class Component extends DCLogic {
+  state = {
+    // Starting from scratch (arrived via the dashboard's "Start from scratch")
+    // means a brand-new workflow with no pages yet — don't show the seeded
+    // demo pages.
+    pages: (() => {
+      try { return new URLSearchParams(window.location.search).get('from') === 'dashboard' ? {} : PAGES; } catch (e) { return PAGES; }
+    })(),
+    currentPage: this.props.defaultPage || 2,
+    // Independent open/closed state per field — matches the Mapping Report's
+    // own collapse pattern (each row toggles itself; several can be open at
+    // once), replacing the old single side-panel editor.
+    expanded: (() => {
+      const p = PAGES[this.props.defaultPage || 2];
+      return this.props.expandAllByDefault
+        ? Object.fromEntries(Object.keys(p.fields).map(id => [id, true]))
+        : {};
+    })(),
+    draft: { option: {}, subTop: {}, subNested: {} },
+    newPageFormOpen: (() => {
+      try { return new URLSearchParams(window.location.search).get('from') === 'dashboard'; } catch (e) { return false; }
+    })(),
+    draftPageTitle: '',
+    draftPageDescription: '',
+    newSectionFormOpen: false,
+    draftSectionLabel: '',
+    draftSectionDescription: '',
+    editingPage: false,
+    pageTitleDraft: '',
+    pageDescDraft: '',
+    editingSectionId: null,
+    sectionTitleDraft: '',
+    sectionDescDraft: '',
+    sectionCollapsed: {},
+    newFieldFormSid: null,
+    draftFieldLabel: '',
+    draftFieldType: 'text',
+    userMenuOpen: false,
+    settingsMenuOpen: false,
+    confirmDeleteSectionId: null,
+    confirmDeletePage: false,
+    moveCopyFieldId: null,
+    moveCopyMode: null,
+    moveCopyTargetPage: null,
+    moveCopyTargetSection: null,
+    moveCopyWorkflow: 'this',
+    moveCopySectionId: null,
+    moveCopySectionMode: null,
+    moveCopySectionTargetPage: null,
+    moveCopySectionWorkflow: 'this',
+    pageOrder: [],
+    showMovePageDialog: false,
+    movePageTarget: null,
+    movePageWorkflow: 'this',
+    showCopyPageDialog: false,
+    copyPageDestination: 'this',
+    toast: null,
+    cameFromMappingReport: (() => {
+      try { return new URLSearchParams(window.location.search).get('from') !== 'dashboard'; } catch (e) { return true; }
+    })(),
+  };
+
+  toggleUserMenu = () => this.setState((s) => ({ userMenuOpen: !s.userMenuOpen, settingsMenuOpen: false }));
+  closeUserMenu = () => this.setState({ userMenuOpen: false });
+  toggleSettingsMenu = () => this.setState((s) => ({ settingsMenuOpen: !s.settingsMenuOpen, userMenuOpen: false }));
+  closeSettingsMenu = () => this.setState({ settingsMenuOpen: false });
+
+  toggleField = (id) => this.setState(s => ({ expanded: { ...s.expanded, [id]: !s.expanded[id] } }));
+
+  patchField(fieldId, updaterOrPatch) {
+    this.setState(s => {
+      const page = s.pages[s.currentPage];
+      const cur = page.fields[fieldId];
+      if (!cur) return {};
+      const next = typeof updaterOrPatch === 'function' ? updaterOrPatch(cur) : { ...cur, ...updaterOrPatch };
+      return { pages: { ...s.pages, [s.currentPage]: { ...page, fields: { ...page.fields, [fieldId]: next } } } };
+    });
+  }
+  setField(fieldId, key, value) { this.patchField(fieldId, { [key]: value }); }
+  toggleRequired(fieldId) { this.patchField(fieldId, f => ({ ...f, required: !f.required })); }
+  changeFieldType(fieldId, type) { this.patchField(fieldId, { fieldType: type }); }
+
+  onPageSelect = (e) => {
+    if (e.target.value === '__add__') { this.openAddPage(); return; }
+    this.switchPage(Number(e.target.value));
+  };
+  switchPage = (pageNumber) => this.setState({ currentPage: pageNumber });
+
+  openAddPage = () => this.setState({ newPageFormOpen: true, draftPageTitle: '', draftPageDescription: '' });
+  cancelAddPage = () => this.setState({ newPageFormOpen: false, draftPageTitle: '', draftPageDescription: '' });
+  onDraftPageTitleChange = (e) => this.setState({ draftPageTitle: e.target.value });
+  onDraftPageDescriptionChange = (e) => this.setState({ draftPageDescription: e.target.value });
+  saveAddPage = () => {
+    const title = (this.state.draftPageTitle || '').trim();
+    if (!title) return;
+    const description = (this.state.draftPageDescription || '').trim();
+    this.setState(s => {
+      const nums = Object.keys(s.pages).map(Number);
+      const next = nums.length ? Math.max(...nums) + 1 : 1;
+      return { pages: { ...s.pages, [next]: { number: next, title, description, sections: [], fields: {} } }, currentPage: next, newPageFormOpen: false, draftPageTitle: '', draftPageDescription: '' };
+    });
+  };
+  onTogglePageEdit = () => {
+    if (this.state.editingPage) { this.setState({ editingPage: false }); return; }
+    const page = this.state.pages[this.state.currentPage];
+    this.setState({ editingPage: true, pageTitleDraft: page.title, pageDescDraft: page.description || '' });
+  };
+  onPageTitleDraftChange = (e) => this.setState({ pageTitleDraft: e.target.value });
+  onPageDescDraftChange = (e) => this.setState({ pageDescDraft: e.target.value });
+  onCancelPageEdit = () => this.setState({ editingPage: false });
+  onSavePageEdit = () => {
+    const title = (this.state.pageTitleDraft || '').trim();
+    if (!title) return;
+    const description = (this.state.pageDescDraft || '').trim();
+    this.setState(s => ({ pages: { ...s.pages, [s.currentPage]: { ...s.pages[s.currentPage], title, description } }, editingPage: false }));
+  };
+  openMoveCopySection = (sectionId, mode) => {
+    const page = this.state.pages[this.state.currentPage];
+    const srcSec = page.sections.find(sc => sc.fieldIds.includes(sectionId) || sc.id === sectionId);
+    const targetSection = srcSec ? srcSec.id : (page.sections[0] ? page.sections[0].id : null);
+    this.setState({ moveCopySectionId: sectionId, moveCopySectionMode: mode, moveCopySectionTargetPage: this.state.currentPage, moveCopySectionWorkflow: 'this' });
+  };
+  closeMoveCopySection = () => this.setState({ moveCopySectionId: null, moveCopySectionMode: null, moveCopySectionTargetPage: null, moveCopySectionWorkflow: 'this' });
+  onMoveCopySectionWorkflowChange = (e) => this.setState({ moveCopySectionWorkflow: e.target.value });
+  onMoveCopySectionTargetPageChange = (e) => this.setState({ moveCopySectionTargetPage: Number(e.target.value) });
+  confirmMoveCopySection = () => {
+    const { moveCopySectionId: sid, moveCopySectionMode: mode, moveCopySectionTargetPage: targetPage, moveCopySectionWorkflow: workflow } = this.state;
+    if (!sid) return;
+    if (workflow !== 'this') {
+      if (mode === 'move') {
+        this.removeSection(sid);
+      }
+      this.setState({ moveCopySectionId: null, moveCopySectionMode: null, moveCopySectionTargetPage: null, moveCopySectionWorkflow: 'this' });
+      this.showToast(`Section ${mode === 'move' ? 'moved' : 'copied'} to "${workflow}"`);
+      return;
+    }
+    if (targetPage == null) return;
+    this.setState(s => {
+      const srcPageNum = s.currentPage;
+      const srcPage = s.pages[srcPageNum];
+      const sec = srcPage.sections.find(x => x.id === sid);
+      if (!sec) return {};
+      if (mode === 'move' && srcPageNum === targetPage) {
+        return { moveCopySectionId: null, moveCopySectionMode: null, moveCopySectionTargetPage: null };
+      }
+      let newSec = sec;
+      const fieldsToAdd = {};
+      if (mode === 'copy') {
+        const idMap = {};
+        const newFieldIds = sec.fieldIds.map(fid => {
+          const nid = 'f-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+          idMap[fid] = nid;
+          return nid;
+        });
+        sec.fieldIds.forEach(fid => { fieldsToAdd[idMap[fid]] = { ...srcPage.fields[fid], id: idMap[fid] }; });
+        newSec = { ...sec, id: 'sec-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6), fieldIds: newFieldIds };
+      } else {
+        sec.fieldIds.forEach(fid => { fieldsToAdd[fid] = srcPage.fields[fid]; });
+      }
+
+      let updatedSrcPage = srcPage;
+      if (mode === 'move') {
+        const sections = srcPage.sections.filter(x => x.id !== sid);
+        const fields = { ...srcPage.fields };
+        sec.fieldIds.forEach(fid => delete fields[fid]);
+        updatedSrcPage = { ...srcPage, sections, fields };
+      }
+
+      const basePage = srcPageNum === targetPage ? updatedSrcPage : s.pages[targetPage];
+      const updatedTargetPage = { ...basePage, sections: [...basePage.sections, newSec], fields: { ...basePage.fields, ...fieldsToAdd } };
+
+      const pages = { ...s.pages };
+      pages[srcPageNum] = srcPageNum === targetPage ? updatedTargetPage : updatedSrcPage;
+      if (srcPageNum !== targetPage) pages[targetPage] = updatedTargetPage;
+
+      return { pages, moveCopySectionId: null, moveCopySectionMode: null, moveCopySectionTargetPage: null, moveCopySectionWorkflow: 'this' };
+    });
+  };
+  deleteSectionConfirm = (sid) => {
+    const page = this.state.pages[this.state.currentPage];
+    const sec = page.sections.find(x => x.id === sid);
+    if (!sec) return;
+    if (sec.fieldIds.length > 0) { this.setState({ confirmDeleteSectionId: sid }); return; }
+    this.removeSection(sid);
+  };
+  cancelDeleteSection = () => this.setState({ confirmDeleteSectionId: null });
+  confirmDeleteSectionNow = () => {
+    const sid = this.state.confirmDeleteSectionId;
+    this.setState({ confirmDeleteSectionId: null });
+    this.removeSection(sid);
+  };
+  removeSection = (sid) => {
+    this.setState(s => {
+      const p = s.pages[s.currentPage];
+      const sec = p.sections.find(x => x.id === sid);
+      if (!sec) return {};
+      const fields = { ...p.fields };
+      sec.fieldIds.forEach(id => delete fields[id]);
+      return { pages: { ...s.pages, [s.currentPage]: { ...p, sections: p.sections.filter(x => x.id !== sid), fields } } };
+    });
+  };
+  requestDeletePage = () => this.setState({ confirmDeletePage: true });
+  cancelDeletePage = () => this.setState({ confirmDeletePage: false });
+  confirmDeletePageNow = () => {
+    this.setState(s => {
+      const nums = Object.keys(s.pages).map(Number).filter(n => n !== s.currentPage);
+      const remaining = { ...s.pages };
+      delete remaining[s.currentPage];
+      const nextPage = nums.length ? Math.min(...nums) : null;
+      return { pages: remaining, currentPage: nextPage, confirmDeletePage: false, newPageFormOpen: nextPage === null };
+    });
+  };
+  openAddSection = () => this.setState({ newSectionFormOpen: true, draftSectionLabel: '', draftSectionDescription: '' });
+  cancelAddSection = () => this.setState({ newSectionFormOpen: false, draftSectionLabel: '', draftSectionDescription: '' });
+  onDraftSectionLabelChange = (e) => this.setState({ draftSectionLabel: e.target.value });
+  onDraftSectionDescriptionChange = (e) => this.setState({ draftSectionDescription: e.target.value });
+  saveAddSection = () => {
+    const label = (this.state.draftSectionLabel || '').trim();
+    if (!label) return;
+    const description = (this.state.draftSectionDescription || '').trim();
+    const sid = 'sec-' + Date.now();
+    this.setState(s => {
+      const page = s.pages[s.currentPage];
+      return { pages: { ...s.pages, [s.currentPage]: { ...page, sections: [...page.sections, { id: sid, label, description, fieldIds: [] }] } }, newSectionFormOpen: false, draftSectionLabel: '', draftSectionDescription: '' };
+    });
+  };
+  toggleSectionEdit = (sid) => {
+    const isOpen = this.state.editingSectionId === sid;
+    if (isOpen) { this.setState({ editingSectionId: null }); return; }
+    const page = this.state.pages[this.state.currentPage];
+    const sec = page.sections.find(x => x.id === sid);
+    this.setState({ editingSectionId: sid, sectionTitleDraft: sec.label, sectionDescDraft: sec.description || '' });
+  };
+  onSectionTitleDraftChange = (e) => this.setState({ sectionTitleDraft: e.target.value });
+  onSectionDescDraftChange = (e) => this.setState({ sectionDescDraft: e.target.value });
+  cancelSectionEdit = () => this.setState({ editingSectionId: null });
+  saveSectionEdit = (sid) => {
+    const label = (this.state.sectionTitleDraft || '').trim();
+    if (!label) return;
+    const description = (this.state.sectionDescDraft || '').trim();
+    this.setState(s => {
+      const page = s.pages[s.currentPage];
+      const sections = page.sections.map(sec => sec.id === sid ? { ...sec, label, description } : sec);
+      return { pages: { ...s.pages, [s.currentPage]: { ...page, sections } }, editingSectionId: null };
+    });
+  };
+
+  toggleSectionCollapse = (sid) => this.setState(s => ({ sectionCollapsed: { ...s.sectionCollapsed, [sid]: !s.sectionCollapsed[sid] } }));
+  openAddField = (sid) => this.setState({ newFieldFormSid: sid, draftFieldLabel: '', draftFieldType: 'text' });
+  cancelAddField = () => this.setState({ newFieldFormSid: null });
+  onDraftFieldLabelChange = (e) => this.setState({ draftFieldLabel: e.target.value });
+  onDraftFieldTypeChange = (e) => this.setState({ draftFieldType: e.target.value });
+  saveAddField = (sid) => {
+    const label = (this.state.draftFieldLabel || '').trim();
+    if (!label) return;
+    const fid = 'f-' + Date.now();
+    const fieldType = this.state.draftFieldType;
+    this.setState(s => {
+      const page = s.pages[s.currentPage];
+      const sections = page.sections.map(sec => sec.id === sid ? { ...sec, fieldIds: [...sec.fieldIds, fid] } : sec);
+      return { pages: { ...s.pages, [s.currentPage]: { ...page, sections, fields: { ...page.fields, [fid]: { id: fid, label, fieldType, required: false, helpText: '' } } } }, newFieldFormSid: null, draftFieldLabel: '', draftFieldType: 'text' };
+    });
+  };
+
+  updateSubFieldsTree(fieldObj, parentId, updater) {
+    if (parentId == null) return { ...fieldObj, subFields: updater(fieldObj.subFields || []) };
+    return { ...fieldObj, subFields: (fieldObj.subFields || []).map(sf => sf.id === parentId ? { ...sf, subFields: updater(sf.subFields || []) } : sf) };
+  }
+  addSubField(fieldId, label, type, parentId = null) {
+    const l = (label || '').trim();
+    if (!l) return;
+    const id = 'f' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+    this.patchField(fieldId, f => this.updateSubFieldsTree(f, parentId, list => [...list, { id, label: l, fieldType: type || 'text' }]));
+    this.clearDraft(parentId == null ? 'subTop' : 'nested', parentId == null ? fieldId : parentId);
+  }
+  removeSubField(fieldId, id, parentId = null) {
+    this.patchField(fieldId, f => this.updateSubFieldsTree(f, parentId, list => list.filter(s => s.id !== id)));
+  }
+  renameSubField(fieldId, id, newLabel, parentId = null) {
+    const l = (newLabel || '').trim();
+    if (!l) return;
+    this.patchField(fieldId, f => this.updateSubFieldsTree(f, parentId, list => list.map(s => s.id === id ? { ...s, label: l } : s)));
+  }
+  changeSubFieldType(fieldId, id, newType, parentId = null) {
+    this.patchField(fieldId, f => this.updateSubFieldsTree(f, parentId, list => list.map(s => s.id === id ? { ...s, fieldType: newType } : s)));
+  }
+
+  addOption(fieldId, label, value) {
+    const l = (label || '').trim();
+    if (!l) return;
+    const v = (value || '').trim() || l.toLowerCase().replace(/\s+/g, '_');
+    this.patchField(fieldId, f => {
+      const existing = f.options || [];
+      if (existing.some(o => o.value === v)) return f;
+      return { ...f, options: [...existing, { value: v, label: l }] };
+    });
+    this.clearDraft('option', fieldId);
+  }
+  removeOption(fieldId, value) { this.patchField(fieldId, f => ({ ...f, options: (f.options || []).filter(o => o.value !== value) })); }
+  renameOption(fieldId, value, newLabel) {
+    const l = (newLabel || '').trim();
+    if (!l) return;
+    this.patchField(fieldId, f => ({ ...f, options: (f.options || []).map(o => o.value === value ? { ...o, label: l } : o) }));
+  }
+
+  getOrderedPageNumbers(stateArg) {
+    const s = stateArg || this.state;
+    const all = Object.keys(s.pages).map(Number);
+    const order = (s.pageOrder || []).filter(n => all.includes(n));
+    const rest = all.filter(n => !order.includes(n)).sort((a, b) => a - b);
+    return [...order, ...rest];
+  }
+  openMovePage = () => {
+    const ordered = this.getOrderedPageNumbers();
+    const others = ordered.filter(n => n !== this.state.currentPage);
+    this.setState({ showMovePageDialog: true, movePageTarget: others.length ? ('before-' + others[0]) : 'end', movePageWorkflow: 'this' });
+  };
+  closeMovePage = () => this.setState({ showMovePageDialog: false, movePageTarget: null, movePageWorkflow: 'this' });
+  onMovePageWorkflowChange = (e) => {
+    const workflow = e.target.value;
+    let target;
+    if (workflow === 'this') {
+      const ordered = this.getOrderedPageNumbers();
+      const others = ordered.filter(n => n !== this.state.currentPage);
+      target = others.length ? ('before-' + others[0]) : 'end';
+    } else {
+      const pages = OTHER_WORKFLOW_PAGES[workflow] || [];
+      target = pages.length ? ('before-' + pages[0].number) : 'end';
+    }
+    this.setState({ movePageWorkflow: workflow, movePageTarget: target });
+  };
+  onMovePageTargetChange = (e) => this.setState({ movePageTarget: e.target.value });
+  confirmMovePage = () => {
+    const { movePageWorkflow: workflow, movePageTarget: target } = this.state;
+    if (workflow !== 'this') {
+      const pages = OTHER_WORKFLOW_PAGES[workflow] || [];
+      let posLabel = 'at the end';
+      if (target && target !== 'end') {
+        const n = Number(target.replace('before-', ''));
+        const p = pages.find(pg => pg.number === n);
+        if (p) posLabel = `before Page ${p.number} — ${p.title}`;
+      }
+      this.setState(s => {
+        const nums = Object.keys(s.pages).map(Number).filter(n => n !== s.currentPage);
+        const remaining = { ...s.pages };
+        delete remaining[s.currentPage];
+        const nextPage = nums.length ? Math.min(...nums) : null;
+        return { pages: remaining, currentPage: nextPage, newPageFormOpen: nextPage === null, showMovePageDialog: false, movePageTarget: null, movePageWorkflow: 'this' };
+      });
+      this.showToast(`Page moved to "${workflow}" (${posLabel})`);
+      return;
+    }
+    if (!target) return;
+    this.setState(s => {
+      const ordered = this.getOrderedPageNumbers(s);
+      const cur = s.currentPage;
+      const withoutCur = ordered.filter(n => n !== cur);
+      let newOrder;
+      if (target === 'end') {
+        newOrder = [...withoutCur, cur];
+      } else {
+        const targetNum = Number(target.replace('before-', ''));
+        const idx = withoutCur.indexOf(targetNum);
+        newOrder = idx === -1 ? [...withoutCur, cur] : [...withoutCur.slice(0, idx), cur, ...withoutCur.slice(idx)];
+      }
+      return { pageOrder: newOrder, showMovePageDialog: false, movePageTarget: null, movePageWorkflow: 'this' };
+    });
+  };
+  copyPageWithinWorkflow = () => {
+    this.setState(s => {
+      const srcPage = s.pages[s.currentPage];
+      const nums = Object.keys(s.pages).map(Number);
+      const newNum = nums.length ? Math.max(...nums) + 1 : 1;
+      const idMap = {};
+      const fields = {};
+      Object.keys(srcPage.fields).forEach((fid, i) => {
+        const nid = 'f-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6) + i;
+        idMap[fid] = nid;
+        fields[nid] = { ...srcPage.fields[fid], id: nid };
+      });
+      const sections = srcPage.sections.map((sec, i) => ({ ...sec, id: 'sec-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6) + i, fieldIds: sec.fieldIds.map(fid => idMap[fid]) }));
+      const newPage = { number: newNum, title: srcPage.title + ' (Copy)', description: srcPage.description || '', sections, fields };
+      const ordered = this.getOrderedPageNumbers(s);
+      const idx = ordered.indexOf(s.currentPage);
+      const newOrder = [...ordered.slice(0, idx + 1), newNum, ...ordered.slice(idx + 1)];
+      return { pages: { ...s.pages, [newNum]: newPage }, pageOrder: newOrder, currentPage: newNum };
+    });
+  };
+  openCopyPage = () => this.setState({ showCopyPageDialog: true, copyPageDestination: 'this' });
+  closeCopyPage = () => this.setState({ showCopyPageDialog: false, copyPageDestination: 'this' });
+  onCopyPageDestinationChange = (e) => this.setState({ copyPageDestination: e.target.value });
+  confirmCopyPage = () => {
+    const dest = this.state.copyPageDestination;
+    if (dest === 'this') {
+      this.copyPageWithinWorkflow();
+      this.setState({ showCopyPageDialog: false });
+      this.showToast('Page copied');
+    } else {
+      this.setState({ showCopyPageDialog: false });
+      this.showToast(`Page copied to "${dest}"`);
+    }
+  };
+  showToast(text) {
+    clearTimeout(this._toastTimer);
+    this.setState({ toast: { text } });
+    this._toastTimer = setTimeout(() => this.setState({ toast: null }), 2400);
+  }
+
+  openMoveCopyField = (fieldId, mode) => {
+    const page = this.state.pages[this.state.currentPage];
+    const srcSec = page.sections.find(sc => sc.fieldIds.includes(fieldId));
+    const targetSection = srcSec ? srcSec.id : (page.sections[0] ? page.sections[0].id : null);
+    this.setState({ moveCopyFieldId: fieldId, moveCopyMode: mode, moveCopyTargetPage: this.state.currentPage, moveCopyTargetSection: targetSection, moveCopyWorkflow: 'this' });
+  };
+  closeMoveCopyField = () => this.setState({ moveCopyFieldId: null, moveCopyMode: null, moveCopyTargetPage: null, moveCopyTargetSection: null, moveCopyWorkflow: 'this' });
+  onMoveCopyWorkflowChange = (e) => {
+    const workflow = e.target.value;
+    let targetPage, targetSection;
+    if (workflow === 'this') {
+      targetPage = this.state.currentPage;
+      const page = this.state.pages[targetPage];
+      targetSection = page && page.sections[0] ? page.sections[0].id : null;
+    } else {
+      const pages = OTHER_WORKFLOW_PAGES[workflow] || [];
+      targetPage = pages.length ? pages[0].number : null;
+      const secs = (OTHER_WORKFLOW_SECTIONS[workflow] || {})[targetPage] || [];
+      targetSection = secs.length ? secs[0].id : null;
+    }
+    this.setState({ moveCopyWorkflow: workflow, moveCopyTargetPage: targetPage, moveCopyTargetSection: targetSection });
+  };
+  onMoveCopyTargetPageChange = (e) => {
+    const pageNumber = Number(e.target.value);
+    if (this.state.moveCopyWorkflow === 'this') {
+      const page = this.state.pages[pageNumber];
+      const firstSection = page && page.sections[0] ? page.sections[0].id : null;
+      this.setState({ moveCopyTargetPage: pageNumber, moveCopyTargetSection: firstSection });
+    } else {
+      const secs = (OTHER_WORKFLOW_SECTIONS[this.state.moveCopyWorkflow] || {})[pageNumber] || [];
+      this.setState({ moveCopyTargetPage: pageNumber, moveCopyTargetSection: secs.length ? secs[0].id : null });
+    }
+  };
+  onMoveCopyTargetSectionChange = (e) => this.setState({ moveCopyTargetSection: e.target.value });
+  confirmMoveCopyField = () => {
+    const { moveCopyFieldId: fieldId, moveCopyMode: mode, moveCopyTargetPage: targetPage, moveCopyTargetSection: targetSection, moveCopyWorkflow: workflow } = this.state;
+    if (!fieldId) return;
+    if (workflow !== 'this') {
+      const pages = OTHER_WORKFLOW_PAGES[workflow] || [];
+      const pageInfo = pages.find(p => p.number === targetPage);
+      const secs = (OTHER_WORKFLOW_SECTIONS[workflow] || {})[targetPage] || [];
+      const secInfo = secs.find(sc => sc.id === targetSection);
+      if (mode === 'move') this.deleteField(fieldId);
+      this.setState({ moveCopyFieldId: null, moveCopyMode: null, moveCopyTargetPage: null, moveCopyTargetSection: null, moveCopyWorkflow: 'this' });
+      const where = pageInfo && secInfo ? ` (Page ${pageInfo.number} — ${pageInfo.title} / ${secInfo.label})` : '';
+      this.showToast(`Field ${mode === 'move' ? 'moved' : 'copied'} to "${workflow}"${where}`);
+      return;
+    }
+    if (!targetSection) return;
+    this.setState(s => {
+      const srcPageNum = s.currentPage;
+      const srcPage = s.pages[srcPageNum];
+      const srcSec = srcPage.sections.find(sc => sc.fieldIds.includes(fieldId));
+      const fieldObj = srcPage.fields[fieldId];
+      if (!srcSec || !fieldObj) return {};
+      if (mode === 'move' && srcPageNum === targetPage && srcSec.id === targetSection) {
+        return { moveCopyFieldId: null, moveCopyMode: null, moveCopyTargetPage: null, moveCopyTargetSection: null };
+      }
+      const newFieldId = mode === 'copy' ? ('f-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6)) : fieldId;
+      const newFieldObj = mode === 'copy' ? { ...fieldObj, id: newFieldId } : fieldObj;
+
+      let updatedSrcPage = srcPage;
+      if (mode === 'move') {
+        const sections = srcPage.sections.map(sc => sc.id === srcSec.id ? { ...sc, fieldIds: sc.fieldIds.filter(id => id !== fieldId) } : sc);
+        const fields = { ...srcPage.fields };
+        if (srcPageNum !== targetPage) delete fields[fieldId];
+        updatedSrcPage = { ...srcPage, sections, fields };
+      }
+
+      const basePage = srcPageNum === targetPage ? updatedSrcPage : s.pages[targetPage];
+      const targetSections = basePage.sections.map(sc => sc.id === targetSection ? { ...sc, fieldIds: [...sc.fieldIds, newFieldId] } : sc);
+      const updatedTargetPage = { ...basePage, sections: targetSections, fields: { ...basePage.fields, [newFieldId]: newFieldObj } };
+
+      const pages = { ...s.pages };
+      pages[srcPageNum] = srcPageNum === targetPage ? updatedTargetPage : updatedSrcPage;
+      if (srcPageNum !== targetPage) pages[targetPage] = updatedTargetPage;
+
+      const expanded = { ...s.expanded };
+      if (mode === 'move') delete expanded[fieldId];
+
+      return { pages, expanded, moveCopyFieldId: null, moveCopyMode: null, moveCopyTargetPage: null, moveCopyTargetSection: null, moveCopyWorkflow: 'this' };
+    });
+  };
+
+  deleteField(fieldId) {
+    this.setState(s => {
+      const page = s.pages[s.currentPage];
+      const sections = page.sections.map(sec => ({ ...sec, fieldIds: sec.fieldIds.filter(id => id !== fieldId) }));
+      const fields = { ...page.fields };
+      delete fields[fieldId];
+      const expanded = { ...s.expanded };
+      delete expanded[fieldId];
+      return { pages: { ...s.pages, [s.currentPage]: { ...page, sections, fields } }, expanded };
+    });
+  }
+
+  getDraft(bucket, keyId) {
+    return this.state.draft[bucket][keyId] || (bucket === 'option' ? EMPTY_DRAFT_OPTION : EMPTY_DRAFT_SUBTOP);
+  }
+  updateDraft(bucket, keyId, field, value) {
+    this.setState(s => ({ draft: { ...s.draft, [bucket]: { ...s.draft[bucket], [keyId]: { ...this.getDraft(bucket, keyId), [field]: value } } } }));
+  }
+  clearDraft(bucket, keyId) {
+    this.setState(s => ({ draft: { ...s.draft, [bucket]: { ...s.draft[bucket], [keyId]: bucket === 'option' ? EMPTY_DRAFT_OPTION : EMPTY_DRAFT_SUBTOP } } }));
+  }
+
+  mkOptions(types, currentValue) {
+    return types.map(t => ({ value: t.value, label: t.label, selected: t.value === currentValue }));
+  }
+
+  mapSub(fieldId, list, parentId, availableTypes = FIELD_TYPES) {
+    return (list || []).map(sub => {
+      const subIsGroup = sub.fieldType === 'field_group';
+      return {
+        id: sub.id, label: sub.label, fieldType: sub.fieldType,
+        isFieldGroup: subIsGroup,
+        itemNoun: sub.label || 'item',
+        onLabelChange: (e) => this.renameSubField(fieldId, sub.id, e.target.value, parentId),
+        onTypeChange: (e) => this.changeSubFieldType(fieldId, sub.id, e.target.value, parentId),
+        onRemove: () => this.removeSubField(fieldId, sub.id, parentId),
+        typeOptions: this.mkOptions(availableTypes, sub.fieldType),
+        subFields: subIsGroup ? this.mapSub(fieldId, sub.subFields, sub.id, LEAF_FIELD_TYPES) : [],
+        nestedDraft: this.getDraft('subTop', sub.id),
+        nestedDraftOptions: this.mkOptions(LEAF_FIELD_TYPES, this.getDraft('subTop', sub.id).type),
+
+        onNestedDraftLabel: (e) => this.updateDraft('subTop', sub.id, 'label', e.target.value),
+        onNestedDraftType: (e) => this.updateDraft('subTop', sub.id, 'type', e.target.value),
+        onAddLeaf: () => { const d = this.getDraft('subTop', sub.id); this.addSubField(fieldId, d.label, d.type || 'text', sub.id); },
+      };
+    });
+  }
+
+  buildEditor(fieldId, base) {
+    const options = (base.options || []).map(o => ({
+      ...o,
+      onLabelChange: (e) => this.renameOption(fieldId, o.value, e.target.value),
+      onRemove: () => this.removeOption(fieldId, o.value),
+    }));
+    const draftSubTop = this.getDraft('subTop', fieldId);
+    return {
+      ...base,
+      showPlaceholder: HAS_PLACEHOLDER.includes(base.fieldType),
+      showDefault: HAS_DEFAULT.includes(base.fieldType),
+      showOptions: HAS_OPTIONS.includes(base.fieldType),
+      showValidation: HAS_VALIDATION.includes(base.fieldType),
+      isFieldGroup: base.fieldType === 'field_group',
+      options,
+      typeOptions: this.mkOptions(FIELD_TYPES, base.fieldType),
+      subFields: this.mapSub(fieldId, base.subFields, null, FIELD_TYPES),
+      maxItemsDisplay: base.maxItems ?? '',
+      minLengthDisplay: base.minLength ?? '',
+      maxLengthDisplay: base.maxLength ?? '',
+      draftOption: this.getDraft('option', fieldId),
+      draftSubTop,
+      subTopTypeOptions: this.mkOptions(FIELD_TYPES, draftSubTop.type),
+      onLabelChange: (e) => this.setField(fieldId, 'label', e.target.value),
+      onTypeChange: (e) => this.changeFieldType(fieldId, e.target.value),
+      toggleRequired: () => this.toggleRequired(fieldId),
+      onPlaceholderChange: (e) => this.setField(fieldId, 'placeholder', e.target.value),
+      onHelpTextChange: (e) => this.setField(fieldId, 'helpText', e.target.value),
+      onDefaultChange: (e) => this.setField(fieldId, 'defaultValue', e.target.value),
+      onItemLabelChange: (e) => this.setField(fieldId, 'itemLabel', e.target.value),
+      onAddButtonLabelChange: (e) => this.setField(fieldId, 'addButtonLabel', e.target.value),
+      onMinItemsChange: (e) => this.setField(fieldId, 'minItems', Number(e.target.value) || 1),
+      onMaxItemsChange: (e) => this.setField(fieldId, 'maxItems', e.target.value === '' ? null : Number(e.target.value)),
+      onMinLengthChange: (e) => this.setField(fieldId, 'minLength', e.target.value === '' ? null : Number(e.target.value)),
+      onMaxLengthChange: (e) => this.setField(fieldId, 'maxLength', e.target.value === '' ? null : Number(e.target.value)),
+      onPatternChange: (e) => this.setField(fieldId, 'pattern', e.target.value),
+      onOptionDraftLabel: (e) => this.updateDraft('option', fieldId, 'label', e.target.value),
+      onOptionDraftValue: (e) => this.updateDraft('option', fieldId, 'value', e.target.value),
+      addOptionFromDraft: () => { const d = this.getDraft('option', fieldId); this.addOption(fieldId, d.label, d.value); },
+      onSubTopDraftLabel: (e) => this.updateDraft('subTop', fieldId, 'label', e.target.value),
+      onSubTopDraftType: (e) => this.updateDraft('subTop', fieldId, 'type', e.target.value),
+      addSubTopFromDraft: () => { const d = this.getDraft('subTop', fieldId); this.addSubField(fieldId, d.label, d.type || 'text', null); },
+      deleteField: () => this.deleteField(fieldId),
+    };
+  }
+
+  renderVals() {
+    const s = this.state;
+    const page = s.pages[s.currentPage] || { number: s.currentPage, title: '', sections: [], fields: {} };
+
+    const orderedNums = this.getOrderedPageNumbers(s);
+    const pagesList = orderedNums.map((n, idx) => {
+      const p = s.pages[n];
+      return { number: p.number, label: `Page ${idx + 1} — ${p.title}`, selected: p.number === s.currentPage && !s.newPageFormOpen };
+    });
+
+    const sectionsList = page.sections.map((sec, secIdx, arr) => ({
+      id: sec.id,
+      label: sec.label,
+      description: sec.description || '',
+      hasDescription: !!sec.description,
+      editExpanded: sec.id === s.editingSectionId,
+      titleDraft: sec.id === s.editingSectionId ? s.sectionTitleDraft : sec.label,
+      titleCanSave: !!(s.sectionTitleDraft && s.sectionTitleDraft.trim()),
+      onTitleDraftChange: this.onSectionTitleDraftChange,
+      descDraft: sec.id === s.editingSectionId ? s.sectionDescDraft : (sec.description || ''),
+      onDescDraftChange: this.onSectionDescDraftChange,
+      onToggleEdit: () => this.toggleSectionEdit(sec.id),
+      onCancelEdit: this.cancelSectionEdit,
+      onSaveEdit: () => this.saveSectionEdit(sec.id),
+      collapsed: !!s.sectionCollapsed[sec.id],
+      expanded: !s.sectionCollapsed[sec.id],
+      onToggleCollapse: () => this.toggleSectionCollapse(sec.id),
+      onMoveTo: () => this.openMoveCopySection(sec.id, 'move'),
+      onCopyTo: () => this.openMoveCopySection(sec.id, 'copy'),
+      onDelete: () => this.deleteSectionConfirm(sec.id),
+      fields: sec.fieldIds.map((id, fIdx, fArr) => {
+        const base = page.fields[id];
+        const isExpanded = !!s.expanded[id];
+        return {
+          id, label: base.label, typeLabel: TYPE_LABEL[base.fieldType],
+          expanded: isExpanded, collapsed: !isExpanded,
+          onToggle: () => this.toggleField(id),
+          onEdit: () => { if (!isExpanded) this.toggleField(id); },
+          editor: isExpanded ? this.buildEditor(id, base) : null,
+          onMoveTo: () => this.openMoveCopyField(id, 'move'),
+          onCopyTo: () => this.openMoveCopyField(id, 'copy'),
+          onDeleteRow: () => this.deleteField(id),
+        };
+      }),
+      showAddFieldForm: s.newFieldFormSid === sec.id,
+      showAddFieldButton: s.newFieldFormSid !== sec.id,
+      addFieldDraftLabel: s.draftFieldLabel,
+      addFieldDraftType: s.draftFieldType,
+      addFieldCanSave: !!(s.draftFieldLabel && s.draftFieldLabel.trim()),
+      fieldTypeOptionsForAdd: FIELD_TYPES,
+      onAddFieldLabelChange: this.onDraftFieldLabelChange,
+      onAddFieldTypeChange: this.onDraftFieldTypeChange,
+      openAddField: () => this.openAddField(sec.id),
+      saveAddField: () => this.saveAddField(sec.id),
+      cancelAddField: this.cancelAddField,
+    }));
+
+    return {
+      sectionsList, page: { number: page.number, title: page.title, description: page.description || '', hasDescription: !!page.description, descDisplay: page.description || 'No description added', hasNoDescription: !page.description }, pagesList, onPageSelect: this.onPageSelect,
+      showPageContent: !s.newPageFormOpen,
+      cameFromMappingReport: s.cameFromMappingReport,
+      showAddSectionForm: s.newSectionFormOpen,
+      showAddSectionButton: !s.newSectionFormOpen,
+      addSectionDraftLabel: s.draftSectionLabel,
+      addSectionDraftDescription: s.draftSectionDescription,
+      addSectionCanSave: !!(s.draftSectionLabel && s.draftSectionLabel.trim()),
+      onAddSectionLabelChange: this.onDraftSectionLabelChange,
+      onAddSectionDescriptionChange: this.onDraftSectionDescriptionChange,
+      pageEditExpanded: s.editingPage,
+      pageTitleDraft: s.editingPage ? s.pageTitleDraft : page.title,
+      pageTitleCanSave: !!(s.pageTitleDraft && s.pageTitleDraft.trim()),
+      onPageTitleDraftChange: this.onPageTitleDraftChange,
+      onTogglePageEdit: this.onTogglePageEdit,
+      onCancelPageEdit: this.onCancelPageEdit,
+      onSavePageEdit: this.onSavePageEdit,
+      pageDescDraft: s.editingPage ? s.pageDescDraft : (page.description || ''),
+      onPageDescDraftChange: this.onPageDescDraftChange,
+      openAddSection: this.openAddSection,
+      saveAddSection: this.saveAddSection,
+      cancelAddSection: this.cancelAddSection,
+      newPageFormOpen: s.newPageFormOpen,
+      draftPageTitle: s.draftPageTitle,
+      draftPageDescription: s.draftPageDescription,
+      addPageCanSave: !!(s.draftPageTitle && s.draftPageTitle.trim()),
+      onDraftPageTitleChange: this.onDraftPageTitleChange,
+      onDraftPageDescriptionChange: this.onDraftPageDescriptionChange,
+      openAddPage: this.openAddPage,
+      saveAddPage: this.saveAddPage,
+      cancelAddPage: this.cancelAddPage,
+      orgName: 'Formwork', orgInitial: 'F',
+      userName: 'Alex Rivera', userInitials: 'AR', userEmail: 'alex@formwork.io',
+      userMenuOpen: s.userMenuOpen, settingsMenuOpen: s.settingsMenuOpen,
+      toggleUserMenu: this.toggleUserMenu, closeUserMenu: this.closeUserMenu,
+      toggleSettingsMenu: this.toggleSettingsMenu, closeSettingsMenu: this.closeSettingsMenu,
+      showDeleteSectionConfirm: !!s.confirmDeleteSectionId,
+      deleteSectionMessage: (() => {
+        const p = s.pages[s.currentPage];
+        const sec = p && p.sections.find(x => x.id === s.confirmDeleteSectionId);
+        return sec ? `"${sec.label}" has ${sec.fieldIds.length} field${sec.fieldIds.length !== 1 ? 's' : ''}. This will delete the section and its fields — this can't be undone.` : '';
+      })(),
+      cancelDeleteSection: this.cancelDeleteSection,
+      confirmDeleteSectionNow: this.confirmDeleteSectionNow,
+      requestDeletePage: this.requestDeletePage,
+      showDeletePageConfirm: s.confirmDeletePage,
+      deletePageMessage: (() => {
+        const p = s.pages[s.currentPage];
+        if (!p) return '';
+        const n = p.sections.length;
+        return `"${p.title}" has ${n} section${n !== 1 ? 's' : ''} and all of their fields. This will delete the page — this can't be undone.`;
+      })(),
+      cancelDeletePage: this.cancelDeletePage,
+      confirmDeletePageNow: this.confirmDeletePageNow,
+      showMoveCopySection: !!s.moveCopySectionId,
+      moveCopySectionTitle: s.moveCopySectionMode === 'move' ? 'Move section to…' : 'Copy section to…',
+      moveCopySectionActionLabel: s.moveCopySectionMode === 'move' ? 'Move' : 'Copy',
+      moveCopySectionWorkflowIsThis: s.moveCopySectionWorkflow === 'this',
+      onMoveCopySectionWorkflowChange: this.onMoveCopySectionWorkflowChange,
+      moveCopySectionWorkflowOptions: [
+        { value: 'this', label: 'This workflow', selected: s.moveCopySectionWorkflow === 'this' },
+        ...OTHER_WORKFLOWS.map(w => ({ value: w, label: w, selected: s.moveCopySectionWorkflow === w })),
+      ],
+      moveCopySectionPagesList: s.moveCopySectionWorkflow === 'this'
+        ? this.getOrderedPageNumbers(s).map((n, idx) => ({ number: n, label: `Page ${idx + 1} — ${s.pages[n].title}`, selected: n === s.moveCopySectionTargetPage }))
+        : (OTHER_WORKFLOW_PAGES[s.moveCopySectionWorkflow] || []).map(p => ({ number: p.number, label: `Page ${p.number} — ${p.title}`, selected: p.number === s.moveCopySectionTargetPage })),
+      onMoveCopySectionTargetPageChange: this.onMoveCopySectionTargetPageChange,
+      closeMoveCopySection: this.closeMoveCopySection,
+      confirmMoveCopySection: this.confirmMoveCopySection,
+      openMovePage: this.openMovePage,
+      openCopyPage: this.openCopyPage,
+      showCopyPageDialog: s.showCopyPageDialog,
+      closeCopyPage: this.closeCopyPage,
+      confirmCopyPage: this.confirmCopyPage,
+      onCopyPageDestinationChange: this.onCopyPageDestinationChange,
+      copyPageDestinationOptions: [
+        { value: 'this', label: 'This workflow (after this page)', selected: s.copyPageDestination === 'this' },
+        ...OTHER_WORKFLOWS.map(w => ({ value: w, label: w, selected: s.copyPageDestination === w })),
+      ],
+      toast: s.toast,
+      showMovePageDialog: s.showMovePageDialog,
+      movePageWorkflowIsThis: s.movePageWorkflow === 'this',
+      onMovePageWorkflowChange: this.onMovePageWorkflowChange,
+      movePageWorkflowOptions: [
+        { value: 'this', label: 'This workflow', selected: s.movePageWorkflow === 'this' },
+        ...OTHER_WORKFLOWS.map(w => ({ value: w, label: w, selected: s.movePageWorkflow === w })),
+      ],
+      onMovePageTargetChange: this.onMovePageTargetChange,
+      closeMovePage: this.closeMovePage,
+      confirmMovePage: this.confirmMovePage,
+      movePagePositionOptions: s.movePageWorkflow === 'this' ? (() => {
+        const ordered = this.getOrderedPageNumbers(s);
+        const others = ordered.filter(n => n !== s.currentPage);
+        const opts = others.map(n => ({ value: 'before-' + n, label: `Before Page ${ordered.indexOf(n) + 1} — ${s.pages[n].title}`, selected: s.movePageTarget === ('before-' + n) }));
+        opts.push({ value: 'end', label: 'At the end', selected: s.movePageTarget === 'end' });
+        return opts;
+      })() : (() => {
+        const pages = OTHER_WORKFLOW_PAGES[s.movePageWorkflow] || [];
+        const opts = pages.map(p => ({ value: 'before-' + p.number, label: `Before Page ${p.number} — ${p.title}`, selected: s.movePageTarget === ('before-' + p.number) }));
+        opts.push({ value: 'end', label: 'At the end', selected: s.movePageTarget === 'end' });
+        return opts;
+      })(),
+      showMoveCopyField: !!s.moveCopyFieldId,
+      moveCopyWorkflowIsThis: s.moveCopyWorkflow === 'this',
+      onMoveCopyWorkflowChange: this.onMoveCopyWorkflowChange,
+      moveCopyWorkflowOptions: [
+        { value: 'this', label: 'This workflow', selected: s.moveCopyWorkflow === 'this' },
+        ...OTHER_WORKFLOWS.map(w => ({ value: w, label: w, selected: s.moveCopyWorkflow === w })),
+      ],
+      moveCopyTitle: s.moveCopyMode === 'move' ? 'Move field to…' : 'Copy field to…',
+      moveCopyActionLabel: s.moveCopyMode === 'move' ? 'Move' : 'Copy',
+      moveCopyPagesList: s.moveCopyWorkflow === 'this'
+        ? this.getOrderedPageNumbers(s).map((n, idx) => ({ number: n, label: `Page ${idx + 1} — ${s.pages[n].title}`, selected: n === s.moveCopyTargetPage }))
+        : (OTHER_WORKFLOW_PAGES[s.moveCopyWorkflow] || []).map(p => ({ number: p.number, label: `Page ${p.number} — ${p.title}`, selected: p.number === s.moveCopyTargetPage })),
+      moveCopySectionsList: s.moveCopyWorkflow === 'this' ? (() => {
+        const p = s.pages[s.moveCopyTargetPage];
+        if (!p) return [];
+        return p.sections.map(sec => ({ id: sec.id, label: sec.label, selected: sec.id === s.moveCopyTargetSection }));
+      })() : ((OTHER_WORKFLOW_SECTIONS[s.moveCopyWorkflow] || {})[s.moveCopyTargetPage] || []).map(sec => ({ id: sec.id, label: sec.label, selected: sec.id === s.moveCopyTargetSection })),
+      moveCopyNoSections: s.moveCopyWorkflow === 'this'
+        ? (() => { const p = s.pages[s.moveCopyTargetPage]; return !p || p.sections.length === 0; })()
+        : (((OTHER_WORKFLOW_SECTIONS[s.moveCopyWorkflow] || {})[s.moveCopyTargetPage] || []).length === 0),
+      moveCopyCanConfirm: !!s.moveCopyTargetSection,
+      onMoveCopyTargetPageChange: this.onMoveCopyTargetPageChange,
+      onMoveCopyTargetSectionChange: this.onMoveCopyTargetSectionChange,
+      closeMoveCopyField: this.closeMoveCopyField,
+      confirmMoveCopyField: this.confirmMoveCopyField,
+    };
+  }
+}
+</script>
+</body>
+</html>

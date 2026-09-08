@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/nocturne-8201375c-a32b-4af1-bd3f-e2be272ae056/styles.css">
+  <script src="_ds/nocturne-8201375c-a32b-4af1-bd3f-e2be272ae056/_ds_bundle.js"></script>
+  <style>
+    body { margin: 0; background: var(--color-bg); }
+    a { color: var(--color-accent-300); text-decoration: none; }
+    a:hover { color: var(--color-accent-200); }
+    .wf-ic svg { display: block; }
+    .mr-table th, .mr-table td { white-space: nowrap; }
+    .mr-table td.wrap { white-space: normal; }
+    .mr-stat-tile { background: var(--color-surface); border: 1px solid var(--color-neutral-800); border-radius: var(--radius-md); padding: var(--space-3) var(--space-4); min-width: 132px; }
+    .mr-page-group { margin-bottom: var(--space-4); }
+    .mr-page-group:last-child { margin-bottom: 0; }
+    .mr-section-group { margin-top: var(--space-2); padding-top: var(--space-3); padding-bottom: var(--space-3); }
+    .wf-seg .seg-opt:first-child { border-radius: var(--radius-md) 0 0 var(--radius-md); }
+    .wf-seg .seg-opt:last-child { border-radius: 0 var(--radius-md) var(--radius-md) 0; }
+  </style>
+</helmet>
+
+<div style="min-height: 100vh; display: flex; flex-direction: column;">
+
+  <nav class="nav" style="padding-top: var(--space-4); padding-bottom: var(--space-4);">
+    <span class="nav-brand" style="display:flex; align-items:center; gap: var(--space-2);">
+      <span style="width:22px; height:22px; border-radius:6px; background: var(--color-accent-700); color: var(--color-accent-100); display:flex; align-items:center; justify-content:center; font-size:0.6875rem; font-weight:600; flex-shrink:0;">{{ orgInitial }}</span>
+      {{ orgName }}
+    </span>
+    <span style="margin-left:auto; display:flex; align-items:center; gap: var(--space-3);">
+      <span style="position:relative;">
+        <button type="button" style="display:flex; align-items:center; gap: var(--space-2); background:none; border:none; cursor:pointer; padding: 4px 6px 4px 4px; border-radius: 999px;" onClick="{{ toggleUserMenu }}">
+          <span style="width:26px; height:26px; border-radius:50%; background: var(--color-accent-700); color: var(--color-accent-100); display:flex; align-items:center; justify-content:center; font-size:0.6875rem; font-weight:500;">{{ userInitials }}</span>
+          <span style="font-size:0.7813rem; color: var(--color-text);">{{ userName }}</span>
+        </button>
+        <sc-if value="{{ userMenuOpen }}">
+          <div style="position: fixed; inset: 0; z-index: 20;" onClick="{{ closeUserMenu }}"></div>
+          <div class="card elev-lg" style="position:absolute; right:0; top:36px; z-index:21; min-width:200px; padding: var(--space-1);">
+            <div style="padding: var(--space-2) var(--space-3); border-bottom: 1px solid var(--color-neutral-800); margin-bottom: var(--space-1);">
+              <div style="font-size:0.8125rem; color: var(--color-text);">{{ userName }}</div>
+              <div style="font-size:0.7188rem; color: var(--color-neutral-400);">{{ userEmail }}</div>
+            </div>
+            <button type="button" class="btn btn-ghost btn-block" style="justify-content:flex-start; font-size:0.8125rem;">Account settings</button>
+            <hr class="hr" style="margin: var(--space-1) 0;">
+            <button type="button" class="btn btn-ghost btn-block" style="justify-content:flex-start; font-size:0.8125rem;">Log out</button>
+          </div>
+        </sc-if>
+      </span>
+      <span style="position:relative;">
+        <button type="button" class="btn btn-ghost btn-icon" aria-label="Settings" title="Settings" onClick="{{ toggleSettingsMenu }}">
+          <svg class="wf-ic" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1.04 1.56V21a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 8.96 19.4a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-1.56-1.04H3a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.6 8.96a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.87.34H9a1.7 1.7 0 0 0 1.04-1.56V3a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1.04 1.56 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.87V9a1.7 1.7 0 0 0 1.56 1.04H21a2 2 0 1 1 0 4h-.09A1.7 1.7 0 0 0 19.4 15z"></path></svg>
+        </button>
+        <sc-if value="{{ settingsMenuOpen }}">
+          <div style="position: fixed; inset: 0; z-index: 20;" onClick="{{ closeSettingsMenu }}"></div>
+          <div class="card elev-lg" style="position:absolute; right:0; top:36px; z-index:21; min-width:200px; padding: var(--space-1);">
+            <button type="button" class="btn btn-ghost btn-block" style="justify-content:flex-start; font-size:0.8125rem;">Organisation settings</button>
+            <button type="button" class="btn btn-ghost btn-block" style="justify-content:flex-start; font-size:0.8125rem;">Members</button>
+            <button type="button" class="btn btn-ghost btn-block" style="justify-content:flex-start; font-size:0.8125rem;">Billing</button>
+          </div>
+        </sc-if>
+      </span>
+    </span>
+  </nav>
+
+  <div style="padding-top: var(--space-6); padding-left: var(--space-6); padding-right: var(--space-6);">
+    <a href="Workflow Dashboard.dc.html" class="btn btn-ghost" style="display:inline-flex; width:fit-content; gap: var(--space-1); font-size:0.8125rem; margin-bottom: var(--space-3); text-decoration:none;">
+      <svg class="wf-ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"></path></svg>
+      Back to dashboard
+    </a>
+    <h1 style="font-family: var(--font-heading); font-weight: 500; font-size:1.375rem; margin: 0 0 var(--space-1); color: var(--color-text);">{{ workflowTitle }}</h1>
+    <p style="font-size:0.8125rem; color: var(--color-neutral-300); margin: 0 0 var(--space-2);">How extracted PDF text was mapped to workflow fields and sections.</p>
+    <div style="display:flex; align-items:center; gap: var(--space-2); margin-bottom: var(--space-6);">
+      
+      <span class="tag tag-outline">{{ workflowSourceLabel }}</span>
+    </div>
+  </div>
+
+  <sc-if value="{{ isLlmGenerated }}">
+  <div class="mr-stats" style="display:flex; gap: var(--space-3); padding-left: var(--space-6); padding-right: var(--space-6); padding-bottom: var(--space-6); flex-wrap:wrap;">
+    <sc-for list="{{ stats }}" as="stat" hint-placeholder-count="5">
+      <div class="mr-stat-tile" style="flex: 1; border-top: 2px solid {{ stat.color }};">
+        <div style="font-size:1.5rem; font-weight: 500; color: {{ stat.color }}; line-height:1.2;">{{ stat.value }}</div>
+        <div style="font-size:0.7188rem; color: var(--color-neutral-400); margin-top: 4px; white-space:nowrap;">{{ stat.label }}</div>
+      </div>
+    </sc-for>
+  </div>
+  </sc-if>
+
+  <div style="display:flex; flex-direction:column; gap: var(--space-4); padding: var(--space-2) var(--space-6) var(--space-6);">
+    <div style="display:flex; align-items:flex-start; gap: var(--space-4); flex-wrap:wrap;">
+      <div class="field" style="width: 50%;">
+        <label for="mr-search">Search PDF text</label>
+        <input class="input" id="mr-search" placeholder="Search extracted text…" value="{{ searchTerm }}" onInput="{{ onSearchInput }}">
+      </div><div class="field" style="margin-bottom:0;">
+        <label id="mr-view-label">View</label>
+        <div class="seg wf-seg" role="radiogroup" aria-labelledby="mr-view-label">
+          <sc-for list="{{ viewChips }}" as="chip" hint-placeholder-count="2">
+            <label class="seg-opt">
+              <input type="radio" name="mr-view" checked="{{ chip.checked }}" onChange="{{ chip.onSelect }}">
+              {{ chip.label }}
+            </label>
+          </sc-for>
+        </div>
+      </div>
+      
+    </div><div style="display:flex; align-items:flex-start; gap: var(--space-4); flex-wrap:wrap;">
+      <sc-if value="{{ isLlmGenerated }}">
+      <div class="field" style="margin-bottom:0;">
+        <label id="mr-conf-label">Confidence</label>
+        <div class="seg wf-seg" role="radiogroup" aria-labelledby="mr-conf-label">
+          <sc-for list="{{ confidenceChips }}" as="chip" hint-placeholder-count="4">
+            <label class="seg-opt" style="color: {{ chip.color }};">
+              <input type="radio" name="mr-conf" checked="{{ chip.checked }}" onChange="{{ chip.onSelect }}">
+              {{ chip.label }}
+            </label>
+          </sc-for>
+        </div>
+      </div>
+      </sc-if>
+    </div>
+    
+  </div>
+
+  <div style="flex:1; padding: 0 var(--space-6) var(--space-6); overflow-x:auto;">
+    <div style="font-size:0.75rem; font-weight:600; text-transform:uppercase; letter-spacing:0.06em; color: var(--color-neutral-400); margin-bottom: var(--space-2);">Workflow Details</div>
+    <div class="card elev-sm" style="padding:0; overflow:hidden;">
+      <sc-for list="{{ pageGroups }}" as="pg" hint-placeholder-count="3">
+        <div class="mr-page-group" style="border-bottom: 1px solid var(--color-neutral-800);">
+          <div style="width:100%; display:flex; align-items:center; gap: var(--space-2); padding: var(--space-3) var(--space-4); background: var(--color-neutral-900);">
+            <button type="button" onClick="{{ pg.toggle }}" style="flex:1; display:flex; align-items:center; gap: var(--space-2); background:none; border:none; cursor:pointer; text-align:left; color: var(--color-text); padding:0; min-width:0;">
+              <sc-if value="{{ pg.expanded }}"><svg class="wf-ic" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg></sc-if>
+              <sc-if value="{{ pg.collapsed }}"><svg class="wf-ic" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"></path></svg></sc-if>
+              <span style="font-size:0.8125rem; font-weight:500; color: var(--color-text);">Page {{ pg.pageNumber }}</span>
+              <span style="font-size:0.75rem; color: var(--color-neutral-400);">{{ pg.summaryLabel }}</span>
+            </button>
+            <button type="button" class="btn btn-ghost btn-icon" aria-label="Move page up" title="Move page up" disabled="{{ !pg.canMoveUp }}" style="width:26px;height:26px; color: var(--color-accent-300); flex-shrink:0;" onClick="{{ pg.moveUp }}">
+              <svg class="wf-ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"></path></svg>
+            </button>
+            <button type="button" class="btn btn-ghost btn-icon" aria-label="Move page down" title="Move page down" disabled="{{ !pg.canMoveDown }}" style="width:26px;height:26px; color: var(--color-accent-300); flex-shrink:0;" onClick="{{ pg.moveDown }}">
+              <svg class="wf-ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg>
+            </button>
+            <a href="Workflow Page Editor.dc.html" class="btn btn-ghost btn-icon" aria-label="Manage page fields" title="Manage page fields" style="width:26px;height:26px; color: var(--color-accent-300); flex-shrink:0;">
+              <svg class="wf-ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg>
+            </a>
+            <sc-if value="{{ pg.canDelete }}">
+              <button type="button" class="btn btn-ghost btn-icon" aria-label="Delete page" title="Delete empty page" style="width:26px;height:26px; color: var(--color-accent-300); flex-shrink:0;" onClick="{{ pg.onDelete }}">
+                <svg class="wf-ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path><path d="M10 11v6M14 11v6"></path></svg>
+              </button>
+            </sc-if>
+          </div>
+          <sc-if value="{{ pg.expanded }}">
+            <sc-for list="{{ pg.sections }}" as="sec" hint-placeholder-count="2">
+              <div class="mr-section-group" style="border-top: 1px solid var(--color-neutral-800);">
+                <div style="width:100%; display:flex; align-items:center; gap: var(--space-2); padding: var(--space-3) var(--space-4) var(--space-3) var(--space-6); background: var(--color-neutral-850, var(--color-bg));">
+                  <button type="button" onClick="{{ sec.toggle }}" style="flex:1; display:flex; align-items:center; gap: var(--space-2); background:none; border:none; cursor:pointer; text-align:left; color: var(--color-text); padding:0; min-width:0;">
+                    <sc-if value="{{ sec.expanded }}"><svg class="wf-ic" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg></sc-if>
+                    <sc-if value="{{ sec.collapsed }}"><svg class="wf-ic" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"></path></svg></sc-if>
+                    <span class="tag tag-outline">Section</span>
+                    <span style="display:flex; flex-direction:column; min-width:0;">
+                      <span style="font-size:0.8125rem; color: var(--color-text);">{{ sec.label }}</span>
+                      <sc-if value="{{ sec.hasDescription }}"><span style="font-size:0.7188rem; color: var(--color-neutral-400);">{{ sec.description }}</span></sc-if>
+                    </span>
+                    <span style="font-size:0.75rem; color: var(--color-neutral-400);">{{ sec.summaryLabel }}</span>
+                    <span style="margin-left:auto; display:flex; align-items:center; gap: var(--space-3);">
+                      <sc-if value="{{ sec.hasHeadingMapping }}">
+                        <span style="display:flex; align-items:center; gap: var(--space-2);">
+                          <span style="font-size:0.75rem; font-weight:500; color: {{ sec.confidenceColor }};">{{ sec.confidencePct }}%</span>
+                        </span>
+                      </sc-if>
+                    </span>
+                  </button>
+                  <button type="button" class="btn btn-ghost btn-icon" aria-label="Move section up" title="Move section up" disabled="{{ !sec.canMoveUp }}" style="width:26px;height:26px; color: var(--color-accent-300); flex-shrink:0;" onClick="{{ sec.moveUp }}">
+                    <svg class="wf-ic" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"></path></svg>
+                  </button>
+                  <button type="button" class="btn btn-ghost btn-icon" aria-label="Move section down" title="Move section down" disabled="{{ !sec.canMoveDown }}" style="width:26px;height:26px; color: var(--color-accent-300); flex-shrink:0;" onClick="{{ sec.moveDown }}">
+                    <svg class="wf-ic" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg>
+                  </button>
+                  <sc-if value="{{ sec.canDelete }}">
+                    <button type="button" class="btn btn-ghost btn-icon" aria-label="Delete section" title="Delete empty section" style="width:26px;height:26px; color: var(--color-accent-300); flex-shrink:0;" onClick="{{ sec.onDelete }}">
+                      <svg class="wf-ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path><path d="M10 11v6M14 11v6"></path></svg>
+                    </button>
+                  </sc-if>
+                </div>
+                <sc-if value="{{ sec.expanded }}">
+                  <sc-if value="{{ isTableView }}">
+                  <table class="table mr-table" style="width:100%; margin-bottom: var(--space-2);">
+                    <thead>
+                      <tr>
+                        <th style="padding-left: calc(var(--space-6) + var(--space-4));">{{ sourceLabel }}</th>
+                        <th>Type</th>
+                        <th>Target Type</th>
+                        <th>Maps to</th>
+                        <th>Confidence</th>
+                        <th>Field source</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <sc-for list="{{ sec.fields }}" as="m" hint-placeholder-count="3">
+                        <tr>
+                          <td class="wrap" style="padding-left: calc(var(--space-6) + var(--space-4)); font-family: ui-monospace, monospace; font-size:0.7813rem; max-width: 320px;">{{ m.originalTextShort }}</td>
+                          <td><span class="tag tag-neutral">{{ m.kindLabel }}</span></td>
+                          <td>
+                            <span class="tag tag-outline">{{ m.targetType }}</span>
+                          </td>
+                          <td>
+                            <span style="font-size:0.8125rem; color: var(--color-text);">{{ m.targetLabel }}</span>
+                          </td>
+                          <td>
+                            <span style="font-size:0.7813rem; font-weight:500; color: {{ m.confidenceColor }};">{{ m.confidencePct }}%</span>
+                          </td>
+                          <td>
+                            <span style="display:inline-flex; align-items:center; gap:4px; font-size:0.75rem; color: var(--color-neutral-300);">
+                              <sc-if value="{{ m.isLlm }}"><svg class="wf-ic" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="7" width="14" height="12" rx="2"></rect><path d="M9 12h.01M15 12h.01M12 3v4"></path></svg></sc-if>
+                              <sc-if value="{{ m.isManual }}"><svg class="wf-ic" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"></circle><path d="M5 20c1.5-4 5-5 7-5s5.5 1 7 5"></path></svg></sc-if>
+                              {{ m.mappedBy }}
+                            </span>
+                          </td>
+                          <td style="text-align:right;">
+                            <button type="button" class="btn btn-ghost btn-icon" aria-label="Move up" title="Move up" disabled="{{ !m.canMoveUp }}" style="width:26px;height:26px; color: var(--color-accent-300);" onClick="{{ m.moveUp }}">
+                              <svg class="wf-ic" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"></path></svg>
+                            </button>
+                            <button type="button" class="btn btn-ghost btn-icon" aria-label="Move down" title="Move down" disabled="{{ !m.canMoveDown }}" style="width:26px;height:26px; color: var(--color-accent-300);" onClick="{{ m.moveDown }}">
+                              <svg class="wf-ic" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg>
+                            </button>
+                            <button type="button" class="btn btn-ghost btn-icon" aria-label="Delete field" title="Delete field" style="width:30px;height:30px; color: var(--color-accent-300);" onClick="{{ m.unlink }}">
+                              <svg class="wf-ic" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path><path d="M10 11v6M14 11v6"></path></svg>
+                            </button>
+                          </td>
+                        </tr>
+                      </sc-for>
+                    </tbody>
+                  </table>
+                  </sc-if>
+                  <sc-if value="{{ isCardView }}">
+                    <div style="display:flex; flex-direction:column; gap: var(--space-3); padding: var(--space-3) var(--space-4) var(--space-4) calc(var(--space-6) + var(--space-4));">
+                      <sc-for list="{{ sec.fields }}" as="m" hint-placeholder-count="3">
+                        <div class="card elev-sm" style="padding:0; display:flex; flex-direction:column; overflow:hidden;">
+                          <div style="display:flex; align-items:center; gap: var(--space-2); padding: var(--space-3) var(--space-3) var(--space-2); width:100%;">
+                          <button type="button" onClick="{{ m.onToggleCardCollapse }}" style="flex:1; display:flex; align-items:center; gap: var(--space-2); background:transparent; border:none; cursor:pointer; text-align:left; padding:0; min-width:0;">
+                            <sc-if value="{{ m.isCardCollapsed }}"><svg class="wf-ic" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0; color: var(--color-neutral-400);"><path d="M9 6l6 6-6 6"></path></svg></sc-if>
+                            <sc-if value="{{ m.isCardExpanded }}"><svg class="wf-ic" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0; color: var(--color-neutral-400);"><path d="M6 9l6 6 6-6"></path></svg></sc-if>
+                            <span class="tag tag-neutral" style="font-size:0.625rem; padding:1px 6px;">{{ m.kindLabel }}</span>
+                            <span style="font-size:0.7188rem; font-weight:500; color: var(--color-accent-300);">→</span>
+                            <span class="tag tag-outline" style="font-size:0.625rem; padding:1px 6px;">{{ m.targetType }}</span>
+                            <span style="margin-left:auto; display:flex; align-items:center; gap: var(--space-2);">
+                              <span style="display:inline-flex; align-items:center; gap:4px; font-size:0.6875rem; color: var(--color-neutral-300);">
+                                <sc-if value="{{ m.isLlm }}"><svg class="wf-ic" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="7" width="14" height="12" rx="2"></rect><path d="M9 12h.01M15 12h.01M12 3v4"></path></svg></sc-if>
+                                <sc-if value="{{ m.isManual }}"><svg class="wf-ic" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"></circle><path d="M5 20c1.5-4 5-5 7-5s5.5 1 7 5"></path></svg></sc-if>
+                                {{ m.mappedBy }}
+                              </span>
+                              <span style="font-size:0.9375rem; font-weight:500; color: {{ m.confidenceColor }};">{{ m.confidencePct }}%</span>
+                            </span>
+                          </button>
+                          <button type="button" class="btn btn-ghost btn-icon" aria-label="Move up" title="Move up" disabled="{{ !m.canMoveUp }}" style="width:24px;height:24px; color: var(--color-accent-300); flex-shrink:0;" onClick="{{ m.moveUp }}">
+                            <svg class="wf-ic" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"></path></svg>
+                          </button>
+                          <button type="button" class="btn btn-ghost btn-icon" aria-label="Move down" title="Move down" disabled="{{ !m.canMoveDown }}" style="width:24px;height:24px; color: var(--color-accent-300); flex-shrink:0;" onClick="{{ m.moveDown }}">
+                            <svg class="wf-ic" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg>
+                          </button>
+                          </div>
+                          <sc-if value="{{ m.isCardExpanded }}">
+                          <div style="background: var(--color-neutral-900); padding: var(--space-3);">
+                            <div style="font-family: ui-monospace, monospace; font-size:0.8125rem; color: var(--color-text); line-height:1.5;">{{ m.originalText }}</div>
+                          </div>
+                          <div style="background: var(--color-accent-800); padding: var(--space-3); display:flex; align-items:center; gap: var(--space-2);">
+                            <sc-if value="{{ m.isCollapsed }}">
+                              <div style="flex:1; display:flex; align-items:baseline; gap: var(--space-2); min-width:0;">
+                                <span style="font-size:0.875rem; color: #fff; line-height:1.4;">{{ m.targetLabel }}</span>
+                                <sc-if value="{{ m.isFieldKind }}"><span style="font-size:0.75rem; color: rgba(255,255,255,0.65);">{{ m.fieldTypeLabel }}</span></sc-if>
+                              </div>
+                              <sc-if value="{{ m.isEditableInline }}">
+                                <button type="button" class="btn btn-ghost btn-icon" aria-label="Edit details" title="Edit details" style="width:28px;height:28px; color: #fff; background: rgba(255,255,255,0.14); border-radius: var(--radius-md); flex-shrink:0;" onClick="{{ m.onToggleExpand }}">
+                                  <svg class="wf-ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l4-1 11-11-3-3L5 16z"></path></svg>
+                                </button>
+                              </sc-if>
+                              <button type="button" class="btn btn-ghost btn-icon" aria-label="Delete field" title="Delete field" style="width:28px;height:28px; color: #fff; background: rgba(255,255,255,0.14); border-radius: var(--radius-md); flex-shrink:0;" onClick="{{ m.unlink }}">
+                                <svg class="wf-ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path><path d="M10 11v6M14 11v6"></path></svg>
+                              </button>
+                            </sc-if>
+                            <sc-if value="{{ m.isExpanded }}">
+                              <sc-if value="{{ m.isTextKind }}">
+                                <textarea class="input" rows="2" value="{{ m.draftLabel }}" onChange="{{ m.onDraftLabelChange }}" style="flex:1; min-width:0; font-size:0.8125rem;"></textarea>
+                              </sc-if>
+                              <sc-if value="{{ m.isNotTextKind }}">
+                                <input class="input" type="text" value="{{ m.draftLabel }}" onChange="{{ m.onDraftLabelChange }}" style="flex:1; min-width:0; font-size:0.8125rem;">
+                              </sc-if>
+                              <button type="button" class="btn btn-ghost btn-icon" aria-label="Save" title="Save" style="width:28px;height:28px; color: #fff; background: rgba(255,255,255,0.14); border-radius: var(--radius-md); flex-shrink:0;" onClick="{{ m.onSaveFieldEdit }}">
+                                <svg class="wf-ic" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
+                              </button>
+                              <button type="button" class="btn btn-ghost btn-icon" aria-label="Cancel" title="Cancel" style="width:28px;height:28px; color: #fff; background: rgba(255,255,255,0.14); border-radius: var(--radius-md); flex-shrink:0;" onClick="{{ m.onCancelFieldEdit }}">
+                                <svg class="wf-ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5l14 14M19 5L5 19"></path></svg>
+                              </button>
+                            </sc-if>
+                          </div>
+                          </sc-if>
+                        </div>
+                      </sc-for>
+                    </div>
+                  </sc-if>
+                </sc-if>
+              </div>
+            </sc-for>
+          </sc-if>
+        </div>
+      </sc-for>
+
+      <sc-if value="{{ noResults }}">
+        <div style="text-align:center; padding: var(--space-6) 0; color: var(--color-neutral-400); font-size:0.8125rem;">No mappings match the current filter.</div>
+      </sc-if>
+    </div>
+  </div>
+
+  <sc-if value="{{ showUnlinkConfirm }}">
+    <div class="dialog-backdrop">
+      <div class="dialog">
+        <div class="dialog-title" style="border-bottom:1px solid var(--color-divider); padding-bottom: var(--space-3); margin-bottom: var(--space-3);">Delete this field?</div>
+        <div class="dialog-body">{{ confirmUnlinkTarget.message }}</div>
+        <div class="dialog-actions">
+          <button type="button" class="btn btn-ghost" onClick="{{ confirmUnlinkTarget.onCancel }}">Cancel</button>
+          <button type="button" class="btn btn-primary" onClick="{{ confirmUnlinkTarget.onConfirm }}">Delete</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ showDiscardConfirm }}">
+    <div class="dialog-backdrop">
+      <div class="dialog">
+        <div class="dialog-title" style="border-bottom:1px solid var(--color-divider); padding-bottom: var(--space-3); margin-bottom: var(--space-3);">Discard unsaved changes?</div>
+        <div class="dialog-body">Your edits to this field haven't been saved. Discarding will lose them.</div>
+        <div class="dialog-actions">
+          <button type="button" class="btn btn-ghost" onClick="{{ onCancelDiscard }}">Keep editing</button>
+          <button type="button" class="btn btn-primary" onClick="{{ onConfirmDiscard }}">Discard</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ toast }}">
+    <div style="position: fixed; bottom: var(--space-5); left:50%; transform: translateX(-50%); z-index: 30;" class="card elev-lg">
+      <span style="font-size:0.8125rem; color: var(--color-text); display:flex; align-items:center; gap: var(--space-2);">
+        <svg class="wf-ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
+        {{ toast.text }}
+      </span>
+    </div>
+  </sc-if>
+
+  <footer style="border-top: 1px solid var(--color-neutral-800); padding: var(--space-4) var(--space-6); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap: var(--space-3);">
+    <span style="font-size:0.75rem; color: var(--color-neutral-400);">© 2026 Formwork. All rights reserved.</span>
+    <div style="display:flex; gap: var(--space-4);">
+      <a href="#" style="font-size:0.75rem;">Documentation</a>
+      <a href="#" style="font-size:0.75rem;">Support</a>
+      <a href="#" style="font-size:0.75rem;">Status</a>
+    </div>
+  </footer>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+function shorten(text) {
+  return text.length > 60 ? text.slice(0, 60) + '\u2026' : text;
+}
+
+// Workflow-side targets. targetType is the discriminant: Section | Content (static
+// title/description, collects no data) | Field (single input) | FieldGroup
+// (repeating set, e.g. multiple phone numbers) | Custom (Angular component).
+const SEED_TARGETS = [
+  { id: 'sec-1', label: 'Personal Information', targetType: 'Section' },
+  { id: 'c-desc-1', label: 'Instructions', targetType: 'Content', contentKind: 'description' },
+  { id: 'f-1', label: 'Full name', targetType: 'Field', inputType: 'text' },
+  { id: 'f-2', label: 'Date of birth', targetType: 'Field', inputType: 'date' },
+  { id: 'f-3', label: 'Social Security Number', targetType: 'Field', inputType: 'text' },
+  { id: 'sec-2', label: 'Employment Details', targetType: 'Section' },
+  { id: 'f-4', label: 'Job title', targetType: 'Field', inputType: 'text' },
+  { id: 'f-5', label: 'Start date', targetType: 'Field', inputType: 'date' },
+  { id: 'f-6', label: 'Department', targetType: 'Field', inputType: 'select' },
+  { id: 'sec-2b', label: 'Compensation', targetType: 'Section' },
+  { id: 'f-10', label: 'Annual salary', targetType: 'Field', inputType: 'number' },
+  { id: 'f-11', label: 'Pay frequency', targetType: 'Field', inputType: 'select' },
+  { id: 'sec-3', label: 'Emergency Contact', targetType: 'Section' },
+  { id: 'fg-1', label: 'Emergency contacts', targetType: 'FieldGroup', itemFields: [{ label: 'Name', inputType: 'text' }, { label: 'Relationship', inputType: 'text' }, { label: 'Phone', inputType: 'text' }], minItems: 1, maxItems: 3 },
+  { id: 'cu-1', label: 'Signature pad', targetType: 'Custom', componentSelector: 'app-signature-pad' },
+];
+
+// kind = what the PDF element actually is; drives which SEED_TARGETS it can map to.
+const KIND_META = {
+  heading: { label: 'Heading', targetType: 'Content' },
+  description: { label: 'Text', targetType: 'Content' },
+  field: { label: 'Field', targetType: 'Field' },
+  'field-group': { label: 'List', targetType: 'FieldGroup' },
+  custom: { label: 'Custom', targetType: 'Custom' },
+};
+
+const detailFor = (t, inputType) => {
+  if (!t) return '';
+  if (t.targetType === 'Field') return inputType || t.inputType;
+  if (t.targetType === 'FieldGroup') return `${t.itemFields.length}x`;
+  if (t.targetType === 'Custom') return t.componentSelector;
+  if (t.targetType === 'Content') return t.contentKind;
+  return '';
+};
+
+const SEED = [
+  { pdfElementId: 'e1', pageNumber: 1, originalText: 'Section II — Personal Information', kind: 'heading', targetId: 'sec-1', confidence: 0.99, mappedBy: 'llm' },
+  { pdfElementId: 'e2', pageNumber: 1, originalText: 'Please complete all fields marked with an asterisk.', kind: 'description', targetId: 'c-desc-1', confidence: 0.72, mappedBy: 'llm' },
+  { pdfElementId: 'e3', pageNumber: 1, originalText: 'Employee Full Legal Name (as it appears on government ID)', kind: 'field', targetId: 'f-1', confidence: 0.96, mappedBy: 'llm' },
+  { pdfElementId: 'e4', pageNumber: 1, originalText: 'Date of Birth (MM/DD/YYYY)', kind: 'field', targetId: 'f-2', confidence: 0.94, mappedBy: 'llm' },
+  { pdfElementId: 'e5', pageNumber: 1, originalText: 'SSN — for tax withholding purposes only', kind: 'field', targetId: 'f-3', confidence: 0.61, mappedBy: 'llm' },
+  { pdfElementId: 'e6', pageNumber: 2, originalText: 'Section III — Employment Details', kind: 'heading', targetId: 'sec-2', confidence: 0.98, mappedBy: 'llm' },
+  { pdfElementId: 'e7', pageNumber: 2, originalText: 'Position / Job Title applied for or currently held', kind: 'field', targetId: 'f-4', confidence: 0.88, mappedBy: 'llm' },
+  { pdfElementId: 'e8', pageNumber: 2, originalText: 'Anticipated Start Date', kind: 'field', targetId: 'f-5', confidence: 0.42, mappedBy: 'llm' },
+  { pdfElementId: 'e9', pageNumber: 2, originalText: 'Dept / Cost Center Code', kind: 'field', targetId: 'f-6', confidence: 0.55, mappedBy: 'manual' },
+  { pdfElementId: 'e10', pageNumber: 2, originalText: 'Section III-B — Compensation', kind: 'heading', targetId: 'sec-2b', confidence: 0.95, mappedBy: 'llm' },
+  { pdfElementId: 'e11', pageNumber: 2, originalText: 'Base Annual Salary (USD)', kind: 'field', targetId: 'f-10', confidence: 0.82, mappedBy: 'llm' },
+  { pdfElementId: 'e12', pageNumber: 2, originalText: 'Pay Frequency (Weekly/Biweekly/Monthly)', kind: 'field', targetId: 'f-11', confidence: 0.67, mappedBy: 'llm' },
+  { pdfElementId: 'e13', pageNumber: 3, originalText: 'Section IV — Emergency Contact', kind: 'heading', targetId: 'sec-3', confidence: 0.97, mappedBy: 'llm' },
+  { pdfElementId: 'e14', pageNumber: 3, originalText: 'List every emergency contact with name, relationship, and phone.', kind: 'field-group', targetId: 'fg-1', confidence: 0.74, mappedBy: 'llm' },
+  { pdfElementId: 'e15', pageNumber: 3, originalText: 'Employee signature', kind: 'custom', targetId: 'cu-1', confidence: 0.83, mappedBy: 'manual' },
+];
+
+const FIELD_TYPE_OPTIONS = ['text', 'number', 'date', 'email', 'select', 'checkbox', 'textarea'].map((v) => ({ value: v, label: v[0].toUpperCase() + v.slice(1) }));
+
+function applyOrder(ids, orderArr) {
+  if (!orderArr || !orderArr.length) return ids;
+  const known = orderArr.filter((id) => ids.includes(id));
+  const rest = ids.filter((id) => !known.includes(id));
+  return [...known, ...rest];
+}
+
+class Component extends DCLogic {
+  state = {
+    mappings: SEED,
+    searchTerm: '',
+    confidenceFilter: 'all',
+    collapsedPages: [],
+    collapsedSections: [],
+    collapsedFieldIds: [],
+    userMenuOpen: false,
+    settingsMenuOpen: false,
+    expandedId: null,
+    draft: { label: '', inputType: '', itemFields: [], minItems: 1, maxItems: 1 },
+    originalDraft: null,
+    pendingDiscardId: null,
+    pendingDiscardTarget: null,
+    toast: null,
+    fieldOverrides: {},
+    viewMode: 'table',
+    confirmUnlinkId: null,
+    targets: SEED_TARGETS.map((t) => ({ ...t, itemFields: t.itemFields ? t.itemFields.map((f) => ({ ...f })) : undefined })),
+    manualPages: [],
+    pageOrder: [],
+    sectionOrder: {},
+    fieldOrder: {},
+    // Workflow-level source: how the whole workflow was created (PDF conversion or
+    // LLM instructions both run an LLM agent under the hood; "manual" workflows
+    // don't). Distinct from a field's own source (mappedBy: llm|manual) — a
+    // manually-added field can still exist inside an LLM-generated workflow.
+    workflowSource: (() => {
+      try {
+        const v = new URLSearchParams(window.location.search).get('source');
+        return ['pdf', 'instructions', 'manual'].includes(v) ? v : 'pdf';
+      } catch (e) { return 'pdf'; }
+    })(),
+  };
+
+  componentDidMount() {
+    this._beforeUnload = (e) => { if (this.state.expandedId && this.isDraftDirty()) { e.preventDefault(); e.returnValue = ''; } };
+    window.addEventListener('beforeunload', this._beforeUnload);
+  }
+  componentWillUnmount() {
+    window.removeEventListener('beforeunload', this._beforeUnload);
+  }
+
+  setViewMode = (value) => this.setState({ viewMode: value });
+
+  toggleUserMenu = () => this.setState((s) => ({ userMenuOpen: !s.userMenuOpen, settingsMenuOpen: false }));
+  closeUserMenu = () => this.setState({ userMenuOpen: false });
+  toggleSettingsMenu = () => this.setState((s) => ({ settingsMenuOpen: !s.settingsMenuOpen, userMenuOpen: false }));
+  closeSettingsMenu = () => this.setState({ settingsMenuOpen: false });
+
+  onSearchInput = (e) => this.setState({ searchTerm: e.target.value });
+  setFilter(value) { this.setState({ confidenceFilter: value }); }
+
+  togglePage(pn) {
+    this.setState((s) => ({ collapsedPages: s.collapsedPages.includes(pn) ? s.collapsedPages.filter((x) => x !== pn) : [...s.collapsedPages, pn] }));
+  }
+  toggleSection(sid) {
+    this.setState((s) => ({ collapsedSections: s.collapsedSections.includes(sid) ? s.collapsedSections.filter((x) => x !== sid) : [...s.collapsedSections, sid] }));
+  }
+  toggleFieldCollapse(id) {
+    this.setState((s) => ({ collapsedFieldIds: s.collapsedFieldIds.includes(id) ? s.collapsedFieldIds.filter((x) => x !== id) : [...s.collapsedFieldIds, id] }));
+  }
+
+  toggleRowExpand(m, current) {
+    if (this.state.expandedId && this.state.expandedId !== m.pdfElementId && this.isDraftDirty()) {
+      this.setState({ pendingDiscardId: m.pdfElementId, pendingDiscardTarget: { m, current } });
+      return;
+    }
+    this.setState((s) => s.expandedId === m.pdfElementId
+      ? { expandedId: null, originalDraft: null }
+      : this.buildExpandState(m, current));
+  }
+  buildExpandState(m, current) {
+    const draft = {
+      label: current.label, inputType: current.inputType || '',
+      itemFields: (current.itemFields || []).map((f) => ({ ...f })),
+      minItems: current.minItems ?? 1, maxItems: current.maxItems ?? 1,
+    };
+    return { expandedId: m.pdfElementId, draft, originalDraft: JSON.parse(JSON.stringify(draft)) };
+  }
+  isDraftDirty() {
+    return JSON.stringify(this.state.draft) !== JSON.stringify(this.state.originalDraft);
+  }
+  requestCancelFieldEdit = () => {
+    if (this.isDraftDirty()) { this.setState({ pendingDiscardId: 'cancel' }); return; }
+    this.cancelFieldEdit();
+  };
+  cancelDiscard = () => this.setState({ pendingDiscardId: null, pendingDiscardTarget: null });
+  confirmDiscard = () => {
+    const pendingTarget = this.state.pendingDiscardTarget;
+    if (pendingTarget) {
+      this.setState({ pendingDiscardId: null, pendingDiscardTarget: null, ...this.buildExpandState(pendingTarget.m, pendingTarget.current) });
+    } else {
+      this.setState({ pendingDiscardId: null, expandedId: null, originalDraft: null });
+    }
+  };
+  showToast(text) {
+    clearTimeout(this._toastTimer);
+    this.setState({ toast: { text } });
+    this._toastTimer = setTimeout(() => this.setState({ toast: null }), 2400);
+  }
+  onDraftLabelChange = (e) => this.setState((s) => ({ draft: { ...s.draft, label: e.target.value } }));
+  onDraftInputTypeChange = (e) => this.setState((s) => ({ draft: { ...s.draft, inputType: e.target.value } }));
+  onDraftMinChange = (e) => this.setState((s) => ({ draft: { ...s.draft, minItems: Math.max(0, parseInt(e.target.value, 10) || 0) } }));
+  onDraftMaxChange = (e) => this.setState((s) => ({ draft: { ...s.draft, maxItems: Math.max(1, parseInt(e.target.value, 10) || 1) } }));
+  onItemFieldLabelChange(idx, e) {
+    this.setState((s) => ({ draft: { ...s.draft, itemFields: s.draft.itemFields.map((f, i) => (i === idx ? { ...f, label: e.target.value } : f)) } }));
+  }
+  onItemFieldTypeChange(idx, e) {
+    this.setState((s) => ({ draft: { ...s.draft, itemFields: s.draft.itemFields.map((f, i) => (i === idx ? { ...f, inputType: e.target.value } : f)) } }));
+  }
+  addItemField = () => this.setState((s) => ({ draft: { ...s.draft, itemFields: [...s.draft.itemFields, { label: 'New field', inputType: 'text' }] } }));
+  removeItemField(idx) {
+    this.setState((s) => ({ draft: { ...s.draft, itemFields: s.draft.itemFields.filter((_, i) => i !== idx) } }));
+  }
+  cancelFieldEdit = () => this.setState({ expandedId: null, originalDraft: null });
+  saveFieldEdit(m) {
+    this.setState((s) => ({ fieldOverrides: { ...s.fieldOverrides, [m.pdfElementId]: { ...s.draft, itemFields: s.draft.itemFields.map((f) => ({ ...f })) } }, expandedId: null, originalDraft: null }));
+    this.showToast('Changes saved');
+  }
+
+  requestUnlink = (m) => this.setState({ confirmUnlinkId: m.pdfElementId });
+  cancelUnlinkConfirm = () => this.setState({ confirmUnlinkId: null });
+  confirmUnlink = (m) => {
+    this.setState((s) => ({
+      mappings: s.mappings.filter((x) => x.pdfElementId !== m.pdfElementId),
+      confirmUnlinkId: null,
+    }));
+    this.showToast('Field removed');
+  };
+
+  movePage = (pn, dir) => {
+    this.setState((s) => {
+      const allPageNumbers = [...new Set([...s.mappings.map((m) => m.pageNumber), ...s.manualPages])];
+      const base = allPageNumbers.slice().sort((a, b) => a - b);
+      const order = applyOrder(base, s.pageOrder);
+      const idx = order.indexOf(pn);
+      const newIdx = idx + dir;
+      if (idx === -1 || newIdx < 0 || newIdx >= order.length) return {};
+      const newOrder = order.slice();
+      [newOrder[idx], newOrder[newIdx]] = [newOrder[newIdx], newOrder[idx]];
+      return { pageOrder: newOrder };
+    });
+  };
+  moveSection = (pn, sid, dir) => {
+    this.setState((s) => {
+      const targets = s.targets;
+      const sectionOfField = {};
+      { let cur = null; for (const t of targets) { if (t.targetType === 'Section') cur = t.id; else if (cur) sectionOfField[t.id] = cur; } }
+      const headings = s.mappings.filter((m) => m.kind === 'heading' && m.pageNumber === pn);
+      const pageFields = s.mappings.filter((m) => m.kind !== 'heading' && m.pageNumber === pn);
+      const rawIds = [...new Set(pageFields.map((f) => sectionOfField[f.targetId]).filter(Boolean))];
+      headings.forEach((h) => { if (!rawIds.includes(h.targetId)) rawIds.push(h.targetId); });
+      const order = applyOrder(rawIds, s.sectionOrder[pn]);
+      const idx = order.indexOf(sid);
+      const newIdx = idx + dir;
+      if (idx === -1 || newIdx < 0 || newIdx >= order.length) return {};
+      const newOrder = order.slice();
+      [newOrder[idx], newOrder[newIdx]] = [newOrder[newIdx], newOrder[idx]];
+      return { sectionOrder: { ...s.sectionOrder, [pn]: newOrder } };
+    });
+  };
+  moveField = (pn, sid, pdfElementId, dir) => {
+    this.setState((s) => {
+      const targets = s.targets;
+      const sectionOfField = {};
+      { let cur = null; for (const t of targets) { if (t.targetType === 'Section') cur = t.id; else if (cur) sectionOfField[t.id] = cur; } }
+      const rawIds = s.mappings.filter((m) => m.kind !== 'heading' && m.pageNumber === pn && sectionOfField[m.targetId] === sid).map((f) => f.pdfElementId);
+      const order = applyOrder(rawIds, s.fieldOrder[sid]);
+      const idx = order.indexOf(pdfElementId);
+      const newIdx = idx + dir;
+      if (idx === -1 || newIdx < 0 || newIdx >= order.length) return {};
+      const newOrder = order.slice();
+      [newOrder[idx], newOrder[newIdx]] = [newOrder[newIdx], newOrder[idx]];
+      return { fieldOrder: { ...s.fieldOrder, [sid]: newOrder } };
+    });
+  };
+  deleteSection = (sid) => {
+    this.setState((s) => ({
+      targets: s.targets.filter((t) => t.id !== sid),
+      mappings: s.mappings.filter((m) => m.targetId !== sid),
+    }));
+    this.showToast('Section deleted');
+  };
+  deletePage = (pn) => {
+    this.setState((s) => ({
+      manualPages: s.manualPages.filter((p) => p !== pn),
+      mappings: s.mappings.filter((m) => m.pageNumber !== pn),
+    }));
+    this.showToast('Page deleted');
+  };
+  renderVals() {
+    const s = this.state;
+    const matches = (m) => {
+      const term = !s.searchTerm || m.originalText.toLowerCase().includes(s.searchTerm.toLowerCase());
+      if (!term) return false;
+      if (s.confidenceFilter === 'high') return m.confidence >= 0.8;
+      if (s.confidenceFilter === 'medium') return m.confidence >= 0.5 && m.confidence < 0.8;
+      if (s.confidenceFilter === 'low') return m.confidence < 0.5;
+      return true;
+    };
+
+    const targets = s.targets;
+    const sectionOfField = {};
+    { let cur = null; for (const t of targets) { if (t.targetType === 'Section') cur = t.id; else if (cur) sectionOfField[t.id] = cur; } }
+
+    const decorate = (m) => {
+      const pct = Math.round(m.confidence * 100);
+      const color = m.confidence >= 0.8 ? 'var(--color-accent-300)' : m.confidence >= 0.5 ? 'var(--color-accent-600)' : 'var(--color-neutral-500)';
+      const meta = KIND_META[m.kind];
+      const target = targets.find((t) => t.id === m.targetId) || { label: '(unmapped)', targetType: meta.targetType };
+      const override = s.fieldOverrides[m.pdfElementId];
+      const isTextKind = m.kind === 'heading' || m.kind === 'description';
+      const isFieldKind = m.kind === 'field';
+      const isFieldGroupKind = m.kind === 'field-group';
+      // Field and field-group rows now edit exclusively in the Workflow Page
+      // Editor (they carry too much associated data — options, validation,
+      // sub-fields — for this report's simple inline label/type switch).
+      const isEditableInline = !isFieldKind && !isFieldGroupKind;
+      const isExpanded = isEditableInline && s.expandedId === m.pdfElementId;
+      const effectiveLabel = override ? override.label : (isTextKind ? m.originalText : target.label);
+      const effectiveInputType = override && override.inputType ? override.inputType : target.inputType;
+      const displayTargetType = m.kind === 'description' ? 'Text' : m.kind === 'field-group' ? 'Field-List' : target.targetType;
+      const rawDetail = m.kind === 'description' ? '' : detailFor(target, effectiveInputType);
+      const targetTypeTag = rawDetail ? `${displayTargetType}-${rawDetail[0].toUpperCase()}${rawDetail.slice(1)}` : displayTargetType;
+      const effectiveMappedBy = s.workflowSource === 'manual' ? 'manual' : m.mappedBy;
+      return {
+        ...m,
+        mappedBy: effectiveMappedBy,
+        originalTextShort: shorten(m.originalText),
+        confidencePct: pct,
+        confidenceColor: color,
+        isLlm: effectiveMappedBy === 'llm',
+        isManual: effectiveMappedBy === 'manual',
+        kindLabel: meta.label,
+        targetType: targetTypeTag,
+        targetLabel: effectiveLabel,
+        isTextKind, isFieldKind, isFieldGroupKind,
+        isNotTextKind: !isTextKind,
+        isOtherKind: !isTextKind && !isFieldKind && !isFieldGroupKind,
+        isEditableInline, isNotEditableInline: !isEditableInline,
+        pageEditorHref: 'Workflow Page Editor.dc.html',
+        isExpanded, isCollapsed: !isExpanded,
+        fieldTypeLabel: (FIELD_TYPE_OPTIONS.find((o) => o.value === (effectiveInputType || '')) || {}).label || '',
+        isCardCollapsed: s.collapsedFieldIds.includes(m.pdfElementId),
+        isCardExpanded: !s.collapsedFieldIds.includes(m.pdfElementId),
+        onToggleCardCollapse: () => this.toggleFieldCollapse(m.pdfElementId),
+        draftLabel: isExpanded ? s.draft.label : effectiveLabel,
+        draftInputType: isExpanded ? s.draft.inputType : (effectiveInputType || ''),
+        minItems: isExpanded ? s.draft.minItems : (override && override.minItems != null ? override.minItems : target.minItems),
+        maxItems: isExpanded ? s.draft.maxItems : (override && override.maxItems != null ? override.maxItems : target.maxItems),
+        itemFields: (isExpanded ? s.draft.itemFields : (override && override.itemFields ? override.itemFields : (target.itemFields || [])))
+          .map((f, idx) => ({
+            ...f,
+            onLabelChange: (e) => this.onItemFieldLabelChange(idx, e),
+            onTypeChange: (e) => this.onItemFieldTypeChange(idx, e),
+            onRemove: () => this.removeItemField(idx),
+          })),
+        inputTypeOptions: FIELD_TYPE_OPTIONS,
+        onToggleExpand: () => this.toggleRowExpand(m, {
+          label: effectiveLabel, inputType: effectiveInputType,
+          itemFields: override && override.itemFields ? override.itemFields : target.itemFields,
+          minItems: override && override.minItems != null ? override.minItems : target.minItems,
+          maxItems: override && override.maxItems != null ? override.maxItems : target.maxItems,
+        }),
+        onDraftLabelChange: this.onDraftLabelChange,
+        onDraftInputTypeChange: this.onDraftInputTypeChange,
+        onDraftMinChange: this.onDraftMinChange,
+        onDraftMaxChange: this.onDraftMaxChange,
+        onAddItemField: this.addItemField,
+        onCancelFieldEdit: this.requestCancelFieldEdit,
+        onSaveFieldEdit: () => this.saveFieldEdit(m),
+        unlink: () => this.requestUnlink(m),
+      };
+    };
+
+    const headings = s.mappings.filter((m) => m.kind === 'heading');
+    const fields = s.mappings.filter((m) => m.kind !== 'heading');
+    const pageNumbers = applyOrder([...new Set([...s.mappings.map((m) => m.pageNumber), ...s.manualPages])].sort((a, b) => a - b), s.pageOrder);
+
+    const pageGroups = pageNumbers.map((pn) => {
+      const pageHeadings = headings.filter((h) => h.pageNumber === pn);
+      const pageFields = fields.filter((f) => f.pageNumber === pn);
+      let sectionIds = [...new Set(pageFields.map((f) => sectionOfField[f.targetId]).filter(Boolean))];
+      pageHeadings.forEach((h) => { if (!sectionIds.includes(h.targetId)) sectionIds.push(h.targetId); });
+      sectionIds = applyOrder(sectionIds, s.sectionOrder[pn]);
+
+      const sections = sectionIds.map((sid) => {
+        const headingMapping = pageHeadings.find((h) => h.targetId === sid);
+        let fieldsInSection = pageFields.filter((f) => sectionOfField[f.targetId] === sid);
+        const fieldOrderIds = applyOrder(fieldsInSection.map((f) => f.pdfElementId), s.fieldOrder[sid]);
+        fieldsInSection = fieldOrderIds.map((id) => fieldsInSection.find((f) => f.pdfElementId === id));
+        const visibleFields = fieldsInSection.filter(matches);
+        const headingMatches = headingMapping ? matches(headingMapping) : false;
+        const target = targets.find((t) => t.id === sid);
+        const expanded = !s.collapsedSections.includes(sid);
+        return {
+          sid,
+          visible: visibleFields.length > 0 || headingMatches,
+          label: target ? target.label : 'Section',
+          description: target && target.description ? target.description : '',
+          hasDescription: !!(target && target.description),
+          summaryLabel: `${visibleFields.length} field${visibleFields.length !== 1 ? 's' : ''}`,
+          hasHeadingMapping: !!headingMapping,
+          confidencePct: headingMapping ? Math.round(headingMapping.confidence * 100) : 0,
+          confidenceColor: headingMapping ? (headingMapping.confidence >= 0.8 ? 'var(--color-accent-300)' : headingMapping.confidence >= 0.5 ? 'var(--color-accent-600)' : 'var(--color-neutral-500)') : 'var(--color-neutral-500)',
+          fields: visibleFields.map(decorate).map((f, i, arr) => ({
+            ...f,
+            canMoveUp: i > 0,
+            canMoveDown: i < arr.length - 1,
+            moveUp: () => this.moveField(pn, sid, f.pdfElementId, -1),
+            moveDown: () => this.moveField(pn, sid, f.pdfElementId, 1),
+          })),
+          expanded,
+          collapsed: !expanded,
+          toggle: () => this.toggleSection(sid),
+          canDelete: fieldsInSection.length === 0,
+          onDelete: () => this.deleteSection(sid),
+        };
+      }).filter((sec) => sec.visible);
+      sections.forEach((sec, i) => {
+        sec.canMoveUp = i > 0;
+        sec.canMoveDown = i < sections.length - 1;
+        sec.moveUp = () => this.moveSection(pn, sec.sid, -1);
+        sec.moveDown = () => this.moveSection(pn, sec.sid, 1);
+      });
+
+      const visibleFieldCount = sections.reduce((a, se) => a + se.fields.length, 0);
+      const expanded = !s.collapsedPages.includes(pn);
+      return {
+        pageNumber: pn,
+        sections,
+        visible: sections.length > 0 || s.manualPages.includes(pn),
+        summaryLabel: `${sections.length} section${sections.length !== 1 ? 's' : ''} · ${visibleFieldCount} field${visibleFieldCount !== 1 ? 's' : ''}`,
+        visibleFieldCount,
+        expanded,
+        collapsed: !expanded,
+        toggle: () => this.togglePage(pn),
+        canDelete: sectionIds.length === 0,
+        onDelete: () => this.deletePage(pn),
+      };
+    }).filter((pg) => pg.visible);
+    pageGroups.forEach((pg, i) => {
+      pg.canMoveUp = i > 0;
+      pg.canMoveDown = i < pageGroups.length - 1;
+      pg.moveUp = () => this.movePage(pg.pageNumber, -1);
+      pg.moveDown = () => this.movePage(pg.pageNumber, 1);
+    });
+
+    const totalVisibleFields = pageGroups.reduce((a, pg) => a + pg.visibleFieldCount, 0);
+
+    const all = s.mappings;
+    const highCount = all.filter((m) => m.confidence >= 0.8).length;
+    const mediumCount = all.filter((m) => m.confidence >= 0.5 && m.confidence < 0.8).length;
+    const lowCount = all.filter((m) => m.confidence < 0.5).length;
+    const avg = all.length ? Math.round(all.reduce((sum, m) => sum + m.confidence, 0) / all.length * 100) : 0;
+
+    const stats = [
+      { label: 'Total', value: all.length, color: 'var(--color-text)' },
+      { label: 'High \u2265 80%', value: highCount, color: 'var(--color-accent-300)' },
+      { label: 'Medium 50\u201379%', value: mediumCount, color: 'var(--color-accent-600)' },
+      { label: 'Low < 50%', value: lowCount, color: 'var(--color-neutral-500)' },
+      { label: 'Avg confidence', value: avg + '%', color: 'var(--color-text)' },
+    ];
+
+    const confidenceChips = [
+      { value: 'all', label: 'All', color: 'var(--color-text)' },
+      { value: 'high', label: 'High', color: 'var(--color-accent-300)' },
+      { value: 'medium', label: 'Medium', color: 'var(--color-accent-600)' },
+      { value: 'low', label: 'Low', color: 'var(--color-neutral-500)' },
+    ].map((c) => ({ ...c, checked: s.confidenceFilter === c.value, onSelect: () => this.setFilter(c.value) }));
+
+    return {
+      orgName: 'Formwork',
+      orgInitial: 'F',
+      userName: 'Alex Rivera',
+      userInitials: 'AR',
+      userEmail: 'alex@formwork.io',
+      userMenuOpen: s.userMenuOpen,
+      settingsMenuOpen: s.settingsMenuOpen,
+      toggleUserMenu: this.toggleUserMenu,
+      closeUserMenu: this.closeUserMenu,
+      toggleSettingsMenu: this.toggleSettingsMenu,
+      closeSettingsMenu: this.closeSettingsMenu,
+      workflowTitle: 'New Hire Onboarding',
+      isLlmGenerated: s.workflowSource !== 'manual',
+      stats,
+      searchTerm: s.searchTerm,
+      onSearchInput: this.onSearchInput,
+      confidenceChips,
+      isTableView: s.viewMode === 'table',
+      isCardView: s.viewMode === 'card',
+      viewChips: [
+        { value: 'table', label: 'Table' },
+        { value: 'card', label: 'Cards' },
+      ].map((v) => ({ ...v, checked: s.viewMode === v.value, onSelect: () => this.setViewMode(v.value) })),
+      workflowSourceLabel: s.workflowSource === 'pdf' ? 'PDF conversion' : s.workflowSource === 'instructions' ? 'LLM instructions' : 'Manually created',
+      sourceLabel: s.workflowSource === 'pdf' ? 'From PDF' : s.workflowSource === 'instructions' ? 'From LLM' : 'From manual entry',
+      pageGroups,
+      noResults: pageGroups.length === 0,
+      confirmUnlinkTarget: (() => {
+        const m = s.mappings.find((x) => x.pdfElementId === s.confirmUnlinkId);
+        if (!m) return null;
+        const d = decorate(m);
+        return {
+          label: d.targetLabel,
+          message: d.isFieldGroupKind
+            ? `Deleting "${d.targetLabel}" will remove it and its ${d.itemFields.length} sub-fields from the workflow. This can't be undone.`
+            : `Deleting "${d.targetLabel}" will remove this field from the workflow. This can't be undone.`,
+          onConfirm: () => this.confirmUnlink(m),
+          onCancel: this.cancelUnlinkConfirm,
+        };
+      })(),
+      showUnlinkConfirm: !!s.confirmUnlinkId,
+      showDiscardConfirm: !!s.pendingDiscardId,
+      onCancelDiscard: this.cancelDiscard,
+      onConfirmDiscard: this.confirmDiscard,
+      toast: s.toast,
+    };
+  }
+}
+
+</script>
+</body>
+</html>

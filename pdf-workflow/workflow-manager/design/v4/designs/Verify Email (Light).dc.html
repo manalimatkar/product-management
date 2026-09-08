@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+
+<helmet>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: -apple-system, "Inter", Arial, sans-serif; }
+    a { text-decoration: none; }
+    .wf-ic svg { display: block; }
+    .mrl-btn { border-radius: 6px; padding: 11px 12px; font-size: 14px; font-weight: 600; cursor: pointer; border: none; width: 100%; }
+    .mrl-icon-btn { border: none; background: none; cursor: pointer; width: 34px; height: 34px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; }
+  </style>
+</helmet>
+
+<div style="min-height: 100vh; display:flex; align-items:center; justify-content:center; padding:24px; background: {{ t.bg }}; position:relative;">
+  <button type="button" class="mrl-icon-btn" aria-label="Toggle theme" title="Toggle theme" style="position:fixed; top:20px; right:20px; color: {{ t.textMuted }};" onClick="{{ toggleTheme }}">
+    <svg class="wf-ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="{{ themeIconPath }}"></path></svg>
+  </button>
+
+  <div style="width:100%; max-width:380px;">
+    <div style="display:flex; align-items:center; gap:8px; justify-content:center; margin-bottom:28px;">
+      <span style="width:28px; height:28px; border-radius:7px; background: {{ t.accent }}; color:#fff; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700;">F</span>
+      <span style="font-size:17px; font-weight:700; color: {{ t.text }};">Formwork</span>
+    </div>
+
+    <div style="background: {{ t.surface }}; border:1px solid {{ t.border }}; border-radius:12px; padding:32px; box-shadow: 0 8px 24px rgba(0,0,0,0.08); text-align:center;">
+      <div style="width:44px; height:44px; border-radius:50%; background: {{ t.accentBg }}; display:flex; align-items:center; justify-content:center; margin:0 auto 16px;">
+        <svg class="wf-ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="{{ t.accent }}" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M3 7l9 6 9-6"></path></svg>
+      </div>
+      <h1 style="font-size:20px; font-weight:700; color: {{ t.text }}; margin:0 0 8px;">Verify your email</h1>
+      <p style="font-size:13px; color: {{ t.textMuted }}; margin:0 0 24px;">We've sent a verification link to <strong style="color: {{ t.text }};">{{ email }}</strong>. Click it to activate your account.</p>
+
+      <sc-if value="{{ resent }}"><div style="font-size:12.5px; color: {{ t.accent }}; margin-bottom:12px;">Verification email resent.</div></sc-if>
+
+      <button type="button" class="mrl-btn" onClick="{{ onContinue }}" style="background: {{ t.accent }}; color:#fff;">I've verified — continue</button>
+      <button type="button" class="mrl-btn" onClick="{{ onResend }}" style="background: {{ t.tagBg }}; color: {{ t.text }}; margin-top:10px;">Resend email</button>
+      <p style="font-size:12.5px; color: {{ t.textMuted }}; margin: 20px 0 0;">Wrong email? <a href="Signup (Light).dc.html" style="color: {{ t.accent }}; font-weight:600;">Go back</a></p>
+    </div>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const THEMES = {
+  light: { bg: '#f9fafb', border: '#e5e7eb', text: '#111827', textMuted: '#6b7280', surface: '#ffffff', tagBg: '#f3f4f6', accent: '#4f46e5', accentBg: '#eef2ff' },
+  dark: { bg: '#14151f', border: '#2a2c3a', text: '#e9e9ed', textMuted: '#9a9aa8', surface: '#1c1e2a', tagBg: '#262838', accent: '#9184d9', accentBg: '#2a2740' },
+};
+
+class Component extends DCLogic {
+  state = { theme: 'light', email: 'jane@acme.com', resent: false };
+  toggleTheme = () => this.setState((s) => ({ theme: s.theme === 'light' ? 'dark' : 'light' }));
+  onResend = () => { this.setState({ resent: true }); setTimeout(() => this.setState({ resent: false }), 3000); };
+  onContinue = () => {};
+  renderVals() {
+    const s = this.state;
+    const t = THEMES[s.theme];
+    const isDark = s.theme === 'dark';
+    return {
+      t, theme: s.theme, toggleTheme: this.toggleTheme,
+      themeIconPath: isDark ? 'M12 3v1M12 20v1M4.2 4.2l.7.7M18.4 18.4l.7.7M3 12h1M20 12h1M4.2 19.8l.7-.7M18.4 5.6l.7-.7M12 7a5 5 0 100 10 5 5 0 000-10z' : 'M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 1 0 10.5 10.5z',
+      email: s.email, resent: s.resent, onResend: this.onResend, onContinue: this.onContinue,
+    };
+  }
+}
+</script>
+</body>
+</html>
