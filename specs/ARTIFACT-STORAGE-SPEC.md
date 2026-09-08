@@ -83,45 +83,38 @@ The folder groups everything for one feature together for browsing; the filename
     (tool-native formats, unchanged)
 ```
 
-## 6. Worked Example: Cart Optimization
+## 6. Worked Example: a Flat Platform
 
-The full chain for the dry-run "cart optimization" example, after migrating to this convention (2026-08-31, re-migrated to platform-first order 2026-09-08):
-
-```text
-checkout/design/cart-optimization/v1.0/design-handoff-cart-optimization-v1.0.md
-checkout/design/cart-optimization/v1.0/screens/screen-cart-empty-cart-optimization.md
-checkout/design/cart-optimization/v1.0/screens/screen-cart-full-cart-optimization.md
-checkout/design/cart-optimization/v1.0/user-flows/flow-add-item-cart-optimization.mmd
-checkout/sources/cart-optimization/source-cart-optimization-SRC-001.md
-checkout/analysis/cart-optimization/design-analysis-cart-optimization-DA-001.md
-checkout/requirements/cart-optimization/business-requirements-cart-optimization-REQSET-001.md
-checkout/business-prs/cart-optimization/business-pr-cart-optimization-BPR-001.md
-```
-
-Reading down this list top to bottom is reading the controlled transformation (BUSINESS-PR-SPEC.md section 3) itself -- each filename names the artifact, and each artifact's own metadata table names the one before it.
-
-`checkout` is this example's `platform-slug`. Nothing about this fictional shopping platform describes multiple distinct applications, so the app segment is omitted -- this is the flat, two-level shape.
-
-### Real Example: a Platform With an App Layer
-
-`pdf-workflow` (`workflow-manager` app) is a real registered platform in this repository as of 2026-09-04 -- not illustrative:
+**Cleared 2026-09-08** -- see CLAUDE.md open item 18. No artifact instances currently exist in this repository; the illustrative `checkout/cart-optimization` dry run and a `pdf-workflow/workflow-manager` analysis built against the wrong source version were both removed rather than left stale. The shape below is illustrative only, no files exist at these paths:
 
 ```text
-pdf-workflow/workflow-manager/sources/mapping-report/source-mapping-report-SRC-002.md
-pdf-workflow/workflow-manager/analysis/mapping-report/design-analysis-mapping-report-DA-002.md
-pdf-workflow/workflow-manager/requirements/mapping-report/business-requirements-mapping-report-REQSET-002.md
-pdf-workflow/workflow-manager/business-prs/mapping-report/business-pr-mapping-report-BPR-002.md
+<platform-slug>/design/<feature-slug>/v<version>/design-handoff-<feature-slug>-v<version>.md
+<platform-slug>/design/<feature-slug>/v<version>/screens/screen-<screen-id>-<feature-slug>.md
+<platform-slug>/design/<feature-slug>/v<version>/user-flows/flow-<flow-id>-<feature-slug>.mmd
+<platform-slug>/sources/<feature-slug>/source-<feature-slug>-<SRC-id>.md
+<platform-slug>/analysis/<feature-slug>/design-analysis-<feature-slug>-<DA-id>.md
+<platform-slug>/requirements/<feature-slug>/business-requirements-<feature-slug>-<REQSET-id>.md
+<platform-slug>/business-prs/<feature-slug>/business-pr-<feature-slug>-<BPR-id>.md
 ```
 
-A platform with, say, a web application and a separate API application uses two different `app-slug` values here, each with its own independent set of sources, analyses, requirements, and so on -- while still sharing one `platform-slug` and one FRAMEWORK-CONFIGURATION-SPEC.md configuration.
+Reading down this list top to bottom is reading the controlled transformation (BUSINESS-PR-SPEC.md section 3) itself -- each filename names the artifact, and each artifact's own metadata table names the one before it. A flat platform (no distinct applications) omits the app segment entirely, as shown here -- this is the flat, two-level shape.
+
+### Illustrative Only: a Platform With an App Layer
+
+```text
+<platform-slug>/<app-slug>/sources/<feature-slug>/source-<feature-slug>-<SRC-id>.md
+<platform-slug>/<app-slug>/analysis/<feature-slug>/design-analysis-<feature-slug>-<DA-id>.md
+```
+
+A platform with, say, a web application and a separate API application uses two different `app-slug` values here, each with its own independent set of sources, analyses, requirements, and so on -- while still sharing one `platform-slug` and one FRAMEWORK-CONFIGURATION-SPEC.md configuration. `pdf-workflow` (`workflow-manager` app) is expected to become a real instance of this shape once the fresh v4 analysis (item 18) is registered.
 
 ## 7. Versioning and Supersession
 
 Only `design/` has a version folder today. Design Analysis, Business Requirements, and Business PRs can all be superseded too (DESIGN-ANALYSIS-SPEC.md, BUSINESS-REQUIREMENTS-SPEC.md section 11, REQUIREMENTS-VERSIONING-SPEC.md), but had nowhere for a new version to go without overwriting the old one. Under this convention, a new version gets a new artifact ID and therefore a new file, sitting beside the old one:
 
 ```text
-checkout/analysis/cart-optimization/design-analysis-cart-optimization-DA-001.md   (Status: Superseded)
-checkout/analysis/cart-optimization/design-analysis-cart-optimization-DA-002.md   (Status: Approved)
+<platform-slug>/analysis/<feature-slug>/design-analysis-<feature-slug>-DA-001.md   (Status: Superseded)
+<platform-slug>/analysis/<feature-slug>/design-analysis-<feature-slug>-DA-002.md   (Status: Approved)
 ```
 
 The superseded file is never deleted or overwritten -- its `Status` field changes, and the newer artifact's metadata records what it supersedes, per each artifact-type spec's own change-management section. This mirrors how `design/` already keeps every `v<version>/` folder rather than overwriting `v1.0` when `v1.1` ships.
