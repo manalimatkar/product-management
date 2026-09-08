@@ -50,7 +50,9 @@ on:
 
 permissions:
   contents: read
-  pull-requests: read
+  pull-requests: write  # not just read -- apply-on-merge posts a summary comment on the PR itself
+                         # (Epic/Story issue numbers); "read" 403's with "Resource not accessible
+                         # by integration" on that call. Found live on BPR-002's real merge (PR #4).
   issues: write
 
 jobs:
