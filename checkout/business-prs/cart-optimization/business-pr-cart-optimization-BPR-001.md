@@ -10,9 +10,9 @@
 | --- | --- |
 | Business PR ID | `BPR-001` |
 | Feature or Initiative | `Cart Optimization Redesign` |
-| Source Material | `checkout/cart-optimization@v1.0` (Design Handoff Bundle, `design/checkout/cart-optimization/v1.0/design-handoff-cart-optimization-v1.0.md`) |
-| Design Analysis | `analysis/checkout/cart-optimization/design-analysis-cart-optimization-DA-001.md`, version `1.0`, status `Draft` (see note below) |
-| Business Requirements | `REQSET-001`, version `1.0` (`requirements/checkout/cart-optimization/business-requirements-cart-optimization-REQSET-001.md`) |
+| Source Material | `checkout/cart-optimization@v1.0` (Design Handoff Bundle, `checkout/design/cart-optimization/v1.0/design-handoff-cart-optimization-v1.0.md`) |
+| Design Analysis | `checkout/analysis/cart-optimization/design-analysis-cart-optimization-DA-001.md`, version `1.0`, status `Draft` (see note below) |
+| Business Requirements | `REQSET-001`, version `1.0` (`checkout/requirements/cart-optimization/business-requirements-cart-optimization-REQSET-001.md`) |
 | Epic | `EPIC-001` |
 | Stories Included | `STORY-001`, `STORY-002`, `STORY-003` |
 | Created By | `Business Agent workflow -- manual dry-run walkthrough` |
@@ -110,9 +110,9 @@ And the product offers a way to continue shopping
 
 | Story | Business Requirement(s) | Design Analysis Evidence | Source Reference | Classification |
 | --- | --- | --- | --- | --- |
-| `STORY-001` | `BR-001`, `BR-002` | Capability: Remove Item from Cart (`CAP-002`); Observations: Remove shows confirmation before removing (`OBS-003`); Confirm Remove removes item and updates totals (`OBS-004`); flow diagram confirms cancel path (`OBS-007`) | `design/checkout/cart-optimization/v1.0/screens/screen-cart-full-cart-optimization.md`; `design/checkout/cart-optimization/v1.0/user-flows/flow-add-item-cart-optimization.mmd` | `Explicit` (confirmation step) / `Strongly Implied` (removal + totals update) |
-| `STORY-002` | `BR-003` | Capability: Apply Coupon Code (`CAP-003`); Observation: coupon Apply validates and gives distinct success/failure feedback (`OBS-005`) | `design/checkout/cart-optimization/v1.0/screens/screen-cart-full-cart-optimization.md` | `Explicit` |
-| `STORY-003` | `BR-004` | Capability: Return to Shopping from Empty Cart (`CAP-001`); Observations: empty message shown (`OBS-001`); Continue Shopping navigates to product listing (`OBS-002`) | `design/checkout/cart-optimization/v1.0/screens/screen-cart-empty-cart-optimization.md` | `Explicit` |
+| `STORY-001` | `BR-001`, `BR-002` | Capability: Remove Item from Cart (`CAP-002`); Observations: Remove shows confirmation before removing (`OBS-003`); Confirm Remove removes item and updates totals (`OBS-004`); flow diagram confirms cancel path (`OBS-007`) | `checkout/design/cart-optimization/v1.0/screens/screen-cart-full-cart-optimization.md`; `checkout/design/cart-optimization/v1.0/user-flows/flow-add-item-cart-optimization.mmd` | `Explicit` (confirmation step) / `Strongly Implied` (removal + totals update) |
+| `STORY-002` | `BR-003` | Capability: Apply Coupon Code (`CAP-003`); Observation: coupon Apply validates and gives distinct success/failure feedback (`OBS-005`) | `checkout/design/cart-optimization/v1.0/screens/screen-cart-full-cart-optimization.md` | `Explicit` |
+| `STORY-003` | `BR-004` | Capability: Return to Shopping from Empty Cart (`CAP-001`); Observations: empty message shown (`OBS-001`); Continue Shopping navigates to product listing (`OBS-002`) | `checkout/design/cart-optimization/v1.0/screens/screen-cart-empty-cart-optimization.md` | `Explicit` |
 
 No cell above names a framework, component, API, endpoint, or schema.
 

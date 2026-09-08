@@ -96,7 +96,7 @@ Every Business Requirements artifact must include:
 
 ### Storage
 
-This artifact is stored at `requirements/<platform-slug>/[<app-slug>/]<feature-slug>/business-requirements-<feature-slug>-<REQSET-id>.md`, per [ARTIFACT-STORAGE-SPEC.md](ARTIFACT-STORAGE-SPEC.md), which also governs how a new Requirements Version is stored as a new file rather than an overwrite (section 7).
+This artifact is stored at `<platform-slug>/[<app-slug>/]requirements/<feature-slug>/business-requirements-<feature-slug>-<REQSET-id>.md`, per [ARTIFACT-STORAGE-SPEC.md](ARTIFACT-STORAGE-SPEC.md), which also governs how a new Requirements Version is stored as a new file rather than an overwrite (section 7).
 
 ## 5. Requirement Record
 

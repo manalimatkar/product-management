@@ -50,7 +50,7 @@ If an authoritative source needs to change, its owner creates a new source versi
 The Design Analysis belongs in the business repository, under its own product and feature. The authoritative naming and folder convention -- for this artifact and every other artifact type -- is [ARTIFACT-STORAGE-SPEC.md](ARTIFACT-STORAGE-SPEC.md):
 
 ```text
-analysis/<platform-slug>/[<app-slug>/]<feature-slug>/design-analysis-<feature-slug>-<DA-id>.md
+<platform-slug>/[<app-slug>/]analysis/<feature-slug>/design-analysis-<feature-slug>-<DA-id>.md
 ```
 
 ## 3. Required Metadata

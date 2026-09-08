@@ -8,9 +8,9 @@
 | --- | --- |
 | Requirements ID | `REQSET-001` |
 | Feature or Initiative | `Cart Optimization Redesign` |
-| Source Material | `design/checkout/cart-optimization/v1.0/design-handoff-cart-optimization-v1.0.md` |
+| Source Material | `checkout/design/cart-optimization/v1.0/design-handoff-cart-optimization-v1.0.md` |
 | Source Version | `1.0` |
-| Analysis Artifact | `analysis/checkout/cart-optimization/design-analysis-cart-optimization-DA-001.md` |
+| Analysis Artifact | `checkout/analysis/cart-optimization/design-analysis-cart-optimization-DA-001.md` |
 | Analysis Type | `design` |
 | Analysis Version | `1.0` |
 | Requirements Version | `1.0` |
@@ -18,8 +18,8 @@
 | Created At | `2026-08-31` |
 | Status | `Approved` (via BPR-001, see section 12) |
 | Related Initiative or Parent | `Not Applicable` |
-| Related Downstream Items | `EPIC-001 (see business-prs/checkout/cart-optimization/business-pr-cart-optimization-BPR-001.md)` |
-| Review Package | `business-prs/checkout/cart-optimization/business-pr-cart-optimization-BPR-001.md` |
+| Related Downstream Items | `EPIC-001 (see checkout/business-prs/cart-optimization/business-pr-cart-optimization-BPR-001.md)` |
+| Review Package | `checkout/business-prs/cart-optimization/business-pr-cart-optimization-BPR-001.md` |
 | Required Approval | Approved 2026-08-31 -- see BPR-001 §12 |
 
 > Note on sequencing for this dry run: DA-001 (the source analysis) has not itself been separately approved yet -- per BUSINESS-REQUIREMENTS-SPEC.md section 2 that is permitted ("drafts ... from an approved *or reviewable* analysis"). Both DA-001 and this requirements set are being carried into a single Business PR (BPR-001) for one combined Business Owner review, resolving BUSINESS-PR-SPEC.md section 13's open question the pragmatic way for a first dry run: combine them and say so explicitly, rather than inventing a two-PR process that doesn't exist yet.
@@ -52,7 +52,7 @@ Reduce cart abandonment and improve the item-management experience, per the stat
 
 | Actor ID | Actor, Role, or Affected Party | Need or Responsibility | Source Reference |
 | --- | --- | --- | --- |
-| `ACTOR-001` | Shopper (end user) | Manage cart contents and apply discounts before checkout | `analysis/checkout/cart-optimization/design-analysis-cart-optimization-DA-001.md` §3 |
+| `ACTOR-001` | Shopper (end user) | Manage cart contents and apply discounts before checkout | `checkout/analysis/cart-optimization/design-analysis-cart-optimization-DA-001.md` §3 |
 
 ## 3. Scope
 
@@ -80,8 +80,8 @@ Reduce cart abandonment and improve the item-management experience, per the stat
 
 | Rule ID | Rule Statement | Applies To | Evidence | Status |
 | --- | --- | --- | --- | --- |
-| `BRULE-001` | An item must not be removed from the cart without an explicit confirmation step | `BR-001`, `BR-002` | `analysis/checkout/cart-optimization/design-analysis-cart-optimization-DA-001.md` OBS-003 | Confirmed |
-| `BRULE-002` | A coupon code must be validated before any discount is applied to the cart total | `BR-003` | `analysis/checkout/cart-optimization/design-analysis-cart-optimization-DA-001.md` OBS-005 | Confirmed |
+| `BRULE-001` | An item must not be removed from the cart without an explicit confirmation step | `BR-001`, `BR-002` | `checkout/analysis/cart-optimization/design-analysis-cart-optimization-DA-001.md` OBS-003 | Confirmed |
+| `BRULE-002` | A coupon code must be validated before any discount is applied to the cart total | `BR-003` | `checkout/analysis/cart-optimization/design-analysis-cart-optimization-DA-001.md` OBS-005 | Confirmed |
 
 ## 5. Requirements
 
@@ -93,7 +93,7 @@ Reduce cart abandonment and improve the item-management experience, per the stat
 - **Business Outcome:** Prevents accidental item loss
 - **Classification:** `Explicit`
 - **Confidence:** `High`
-- **Evidence:** `analysis/checkout/cart-optimization/design-analysis-cart-optimization-DA-001.md` OBS-003, OBS-007
+- **Evidence:** `checkout/analysis/cart-optimization/design-analysis-cart-optimization-DA-001.md` OBS-003, OBS-007
 - **Business Rules:** `BRULE-001`
 - **Assumptions:** `None`
 - **Decisions:** `None`
@@ -129,7 +129,7 @@ And the item is not removed until the shopper confirms
 - **Business Outcome:** Accurate cart state after removal
 - **Classification:** `Strongly Implied`
 - **Confidence:** `High`
-- **Evidence:** `analysis/checkout/cart-optimization/design-analysis-cart-optimization-DA-001.md` OBS-004
+- **Evidence:** `checkout/analysis/cart-optimization/design-analysis-cart-optimization-DA-001.md` OBS-004
 - **Business Rules:** `BRULE-001`
 - **Assumptions:** `None`
 - **Decisions:** `None`
@@ -165,7 +165,7 @@ And the cart's displayed totals are updated to reflect the removal
 - **Business Outcome:** Unambiguous discount feedback, supporting conversion
 - **Classification:** `Explicit`
 - **Confidence:** `High`
-- **Evidence:** `analysis/checkout/cart-optimization/design-analysis-cart-optimization-DA-001.md` OBS-005
+- **Evidence:** `checkout/analysis/cart-optimization/design-analysis-cart-optimization-DA-001.md` OBS-005
 - **Business Rules:** `BRULE-002`
 - **Assumptions:** `None`
 - **Decisions:** `DEC-002`
@@ -206,7 +206,7 @@ And the coupon input keeps focus
 - **Business Outcome:** No dead end on empty cart
 - **Classification:** `Explicit`
 - **Confidence:** `High`
-- **Evidence:** `analysis/checkout/cart-optimization/design-analysis-cart-optimization-DA-001.md` OBS-001, OBS-002
+- **Evidence:** `checkout/analysis/cart-optimization/design-analysis-cart-optimization-DA-001.md` OBS-001, OBS-002
 - **Business Rules:** `None`
 - **Assumptions:** `None`
 - **Decisions:** `None`

@@ -24,7 +24,10 @@ from pathlib import Path
 
 import yaml
 
-BUNDLE_PATH_RE = re.compile(r"^design/.+/v[^/]+/design-handoff-[^/]+\.md$")
+# 1-2 leading segments (<platform-slug>/[<app-slug>/]) before the design/
+# root -- widened 2026-09-08 when ARTIFACT-STORAGE-SPEC.md moved this root out
+# from the repository top level to nest under platform/app.
+BUNDLE_PATH_RE = re.compile(r"^(?:[^/]+/){1,2}design/.+/v[^/]+/design-handoff-[^/]+\.md$")
 CHECKLIST_HEADING_RE = re.compile(r"#+\s*Pre-Registration Checklist", re.IGNORECASE)
 UNCHECKED_RE = re.compile(r"^\s*-\s*\[\s*\]", re.MULTILINE)
 # Same PR-description sign-off pattern as design_branch_gate.py's

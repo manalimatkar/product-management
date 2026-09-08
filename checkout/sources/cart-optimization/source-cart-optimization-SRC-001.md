@@ -7,7 +7,7 @@
 | Source ID | `SRC-001` |
 | Source Name | `Cart Optimization Redesign -- Design Handoff Bundle v1.0` |
 | Source Type | `Design material` |
-| Location | `design/checkout/cart-optimization/v1.0/design-handoff-cart-optimization-v1.0.md` |
+| Location | `checkout/design/cart-optimization/v1.0/design-handoff-cart-optimization-v1.0.md` |
 | Version | `1.0` |
 | Status | `Active` |
 | Owner | `Manali, Product Designer` |
@@ -20,7 +20,7 @@
 
 ## If This Source Is a Design Handoff Bundle
 
-This source is a Design Handoff Bundle. Its bundle-specific fields (manifest, screens, flows, experience requirements) live in `design/checkout/cart-optimization/v1.0/design-handoff-cart-optimization-v1.0.md` per [DESIGN-HANDOFF-BUNDLE-SPEC.md](../../../specs/DESIGN-HANDOFF-BUNDLE-SPEC.md) section 5 and are not duplicated here. `Location` above points at that bundle's path, and `Version` matches the bundle's `version` field (`1.0`) exactly.
+This source is a Design Handoff Bundle. Its bundle-specific fields (manifest, screens, flows, experience requirements) live in `checkout/design/cart-optimization/v1.0/design-handoff-cart-optimization-v1.0.md` per [DESIGN-HANDOFF-BUNDLE-SPEC.md](../../../specs/DESIGN-HANDOFF-BUNDLE-SPEC.md) section 5 and are not duplicated here. `Location` above points at that bundle's path, and `Version` matches the bundle's `version` field (`1.0`) exactly.
 
 ## Known Limitations
 
@@ -37,7 +37,7 @@ This source is a Design Handoff Bundle. Its bundle-specific fields (manifest, sc
 
 | Check | Result | Evidence or Action |
 | --- | --- | --- |
-| Source can be accessed | Pass | File present at `design/checkout/cart-optimization/v1.0/design-handoff-cart-optimization-v1.0.md` plus 2 screen files and 1 flow file. |
+| Source can be accessed | Pass | File present at `checkout/design/cart-optimization/v1.0/design-handoff-cart-optimization-v1.0.md` plus 2 screen files and 1 flow file. |
 | Source identity is known | Pass | `bundleId: checkout/cart-optimization@v1.0` |
 | Source version is known | Pass | `version: 1.0` |
 | Required source types are present (per active configuration) | Pass (informal) | FRAMEWORK-CONFIGURATION-SPEC.md §8-11 (required source types per profile) is still placeholder in this repository; no formal check available yet. A single Design material source is sufficient for this dry run. |
@@ -47,6 +47,6 @@ This source is a Design Handoff Bundle. Its bundle-specific fields (manifest, sc
 
 **Readiness outcome:** `Ready with Limitations`
 
-The two known limitations above (no mobile frames; undefined max cart size and coupon-code format) must be carried forward into any Design Analysis that consumes this source, per PRODUCT-SOURCE-MATERIAL-SPEC.md §9. They appear in `analysis/checkout/cart-optimization/design-analysis-cart-optimization-DA-001.md` sections 2 and 14.
+The two known limitations above (no mobile frames; undefined max cart size and coupon-code format) must be carried forward into any Design Analysis that consumes this source, per PRODUCT-SOURCE-MATERIAL-SPEC.md §9. They appear in `checkout/analysis/cart-optimization/design-analysis-cart-optimization-DA-001.md` sections 2 and 14.
 
 **Blocking reason (if `Blocked`):** `Not Applicable`

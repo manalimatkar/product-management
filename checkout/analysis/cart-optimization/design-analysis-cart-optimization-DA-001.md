@@ -8,13 +8,13 @@
 | --- | --- |
 | Analysis ID | `DA-001` |
 | Feature | `Cart Optimization Redesign` |
-| Source Material | `design/checkout/cart-optimization/v1.0/design-handoff-cart-optimization-v1.0.md` |
+| Source Material | `checkout/design/cart-optimization/v1.0/design-handoff-cart-optimization-v1.0.md` |
 | Source Version | `1.0` |
 | Analysis Version | `1.0` |
 | Created By | `Business Agent workflow -- manual dry-run walkthrough` |
 | Created At | `2026-08-31` |
 | Status | `Approved` (via BPR-001, see section 19) |
-| Related Epic | `EPIC-001` (see business-prs/checkout/cart-optimization/business-pr-cart-optimization-BPR-001.md) |
+| Related Epic | `EPIC-001` (see checkout/business-prs/cart-optimization/business-pr-cart-optimization-BPR-001.md) |
 | Related Stories | `STORY-001, STORY-002, STORY-003` |
 | Business Owner Approval | Approved 2026-08-31 -- see BPR-001 §12 |
 
@@ -28,7 +28,7 @@ The source material is a Design Handoff Bundle for a redesigned shopping cart, c
 
 | Source ID | Path or Reference | Type | Version | Reviewed | Notes |
 | --- | --- | --- | --- | --- | --- |
-| `SRC-001` | `design/checkout/cart-optimization/v1.0/design-handoff-cart-optimization-v1.0.md` | Design | `1.0` | Yes | Full bundle: `design-handoff-cart-optimization-v1.0.md`, `screens/screen-cart-empty-cart-optimization.md`, `screens/screen-cart-full-cart-optimization.md`, `user-flows/flow-add-item-cart-optimization.mmd`. |
+| `SRC-001` | `checkout/design/cart-optimization/v1.0/design-handoff-cart-optimization-v1.0.md` | Design | `1.0` | Yes | Full bundle: `design-handoff-cart-optimization-v1.0.md`, `screens/screen-cart-empty-cart-optimization.md`, `screens/screen-cart-full-cart-optimization.md`, `user-flows/flow-add-item-cart-optimization.mmd`. |
 
 ### Source Limitations
 
@@ -395,6 +395,6 @@ Enabled modules for this analysis:
 
 | Review Item | Outcome | Reviewer | Date | Notes |
 | --- | --- | --- | --- | --- |
-| Design Analysis | Approved | Manali | 2026-08-31 | Reviewed together with Business Requirements and the Business PR in a single combined review -- see business-prs/checkout/cart-optimization/business-pr-cart-optimization-BPR-001.md section 12. |
-| Business Requirements | Approved | Manali | 2026-08-31 | See requirements/checkout/cart-optimization/business-requirements-cart-optimization-REQSET-001.md and BPR-001.md section 12. |
+| Design Analysis | Approved | Manali | 2026-08-31 | Reviewed together with Business Requirements and the Business PR in a single combined review -- see checkout/business-prs/cart-optimization/business-pr-cart-optimization-BPR-001.md section 12. |
+| Business Requirements | Approved | Manali | 2026-08-31 | See checkout/requirements/cart-optimization/business-requirements-cart-optimization-REQSET-001.md and BPR-001.md section 12. |
 | Design Version | Accepted | Manali | 2026-08-31 | Bundle version 1.0 accepted as the reviewed source. |

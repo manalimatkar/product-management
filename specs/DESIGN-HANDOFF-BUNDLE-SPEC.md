@@ -208,7 +208,7 @@ This section defines how that real shape is handled -- **the primary, recommende
 
 Two small normalizations vs. the raw tool output, both a stated default and overridable: the version folder is a plain `v<N>/` (the platform/app/`design` path segments already carry the app's identity, so a real export's own `design_handoff_<app>_v<N>/` folder name is redundant once nested here), and every version gets an explicit folder including the first (the tool itself leaves v1 unsuffixed). Versions are bare integers (`v1`, `v2`, `v3`, ...), matching Claude Design's own scheme -- **not** the `MAJOR.MINOR` format section 2 cites for the hand-authored path; `PRODUCT-SOURCE-MATERIAL-SPEC.md` section 5 already permits "another configured convention," so this is a documented divergence, not a spec change there.
 
-This branch's folder shape is deliberately **not** governed by `ARTIFACT-STORAGE-SPEC.md`'s `<root>/<platform-slug>/...` convention -- that convention governs curated *outputs* committed to `main` (Design Analysis, Requirements, the Business PR); `design` is a raw landing zone the Business Agent reads from, closer in kind to an external Figma file than to a generated artifact. `main`'s own existing `design/<platform-slug>/[<app-slug>/]<feature-slug>/v<version>/` root (section 8, unchanged) keeps governing the hand-authored path and the one existing dry-run example under it -- not retroactively migrated.
+This branch's folder shape is deliberately **not** governed by `ARTIFACT-STORAGE-SPEC.md`'s `<platform-slug>/[<app-slug>/]<type-root>/...` convention -- that convention governs curated *outputs* committed to `main` (Design Analysis, Requirements, the Business PR); `design` is a raw landing zone the Business Agent reads from, closer in kind to an external Figma file than to a generated artifact. `main`'s own existing `<platform-slug>/[<app-slug>/]design/<feature-slug>/v<version>/` root (section 8, unchanged in shape though re-migrated to platform-first order 2026-09-08) keeps governing the hand-authored path and the one existing dry-run example under it.
 
 **Scope, default/overridable:** the `design` branch is required only for tool-produced exports (Claude Design being the concrete case today). A hand-authored bundle with no export tool behind it may still be authored directly against `main`'s existing `design/` convention per section 6.1 -- there's nothing raw to protect from reformatting in that case, so the extra branch ceremony isn't earning its cost there.
 
@@ -261,7 +261,7 @@ A commit SHA pins an exact snapshot even after `design`'s tip moves on to a late
 The full naming and folder convention -- for this bundle and for every other artifact type in the repository -- is defined once in [ARTIFACT-STORAGE-SPEC.md](ARTIFACT-STORAGE-SPEC.md), consistent with [PRD.md](../PRD.md) section 7.7 and the `design/` area referenced in [README.md](../README.md). Summary (ARTIFACT-STORAGE-SPEC.md section 5):
 
 ```text
-design/<platform-slug>/[<app-slug>/]<feature-slug>/v<version>/
+<platform-slug>/[<app-slug>/]design/<feature-slug>/v<version>/
   design-handoff-<feature-slug>-v<version>.md
   design-spec-<feature-slug>-v<version>.md
   screens/

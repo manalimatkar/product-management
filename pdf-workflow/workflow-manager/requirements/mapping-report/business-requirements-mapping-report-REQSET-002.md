@@ -10,7 +10,7 @@
 | Feature or Initiative | Mapping Report (pdf-workflow / workflow-manager) |
 | Source Material | `branch: design`, `path: pdf-workflow/workflow-manager/design/v2/`, `commit: b29e1be0b4c0da414e831423991ae16b9b394b6c` |
 | Source Version | `2` |
-| Analysis Artifact | `analysis/pdf-workflow/workflow-manager/mapping-report/design-analysis-mapping-report-DA-002.md` |
+| Analysis Artifact | `pdf-workflow/workflow-manager/analysis/mapping-report/design-analysis-mapping-report-DA-002.md` |
 | Analysis Type | Design |
 | Analysis Version | `1.0` |
 | Requirements Version | `1.0` |

@@ -153,7 +153,7 @@ A single Story may produce multiple Tasks targeting different applications or en
 
 ## Documents
 
-Organized 2026-09-01 (see ARTIFACT-STORAGE-SPEC.md for how generated instances under `sources/`, `design/`, `analysis/`, `requirements/`, `business-prs/`, `tasks/` are organized separately from these framework documents).
+Organized 2026-09-01 (see ARTIFACT-STORAGE-SPEC.md for how generated instances -- nested per platform/app as `<platform-slug>/[<app-slug>/]{sources,design,analysis,requirements,business-prs,tasks}/...` since 2026-09-08 -- are organized separately from these framework documents).
 
 ### Root
 

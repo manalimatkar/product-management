@@ -64,7 +64,7 @@ Steps 1-8 run in order for each Story reaching this stage. Unlike the Business A
 **When used:** only when technical detail spans multiple Tasks and would otherwise have to be duplicated on each one -- a shared architecture decision, a cross-Task sequencing rationale, or investigation context feeding more than one Task from the same Story or Epic. A Technical Plan is a Markdown document, stored per [ARTIFACT-STORAGE-SPEC.md](ARTIFACT-STORAGE-SPEC.md)'s convention:
 
 ```text
-tasks/<platform-slug>/[<app-slug>/]<feature-slug>/technical-plan-<feature-slug>-<TP-id>.md
+<platform-slug>/[<app-slug>/]tasks/<feature-slug>/technical-plan-<feature-slug>-<TP-id>.md
 ```
 
 using `TP-<number>` as its canonical ID -- extending [ARTIFACT-RELATIONSHIP-MODEL.md](ARTIFACT-RELATIONSHIP-MODEL.md) section 3's inventory the same way `ANALYSIS-<number>` was proposed there for Design Analysis. Every Task it covers references it via a `Technical Plan` field (added to CANONICAL-TASK-SPEC.md section 6, additive -- it does not replace or change the meaning of any existing field). A Technical Plan carries its own Architect approval record, identical in shape to CANONICAL-TASK-SPEC.md section 9's Approval Recording table, since it is reviewed under the same Architect Review Gate as the Tasks it covers, not a separate gate of its own. This document does not prescribe required internal sections for a Technical Plan the way DESIGN-ANALYSIS-SPEC.md does for a Design Analysis -- per TECHNICAL-HANDOFF.md, "any optional Technical Plan is a proposal until approved by an Architect," and its content is whatever the specific initiative needs.

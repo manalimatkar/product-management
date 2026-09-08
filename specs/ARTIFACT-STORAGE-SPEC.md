@@ -45,16 +45,16 @@ A filename this pattern produces is never ambiguous: `design-analysis-cart-optim
 
 ## 4. Folder Convention
 
-**Revised 2026-09-01.** Every artifact type nests under its own root, then `<platform-slug>/[<app-slug>/]<feature-slug>/`:
+**Revised 2026-09-08.** Platform (and app, where present) is always the top-level root; every artifact type nests *under* it, then feature: `<platform-slug>/[<app-slug>/]<type-root>/<feature-slug>/`. This inverts the 2026-09-01 order (which put the type root first) to match the shape already used for the `design` branch (section 10) -- everything belonging to one platform/app now lives under one subtree, browsable as a unit, rather than scattered across six type-named roots at the repository's own top level.
 
 ```text
-sources/<platform-slug>/[<app-slug>/]<feature-slug>/source-<feature-slug>-<SRC-id>.md
-analysis/<platform-slug>/[<app-slug>/]<feature-slug>/design-analysis-<feature-slug>-<DA-id>.md
-requirements/<platform-slug>/[<app-slug>/]<feature-slug>/business-requirements-<feature-slug>-<REQSET-id>.md
-business-prs/<platform-slug>/[<app-slug>/]<feature-slug>/business-pr-<feature-slug>-<BPR-id>.md
-tasks/<platform-slug>/[<app-slug>/]<feature-slug>/canonical-task-<feature-slug>-<TASK-id>.md
-tasks/<platform-slug>/[<app-slug>/]<feature-slug>/spike-<feature-slug>-<SPIKE-id>.md
-tasks/<platform-slug>/[<app-slug>/]<feature-slug>/technical-plan-<feature-slug>-<TP-id>.md
+<platform-slug>/[<app-slug>/]sources/<feature-slug>/source-<feature-slug>-<SRC-id>.md
+<platform-slug>/[<app-slug>/]analysis/<feature-slug>/design-analysis-<feature-slug>-<DA-id>.md
+<platform-slug>/[<app-slug>/]requirements/<feature-slug>/business-requirements-<feature-slug>-<REQSET-id>.md
+<platform-slug>/[<app-slug>/]business-prs/<feature-slug>/business-pr-<feature-slug>-<BPR-id>.md
+<platform-slug>/[<app-slug>/]tasks/<feature-slug>/canonical-task-<feature-slug>-<TASK-id>.md
+<platform-slug>/[<app-slug>/]tasks/<feature-slug>/spike-<feature-slug>-<SPIKE-id>.md
+<platform-slug>/[<app-slug>/]tasks/<feature-slug>/technical-plan-<feature-slug>-<TP-id>.md
 ```
 
 The optional Technical Plan is defined in [TECHNICAL-AGENT-WORKFLOW.md](TECHNICAL-AGENT-WORKFLOW.md) section 4.1 -- most Tasks never produce one.
@@ -69,10 +69,10 @@ The folder groups everything for one feature together for browsing; the filename
 
 ## 5. `design/` -- Bundle-Level and Screen-Level Naming
 
-`design/` keeps its existing versioned path, now `design/<platform-slug>/[<app-slug>/]<feature-slug>/v<version>/` (DESIGN-HANDOFF-BUNDLE-SPEC.md section 8), which already carries the version -- something no other artifact type has yet (see section 7). Its files use the same self-describing principle, substituting version or screen/flow ID for a sequential artifact ID since bundles and screens don't have one:
+`design/` (the hand-authored path, section 6.1 of DESIGN-HANDOFF-BUNDLE-SPEC.md -- distinct from the `design` *branch*'s own native-export shape in section 10 below) keeps its existing versioned path, now `<platform-slug>/[<app-slug>/]design/<feature-slug>/v<version>/`, which already carries the version -- something no other artifact type has yet (see section 7). Its files use the same self-describing principle, substituting version or screen/flow ID for a sequential artifact ID since bundles and screens don't have one:
 
 ```text
-design/<platform-slug>/[<app-slug>/]<feature-slug>/v<version>/
+<platform-slug>/[<app-slug>/]design/<feature-slug>/v<version>/
   design-handoff-<feature-slug>-v<version>.md      (bundle identity + manifest; was bundle.md)
   design-spec-<feature-slug>-v<version>.md          (narrative; was design-spec.md)
   screens/
@@ -85,52 +85,56 @@ design/<platform-slug>/[<app-slug>/]<feature-slug>/v<version>/
 
 ## 6. Worked Example: Cart Optimization
 
-The full chain for the dry-run "cart optimization" example, after migrating to this convention (2026-08-31):
+The full chain for the dry-run "cart optimization" example, after migrating to this convention (2026-08-31, re-migrated to platform-first order 2026-09-08):
 
 ```text
-design/checkout/cart-optimization/v1.0/design-handoff-cart-optimization-v1.0.md
-design/checkout/cart-optimization/v1.0/screens/screen-cart-empty-cart-optimization.md
-design/checkout/cart-optimization/v1.0/screens/screen-cart-full-cart-optimization.md
-design/checkout/cart-optimization/v1.0/user-flows/flow-add-item-cart-optimization.mmd
-sources/checkout/cart-optimization/source-cart-optimization-SRC-001.md
-analysis/checkout/cart-optimization/design-analysis-cart-optimization-DA-001.md
-requirements/checkout/cart-optimization/business-requirements-cart-optimization-REQSET-001.md
-business-prs/checkout/cart-optimization/business-pr-cart-optimization-BPR-001.md
+checkout/design/cart-optimization/v1.0/design-handoff-cart-optimization-v1.0.md
+checkout/design/cart-optimization/v1.0/screens/screen-cart-empty-cart-optimization.md
+checkout/design/cart-optimization/v1.0/screens/screen-cart-full-cart-optimization.md
+checkout/design/cart-optimization/v1.0/user-flows/flow-add-item-cart-optimization.mmd
+checkout/sources/cart-optimization/source-cart-optimization-SRC-001.md
+checkout/analysis/cart-optimization/design-analysis-cart-optimization-DA-001.md
+checkout/requirements/cart-optimization/business-requirements-cart-optimization-REQSET-001.md
+checkout/business-prs/cart-optimization/business-pr-cart-optimization-BPR-001.md
 ```
 
 Reading down this list top to bottom is reading the controlled transformation (BUSINESS-PR-SPEC.md section 3) itself -- each filename names the artifact, and each artifact's own metadata table names the one before it.
 
-`checkout` is this example's `platform-slug`. Nothing about this fictional shopping platform describes multiple distinct applications, so the app segment is omitted -- this is the flat, two-level shape. No files moved when the app-layer option was added 2026-09-01; only the term `product-slug` changed to `platform-slug` throughout this repository's specs.
+`checkout` is this example's `platform-slug`. Nothing about this fictional shopping platform describes multiple distinct applications, so the app segment is omitted -- this is the flat, two-level shape.
 
-### Illustrative Only: a Platform With an App Layer
+### Real Example: a Platform With an App Layer
 
-Purely to show the other shape -- not a real registered platform in this repository, and no files exist at these paths:
+`pdf-workflow` (`workflow-manager` app) is a real registered platform in this repository as of 2026-09-04 -- not illustrative:
 
 ```text
-sources/<platform-slug>/<app-slug>/<feature-slug>/source-<feature-slug>-SRC-001.md
-analysis/<platform-slug>/<app-slug>/<feature-slug>/design-analysis-<feature-slug>-DA-001.md
+pdf-workflow/workflow-manager/sources/mapping-report/source-mapping-report-SRC-002.md
+pdf-workflow/workflow-manager/analysis/mapping-report/design-analysis-mapping-report-DA-002.md
+pdf-workflow/workflow-manager/requirements/mapping-report/business-requirements-mapping-report-REQSET-002.md
+pdf-workflow/workflow-manager/business-prs/mapping-report/business-pr-mapping-report-BPR-002.md
 ```
 
-A platform with, say, a web application and a separate API application would use two different `app-slug` values here, each with its own independent set of sources, analyses, requirements, and so on -- while still sharing one `platform-slug` and one FRAMEWORK-CONFIGURATION-SPEC.md configuration.
+A platform with, say, a web application and a separate API application uses two different `app-slug` values here, each with its own independent set of sources, analyses, requirements, and so on -- while still sharing one `platform-slug` and one FRAMEWORK-CONFIGURATION-SPEC.md configuration.
 
 ## 7. Versioning and Supersession
 
 Only `design/` has a version folder today. Design Analysis, Business Requirements, and Business PRs can all be superseded too (DESIGN-ANALYSIS-SPEC.md, BUSINESS-REQUIREMENTS-SPEC.md section 11, REQUIREMENTS-VERSIONING-SPEC.md), but had nowhere for a new version to go without overwriting the old one. Under this convention, a new version gets a new artifact ID and therefore a new file, sitting beside the old one:
 
 ```text
-analysis/checkout/cart-optimization/design-analysis-cart-optimization-DA-001.md   (Status: Superseded)
-analysis/checkout/cart-optimization/design-analysis-cart-optimization-DA-002.md   (Status: Approved)
+checkout/analysis/cart-optimization/design-analysis-cart-optimization-DA-001.md   (Status: Superseded)
+checkout/analysis/cart-optimization/design-analysis-cart-optimization-DA-002.md   (Status: Approved)
 ```
 
 The superseded file is never deleted or overwritten -- its `Status` field changes, and the newer artifact's metadata records what it supersedes, per each artifact-type spec's own change-management section. This mirrors how `design/` already keeps every `v<version>/` folder rather than overwriting `v1.0` when `v1.1` ships.
 
 ## 8. Canonical Tasks and Spikes: Local Fallback
 
-Per [CANONICAL-TASK-SPEC.md](CANONICAL-TASK-SPEC.md) section 2 and [PRD.md](../PRD.md) section 7.6, canonical Tasks and Spikes are meant to live as GitHub Issues once this repository has a real engineering-adjacent GitHub setup. That does not exist yet (see CLAUDE.md's open items). Until it does, the `tasks/<platform-slug>/[<app-slug>/]<feature-slug>/` layout in section 4 is the local-file fallback, so the Technical Agent stage is not blocked on git existing. When GitHub Issues become the actual store -- confirmed 2026-08-31 as this repository's chosen adapter, see [GITHUB-PLATFORM-ADAPTER-SPEC.md](GITHUB-PLATFORM-ADAPTER-SPEC.md) section 7 -- a retired local file's `Status` is set to `Superseded` and a `GitHub Issue: #<number>` line is added; the file itself is kept, never deleted, per the same non-destructive rule as section 7 above.
+Per [CANONICAL-TASK-SPEC.md](CANONICAL-TASK-SPEC.md) section 2 and [PRD.md](../PRD.md) section 7.6, canonical Tasks and Spikes are meant to live as GitHub Issues once this repository has a real engineering-adjacent GitHub setup. That does not exist yet (see CLAUDE.md's open items). Until it does, the `<platform-slug>/[<app-slug>/]tasks/<feature-slug>/` layout in section 4 is the local-file fallback, so the Technical Agent stage is not blocked on git existing. When GitHub Issues become the actual store -- confirmed 2026-08-31 as this repository's chosen adapter, see [GITHUB-PLATFORM-ADAPTER-SPEC.md](GITHUB-PLATFORM-ADAPTER-SPEC.md) section 7 -- a retired local file's `Status` is set to `Superseded` and a `GitHub Issue: #<number>` line is added; the file itself is kept, never deleted, per the same non-destructive rule as section 7 above.
 
 ## 9. Migration Note
 
 On 2026-08-31 the cart-optimization dry-run files were renamed and moved to match this convention (see section 6) -- this was the first real test of the convention, done immediately rather than left to apply "going forward" only, at the user's explicit direction. Every internal cross-reference (metadata tables, Stage Traces, the Source Registry) was swept and verified afterward.
+
+**2026-09-08: re-migrated to platform-first order.** The type-root-first order above (`<type>/<platform-slug>/...`) was inconsistent with the `design` branch's own shape (section 10), which had already put platform/app first. All real files -- the `checkout` dry run and the real `pdf-workflow/workflow-manager` example -- were moved to the platform-first order in section 4/6 immediately, not left on the old order; every internal cross-reference was swept and verified the same way as the 2026-08-31 migration. The six former top-level roots (`sources/`, `analysis/`, `requirements/`, `business-prs/`, `design/`, `tasks/`) no longer exist at the repository root -- each platform/app subtree now owns its own copies of them.
 
 ## 10. The `design` Branch: An Independent Shape
 

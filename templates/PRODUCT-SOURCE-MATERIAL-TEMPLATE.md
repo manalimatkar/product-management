@@ -8,7 +8,7 @@ Every source registered with this template gets one row added to [SOURCE-REGISTR
 
 ## Part 1: Source Registration Record
 
-**File:** `sources/<platform-slug>/[<app-slug>/]<feature-slug>/source-<feature-slug>-<source-id>.md` (see [ARTIFACT-STORAGE-SPEC.md](../specs/ARTIFACT-STORAGE-SPEC.md) section 4)
+**File:** `<platform-slug>/[<app-slug>/]sources/<feature-slug>/source-<feature-slug>-<source-id>.md` (see [ARTIFACT-STORAGE-SPEC.md](../specs/ARTIFACT-STORAGE-SPEC.md) section 4)
 
 ```markdown
 # Source: <Source Name>
@@ -93,10 +93,10 @@ If `Ready with Limitations`, the specific limitations must be carried forward in
 The authoritative naming and folder convention -- for this artifact and every other artifact type -- is [ARTIFACT-STORAGE-SPEC.md](../specs/ARTIFACT-STORAGE-SPEC.md):
 
 ```text
-sources/<platform-slug>/[<app-slug>/]<feature-slug>/source-<feature-slug>-<SRC-id>.md   (Registration Record + Readiness Check + Version History)
+<platform-slug>/[<app-slug>/]sources/<feature-slug>/source-<feature-slug>-<SRC-id>.md   (Registration Record + Readiness Check + Version History)
 ```
 
-For a Design Handoff Bundle specifically, this registration record points at its actual content under `design/<platform-slug>/[<app-slug>/]<feature-slug>/v<version>/` (DESIGN-HANDOFF-BUNDLE-SPEC.md §8) -- the registration record and the bundle content are not the same file.
+For a Design Handoff Bundle specifically, this registration record points at its actual content under `<platform-slug>/[<app-slug>/]design/<feature-slug>/v<version>/` (DESIGN-HANDOFF-BUNDLE-SPEC.md §8) -- the registration record and the bundle content are not the same file.
 
 ---
 

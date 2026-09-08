@@ -37,7 +37,10 @@ import re
 import sys
 from pathlib import Path
 
-BPR_PATH_RE = re.compile(r"^business-prs/.+/business-pr-[^/]+\.md$")
+# 1-2 leading segments (<platform-slug>/[<app-slug>/]) before the business-prs/
+# root -- widened 2026-09-08 when ARTIFACT-STORAGE-SPEC.md moved this root out
+# from the repository top level to nest under platform/app.
+BPR_PATH_RE = re.compile(r"^(?:[^/]+/){1,2}business-prs/.+/business-pr-[^/]+\.md$")
 # Exact required PR-description line, checked vs. unchecked -- same pattern
 # and same rationale as design_branch_gate.py's REVIEWER_SIGNOFF_RE.
 BUSINESS_OWNER_SIGNOFF_RE = re.compile(

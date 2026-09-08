@@ -93,7 +93,7 @@ This section is the structural enforcement point for the evidence rule defined i
 
 ### Storage
 
-This artifact is stored at `business-prs/<platform-slug>/[<app-slug>/]<feature-slug>/business-pr-<feature-slug>-<BPR-id>.md`, per [ARTIFACT-STORAGE-SPEC.md](ARTIFACT-STORAGE-SPEC.md), until this repository has a real GitHub setup. Once it does, per [GITHUB-PLATFORM-ADAPTER-SPEC.md](GITHUB-PLATFORM-ADAPTER-SPEC.md) section 4, the Business PR becomes an actual GitHub Pull Request -- its diff is the changed Design Analysis/Business Requirements files, and this template's content becomes the PR description in full.
+This artifact is stored at `<platform-slug>/[<app-slug>/]business-prs/<feature-slug>/business-pr-<feature-slug>-<BPR-id>.md`, per [ARTIFACT-STORAGE-SPEC.md](ARTIFACT-STORAGE-SPEC.md), until this repository has a real GitHub setup. Once it does, per [GITHUB-PLATFORM-ADAPTER-SPEC.md](GITHUB-PLATFORM-ADAPTER-SPEC.md) section 4, the Business PR becomes an actual GitHub Pull Request -- its diff is the changed Design Analysis/Business Requirements files, and this template's content becomes the PR description in full.
 
 ## 6. Required Stage Trace
 
@@ -101,7 +101,7 @@ Every Business PR must include a Stage Trace: a per-Story mapping proving the fu
 
 | Story | Business Requirement(s) | Design Analysis Evidence | Source Reference | Classification |
 | --- | --- | --- | --- | --- |
-| `STORY-004` | `BR-004` | Capability: Cart Management; Observation: "Remove" control on `cart-full` screen | `design/checkout/cart-optimization/v1.0/screens/screen-cart-full-cart-optimization.md` | Explicit / Strongly Implied |
+| `STORY-004` | `BR-004` | Capability: Cart Management; Observation: "Remove" control on `cart-full` screen | `checkout/design/cart-optimization/v1.0/screens/screen-cart-full-cart-optimization.md` | Explicit / Strongly Implied |
 
 Rules for the Stage Trace:
 

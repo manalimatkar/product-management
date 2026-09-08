@@ -10,7 +10,7 @@ Section 6.1 of the spec shows how these scale down for a bare Figma link, a writ
 
 ## Part 1: `bundle.md` Template
 
-**File:** `design/[platform-slug]/[app-slug (optional)]/[feature-slug]/v[version]/design-handoff-[feature-slug]-v[version].md` (shorthand: `bundle.md`)
+**File:** `[platform-slug]/[app-slug (optional)]/design/[feature-slug]/v[version]/design-handoff-[feature-slug]-v[version].md` (shorthand: `bundle.md`)
 
 ```markdown
 ---
@@ -77,7 +77,7 @@ businessContext:
 
 ## Part 2: `design-spec.md` Template
 
-**File:** `design/[platform-slug]/[app-slug (optional)]/[feature-slug]/v[version]/design-spec-[feature-slug]-v[version].md` (shorthand: `design-spec.md`)
+**File:** `[platform-slug]/[app-slug (optional)]/design/[feature-slug]/v[version]/design-spec-[feature-slug]-v[version].md` (shorthand: `design-spec.md`)
 
 This is the narrative companion to `bundle.md` and `screens/*.md` -- the business-readable explanation. Per-screen element/interaction detail belongs in `screens/*.md`, not duplicated here; this file explains *why*, those files record *what*.
 
@@ -223,7 +223,7 @@ This is the narrative companion to `bundle.md` and `screens/*.md` -- the busines
 
 ## Part 3: `screens/*.md` Template
 
-**File:** `design/[platform-slug]/[app-slug (optional)]/[feature-slug]/v[version]/screens/screen-cart-full-cart-optimization.md`
+**File:** `[platform-slug]/[app-slug (optional)]/design/[feature-slug]/v[version]/screens/screen-cart-full-cart-optimization.md`
 
 ```markdown
 ---
@@ -301,7 +301,7 @@ Once the checks above pass:
 1. Set `status` to `Approved` in bundle.md (bundle's own lifecycle -- see DESIGN-HANDOFF-BUNDLE-SPEC.md section 7)
 2. Register the bundle as source material per PRODUCT-SOURCE-MATERIAL-SPEC.md sections 8-9; the intake process assigns `readiness`
 3. Once `readiness` is `Ready` or `Ready with Limitations`, the bundle is available for Design Analysis
-4. Tag the commit: `design/[platform-slug]/[app-slug (optional)]/[feature-slug]/v[version]`
+4. Tag the commit: `[platform-slug]/[app-slug (optional)]/design/[feature-slug]/v[version]`
 ```
 
 ---

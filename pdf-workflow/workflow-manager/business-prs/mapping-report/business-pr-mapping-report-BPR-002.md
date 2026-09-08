@@ -11,8 +11,8 @@
 | Business PR ID | `BPR-002` |
 | Feature or Initiative | Mapping Report (pdf-workflow / workflow-manager) |
 | Source Material | `branch: design`, `path: pdf-workflow/workflow-manager/design/v2/`, `commit: b29e1be0b4c0da414e831423991ae16b9b394b6c` (native Claude Design export, `SRC-002`) |
-| Design Analysis | `analysis/pdf-workflow/workflow-manager/mapping-report/design-analysis-mapping-report-DA-002.md`, version `1.0`, status `Approved` |
-| Business Requirements | `REQSET-002`, version `1.0` (`requirements/pdf-workflow/workflow-manager/mapping-report/business-requirements-mapping-report-REQSET-002.md`) |
+| Design Analysis | `pdf-workflow/workflow-manager/analysis/mapping-report/design-analysis-mapping-report-DA-002.md`, version `1.0`, status `Approved` |
+| Business Requirements | `REQSET-002`, version `1.0` (`pdf-workflow/workflow-manager/requirements/mapping-report/business-requirements-mapping-report-REQSET-002.md`) |
 | Epic | `EPIC-002` |
 | Stories Included | `STORY-001` through `STORY-009` |
 | Created By | Business Agent workflow -- first real (non-illustrative) run |

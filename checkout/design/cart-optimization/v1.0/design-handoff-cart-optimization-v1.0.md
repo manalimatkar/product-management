@@ -5,7 +5,7 @@ platformSlug: checkout                            # was productSlug before 2026-
 featureSlug: cart-optimization
 version: "1.0"
 status: Approved
-readiness: null                                   # See sources/checkout/cart-optimization/source-cart-optimization-SRC-001.md for the actual registered readiness outcome (Ready with Limitations) -- DESIGN-HANDOFF-BUNDLE-SPEC.md section 11 leaves whether this should be written back here as an open decision; the source registry is authoritative for now.
+readiness: null                                   # See checkout/sources/cart-optimization/source-cart-optimization-SRC-001.md for the actual registered readiness outcome (Ready with Limitations) -- DESIGN-HANDOFF-BUNDLE-SPEC.md section 11 leaves whether this should be written back here as an open decision; the source registry is authoritative for now.
 owner:
   name: Manali
   role: Product Designer

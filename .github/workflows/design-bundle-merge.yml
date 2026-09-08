@@ -43,7 +43,10 @@ on:
                        # also have fired on a PR into `design`, colliding with
                        # design-branch-intake.yml's own trigger on that same path shape.
     paths:
-      - "design/**"
+      # was "design/**" -- widened 2026-09-08 when ARTIFACT-STORAGE-SPEC.md
+      # moved design/ under <platform-slug>/[<app-slug>/]/, no longer the
+      # first path segment.
+      - "**/design/**"
 
 permissions:
   contents: write
@@ -118,7 +121,7 @@ jobs:
           python3 - <<'PYEOF' >> "$GITHUB_OUTPUT"
           import json, re
           files = json.load(open("changed_files.json"))
-          pattern = re.compile(r"^design/.+/v[^/]+/design-handoff-[^/]+\.md$")
+          pattern = re.compile(r"^(?:[^/]+/){1,2}design/.+/v[^/]+/design-handoff-[^/]+\.md$")
           matches = [f for f in files if pattern.match(f)]
           assert len(matches) == 1, f"expected exactly one bundle.md match, got {matches}"
           print(f"bundle_path={matches[0]}")

@@ -14,7 +14,7 @@
 | Created By | Business Agent workflow -- first real (non-illustrative) run |
 | Created At | 2026-09-04 |
 | Status | `Approved` (see section 19) -- unresolved Decisions carried forward as backlog, not resolved by this approval |
-| Related Epic | `EPIC-002` (see business-prs/pdf-workflow/workflow-manager/mapping-report/business-pr-mapping-report-BPR-002.md) |
+| Related Epic | `EPIC-002` (see pdf-workflow/workflow-manager/business-prs/mapping-report/business-pr-mapping-report-BPR-002.md) |
 | Related Stories | `STORY-001` through `STORY-009` |
 | Business Owner Approval | Approved 2026-09-04 -- see section 19 |
 
