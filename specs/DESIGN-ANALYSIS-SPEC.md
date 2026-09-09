@@ -539,20 +539,18 @@ The boundary between these questions must remain intact.
 
 The concrete artifact format is defined in [DESIGN-ANALYSIS-TEMPLATE.md](../templates/DESIGN-ANALYSIS-TEMPLATE.md). Business Agent runs should use that template or produce an equivalent artifact containing every required section.
 
-The template standardizes:
+**Format revised 2026-09-08 -- narrative first, not numbered-sections-first.** The original template organized the artifact as a fixed sequence of numbered sections (1. Metadata, 2. Source Summary, ... 16. Requirement Mapping), each holding tables keyed by ID. Real use (`DA-003`) surfaced a genuine usability problem raised directly by Manali: a new Business Analyst or Designer reading the artifact had to reassemble a feature's actual shape by cross-referencing IDs across a dozen tables, rather than reading a coherent account of how the feature works. This is an *editorial* revision per REQUIREMENTS-VERSIONING-SPEC.md section 9 (presentation only) -- every piece of required content in the list below still appears, none was dropped or reworded in substance:
 
 - source and design version metadata
-- design inventory
-- observation records
-- evidence classification and confidence
-- user journeys and capabilities
-- business rules and requirements
-- acceptance criteria
-- assumptions and decisions required
-- technical unknowns
-- conflicts and gaps
-- requirement-to-source mapping
-- review outcome and quality checklist
+- a plain-language overview, before any ID appears
+- the feature described as prose, grouped by feature area rather than by artifact type, with each Business Requirement given its own ID-only heading (stable anchor) plus statement, acceptance criteria, evidence link, classification, and confidence inline -- not scattered across separate sections
+- capabilities, given their own stable entry point only where a later stage (Stories) will need to reference one directly
+- open Decisions surfaced near the top, resolved or not
+- what's explicitly not built yet, surfaced near the top rather than buried at the end
+- an "Evidence and Traceability" section for everything that supports a claim above but isn't needed to understand the feature itself: observations, business rules, assumptions, decisions (full detail), gaps, and technical unknowns -- each with a real link back to what cited it
+- a quality checklist
+
+The lower-level UI inventory this spec's section 4.3 permits (screens, navigation, controls, states) is folded into the feature-area prose rather than kept as separate ID catalogs (`SCR-`, `NAV-`, `ACT-`, `STATE-`, `PATH-`, `JRN-`, `DOMAIN-`) -- nothing in this pipeline traces to those IDs directly, only to Requirements, Capabilities, and Business Rules, so preserving them as prose detail rather than permanent anchors loses no traceability. No HTML is used anywhere in the template, consistent with this repository's standing format preference -- every cross-reference is a real markdown link to a heading with a stable ID-only anchor.
 
 ## 12. Optional Analysis Modules
 
@@ -578,5 +576,5 @@ Each module must add evidence-backed detail without replacing the core actors, g
 - Define how missing or unreadable source files block or limit analysis.
 - Define the minimum completeness criteria for the Design Analysis before Business PR review.
 - Define how a new design version triggers impact analysis against existing requirements and Stories.
-- Define the exact Business Agent output format and validation checks.
+- ~~Define the exact Business Agent output format and validation checks.~~ **Resolved 2026-09-08** -- see section 11 and [DESIGN-ANALYSIS-TEMPLATE.md](../templates/DESIGN-ANALYSIS-TEMPLATE.md)'s own Quality Checklist, exercised for real against `DA-003`.
 - Define whether the Business Owner approves the Design Analysis separately or only through the complete Business PR.
