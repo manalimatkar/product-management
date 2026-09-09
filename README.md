@@ -100,6 +100,8 @@ A Story must reference the applicable design handoff bundle and version.
 
 The Business Agent does not make technical architecture decisions, approve business scope, or merge the Business PR.
 
+**Runnable, not just described** -- this everything above has been an authority/responsibility description since this document was written; as of 2026-09-09 there is a real, invokable definition of it for Claude Code: [.claude/agents/business-agent.md](.claude/agents/business-agent.md). See the `.claude/` entry in Documents below.
+
 ### Technical Agent
 
 - starts after the approved Business PR is merged
@@ -192,6 +194,13 @@ Organized 2026-09-01 (see ARTIFACT-STORAGE-SPEC.md for how generated instances -
 - [BUSINESS-PR-TEMPLATE.md](templates/BUSINESS-PR-TEMPLATE.md) - reusable Business PR template
 - [BUSINESS-REQUIREMENTS-TEMPLATE.md](templates/BUSINESS-REQUIREMENTS-TEMPLATE.md) - reusable Business Requirements artifact template
 - [CANONICAL-TASK-TEMPLATE.md](templates/CANONICAL-TASK-TEMPLATE.md) - reusable Task and Spike issue templates
+
+### .claude/ -- runnable agent and skill definitions (Claude Code, the reference execution platform per EXECUTION-ADAPTER-SPEC.md section 4)
+
+Added 2026-09-09, closing the gap between describing an agent (this document, AGENT-RESPONSIBILITIES.md, BUSINESS-AGENT-WORKFLOW.md) and being able to actually invoke one. Deliberately thin -- per EXECUTION-ADAPTER-SPEC.md section 3, no platform gets its own version of a workflow document, so these files point at the real specs rather than restating them.
+
+- [.claude/agents/business-agent.md](.claude/agents/business-agent.md) - a real Claude Code subagent definition for `ROLE-006`: declared tool access, and instructions that point at BUSINESS-AGENT-WORKFLOW.md, AGENT-RESPONSIBILITIES.md, EVIDENCE-SPEC.md, and the relevant templates, plus the hard constraints restated for safety.
+- [.claude/skills/verify-design-analysis/SKILL.md](.claude/skills/verify-design-analysis/SKILL.md) - checks a Design Analysis's internal traceability (every ID-only heading unique, every link resolves, every evidence entry has an inbound citation), backed by `.github/scripts/verify_design_analysis.py`. Run after drafting or revising any Design Analysis, before opening or updating its review PR.
 
 ## Current Status
 
