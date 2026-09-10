@@ -109,6 +109,8 @@ The agent must not jump directly from a screen or visual element to a requiremen
 
 **Reading the source accurately, added 2026-09-10:** this activity is where reading *technique* matters most (distinct from analysis *order*, above), and where a Design Analysis has previously fallen short (see `CLAUDE.md`'s history of the retracted `DA-002` and the first draft of `DA-003`). `EVIDENCE-SPEC.md` section 3.1 states the generic rules -- read the most literal representation available, cross-check a descriptive document against the literal artifact rather than trusting it alone, locate actual data rather than stopping at the logic that operates on it, and don't trust an unverified verification technique. These generic rules are tool-agnostic; how they apply concretely depends on which tool produced the source -- for a native Claude Design export, see [CLAUDE-DESIGN-READING-SPEC.md](CLAUDE-DESIGN-READING-SPEC.md) (the dark `.dc.html` file as sole source of truth, the README as reference only). A different source tool gets its own sibling reading-spec document, not a rewrite of this one.
 
+**Check the registry before minting a new Journey, Capability, or Business Rule ID, added 2026-09-10.** Unlike an Observation, Gap, Decision, Assumption, or Technical Unknown -- all genuinely scoped to this one analysis -- a Journey, Capability, or Business Rule is product-level (`ARTIFACT-RELATIONSHIP-MODEL.md` section 3.1) and has a real registry: [JOURNEY-REGISTRY.md](../JOURNEY-REGISTRY.md), [CAPABILITY-REGISTRY.md](../CAPABILITY-REGISTRY.md), [BUSINESS-RULE-REGISTRY.md](../BUSINESS-RULE-REGISTRY.md). Before assigning a new `JRN-`/`CAP-`/`BRULE-` ID, check whether an existing entry is genuinely the same one -- cite it and link to its record instead of re-deriving a new ID locally. This matters most for Business Rules, which typically constrain behavior across features rather than being produced by any one of them -- a rule like "structural edits never require confirmation" should be inherited by a later, unrelated analysis, not silently re-derived or contradicted.
+
 ### 4.1 Source Summary
 
 Describe the source material without changing it:
@@ -209,7 +211,7 @@ Behaviors:
 
 A capability describes what the product enables. It does not define service boundaries or application ownership.
 
-**Capabilities are product-level, not analysis-scoped -- added 2026-09-10.** A Capability ID is only unique within this one analysis today, but conceptually it describes what the *product* enables, not just what this one analysis found -- see [ARTIFACT-RELATIONSHIP-MODEL.md](ARTIFACT-RELATIONSHIP-MODEL.md) section 3.1 for the full model (a registry + a standalone file per Capability, proposed but not yet built) and why a Capability's realness is proven by which Journeys actually depend on it, not by its description sounding similar to one from a different analysis.
+**Capabilities are product-level, not analysis-scoped -- added 2026-09-10, registry built the same day.** A Capability ID is global, assigned from [CAPABILITY-REGISTRY.md](../CAPABILITY-REGISTRY.md) -- check it before minting a new one; cite an existing entry when the analysis is genuinely describing the same Capability. See [ARTIFACT-RELATIONSHIP-MODEL.md](ARTIFACT-RELATIONSHIP-MODEL.md) section 3.1 for the full model and why a Capability's realness is proven by which Journeys actually depend on it, not by its description sounding similar to one from a different analysis.
 
 ### 4.6 User Journeys and Workflows
 
@@ -229,7 +231,7 @@ Each journey must include:
 
 A journey may cross multiple screens or applications. The Business Agent must preserve the user outcome even when the design is distributed across multiple areas.
 
-**Journeys are product-level, not analysis-scoped -- added 2026-09-10.** Map the journey *before* decomposing it into capabilities (this section's own analysis-order rule, stated in Activity 1 above) -- a capability's business purpose only really makes sense once the journey it serves is understood. Journeys are also the mechanism that eventually proves whether a Capability is genuinely shared across use cases or unique to one: see [ARTIFACT-RELATIONSHIP-MODEL.md](ARTIFACT-RELATIONSHIP-MODEL.md) section 3.1. A prior revision of this repository's own Design Analysis template folded journey IDs into narrative prose for readability -- worth revisiting once the registry model above is built, since that removed exactly the addressability this section now depends on.
+**Journeys are product-level, not analysis-scoped -- added 2026-09-10, registry built the same day.** A Journey ID is global, assigned from [JOURNEY-REGISTRY.md](../JOURNEY-REGISTRY.md). Map the journey *before* decomposing it into capabilities (this section's own analysis-order rule, stated in Activity 1 above) -- a capability's business purpose only really makes sense once the journey it serves is understood. Journeys are also the mechanism that proves whether a Capability is genuinely shared across use cases or unique to one: see [ARTIFACT-RELATIONSHIP-MODEL.md](ARTIFACT-RELATIONSHIP-MODEL.md) section 3.1. A prior revision of this repository's own Design Analysis template had folded journey IDs into narrative prose for readability, removing exactly the addressability this section depends on -- reverted in `DA-003` the same day this registry was built; keep Journey IDs as real, addressable headings going forward, not prose.
 
 ### 4.7 Business Rules
 
@@ -254,7 +256,7 @@ Each rule must include:
 
 A technical constraint is not a business rule unless the design explicitly presents it as a product behavior or policy.
 
-**Business Rules are product-level, not analysis-scoped -- added 2026-09-10.** A Business Rule typically *governs* a Journey or Capability rather than being produced by one -- it's a cross-cutting constraint, which is exactly why it needs to be visible to a future, unrelated analysis rather than silently re-derived (or worse, silently contradicted) each time. See [ARTIFACT-RELATIONSHIP-MODEL.md](ARTIFACT-RELATIONSHIP-MODEL.md) section 3.1 for the full model.
+**Business Rules are product-level, not analysis-scoped -- added 2026-09-10, registry built the same day.** A Business Rule ID is global, assigned from [BUSINESS-RULE-REGISTRY.md](../BUSINESS-RULE-REGISTRY.md) -- check it before minting a new one. A Business Rule typically *governs* a Journey or Capability rather than being produced by one -- it's a cross-cutting constraint, which is exactly why it needs to be visible to a future, unrelated analysis rather than silently re-derived (or worse, silently contradicted) each time. See [ARTIFACT-RELATIONSHIP-MODEL.md](ARTIFACT-RELATIONSHIP-MODEL.md) section 3.1 for the full model.
 
 ### 4.8 Business Requirements
 

@@ -40,8 +40,27 @@ Every artifact file (outside `design/`'s bundle-level and screen-level files, wh
 | Canonical Task (local fallback) | `canonical-task` | `TASK-<number>` |
 | Spike (local fallback) | `spike` | `SPIKE-<number>` |
 | Technical Plan (optional) | `technical-plan` | `TP-<number>` |
+| Journey | `journey` | `JRN-<number>`, global (not feature-scoped) |
+| Capability | `capability` | `CAP-<number>`, global (not feature-scoped) |
+| Business Rule | `business-rule` | `BRULE-<number>`, global (not feature-scoped) |
 
-A filename this pattern produces is never ambiguous: `design-analysis-cart-optimization-DA-001.md` tells you the type, the feature, and the exact artifact, with no folder context required.
+A filename this pattern produces is never ambiguous: `design-analysis-cart-optimization-DA-001.md` tells you the type, the feature, and the exact artifact, with no folder context required. Journey, Capability, and Business Rule are the one exception to the `feature-slug` component -- see section 4.1.
+
+### 4.1 Journey, Capability, and Business Rule: Product-Level, Not Feature-Scoped
+
+**Added 2026-09-10**, building out [ARTIFACT-RELATIONSHIP-MODEL.md](ARTIFACT-RELATIONSHIP-MODEL.md) section 3.1's model into a real storage location. Every other artifact type above belongs to exactly one feature -- that's why `feature-slug` is part of its filename and its folder path. A Journey, Capability, or Business Rule is different in kind: it describes the product, and a later Design Analysis for a *different* feature may need to cite the same one. Nesting it under a feature-slug the way `sources/`, `analysis/`, etc. do would make that impossible to express -- a Capability shared by two features can't live under both.
+
+So these three nest one level shallower -- directly under the platform (and app, where present), with no feature-slug segment at all:
+
+```text
+<platform-slug>/[<app-slug>/]capabilities/capability-<slug>-<CAP-id>.md
+<platform-slug>/[<app-slug>/]journeys/journey-<slug>-<JRN-id>.md
+<platform-slug>/[<app-slug>/]business-rules/business-rule-<slug>-<BRULE-id>.md
+```
+
+`<slug>` here is a short descriptive slug for the entity itself (e.g. `review-extraction-confidence`), not a feature. Each has a root-level registry, following [SOURCE-REGISTRY.md](../SOURCE-REGISTRY.md)'s existing "index here, real detail in the entity's own file" pattern: [CAPABILITY-REGISTRY.md](../CAPABILITY-REGISTRY.md), [JOURNEY-REGISTRY.md](../JOURNEY-REGISTRY.md), [BUSINESS-RULE-REGISTRY.md](../BUSINESS-RULE-REGISTRY.md).
+
+A Design Analysis still narrates a Capability/Journey/Business Rule in its own prose, for a reader who wants to understand the feature without jumping between files -- but the ID it uses is assigned from the registry, not invented locally, and its entry links out to the registry file as the canonical, cross-feature record.
 
 ## 4. Folder Convention
 

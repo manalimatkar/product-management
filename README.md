@@ -162,6 +162,7 @@ Organized 2026-09-01 (see ARTIFACT-STORAGE-SPEC.md for how generated instances -
 - [PRD.md](PRD.md) - product definition, goals, requirements, and constraints
 - [IMPLEMENTATION-PLAN.md](IMPLEMENTATION-PLAN.md) - implementation roadmap and delivery phases
 - [SOURCE-REGISTRY.md](SOURCE-REGISTRY.md) - the running index of every registered source
+- [JOURNEY-REGISTRY.md](JOURNEY-REGISTRY.md), [CAPABILITY-REGISTRY.md](CAPABILITY-REGISTRY.md), [BUSINESS-RULE-REGISTRY.md](BUSINESS-RULE-REGISTRY.md) - added 2026-09-10, same "index here, real detail in the entity's own file" pattern as SOURCE-REGISTRY.md, for the three artifact types that are product-level rather than scoped to one Design Analysis. See ARTIFACT-RELATIONSHIP-MODEL.md section 3.1.
 
 ### specs/ -- the rules each artifact type and process must follow
 
@@ -202,6 +203,7 @@ Added 2026-09-09, closing the gap between describing an agent (this document, AG
 
 - [.claude/agents/business-agent.md](.claude/agents/business-agent.md) - a real Claude Code subagent definition for `ROLE-006`: declared tool access, and instructions that point at BUSINESS-AGENT-WORKFLOW.md, AGENT-RESPONSIBILITIES.md, EVIDENCE-SPEC.md, and the relevant templates, plus the hard constraints restated for safety.
 - [.claude/skills/verify-design-analysis/SKILL.md](.claude/skills/verify-design-analysis/SKILL.md) - checks a Design Analysis's internal traceability (every ID-only heading unique, every link resolves, every evidence entry has an inbound citation), backed by `.github/scripts/verify_design_analysis.py`. Run after drafting or revising any Design Analysis, before opening or updating its review PR.
+- [.claude/skills/verify-registries/SKILL.md](.claude/skills/verify-registries/SKILL.md) - the cross-repo sibling: checks the Journey/Capability/Business Rule registries and every Design Analysis that cites them are consistent, backed by `.github/scripts/verify_registries.py`. Run after touching a registry or record, or citing a new product-level ID.
 - [.claude/skills/run-gate-checks/SKILL.md](.claude/skills/run-gate-checks/SKILL.md) - runs the right merge gate (`design_branch_gate`, `bundle_gate`, or `business_pr_gate`) against a real PR or a local diff, backed by `.github/scripts/run_gate_checks.py`. Run before asking for a PR to be opened whenever the change touches a native design export, a hand-authored bundle, or a Business PR.
 - [.claude/skills/resolve-review-decisions/SKILL.md](.claude/skills/resolve-review-decisions/SKILL.md) - turns a Design Analysis review PR's comments into recorded resolutions (new Observations, updated Decisions and Requirements), backed by `.github/scripts/fetch_review_comments.py`. Fetches comments with real context; matching a comment to what it answers stays a human-supervised reading step, never automated.
 
