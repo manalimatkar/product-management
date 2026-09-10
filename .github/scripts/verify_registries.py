@@ -40,9 +40,9 @@ import sys
 from pathlib import Path
 
 REGISTRIES = [
-    {"name": "JOURNEY-REGISTRY.md", "prefix": "JRN-", "id_field": "Journey ID"},
-    {"name": "CAPABILITY-REGISTRY.md", "prefix": "CAP-", "id_field": "Capability ID"},
-    {"name": "BUSINESS-RULE-REGISTRY.md", "prefix": "BRULE-", "id_field": "Rule ID"},
+    {"name": "JOURNEY-REGISTRY.md", "dir": "registries", "prefix": "JRN-", "id_field": "Journey ID"},
+    {"name": "CAPABILITY-REGISTRY.md", "dir": "registries", "prefix": "CAP-", "id_field": "Capability ID"},
+    {"name": "BUSINESS-RULE-REGISTRY.md", "dir": "registries", "prefix": "BRULE-", "id_field": "Rule ID"},
 ]
 
 ROW_RE = re.compile(r"^\|\s*`([A-Z]+-\d+)`\s*\|.*\|\s*\[[^\]]*\]\(([^)]+)\)\s*\|\s*$", re.MULTILINE)
@@ -58,7 +58,7 @@ def read(path):
 
 
 def parse_registry(repo_root, registry):
-    path = repo_root / registry["name"]
+    path = repo_root / registry["dir"] / registry["name"]
     text = read(path)
     if text is None:
         return None, [f"{registry['name']} not found at repo root."]

@@ -12,7 +12,7 @@ Let the reviewer fix the order pages, sections, or fields appear in -- up/down c
 
 ## Used by journeys
 
-None yet. `DA-003`'s three recorded journeys don't walk through a reorder path -- see [CAPABILITY-REGISTRY.md](../../../CAPABILITY-REGISTRY.md)'s note on this.
+None yet. `DA-003`'s three recorded journeys don't walk through a reorder path -- see [CAPABILITY-REGISTRY.md](../../../registries/CAPABILITY-REGISTRY.md)'s note on this.
 
 ## Evidence
 

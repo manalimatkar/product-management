@@ -144,7 +144,7 @@ The bundle must identify:
 The Business or product agent consumes the bundle and references it. It must not silently regenerate, rewrite, or replace the authoritative source.
 
 See [DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md](DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md) for the structured schema and file templates implementing this section.
-See [PRODUCT-SOURCE-MATERIAL-TEMPLATE.md](../templates/PRODUCT-SOURCE-MATERIAL-TEMPLATE.md) and [SOURCE-REGISTRY.md](../SOURCE-REGISTRY.md) for the fillable registration record and running index this section requires.
+See [PRODUCT-SOURCE-MATERIAL-TEMPLATE.md](../templates/PRODUCT-SOURCE-MATERIAL-TEMPLATE.md) and [SOURCE-REGISTRY.md](../registries/SOURCE-REGISTRY.md) for the fillable registration record and running index this section requires.
 
 ## 8. Registration and Intake
 

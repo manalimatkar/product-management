@@ -4,7 +4,7 @@
 
 **Format revised 2026-09-08 -- Editorial, no content change.** Reshaped to [DESIGN-ANALYSIS-TEMPLATE.md](../../../../templates/DESIGN-ANALYSIS-TEMPLATE.md)'s narrative format per direct feedback that the numbered-section version was hard to navigate for a new Business Analyst or Designer. Every requirement, capability, business rule, gap, decision, assumption, and technical unknown from the original numbered-section version is preserved with the same evidence and classification -- none dropped, none reworded in substance. The lower-level UI inventory (screens, navigation, actions, states, journeys, alternate paths, domain concepts) is preserved as narrative detail rather than as separate ID catalogs, since nothing downstream ever traced to those IDs directly -- only to Requirements, Capabilities, and Business Rules.
 
-**Reading a `CAP-`, `JRN-`, or `BRULE-` ID below?** Those describe the Mapping Report *product*, not just this one document. **Updated 2026-09-10: the registry is real now, not just documented.** Each has a full record and a root-level index -- [CAPABILITY-REGISTRY.md](../../../../CAPABILITY-REGISTRY.md), [JOURNEY-REGISTRY.md](../../../../JOURNEY-REGISTRY.md), [BUSINESS-RULE-REGISTRY.md](../../../../BUSINESS-RULE-REGISTRY.md) -- per [ARTIFACT-RELATIONSHIP-MODEL.md](../../../../specs/ARTIFACT-RELATIONSHIP-MODEL.md) section 3.1 and [ARTIFACT-STORAGE-SPEC.md](../../../../specs/ARTIFACT-STORAGE-SPEC.md) section 4.1. Every `CAP-`/`BRULE-` entry below links out to its registry record; `JRN-001`-`003`, previously folded into narrative "for example" prose during the 2026-09-08 reformat (a real regression, self-flagged), are re-instated here as real, addressable headings.
+**Reading a `CAP-`, `JRN-`, or `BRULE-` ID below?** Those describe the Mapping Report *product*, not just this one document. **Updated 2026-09-10: the registry is real now, not just documented.** Each has a full record and a root-level index -- [CAPABILITY-REGISTRY.md](../../../../registries/CAPABILITY-REGISTRY.md), [JOURNEY-REGISTRY.md](../../../../registries/JOURNEY-REGISTRY.md), [BUSINESS-RULE-REGISTRY.md](../../../../registries/BUSINESS-RULE-REGISTRY.md) -- per [ARTIFACT-RELATIONSHIP-MODEL.md](../../../../specs/ARTIFACT-RELATIONSHIP-MODEL.md) section 3.1 and [ARTIFACT-STORAGE-SPEC.md](../../../../specs/ARTIFACT-STORAGE-SPEC.md) section 4.1. Every `CAP-`/`BRULE-` entry below links out to its registry record; `JRN-001`-`003`, previously folded into narrative "for example" prose during the 2026-09-08 reformat (a real regression, self-flagged), are re-instated here as real, addressable headings.
 
 ---
 
@@ -110,7 +110,7 @@ Every mapping has a `kind` -- what the PDF element actually is (`heading`, `desc
 Clicking the pencil expands that row in place with controls specific to its kind -- a single Text box for headings/descriptions, Label + type for a Field, Label + an editable per-item list + Min/Max items for a FieldGroup, Label only for Custom. There is no dropdown-based remapping anywhere in the current design -- an earlier pass, working from a stale test version of this document, thought it had found a contradiction here; re-checked directly against the real v4 text, it's unambiguous. Only one row can be open for edit at a time, and every panel ends in an explicit Cancel or Save. Saving persists the change and shows a success toast; Cancel discards. Trying to navigate away -- switching rows, or leaving the page -- while an edit is dirty prompts a discard-confirmation dialog first.
 
 ##### JRN-001
-**Review and correct a low-confidence field mapping.** A reviewer filters to Low confidence, opens the first flagged field, corrects its label and type, and saves -- the panel closes, a toast confirms, and the row returns to its normal state. Uses [CAP-002](#cap-002) and [CAP-004](#cap-004). Registry: [JOURNEY-REGISTRY.md](../../../../JOURNEY-REGISTRY.md#jrn-001) / [full record](../../journeys/journey-review-correct-low-confidence-mapping-JRN-001.md).
+**Review and correct a low-confidence field mapping.** A reviewer filters to Low confidence, opens the first flagged field, corrects its label and type, and saves -- the panel closes, a toast confirms, and the row returns to its normal state. Uses [CAP-002](#cap-002) and [CAP-004](#cap-004). Registry: [JOURNEY-REGISTRY.md](../../../../registries/JOURNEY-REGISTRY.md#jrn-001) / [full record](../../journeys/journey-review-correct-low-confidence-mapping-JRN-001.md).
 
 ##### BR-005
 **Show a compound Target Type label; no cross-kind remapping.**
@@ -180,7 +180,7 @@ Evidence: [OBS-011](#obs-011). Explicit, High confidence.
 Clicking unlink opens a confirmation dialog before the mapping is removed -- and for a FieldGroup, the dialog names the specific sub-fields that would be lost, so the reviewer understands the actual cost before confirming.
 
 ##### JRN-002
-**Remove an incorrectly extracted field.** A reviewer decides a 2-field FieldGroup mapping is entirely wrong, clicks unlink, sees a dialog naming both sub-fields that would be lost, and confirms -- the mapping is removed. Uses [CAP-005](#cap-005). Registry: [JOURNEY-REGISTRY.md](../../../../JOURNEY-REGISTRY.md#jrn-002) / [full record](../../journeys/journey-remove-incorrectly-extracted-field-JRN-002.md).
+**Remove an incorrectly extracted field.** A reviewer decides a 2-field FieldGroup mapping is entirely wrong, clicks unlink, sees a dialog naming both sub-fields that would be lost, and confirms -- the mapping is removed. Uses [CAP-005](#cap-005). Registry: [JOURNEY-REGISTRY.md](../../../../registries/JOURNEY-REGISTRY.md#jrn-002) / [full record](../../journeys/journey-remove-incorrectly-extracted-field-JRN-002.md).
 
 ##### BR-008
 **Unlink a mapping with cost-aware confirmation.**
@@ -203,7 +203,7 @@ Evidence: [OBS-009](#obs-009), [OBS-011](#obs-011). Explicit, High confidence.
 This same starting surface is also where a **brand-new workflow lands**, right after its Workflow Settings are saved -- not a PDF-specific behavior. This refines the source's own "Scope note," which reads as PDF-only for the whole screen: only the confidence-review chrome genuinely is PDF-only (see [BR-015](#br-015) below); the structure editor underneath is reused across creation paths. See [BR-016](#br-016) and [GAP-003](#gap-003).
 
 ##### JRN-003
-**Add a section the extraction missed.** A reviewer expands a page with no sections yet, clicks "+ Add section," enters a title, and clicks Add -- the new section appears immediately, grouped under that page exactly like an extracted one. Uses [CAP-006](#cap-006). Registry: [JOURNEY-REGISTRY.md](../../../../JOURNEY-REGISTRY.md#jrn-003) / [full record](../../journeys/journey-add-section-extraction-missed-JRN-003.md).
+**Add a section the extraction missed.** A reviewer expands a page with no sections yet, clicks "+ Add section," enters a title, and clicks Add -- the new section appears immediately, grouped under that page exactly like an extracted one. Uses [CAP-006](#cap-006). Registry: [JOURNEY-REGISTRY.md](../../../../registries/JOURNEY-REGISTRY.md#jrn-003) / [full record](../../journeys/journey-add-section-extraction-missed-JRN-003.md).
 
 ##### BR-009
 **Manually add a page.**
@@ -347,28 +347,28 @@ Only two Technical Unknowns remain ([TECH-001](#tech-001), [TECH-002](#tech-002)
 *Each capability spans one or more of the feature areas above; listed here as a stable entry point for the Business Requirements stage, which will need to reference these directly when grouping Stories.*
 
 ##### CAP-001
-**Review Extraction Confidence and Structure.** Let the reviewer gauge how much attention a workflow's mapping needs before working through it in detail. Evidence: [OBS-001](#obs-001), [OBS-006](#obs-006), [OBS-007](#obs-007). *(↩ used by [BR-001](#br-001), [BR-002](#br-002))* Registry: [CAPABILITY-REGISTRY.md](../../../../CAPABILITY-REGISTRY.md#cap-001) / [full record](../../capabilities/capability-review-extraction-confidence-CAP-001.md).
+**Review Extraction Confidence and Structure.** Let the reviewer gauge how much attention a workflow's mapping needs before working through it in detail. Evidence: [OBS-001](#obs-001), [OBS-006](#obs-006), [OBS-007](#obs-007). *(↩ used by [BR-001](#br-001), [BR-002](#br-002))* Registry: [CAPABILITY-REGISTRY.md](../../../../registries/CAPABILITY-REGISTRY.md#cap-001) / [full record](../../capabilities/capability-review-extraction-confidence-CAP-001.md).
 
 ##### CAP-002
-**Filter and Search Mappings.** Let the reviewer narrow a potentially large mapping down to what needs checking. Evidence: [OBS-002](#obs-002), [OBS-013](#obs-013). *(↩ used by [BR-004](#br-004))* Registry: [CAPABILITY-REGISTRY.md](../../../../CAPABILITY-REGISTRY.md#cap-002) / [full record](../../capabilities/capability-filter-and-search-mappings-CAP-002.md). Used by [JRN-001](#jrn-001).
+**Filter and Search Mappings.** Let the reviewer narrow a potentially large mapping down to what needs checking. Evidence: [OBS-002](#obs-002), [OBS-013](#obs-013). *(↩ used by [BR-004](#br-004))* Registry: [CAPABILITY-REGISTRY.md](../../../../registries/CAPABILITY-REGISTRY.md#cap-002) / [full record](../../capabilities/capability-filter-and-search-mappings-CAP-002.md). Used by [JRN-001](#jrn-001).
 
 ##### CAP-003
-**Switch Between Table and Card Views.** Let the reviewer choose a layout without losing filter or edit state -- Table view only is built this phase. Evidence: [OBS-003](#obs-003). *(↩ used by [BR-003](#br-003))* Registry: [CAPABILITY-REGISTRY.md](../../../../CAPABILITY-REGISTRY.md#cap-003) / [full record](../../capabilities/capability-switch-table-card-views-CAP-003.md). No Journey uses it yet -- Card view isn't built this phase, so no journey exercises a toggle.
+**Switch Between Table and Card Views.** Let the reviewer choose a layout without losing filter or edit state -- Table view only is built this phase. Evidence: [OBS-003](#obs-003). *(↩ used by [BR-003](#br-003))* Registry: [CAPABILITY-REGISTRY.md](../../../../registries/CAPABILITY-REGISTRY.md#cap-003) / [full record](../../capabilities/capability-switch-table-card-views-CAP-003.md). No Journey uses it yet -- Card view isn't built this phase, so no journey exercises a toggle.
 
 ##### CAP-004
-**Edit a Mapped Field's Details.** Let the reviewer correct what the extraction got wrong, with controls appropriate to what kind of element it is. Evidence: [OBS-005](#obs-005), [OBS-008](#obs-008), [OBS-009](#obs-009), [OBS-010](#obs-010). *(↩ used by [BR-005](#br-005), [BR-006](#br-006), [BR-007](#br-007), [BR-014](#br-014))* Registry: [CAPABILITY-REGISTRY.md](../../../../CAPABILITY-REGISTRY.md#cap-004) / [full record](../../capabilities/capability-edit-mapped-field-details-CAP-004.md). Used by [JRN-001](#jrn-001).
+**Edit a Mapped Field's Details.** Let the reviewer correct what the extraction got wrong, with controls appropriate to what kind of element it is. Evidence: [OBS-005](#obs-005), [OBS-008](#obs-008), [OBS-009](#obs-009), [OBS-010](#obs-010). *(↩ used by [BR-005](#br-005), [BR-006](#br-006), [BR-007](#br-007), [BR-014](#br-014))* Registry: [CAPABILITY-REGISTRY.md](../../../../registries/CAPABILITY-REGISTRY.md#cap-004) / [full record](../../capabilities/capability-edit-mapped-field-details-CAP-004.md). Used by [JRN-001](#jrn-001).
 
 ##### CAP-005
-**Unlink an Incorrect Mapping.** Let the reviewer remove a wrong mapping while understanding its cost. Evidence: [OBS-009](#obs-009), [OBS-011](#obs-011). *(↩ used by [BR-008](#br-008))* Registry: [CAPABILITY-REGISTRY.md](../../../../CAPABILITY-REGISTRY.md#cap-005) / [full record](../../capabilities/capability-unlink-incorrect-mapping-CAP-005.md). Used by [JRN-002](#jrn-002).
+**Unlink an Incorrect Mapping.** Let the reviewer remove a wrong mapping while understanding its cost. Evidence: [OBS-009](#obs-009), [OBS-011](#obs-011). *(↩ used by [BR-008](#br-008))* Registry: [CAPABILITY-REGISTRY.md](../../../../registries/CAPABILITY-REGISTRY.md#cap-005) / [full record](../../capabilities/capability-unlink-incorrect-mapping-CAP-005.md). Used by [JRN-002](#jrn-002).
 
 ##### CAP-006
-**Manually Add Structure.** Let the reviewer fill in whatever the extraction missed, and let a new workflow begin from the same structure editor regardless of creation path. Evidence: [OBS-012](#obs-012), [OBS-014](#obs-014), [OBS-015](#obs-015), [OBS-016](#obs-016), [OBS-021](#obs-021), [OBS-022](#obs-022). *(↩ used by [BR-009](#br-009), [BR-010](#br-010), [BR-011](#br-011), [BR-016](#br-016))* Registry: [CAPABILITY-REGISTRY.md](../../../../CAPABILITY-REGISTRY.md#cap-006) / [full record](../../capabilities/capability-manually-add-structure-CAP-006.md). Used by [JRN-003](#jrn-003).
+**Manually Add Structure.** Let the reviewer fill in whatever the extraction missed, and let a new workflow begin from the same structure editor regardless of creation path. Evidence: [OBS-012](#obs-012), [OBS-014](#obs-014), [OBS-015](#obs-015), [OBS-016](#obs-016), [OBS-021](#obs-021), [OBS-022](#obs-022). *(↩ used by [BR-009](#br-009), [BR-010](#br-010), [BR-011](#br-011), [BR-016](#br-016))* Registry: [CAPABILITY-REGISTRY.md](../../../../registries/CAPABILITY-REGISTRY.md#cap-006) / [full record](../../capabilities/capability-manually-add-structure-CAP-006.md). Used by [JRN-003](#jrn-003).
 
 ##### CAP-007
-**Remove Empty Structure.** Let the reviewer clean up structure that's no longer needed, without risking accidental data loss. Evidence: [OBS-012](#obs-012), [OBS-017](#obs-017). *(↩ used by [BR-012](#br-012))* Registry: [CAPABILITY-REGISTRY.md](../../../../CAPABILITY-REGISTRY.md#cap-007) / [full record](../../capabilities/capability-remove-empty-structure-CAP-007.md). No Journey uses it yet -- none of `JRN-001`-`003` walks through a delete path; worth one if this feature-slice is revisited.
+**Remove Empty Structure.** Let the reviewer clean up structure that's no longer needed, without risking accidental data loss. Evidence: [OBS-012](#obs-012), [OBS-017](#obs-017). *(↩ used by [BR-012](#br-012))* Registry: [CAPABILITY-REGISTRY.md](../../../../registries/CAPABILITY-REGISTRY.md#cap-007) / [full record](../../capabilities/capability-remove-empty-structure-CAP-007.md). No Journey uses it yet -- none of `JRN-001`-`003` walks through a delete path; worth one if this feature-slice is revisited.
 
 ##### CAP-008
-**Reorder Structure.** Let the reviewer fix the order pages, sections, or fields appear in. Evidence: [OBS-012](#obs-012), [OBS-018](#obs-018). *(↩ used by [BR-013](#br-013))* Registry: [CAPABILITY-REGISTRY.md](../../../../CAPABILITY-REGISTRY.md#cap-008) / [full record](../../capabilities/capability-reorder-structure-CAP-008.md). No Journey uses it yet -- none of `JRN-001`-`003` walks through a reorder path; worth one if this feature-slice is revisited.
+**Reorder Structure.** Let the reviewer fix the order pages, sections, or fields appear in. Evidence: [OBS-012](#obs-012), [OBS-018](#obs-018). *(↩ used by [BR-013](#br-013))* Registry: [CAPABILITY-REGISTRY.md](../../../../registries/CAPABILITY-REGISTRY.md#cap-008) / [full record](../../capabilities/capability-reorder-structure-CAP-008.md). No Journey uses it yet -- none of `JRN-001`-`003` walks through a reorder path; worth one if this feature-slice is revisited.
 
 ## Evidence and Traceability
 
@@ -454,28 +454,28 @@ Manali, `PR #17` review comment (Review Outcome, `BR-003` left unchecked), 2026-
 ### Business Rules
 
 ##### BRULE-001
-A mapping's `kind` constrains which `targetType`s it may be remapped to (e.g. `field` → `Field` only, `field-group` → `FieldGroup` only). Explicit, High. Evidence: [OBS-004](#obs-004). *(↩ used by [BR-005](#br-005))* Registry: [BUSINESS-RULE-REGISTRY.md](../../../../BUSINESS-RULE-REGISTRY.md#brule-001) / [full record](../../business-rules/business-rule-kind-constrains-remap-BRULE-001.md).
+A mapping's `kind` constrains which `targetType`s it may be remapped to (e.g. `field` → `Field` only, `field-group` → `FieldGroup` only). Explicit, High. Evidence: [OBS-004](#obs-004). *(↩ used by [BR-005](#br-005))* Registry: [BUSINESS-RULE-REGISTRY.md](../../../../registries/BUSINESS-RULE-REGISTRY.md#brule-001) / [full record](../../business-rules/business-rule-kind-constrains-remap-BRULE-001.md).
 
 ##### BRULE-002
-Only one field row may be in edit mode at a time. Explicit, High. Evidence: [OBS-010](#obs-010). *(↩ used by [BR-007](#br-007))* Registry: [BUSINESS-RULE-REGISTRY.md](../../../../BUSINESS-RULE-REGISTRY.md#brule-002) / [full record](../../business-rules/business-rule-one-edit-at-a-time-BRULE-002.md).
+Only one field row may be in edit mode at a time. Explicit, High. Evidence: [OBS-010](#obs-010). *(↩ used by [BR-007](#br-007))* Registry: [BUSINESS-RULE-REGISTRY.md](../../../../registries/BUSINESS-RULE-REGISTRY.md#brule-002) / [full record](../../business-rules/business-rule-one-edit-at-a-time-BRULE-002.md).
 
 ##### BRULE-003
-A page or section may be deleted only when it has zero children. Explicit, High. Evidence: [OBS-017](#obs-017). *(↩ used by [BR-012](#br-012))* Registry: [BUSINESS-RULE-REGISTRY.md](../../../../BUSINESS-RULE-REGISTRY.md#brule-003) / [full record](../../business-rules/business-rule-delete-only-when-empty-BRULE-003.md).
+A page or section may be deleted only when it has zero children. Explicit, High. Evidence: [OBS-017](#obs-017). *(↩ used by [BR-012](#br-012))* Registry: [BUSINESS-RULE-REGISTRY.md](../../../../registries/BUSINESS-RULE-REGISTRY.md#brule-003) / [full record](../../business-rules/business-rule-delete-only-when-empty-BRULE-003.md).
 
 ##### BRULE-004
-A Section is visible only if it has a matching field or its own heading matches; a Page is visible only if it has a visible Section. Explicit, High. Evidence: [OBS-013](#obs-013). *(↩ used by [BR-004](#br-004))* Registry: [BUSINESS-RULE-REGISTRY.md](../../../../BUSINESS-RULE-REGISTRY.md#brule-004) / [full record](../../business-rules/business-rule-hierarchical-filter-visibility-BRULE-004.md).
+A Section is visible only if it has a matching field or its own heading matches; a Page is visible only if it has a visible Section. Explicit, High. Evidence: [OBS-013](#obs-013). *(↩ used by [BR-004](#br-004))* Registry: [BUSINESS-RULE-REGISTRY.md](../../../../registries/BUSINESS-RULE-REGISTRY.md#brule-004) / [full record](../../business-rules/business-rule-hierarchical-filter-visibility-BRULE-004.md).
 
 ##### BRULE-005
-Table view and Card view must show identical filtered/grouped data and share all state. Explicit, High. Evidence: [OBS-003](#obs-003). *(↩ used by [BR-003](#br-003) -- kept as the modeling constraint for whenever Card view is built)* Registry: [BUSINESS-RULE-REGISTRY.md](../../../../BUSINESS-RULE-REGISTRY.md#brule-005) / [full record](../../business-rules/business-rule-table-card-parity-BRULE-005.md).
+Table view and Card view must show identical filtered/grouped data and share all state. Explicit, High. Evidence: [OBS-003](#obs-003). *(↩ used by [BR-003](#br-003) -- kept as the modeling constraint for whenever Card view is built)* Registry: [BUSINESS-RULE-REGISTRY.md](../../../../registries/BUSINESS-RULE-REGISTRY.md#brule-005) / [full record](../../business-rules/business-rule-table-card-parity-BRULE-005.md).
 
 ##### BRULE-006
-This report applies only to workflows created via the PDF path. Explicit, High. Evidence: [OBS-019](#obs-019). *(↩ used by [BR-015](#br-015))* Registry: [BUSINESS-RULE-REGISTRY.md](../../../../BUSINESS-RULE-REGISTRY.md#brule-006) / [full record](../../business-rules/business-rule-pdf-path-only-BRULE-006.md).
+This report applies only to workflows created via the PDF path. Explicit, High. Evidence: [OBS-019](#obs-019). *(↩ used by [BR-015](#br-015))* Registry: [BUSINESS-RULE-REGISTRY.md](../../../../registries/BUSINESS-RULE-REGISTRY.md#brule-006) / [full record](../../business-rules/business-rule-pdf-path-only-BRULE-006.md).
 
 ##### BRULE-007
-Structural edits (add page/section/field, delete empty page/section, reorder) never require confirmation; unlinking a mapping is the sole exception. Explicit, High. Evidence: [OBS-012](#obs-012). *(↩ used by [BR-008](#br-008), [BR-009](#br-009), [BR-010](#br-010), [BR-011](#br-011), [BR-012](#br-012), [BR-013](#br-013))* Registry: [BUSINESS-RULE-REGISTRY.md](../../../../BUSINESS-RULE-REGISTRY.md#brule-007) / [full record](../../business-rules/business-rule-no-confirmation-except-unlink-BRULE-007.md).
+Structural edits (add page/section/field, delete empty page/section, reorder) never require confirmation; unlinking a mapping is the sole exception. Explicit, High. Evidence: [OBS-012](#obs-012). *(↩ used by [BR-008](#br-008), [BR-009](#br-009), [BR-010](#br-010), [BR-011](#br-011), [BR-012](#br-012), [BR-013](#br-013))* Registry: [BUSINESS-RULE-REGISTRY.md](../../../../registries/BUSINESS-RULE-REGISTRY.md#brule-007) / [full record](../../business-rules/business-rule-no-confirmation-except-unlink-BRULE-007.md).
 
 ##### BRULE-008
-Below roughly 900px, the mapping table uses horizontal scroll -- never a stacked-card row layout. Human Provided, High. Evidence: [OBS-023](#obs-023). *(↩ used by [BR-002](#br-002), [BR-004](#br-004), [BR-006](#br-006))* Registry: [BUSINESS-RULE-REGISTRY.md](../../../../BUSINESS-RULE-REGISTRY.md#brule-008) / [full record](../../business-rules/business-rule-horizontal-scroll-mobile-BRULE-008.md).
+Below roughly 900px, the mapping table uses horizontal scroll -- never a stacked-card row layout. Human Provided, High. Evidence: [OBS-023](#obs-023). *(↩ used by [BR-002](#br-002), [BR-004](#br-004), [BR-006](#br-006))* Registry: [BUSINESS-RULE-REGISTRY.md](../../../../registries/BUSINESS-RULE-REGISTRY.md#brule-008) / [full record](../../business-rules/business-rule-horizontal-scroll-mobile-BRULE-008.md).
 
 ### Assumptions
 

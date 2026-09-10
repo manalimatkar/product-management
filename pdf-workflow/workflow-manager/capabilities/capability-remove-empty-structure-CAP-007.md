@@ -12,7 +12,7 @@ Let the reviewer clean up structure that's no longer needed, without risking acc
 
 ## Used by journeys
 
-None yet. `DA-003`'s three recorded journeys don't walk through a delete path -- see [CAPABILITY-REGISTRY.md](../../../CAPABILITY-REGISTRY.md)'s note on this.
+None yet. `DA-003`'s three recorded journeys don't walk through a delete path -- see [CAPABILITY-REGISTRY.md](../../../registries/CAPABILITY-REGISTRY.md)'s note on this.
 
 ## Evidence
 

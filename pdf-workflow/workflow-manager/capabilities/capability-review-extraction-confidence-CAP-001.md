@@ -12,7 +12,7 @@ Let the reviewer gauge how much attention a workflow's mapping needs before work
 
 ## Used by journeys
 
-None yet. `DA-003`'s three recorded journeys (`JRN-001`-`003`) all start mid-task rather than narrating the initial stat-tile glance -- see [CAPABILITY-REGISTRY.md](../../../CAPABILITY-REGISTRY.md)'s note on this. Worth a Journey covering the "does this workflow need my attention" moment if this feature-slice is revisited.
+None yet. `DA-003`'s three recorded journeys (`JRN-001`-`003`) all start mid-task rather than narrating the initial stat-tile glance -- see [CAPABILITY-REGISTRY.md](../../../registries/CAPABILITY-REGISTRY.md)'s note on this. Worth a Journey covering the "does this workflow need my attention" moment if this feature-slice is revisited.
 
 ## Evidence
 

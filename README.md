@@ -161,8 +161,8 @@ Organized 2026-09-01 (see ARTIFACT-STORAGE-SPEC.md for how generated instances -
 
 - [PRD.md](PRD.md) - product definition, goals, requirements, and constraints
 - [IMPLEMENTATION-PLAN.md](IMPLEMENTATION-PLAN.md) - implementation roadmap and delivery phases
-- [SOURCE-REGISTRY.md](SOURCE-REGISTRY.md) - the running index of every registered source
-- [JOURNEY-REGISTRY.md](JOURNEY-REGISTRY.md), [CAPABILITY-REGISTRY.md](CAPABILITY-REGISTRY.md), [BUSINESS-RULE-REGISTRY.md](BUSINESS-RULE-REGISTRY.md) - added 2026-09-10, same "index here, real detail in the entity's own file" pattern as SOURCE-REGISTRY.md, for the three artifact types that are product-level rather than scoped to one Design Analysis. See ARTIFACT-RELATIONSHIP-MODEL.md section 3.1.
+- [SOURCE-REGISTRY.md](registries/SOURCE-REGISTRY.md) - the running index of every registered source
+- [JOURNEY-REGISTRY.md](registries/JOURNEY-REGISTRY.md), [CAPABILITY-REGISTRY.md](registries/CAPABILITY-REGISTRY.md), [BUSINESS-RULE-REGISTRY.md](registries/BUSINESS-RULE-REGISTRY.md) - added 2026-09-10, same "index here, real detail in the entity's own file" pattern as SOURCE-REGISTRY.md, for the three artifact types that are product-level rather than scoped to one Design Analysis. See ARTIFACT-RELATIONSHIP-MODEL.md section 3.1.
 
 ### specs/ -- the rules each artifact type and process must follow
 

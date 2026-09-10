@@ -58,7 +58,7 @@ So these three nest one level shallower -- directly under the platform (and app,
 <platform-slug>/[<app-slug>/]business-rules/business-rule-<slug>-<BRULE-id>.md
 ```
 
-`<slug>` here is a short descriptive slug for the entity itself (e.g. `review-extraction-confidence`), not a feature. Each has a root-level registry, following [SOURCE-REGISTRY.md](../SOURCE-REGISTRY.md)'s existing "index here, real detail in the entity's own file" pattern: [CAPABILITY-REGISTRY.md](../CAPABILITY-REGISTRY.md), [JOURNEY-REGISTRY.md](../JOURNEY-REGISTRY.md), [BUSINESS-RULE-REGISTRY.md](../BUSINESS-RULE-REGISTRY.md).
+`<slug>` here is a short descriptive slug for the entity itself (e.g. `review-extraction-confidence`), not a feature. Each has a registry under `registries/` at the repository root (added 2026-09-10, alongside `SOURCE-REGISTRY.md`, moved there the same day so root itself stays uncluttered), following the same "index here, real detail in the entity's own file" pattern: [CAPABILITY-REGISTRY.md](../registries/CAPABILITY-REGISTRY.md), [JOURNEY-REGISTRY.md](../registries/JOURNEY-REGISTRY.md), [BUSINESS-RULE-REGISTRY.md](../registries/BUSINESS-RULE-REGISTRY.md).
 
 A Design Analysis still narrates a Capability/Journey/Business Rule in its own prose, for a reader who wants to understand the feature without jumping between files -- but the ID it uses is assigned from the registry, not invented locally, and its entry links out to the registry file as the canonical, cross-feature record.
 

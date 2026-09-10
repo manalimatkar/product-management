@@ -1,6 +1,6 @@
 # Journey Registry
 
-The running index of every Journey registered under [ARTIFACT-STORAGE-SPEC.md](specs/ARTIFACT-STORAGE-SPEC.md) section 4.1 and [ARTIFACT-RELATIONSHIP-MODEL.md](specs/ARTIFACT-RELATIONSHIP-MODEL.md) section 3.1. Each row here has a full record at `<platform-slug>/[<app-slug>/]journeys/journey-<slug>-<JRN-id>.md`.
+The running index of every Journey registered under [ARTIFACT-STORAGE-SPEC.md](../specs/ARTIFACT-STORAGE-SPEC.md) section 4.1 and [ARTIFACT-RELATIONSHIP-MODEL.md](../specs/ARTIFACT-RELATIONSHIP-MODEL.md) section 3.1. Each row here has a full record at `<platform-slug>/[<app-slug>/]journeys/journey-<slug>-<JRN-id>.md`.
 
 This file is an index, not a record -- add one row per Journey here; put the actual detail (actor, goal, ordered steps, which Capabilities it needs) in that Journey's own file.
 
@@ -8,9 +8,9 @@ A Journey is product-level, not feature-scoped: the same end-to-end goal can spa
 
 | Journey ID | Name | Actor | Platform / App | Uses Capabilities | From Analysis | Record |
 | --- | --- | --- | --- | --- | --- | --- |
-| `JRN-001` | Review and Correct a Low-Confidence Field Mapping | Workflow manager user (reviewer) | pdf-workflow / workflow-manager | `CAP-002`, `CAP-004` | `DA-003` | [pdf-workflow/workflow-manager/journeys/journey-review-correct-low-confidence-mapping-JRN-001.md](pdf-workflow/workflow-manager/journeys/journey-review-correct-low-confidence-mapping-JRN-001.md) |
-| `JRN-002` | Remove an Incorrectly Extracted Field | Workflow manager user (reviewer) | pdf-workflow / workflow-manager | `CAP-005` | `DA-003` | [pdf-workflow/workflow-manager/journeys/journey-remove-incorrectly-extracted-field-JRN-002.md](pdf-workflow/workflow-manager/journeys/journey-remove-incorrectly-extracted-field-JRN-002.md) |
-| `JRN-003` | Add a Section the Extraction Missed | Workflow manager user (reviewer) | pdf-workflow / workflow-manager | `CAP-006` | `DA-003` | [pdf-workflow/workflow-manager/journeys/journey-add-section-extraction-missed-JRN-003.md](pdf-workflow/workflow-manager/journeys/journey-add-section-extraction-missed-JRN-003.md) |
+| `JRN-001` | Review and Correct a Low-Confidence Field Mapping | Workflow manager user (reviewer) | pdf-workflow / workflow-manager | `CAP-002`, `CAP-004` | `DA-003` | [pdf-workflow/workflow-manager/journeys/journey-review-correct-low-confidence-mapping-JRN-001.md](../pdf-workflow/workflow-manager/journeys/journey-review-correct-low-confidence-mapping-JRN-001.md) |
+| `JRN-002` | Remove an Incorrectly Extracted Field | Workflow manager user (reviewer) | pdf-workflow / workflow-manager | `CAP-005` | `DA-003` | [pdf-workflow/workflow-manager/journeys/journey-remove-incorrectly-extracted-field-JRN-002.md](../pdf-workflow/workflow-manager/journeys/journey-remove-incorrectly-extracted-field-JRN-002.md) |
+| `JRN-003` | Add a Section the Extraction Missed | Workflow manager user (reviewer) | pdf-workflow / workflow-manager | `CAP-006` | `DA-003` | [pdf-workflow/workflow-manager/journeys/journey-add-section-extraction-missed-JRN-003.md](../pdf-workflow/workflow-manager/journeys/journey-add-section-extraction-missed-JRN-003.md) |
 
 **First real entries, 2026-09-10** -- re-instated from `DA-003`'s narrative "For example:" prose, where they'd been folded during the 2026-09-08 reformat (a real regression, self-flagged: that reformat removed exactly the addressability this registry now depends on). Same three journeys, same real steps, now given back a stable ID and a real file instead of being unreachable prose.
 
