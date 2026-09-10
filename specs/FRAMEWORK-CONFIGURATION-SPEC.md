@@ -95,7 +95,7 @@ Define which sources may initiate or inform analysis.
 
 | Source Type | Required | Accepted Forms | Authority or Reliability | Owner | Handling Notes |
 | --- | --- | --- | --- | --- | --- |
-| Design material (Design Handoff Bundle) | Yes | The four shapes DESIGN-HANDOFF-BUNDLE-SPEC.md section 6.1 defines: fully detailed bundle, bare external-tool reference, written document with screenshots, AI-generated wireframes | Bundle's own `status`/`readiness` fields carry authority (DESIGN-HANDOFF-BUNDLE-SPEC.md section 7) | `ROLE-005` Producing Designer | The only source type this repository has registered a real instance of. Readiness assigned per `GATE-001`, combined with Bundle Acceptance (`GATE-002`) into one PR-merge event (GITHUB-PLATFORM-ADAPTER-SPEC.md section 6.1). |
+| Design material (Design Handoff Bundle) | Yes | The four shapes DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md section 6.1 defines: fully detailed bundle, bare external-tool reference, written document with screenshots, AI-generated wireframes | Bundle's own `status`/`readiness` fields carry authority (DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md section 7) | `ROLE-005` Producing Designer | The only source type this repository has registered a real instance of. Readiness assigned per `GATE-001`, combined with Bundle Acceptance (`GATE-002`) into one PR-merge event (GITHUB-PLATFORM-ADAPTER-SPEC.md section 6.1). |
 | Product or business brief | No | vision statement, opportunity statement, business case | `ROLE-001` Business Owner, if enabled | Not yet assigned | Supported by the framework core; not yet used in this repository. |
 | User or customer evidence | No | interviews, feedback, support cases | Source owner named at registration | Not yet assigned | Supported; not yet used. |
 | Process material | No | procedures, workflows, operating models | Source owner named at registration | Not yet assigned | Supported; not yet used. |
@@ -296,7 +296,7 @@ GitHub PRs, Issues, Projects, and Actions may be used as an implementation adapt
 
 This table maps *storage* adapters only -- where artifacts are tracked once produced. It has a sibling table for *execution* adapters -- which AI platform actually produces them -- in [EXECUTION-ADAPTER-SPEC.md](EXECUTION-ADAPTER-SPEC.md), added 2026-09-03. The two are independent: a stage executed on Claude, ChatGPT, or Copilot all write to the same storage adapter above, unchanged.
 
-**Added 2026-09-03:** this repository now has a second long-lived branch, `design`, alongside `main` -- a raw landing zone for native Claude Design exports, with its own independent folder shape and its own merge gate (`.github/workflows/design-branch-intake.yml`), deliberately not governed by ARTIFACT-STORAGE-SPEC.md's storage convention above. See DESIGN-HANDOFF-BUNDLE-SPEC.md section 6.2, ARTIFACT-STORAGE-SPEC.md section 10, and GITHUB-PLATFORM-ADAPTER-SPEC.md section 6.1.
+**Added 2026-09-03:** this repository now has a second long-lived branch, `design`, alongside `main` -- a raw landing zone for native Claude Design exports, with its own independent folder shape and its own merge gate (`.github/workflows/design-branch-intake.yml`), deliberately not governed by ARTIFACT-STORAGE-SPEC.md's storage convention above. See DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md section 6.2, ARTIFACT-STORAGE-SPEC.md section 10, and GITHUB-PLATFORM-ADAPTER-SPEC.md section 6.1.
 
 ## 14. Delivery Configuration
 

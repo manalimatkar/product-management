@@ -12,7 +12,7 @@ Two problems this resolves, both found by actually auditing the repo rather than
 ## 2. Relationship to Other Artifacts
 
 - [ARTIFACT-RELATIONSHIP-MODEL.md](ARTIFACT-RELATIONSHIP-MODEL.md) defines the *structural* data model -- artifact types, ID formats, and cardinality between them. This document defines their *physical location and filename* -- a different concern, kept separate rather than folded in.
-- Every artifact-type spec's own storage-convention section (DESIGN-HANDOFF-BUNDLE-SPEC.md §8, DESIGN-ANALYSIS-SPEC.md §2, etc.) now points here rather than defining its own convention independently, so there is exactly one place this can drift out of sync. The one deliberate exception is section 10 below -- the `design` branch's native-export shape is explicitly *not* governed by this convention.
+- Every artifact-type spec's own storage-convention section (DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md §8, DESIGN-ANALYSIS-SPEC.md §2, etc.) now points here rather than defining its own convention independently, so there is exactly one place this can drift out of sync. The one deliberate exception is section 10 below -- the `design` branch's native-export shape is explicitly *not* governed by this convention.
 - [PRD.md](../PRD.md) section 7.7 requires each Design Handoff Bundle to be committed under a feature-specific `design/` area with an explicit version -- this document is the concrete realization of that requirement, extended consistently to every other artifact type.
 
 ## 3. Naming Convention
@@ -69,7 +69,7 @@ The folder groups everything for one feature together for browsing; the filename
 
 ## 5. `design/` -- Bundle-Level and Screen-Level Naming
 
-`design/` (the hand-authored path, section 6.1 of DESIGN-HANDOFF-BUNDLE-SPEC.md -- distinct from the `design` *branch*'s own native-export shape in section 10 below) keeps its existing versioned path, now `<platform-slug>/[<app-slug>/]design/<feature-slug>/v<version>/`, which already carries the version -- something no other artifact type has yet (see section 7). Its files use the same self-describing principle, substituting version or screen/flow ID for a sequential artifact ID since bundles and screens don't have one:
+`design/` (the hand-authored path, section 6.1 of DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md -- distinct from the `design` *branch*'s own native-export shape in section 10 below) keeps its existing versioned path, now `<platform-slug>/[<app-slug>/]design/<feature-slug>/v<version>/`, which already carries the version -- something no other artifact type has yet (see section 7). Its files use the same self-describing principle, substituting version or screen/flow ID for a sequential artifact ID since bundles and screens don't have one:
 
 ```text
 <platform-slug>/[<app-slug>/]design/<feature-slug>/v<version>/
@@ -131,13 +131,13 @@ On 2026-08-31 the cart-optimization dry-run files were renamed and moved to matc
 
 ## 10. The `design` Branch: An Independent Shape
 
-**Added 2026-09-03.** [DESIGN-HANDOFF-BUNDLE-SPEC.md](DESIGN-HANDOFF-BUNDLE-SPEC.md) section 6.2 defines a second design-source location: a persistent `design` branch (not `main`), holding native Claude Design exports untouched. Its folder shape --
+**Added 2026-09-03.** [DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md](DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md) section 6.2 defines a second design-source location: a persistent `design` branch (not `main`), holding native Claude Design exports untouched. Its folder shape --
 
 ```text
 <platform-slug>/[<app-slug>/]design/v<N>/
 ```
 
--- is **not** governed by this document's `<root>/<platform-slug>/[<app-slug>/]<feature-slug>/` convention (sections 3-4), despite the visual similarity. The distinction is deliberate: sections 3-9 above govern where this framework's own *generated, curated* artifacts live once produced -- Design Analysis, Business Requirements, the Business PR, all committed to `main`. A raw export sitting on `design` is unprocessed input the Business Agent reads, structurally the same category as an external Figma file or a PDF, just git-hosted instead of externally hosted -- it becomes a governed artifact only once a `sources/.../source-*.md` registration record (section 4 above) formally cites it. `main`'s own existing `design/<platform-slug>/[<app-slug>/]<feature-slug>/v<version>/` root (section 5) is unaffected and keeps governing the hand-authored bundle path (DESIGN-HANDOFF-BUNDLE-SPEC.md section 6.1) and the one existing dry-run example under it.
+-- is **not** governed by this document's `<root>/<platform-slug>/[<app-slug>/]<feature-slug>/` convention (sections 3-4), despite the visual similarity. The distinction is deliberate: sections 3-9 above govern where this framework's own *generated, curated* artifacts live once produced -- Design Analysis, Business Requirements, the Business PR, all committed to `main`. A raw export sitting on `design` is unprocessed input the Business Agent reads, structurally the same category as an external Figma file or a PDF, just git-hosted instead of externally hosted -- it becomes a governed artifact only once a `sources/.../source-*.md` registration record (section 4 above) formally cites it. `main`'s own existing `design/<platform-slug>/[<app-slug>/]<feature-slug>/v<version>/` root (section 5) is unaffected and keeps governing the hand-authored bundle path (DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md section 6.1) and the one existing dry-run example under it.
 
 **How a `main`-side artifact points back at `design`-branch source.** Since a native export carries no `bundleId`/version frontmatter to cite (unlike a hand-authored `bundle.md`), a `sources/.../source-*.md` record's `Location` field (`PRODUCT-SOURCE-MATERIAL-SPEC.md` section 4) and a Design Analysis's `Source Material` field (`DESIGN-ANALYSIS-SPEC.md` section 3) instead cite a three-part pointer:
 
@@ -147,7 +147,7 @@ path: <platform-slug>/[<app-slug>/]design/v<N>/
 commit: <merge commit SHA>
 ```
 
-A commit SHA pins an exact snapshot even after `design`'s tip advances to a later version -- `git show <SHA>:<path>/README.md` retrieves exactly what was analyzed. Registration is **per feature-slice**, not per version drop (a version can bundle several unrelated features) -- see DESIGN-HANDOFF-BUNDLE-SPEC.md section 6.2 for the full rationale.
+A commit SHA pins an exact snapshot even after `design`'s tip advances to a later version -- `git show <SHA>:<path>/README.md` retrieves exactly what was analyzed. Registration is **per feature-slice**, not per version drop (a version can bundle several unrelated features) -- see DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md section 6.2 for the full rationale.
 
 ## 11. Open Decisions
 

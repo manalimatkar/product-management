@@ -333,7 +333,7 @@ Only two Technical Unknowns remain ([TECH-001](#tech-001), [TECH-002](#tech-002)
 - **Org-level permissions** -- deferred until login/auth exists. See [DEC-004](#dec-004).
 - **Error/failure states** for save, add, delete, and reorder -- not represented in the source, not assumed.
 - **Extraction mechanism and reorder-list storage** -- technical questions, for the Technical Agent. See [TECH-001](#tech-001), [TECH-002](#tech-002).
-- This analysis covers only the Mapping Report feature-slice of the v4 drop. The same drop's other screens (Dashboard, Settings Dialog, Page Editor, full auth flow) are out of scope here and, per DESIGN-HANDOFF-BUNDLE-SPEC.md section 6.2, registered and analyzed separately if/when taken up.
+- This analysis covers only the Mapping Report feature-slice of the v4 drop. The same drop's other screens (Dashboard, Settings Dialog, Page Editor, full auth flow) are out of scope here and, per DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md section 6.2, registered and analyzed separately if/when taken up.
 
 ---
 

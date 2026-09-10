@@ -16,6 +16,7 @@ This repository is a product-management and governance framework, not an enginee
 - [REQUIREMENTS-VERSIONING-SPEC.md](REQUIREMENTS-VERSIONING-SPEC.md) section 4's `MAJOR.MINOR` version format is reused here for bundle versioning, so the same version vocabulary applies across the repository.
 - [FRAMEWORK-CONFIGURATION-SPEC.md](FRAMEWORK-CONFIGURATION-SPEC.md) section 10 governs who may hold which role against this artifact; this document does not hardcode role names.
 - Section 6.2 below (the native Claude Design export shape) has its own storage location -- a persistent `design` branch, not `ARTIFACT-STORAGE-SPEC.md`'s `<root>/<platform-slug>/...` convention -- and its own trigger mechanism, detailed in [GITHUB-PLATFORM-ADAPTER-SPEC.md](GITHUB-PLATFORM-ADAPTER-SPEC.md) section 6.1.
+- [CLAUDE-DESIGN-READING-SPEC.md](CLAUDE-DESIGN-READING-SPEC.md) is the sibling document for *reading* a native Claude Design export accurately -- this document defines its storage and format only, per section 3's own stated scope.
 
 ## 3. Scope
 
@@ -249,6 +250,10 @@ commit: <merge commit SHA>
 ```
 
 A commit SHA pins an exact snapshot even after `design`'s tip moves on to a later version -- `git show <SHA>:<path>/README.md` retrieves exactly what was analyzed, satisfying `PRODUCT-SOURCE-MATERIAL-SPEC.md` section 5's retrieval-identity requirement.
+
+### 6.2.1 Reading This Format Accurately
+
+**Moved 2026-09-10** to its own document, [CLAUDE-DESIGN-READING-SPEC.md](CLAUDE-DESIGN-READING-SPEC.md) -- this section briefly lived here, but reading/interpretation technique is out of scope for this document by this document's own section 3 ("It does not define how the Business Agent interprets a bundle"). Kept as a pointer rather than silently deleted, so a link into the old location still lands somewhere useful. Every rule that was here (dark `.dc.html` as sole source of truth, light theme excluded, README as reference only, the failed-screenshot finding) is unchanged in substance, just relocated.
 
 ## 7. Status vs. Readiness
 

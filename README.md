@@ -85,7 +85,7 @@ The Business Agent consumes the committed bundle. It does not regenerate or rewr
 
 A Story must reference the applicable design handoff bundle and version.
 
-**Two upload paths (specs/DESIGN-HANDOFF-BUNDLE-SPEC.md section 6.2, added 2026-09-03):** a genuine Claude Design export lands untouched on a persistent `design` branch (`<platform-slug>/[<app-slug>/]design/v<N>/`), not `main` -- its merge opens a tracked GitHub Issue that is the real Business Agent trigger. A hand-authored bundle (a bare Figma link, a written spec + screenshots) still goes directly against `main`'s existing `design/` convention, unchanged.
+**Two upload paths (specs/DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md section 6.2, added 2026-09-03):** a genuine Claude Design export lands untouched on a persistent `design` branch (`<platform-slug>/[<app-slug>/]design/v<N>/`), not `main` -- its merge opens a tracked GitHub Issue that is the real Business Agent trigger. A hand-authored bundle (a bare Figma link, a written spec + screenshots) still goes directly against `main`'s existing `design/` convention, unchanged.
 
 ## Agents and Responsibilities
 
@@ -99,6 +99,8 @@ A Story must reference the applicable design handoff bundle and version.
 - prepares a Business PR
 
 The Business Agent does not make technical architecture decisions, approve business scope, or merge the Business PR.
+
+**Runnable, not just described** -- this everything above has been an authority/responsibility description since this document was written; as of 2026-09-09 there is a real, invokable definition of it for Claude Code: [.claude/agents/business-agent.md](.claude/agents/business-agent.md). See the `.claude/` entry in Documents below.
 
 ### Technical Agent
 
@@ -164,7 +166,8 @@ Organized 2026-09-01 (see ARTIFACT-STORAGE-SPEC.md for how generated instances -
 ### specs/ -- the rules each artifact type and process must follow
 
 - [BUSINESS-REPOSITORY-WORKFLOW.md](specs/BUSINESS-REPOSITORY-WORKFLOW.md) - business-stage workflow and Business Owner gate
-- [DESIGN-HANDOFF-BUNDLE-SPEC.md](specs/DESIGN-HANDOFF-BUNDLE-SPEC.md) - Design Handoff Bundle schema, manifest, and design/implementation boundary
+- [DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md](specs/DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md) - Design Handoff Bundle schema, manifest, and design/implementation boundary
+- [CLAUDE-DESIGN-READING-SPEC.md](specs/CLAUDE-DESIGN-READING-SPEC.md) - how to read a native Claude Design export accurately (dark `.dc.html` as source of truth, README as reference only) -- tool-specific, sibling to a future Figma equivalent; the generic analysis method (flows before capabilities) stays in DESIGN-ANALYSIS-SPEC.md
 - [DESIGN-ANALYSIS-SPEC.md](specs/DESIGN-ANALYSIS-SPEC.md) - Design Analysis structure, evidence, and Business Agent inference rules
 - [DESIGN-ANALYSIS-REVIEW-SPEC.md](specs/DESIGN-ANALYSIS-REVIEW-SPEC.md) - analysis intake, validation, review, approval, and change process
 - [PRODUCT-SOURCE-MATERIAL-SPEC.md](specs/PRODUCT-SOURCE-MATERIAL-SPEC.md) - source registration, authority, versioning, readiness, and change handling
@@ -192,6 +195,13 @@ Organized 2026-09-01 (see ARTIFACT-STORAGE-SPEC.md for how generated instances -
 - [BUSINESS-PR-TEMPLATE.md](templates/BUSINESS-PR-TEMPLATE.md) - reusable Business PR template
 - [BUSINESS-REQUIREMENTS-TEMPLATE.md](templates/BUSINESS-REQUIREMENTS-TEMPLATE.md) - reusable Business Requirements artifact template
 - [CANONICAL-TASK-TEMPLATE.md](templates/CANONICAL-TASK-TEMPLATE.md) - reusable Task and Spike issue templates
+
+### .claude/ -- runnable agent and skill definitions (Claude Code, the reference execution platform per EXECUTION-ADAPTER-SPEC.md section 4)
+
+Added 2026-09-09, closing the gap between describing an agent (this document, AGENT-RESPONSIBILITIES.md, BUSINESS-AGENT-WORKFLOW.md) and being able to actually invoke one. Deliberately thin -- per EXECUTION-ADAPTER-SPEC.md section 3, no platform gets its own version of a workflow document, so these files point at the real specs rather than restating them.
+
+- [.claude/agents/business-agent.md](.claude/agents/business-agent.md) - a real Claude Code subagent definition for `ROLE-006`: declared tool access, and instructions that point at BUSINESS-AGENT-WORKFLOW.md, AGENT-RESPONSIBILITIES.md, EVIDENCE-SPEC.md, and the relevant templates, plus the hard constraints restated for safety.
+- [.claude/skills/verify-design-analysis/SKILL.md](.claude/skills/verify-design-analysis/SKILL.md) - checks a Design Analysis's internal traceability (every ID-only heading unique, every link resolves, every evidence entry has an inbound citation), backed by `.github/scripts/verify_design_analysis.py`. Run after drafting or revising any Design Analysis, before opening or updating its review PR.
 
 ## Current Status
 

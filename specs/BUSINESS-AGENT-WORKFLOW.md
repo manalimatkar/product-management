@@ -9,7 +9,7 @@ It is a synthesis document, not a new set of rules. Every step below is already 
 ## 2. Relationship to Other Artifacts
 
 - [PRODUCT-SOURCE-MATERIAL-SPEC.md](PRODUCT-SOURCE-MATERIAL-SPEC.md) governs the input.
-- [DESIGN-HANDOFF-BUNDLE-SPEC.md](DESIGN-HANDOFF-BUNDLE-SPEC.md) governs the optional UI-design source type.
+- [DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md](DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md) governs the optional UI-design source type.
 - [DESIGN-ANALYSIS-SPEC.md](DESIGN-ANALYSIS-SPEC.md) and [DESIGN-ANALYSIS-REVIEW-SPEC.md](DESIGN-ANALYSIS-REVIEW-SPEC.md) govern the analysis stage and its review gate.
 - [BUSINESS-REQUIREMENTS-SPEC.md](BUSINESS-REQUIREMENTS-SPEC.md) governs the requirements stage.
 - [BUSINESS-PR-SPEC.md](BUSINESS-PR-SPEC.md) governs Epic/Story decomposition and the Business PR itself.
@@ -25,7 +25,7 @@ Source Material
   (registered per PRODUCT-SOURCE-MATERIAL-SPEC.md sections 4 and 8)
         |
         v
-Design Handoff Bundle (optional, per DESIGN-HANDOFF-BUNDLE-SPEC.md)
+Design Handoff Bundle (optional, per DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md)
   or another configured source type (PRODUCT-SOURCE-MATERIAL-SPEC.md section 3)
         |
         v
@@ -34,7 +34,7 @@ Design Analysis
 
 Entry condition: readiness must be `Ready` or `Ready with Limitations` per [PRODUCT-SOURCE-MATERIAL-SPEC.md](PRODUCT-SOURCE-MATERIAL-SPEC.md) section 9. If readiness is `Blocked`, the Business Agent must not proceed -- it records the blocker and stops (section 8 below).
 
-**Revised 2026-09-03:** for a native Claude Design export, this entry condition is signaled by a tracked GitHub Issue (`agent:business`/`status:queued`, opened by `.github/workflows/design-branch-intake.yml` on merge into the `design` branch) naming the readiness value directly, not by the PR comment GITHUB-PLATFORM-ADAPTER-SPEC.md section 6.1's legacy path used -- see that section and DESIGN-HANDOFF-BUNDLE-SPEC.md section 6.2. The entry condition itself, and everything below in this section, is unchanged.
+**Revised 2026-09-03:** for a native Claude Design export, this entry condition is signaled by a tracked GitHub Issue (`agent:business`/`status:queued`, opened by `.github/workflows/design-branch-intake.yml` on merge into the `design` branch) naming the readiness value directly, not by the PR comment GITHUB-PLATFORM-ADAPTER-SPEC.md section 6.1's legacy path used -- see that section and DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md section 6.2. The entry condition itself, and everything below in this section, is unchanged.
 
 ## 4. Processing
 

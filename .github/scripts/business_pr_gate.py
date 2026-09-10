@@ -28,7 +28,7 @@ GitHub never lets a PR's author formally Approve their own PR, and this
 repository has no separate agent/bot identity, so a `listReviews`-based
 check can never pass whenever the same account both opens the Business PR
 and is the accountable Business Owner. See GITHUB-PLATFORM-ADAPTER-SPEC.md
-section 8 and DESIGN-HANDOFF-BUNDLE-SPEC.md section 6.2 for the fuller
+section 8 and DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md section 6.2 for the fuller
 rationale; this script applies the identical fix.
 """
 import argparse

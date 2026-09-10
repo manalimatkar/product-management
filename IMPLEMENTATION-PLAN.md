@@ -249,7 +249,7 @@ This supersedes the item-3/item-4 ordering implied by the original roadmap recor
 **Reviewed 2026-09-01** -- corrected to reflect what this session actually resolved.
 
 - ~~exact storage and format of business-repository artifacts~~ Resolved -- see [specs/ARTIFACT-STORAGE-SPEC.md](specs/ARTIFACT-STORAGE-SPEC.md).
-- exact Figma and file-ingestion mechanism -- still open (the structural shape of a Figma-sourced bundle is defined in specs/DESIGN-HANDOFF-BUNDLE-SPEC.md section 6.1; the actual API/access mechanism is not).
+- exact Figma and file-ingestion mechanism -- still open (the structural shape of a Figma-sourced bundle is defined in specs/DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md section 6.1; the actual API/access mechanism is not).
 - ~~GitHub Issues, Markdown, Projects, or a hybrid for each artifact type~~ Resolved -- "GitHub-light", see [specs/GITHUB-PLATFORM-ADAPTER-SPEC.md](specs/GITHUB-PLATFORM-ADAPTER-SPEC.md).
 - ~~how target engineering repositories are registered and selected~~ Resolved 2026-09-01 -- [specs/FRAMEWORK-CONFIGURATION-SPEC.md](specs/FRAMEWORK-CONFIGURATION-SPEC.md) section 14 now defines the registration process; a concrete `TARGET-001` instance is pending a real engineering repository (open item 8).
 - ~~exact Technical Plan format~~ Resolved 2026-09-01 -- see [specs/TECHNICAL-AGENT-WORKFLOW.md](specs/TECHNICAL-AGENT-WORKFLOW.md) section 4.1.
@@ -259,7 +259,7 @@ This supersedes the item-3/item-4 ordering implied by the original roadmap recor
 ## TODOs Before Implementation Planning Is Final
 
 - ~~Confirm the end-to-end design-to-requirements process and Business Agent activity boundaries.~~ Resolved -- see [specs/BUSINESS-AGENT-WORKFLOW.md](specs/BUSINESS-AGENT-WORKFLOW.md).
-- ~~Define the Design Handoff Bundle contract, versioning, and approval relationship.~~ Resolved -- see [specs/DESIGN-HANDOFF-BUNDLE-SPEC.md](specs/DESIGN-HANDOFF-BUNDLE-SPEC.md).
+- ~~Define the Design Handoff Bundle contract, versioning, and approval relationship.~~ Resolved -- see [specs/DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md](specs/DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md).
 - ~~Define the Design Analysis schema and validation rules.~~ Resolved -- see [specs/DESIGN-ANALYSIS-SPEC.md](specs/DESIGN-ANALYSIS-SPEC.md) and [specs/DESIGN-ANALYSIS-REVIEW-SPEC.md](specs/DESIGN-ANALYSIS-REVIEW-SPEC.md).
 - ~~Define artifact storage conventions for `design/`, `analysis/`, `requirements/`, and canonical GitHub Issues.~~ Naming and folder layout defined 2026-08-31 in ARTIFACT-STORAGE-SPEC.md, covering a local-file fallback for canonical Tasks/Spikes too. The separate question below (Markdown vs. GitHub Issues/Projects as the actual storage medium) is still open.
 - ~~Decide which artifacts are Markdown files, GitHub Issues, GitHub Projects, or a hybrid.~~ Resolved 2026-08-31 -- "GitHub-light": files stay canonical, Issues for Epic/Story/Task/Spike, PR for Business PR, labels for workflow state. See GITHUB-PLATFORM-ADAPTER-SPEC.md.

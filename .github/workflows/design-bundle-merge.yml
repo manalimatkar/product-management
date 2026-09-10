@@ -1,9 +1,9 @@
 name: Design Handoff Bundle Merge Gate
 
 # LEGACY PATH, kept for the hand-authored bundle.md format only (a bare
-# Figma link, a written spec + screenshots -- DESIGN-HANDOFF-BUNDLE-SPEC.md
+# Figma link, a written spec + screenshots -- DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md
 # section 6.1) against `main`. A real, tool-exported Claude Design handoff
-# (README.md + designs/*.dc.html, DESIGN-HANDOFF-BUNDLE-SPEC.md section 6.2)
+# (README.md + designs/*.dc.html, DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md section 6.2)
 # goes through the `design` branch instead -- see design-branch-intake.yml
 # and GITHUB-PLATFORM-ADAPTER-SPEC.md section 6.1's revised text.
 #

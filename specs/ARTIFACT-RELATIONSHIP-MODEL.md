@@ -25,7 +25,7 @@ Versioning mechanics referenced here are defined in [REQUIREMENTS-VERSIONING-SPE
 | Artifact | Canonical ID Format | Defined In | Produced By | Stored As |
 | --- | --- | --- | --- | --- |
 | Source Material | `SRC-<number>` | PRODUCT-SOURCE-MATERIAL-SPEC.md §4 | Source owner | Registry entry |
-| Design Handoff Bundle | `{platformSlug}/[{appSlug}/]{featureSlug}@v{MAJOR.MINOR}` | DESIGN-HANDOFF-BUNDLE-SPEC.md §5 | Designer | `bundle.md` + files |
+| Design Handoff Bundle | `{platformSlug}/[{appSlug}/]{featureSlug}@v{MAJOR.MINOR}` | DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md §5 | Designer | `bundle.md` + files |
 | Design Analysis | `ANALYSIS-<number>` (feature-scoped) | DESIGN-ANALYSIS-SPEC.md §3 | Business Agent | Markdown, `analysis/<feature>/` |
 | Business Requirements Set | `REQSET-<number>`, requirements `BR-<number>` | REQUIREMENTS-VERSIONING-SPEC.md §3; BUSINESS-REQUIREMENTS-SPEC.md §4 | Business Agent | Markdown |
 | Epic | `EPIC-<number>` | BUSINESS-REQUIREMENTS-SPEC.md §12 | Business Agent | Markdown or Issue |
@@ -100,7 +100,7 @@ Consolidating the change-impact rules already defined per artifact (this table a
 | Design Analysis (Major revision) | Business Requirements must be reassessed; prior requirement approval may be invalidated | DESIGN-ANALYSIS-REVIEW-SPEC.md §14 |
 | Business Requirement (Major change) | Affected Stories and Tasks require impact review; approval reopens | REQUIREMENTS-VERSIONING-SPEC.md §9-10 |
 | Story (Major change) | Every Canonical Task referencing it is forced to `Technical Readiness: Blocked`, even if previously `Technical Ready` | CANONICAL-TASK-SPEC.md §12 |
-| Design Handoff Bundle (new version, superseding) | Design Analysis built on the prior version must be reassessed against the new bundle | DESIGN-HANDOFF-BUNDLE-SPEC.md §7; PRODUCT-SOURCE-MATERIAL-SPEC.md §12 |
+| Design Handoff Bundle (new version, superseding) | Design Analysis built on the prior version must be reassessed against the new bundle | DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md §7; PRODUCT-SOURCE-MATERIAL-SPEC.md §12 |
 
 A superseded artifact is never deleted; its children keep their reference to the exact version they were built against, per [REQUIREMENTS-VERSIONING-SPEC.md](REQUIREMENTS-VERSIONING-SPEC.md) section 11.
 
