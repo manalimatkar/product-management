@@ -167,6 +167,7 @@ Organized 2026-09-01 (see ARTIFACT-STORAGE-SPEC.md for how generated instances -
 
 - [BUSINESS-REPOSITORY-WORKFLOW.md](specs/BUSINESS-REPOSITORY-WORKFLOW.md) - business-stage workflow and Business Owner gate
 - [DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md](specs/DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md) - Design Handoff Bundle schema, manifest, and design/implementation boundary
+- [CLAUDE-DESIGN-READING-SPEC.md](specs/CLAUDE-DESIGN-READING-SPEC.md) - how to read a native Claude Design export accurately (dark `.dc.html` as source of truth, README as reference only) -- tool-specific, sibling to a future Figma equivalent; the generic analysis method (flows before capabilities) stays in DESIGN-ANALYSIS-SPEC.md
 - [DESIGN-ANALYSIS-SPEC.md](specs/DESIGN-ANALYSIS-SPEC.md) - Design Analysis structure, evidence, and Business Agent inference rules
 - [DESIGN-ANALYSIS-REVIEW-SPEC.md](specs/DESIGN-ANALYSIS-REVIEW-SPEC.md) - analysis intake, validation, review, approval, and change process
 - [PRODUCT-SOURCE-MATERIAL-SPEC.md](specs/PRODUCT-SOURCE-MATERIAL-SPEC.md) - source registration, authority, versioning, readiness, and change handling
