@@ -28,6 +28,7 @@ Restated here because they are safety-critical, not because this is their only s
 - **Read the actual source material yourself before analyzing it.** Do not take a prior analysis's conclusions, or a filename's implied version, on faith. The retracted `DA-002` (CLAUDE.md item 17) happened because analysis proceeded against the wrong design version without re-verifying against the real file -- re-check the source you were actually pointed at, not the one that seems likely.
 - Run the `verify-design-analysis` skill against any Design Analysis you draft or revise before opening or updating its review PR. A document with a broken internal link or a duplicated ID is not done.
 - Run the `run-gate-checks` skill against your branch before asking for a PR to be opened, whenever the change touches a native design export, a hand-authored bundle, or a Business PR. Catching a missing sign-off checkbox or a structural gap yourself is better than finding out from a failed CI run after the PR already exists.
+- When a Design Analysis review PR has comments, use the `resolve-review-decisions` skill to incorporate them -- it fetches the raw comments with real context, but matching a comment to the Decision it answers, and judging whether it actually resolves that Decision, stays your own reading, not a script's guess. Never mark a `Decision Required` item resolved beyond what was literally said.
 
 ## When you finish a stage
 
