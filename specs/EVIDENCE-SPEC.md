@@ -13,7 +13,7 @@ This is a cross-cutting rule, not a new artifact. It does not replace the detail
 ## 2. Relationship to Other Artifacts
 
 - [DESIGN-ANALYSIS-SPEC.md](DESIGN-ANALYSIS-SPEC.md) section 5 defines the detailed evidence classification values. This document does not redefine them; it maps them to a simpler quick-reference model and states where each one is enforced.
-- [DESIGN-HANDOFF-BUNDLE-SPEC.md](DESIGN-HANDOFF-BUNDLE-SPEC.md) is where the chain starts -- screens, elements, and interactions are the source evidence.
+- [DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md](DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md) is where the chain starts -- screens, elements, and interactions are the source evidence.
 - [DESIGN-ANALYSIS-REVIEW-SPEC.md](DESIGN-ANALYSIS-REVIEW-SPEC.md) section 6 describes the procedure that produces classified observations.
 - [BUSINESS-REQUIREMENTS-SPEC.md](BUSINESS-REQUIREMENTS-SPEC.md) sections 6 and 9 require every requirement to carry evidence and classification, and define the traceability chain from source to Story.
 - [BUSINESS-PR-SPEC.md](BUSINESS-PR-SPEC.md) section 6's Required Stage Trace is where this rule becomes structurally enforced: a Story with a broken or missing evidence chain fails the Business PR quality gate.
@@ -55,7 +55,7 @@ A requirement, Story, or Task that cannot be walked back to a Screen, Element, U
 
 ## 3.1 Source-of-Truth When a Source Has Multiple Representations
 
-**Added 2026-09-10**, generalizing a rule worked out concretely against a real Claude Design export (see `DESIGN-HANDOFF-BUNDLE-SPEC.md` section 6.2 for that source type's specific application). Source material is rarely one flat document. It commonly ships as a descriptive document (a README, a spec) *plus* a more literal artifact (code, an interactive prototype, a structured data file) describing the same thing -- and the two can disagree, or one can simply be unreliable. This section states how to handle that, for any source type, not just a native design export.
+**Added 2026-09-10**, generalizing a rule worked out concretely against a real Claude Design export (see `DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md` section 6.2 for that source type's specific application). Source material is rarely one flat document. It commonly ships as a descriptive document (a README, a spec) *plus* a more literal artifact (code, an interactive prototype, a structured data file) describing the same thing -- and the two can disagree, or one can simply be unreliable. This section states how to handle that, for any source type, not just a native design export.
 
 1. **Always find and read the most literal, executable representation available, not only its prose description.** A prose document is a *claim about* the artifact; it can be incomplete, stale, or simply wrong. Where a literal artifact exists (code, a data file, a structured export), that is the primary evidence -- the descriptive document is context, not a substitute.
 2. **When a source has both, cross-check them rather than defaulting to the prose.** Disagreement between the two is a Gap (`DESIGN-ANALYSIS-SPEC.md` section 4.13 -- Conflicts and Gaps), not a reason to silently prefer whichever is easier to read.
@@ -133,7 +133,7 @@ Only the Explicit and Inferred rows may become approved Business Requirements an
 
 | Checkpoint | Mechanism |
 | --- | --- |
-| Design Handoff Bundle | `evidence` hints on screen states and interactions (DESIGN-HANDOFF-BUNDLE-SPEC.md section 6) |
+| Design Handoff Bundle | `evidence` hints on screen states and interactions (DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md section 6) |
 | Design Analysis | Every observation, rule, requirement, and interpretation classified per DESIGN-ANALYSIS-SPEC.md section 5; Requirement Mapping table (section 4.13) |
 | Design Analysis Review | Reviewer checklist explicitly confirms "observations are distinguished from interpretations" and "assumptions are not presented as confirmed requirements" (DESIGN-ANALYSIS-REVIEW-SPEC.md section 12) |
 | Business Requirements | `Evidence` and `Classification` fields required on every requirement (BUSINESS-REQUIREMENTS-SPEC.md sections 5-6); Traceability Map (section 9) |

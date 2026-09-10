@@ -4,7 +4,7 @@
 
 This specification defines the minimum content and lifecycle of a canonical Task or Spike: the technical decomposition of an approved Story, enriched by the Technical Agent and gated by Architect approval before it may reach a Developer Agent or human developer.
 
-[TECHNICAL-HANDOFF.md](TECHNICAL-HANDOFF.md) describes this flow narratively. This document gives it a structured schema, the same way [DESIGN-HANDOFF-BUNDLE-SPEC.md](DESIGN-HANDOFF-BUNDLE-SPEC.md) did for the Design Handoff Bundle and [BUSINESS-PR-SPEC.md](BUSINESS-PR-SPEC.md) did for the Business PR.
+[TECHNICAL-HANDOFF.md](TECHNICAL-HANDOFF.md) describes this flow narratively. This document gives it a structured schema, the same way [DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md](DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md) did for the Design Handoff Bundle and [BUSINESS-PR-SPEC.md](BUSINESS-PR-SPEC.md) did for the Business PR.
 
 ## 2. Relationship to Other Artifacts
 
@@ -93,7 +93,7 @@ A Task that depends on an unresolved Spike must record that dependency and must 
 | Architect | Named reviewer or `Pending` |
 | Approval Reference | Attributable Architect approval event or `Pending` |
 
-`Status` is the Technical Agent's own drafting lifecycle. `Technical Readiness` is a separate field, set only through the Architect Review Gate (section 9) -- the same status-versus-readiness split used for the Design Handoff Bundle in [DESIGN-HANDOFF-BUNDLE-SPEC.md](DESIGN-HANDOFF-BUNDLE-SPEC.md) section 7. A Task with `Status: Draft` can never simultaneously hold `Technical Readiness: Technical Ready`.
+`Status` is the Technical Agent's own drafting lifecycle. `Technical Readiness` is a separate field, set only through the Architect Review Gate (section 9) -- the same status-versus-readiness split used for the Design Handoff Bundle in [DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md](DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md) section 7. A Task with `Status: Draft` can never simultaneously hold `Technical Readiness: Technical Ready`.
 
 ## 7. Required Spike Fields
 

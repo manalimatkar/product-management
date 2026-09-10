@@ -143,7 +143,7 @@ The bundle must identify:
 
 The Business or product agent consumes the bundle and references it. It must not silently regenerate, rewrite, or replace the authoritative source.
 
-See [DESIGN-HANDOFF-BUNDLE-SPEC.md](DESIGN-HANDOFF-BUNDLE-SPEC.md) for the structured schema and file templates implementing this section.
+See [DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md](DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md) for the structured schema and file templates implementing this section.
 See [PRODUCT-SOURCE-MATERIAL-TEMPLATE.md](../templates/PRODUCT-SOURCE-MATERIAL-TEMPLATE.md) and [SOURCE-REGISTRY.md](../SOURCE-REGISTRY.md) for the fillable registration record and running index this section requires.
 
 ## 8. Registration and Intake
@@ -175,7 +175,7 @@ A source set is ready for analysis when:
 - limitations are visible
 - the requested outcome or question is stated
 
-For a native Claude Design export, this check is run mechanically by `.github/workflows/design-branch-intake.yml` on merge into the `design` branch, per DESIGN-HANDOFF-BUNDLE-SPEC.md section 6.2 -- readiness is computed the same way (limitations present or absent) as for any other source, just derived from the export's own README.md rather than a hand-authored field.
+For a native Claude Design export, this check is run mechanically by `.github/workflows/design-branch-intake.yml` on merge into the `design` branch, per DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md section 6.2 -- readiness is computed the same way (limitations present or absent) as for any other source, just derived from the export's own README.md rather than a hand-authored field.
 
 Readiness outcomes are:
 

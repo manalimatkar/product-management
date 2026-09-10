@@ -33,7 +33,7 @@ Every source registered with this template gets one row added to [SOURCE-REGISTR
 
 ## If This Source Is a Design Handoff Bundle
 
-If `Source Type` is Design material and the source is a versioned Design Handoff Bundle, its bundle-specific fields (manifest, screens, flows, assets, experience requirements) live in `bundle.md` per [DESIGN-HANDOFF-BUNDLE-SPEC.md](../specs/DESIGN-HANDOFF-BUNDLE-SPEC.md) section 5 -- do not duplicate them here. `Location` above should point at that bundle's path, and `Version` should match its `version` field exactly.
+If `Source Type` is Design material and the source is a versioned Design Handoff Bundle, its bundle-specific fields (manifest, screens, flows, assets, experience requirements) live in `bundle.md` per [DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md](../specs/DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md) section 5 -- do not duplicate them here. `Location` above should point at that bundle's path, and `Version` should match its `version` field exactly.
 
 ## Known Limitations
 
@@ -96,7 +96,7 @@ The authoritative naming and folder convention -- for this artifact and every ot
 <platform-slug>/[<app-slug>/]sources/<feature-slug>/source-<feature-slug>-<SRC-id>.md   (Registration Record + Readiness Check + Version History)
 ```
 
-For a Design Handoff Bundle specifically, this registration record points at its actual content under `<platform-slug>/[<app-slug>/]design/<feature-slug>/v<version>/` (DESIGN-HANDOFF-BUNDLE-SPEC.md §8) -- the registration record and the bundle content are not the same file.
+For a Design Handoff Bundle specifically, this registration record points at its actual content under `<platform-slug>/[<app-slug>/]design/<feature-slug>/v<version>/` (DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md §8) -- the registration record and the bundle content are not the same file.
 
 ---
 
@@ -112,6 +112,6 @@ For a Design Handoff Bundle specifically, this registration record points at its
 - [ ] Access and readability are confirmed
 - [ ] Missing, stale, restricted, or conflicting material is visible in Known Limitations
 - [ ] Required source types for the active configuration are present
-- [ ] If this source is a Design Handoff Bundle, its bundle-specific metadata is complete per DESIGN-HANDOFF-BUNDLE-SPEC.md
+- [ ] If this source is a Design Handoff Bundle, its bundle-specific metadata is complete per DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md
 - [ ] Readiness Check (Part 2) is complete with an outcome recorded
 - [ ] This source has been added to [SOURCE-REGISTRY.md](../SOURCE-REGISTRY.md)

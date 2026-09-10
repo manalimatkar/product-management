@@ -1,7 +1,7 @@
 name: Design Branch Intake Gate
 
 # GITHUB-PLATFORM-ADAPTER-SPEC.md section 6.1 -- the `design` branch's own
-# merge gate, for native Claude Design exports (DESIGN-HANDOFF-BUNDLE-SPEC.md
+# merge gate, for native Claude Design exports (DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md
 # section 6.2). Sibling to design-bundle-merge.yml, which stays the legacy
 # path for hand-authored bundle.md content against `main`.
 #
@@ -134,7 +134,7 @@ jobs:
           else
             git commit -m "Set cover sheet status/readiness on merge (design branch intake, PR #${{ github.event.pull_request.number }})
 
-          Automated by .github/workflows/design-branch-intake.yml per DESIGN-HANDOFF-BUNDLE-SPEC.md section 6.2."
+          Automated by .github/workflows/design-branch-intake.yml per DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md section 6.2."
             git push origin HEAD:${{ github.event.pull_request.base.ref }}
           fi
 
@@ -171,7 +171,7 @@ jobs:
               'sections 8-9, one registration record per feature-slice touched by this version ' +
               '(GITHUB-PLATFORM-ADAPTER-SPEC.md section 6.1) -- not automatically one record for the ' +
               'whole drop. Feature-slices with no material change since their last Approved Business ' +
-              'PR need neither a new registration nor a new Business PR (DESIGN-HANDOFF-BUNDLE-SPEC.md ' +
+              'PR need neither a new registration nor a new Business PR (DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md ' +
               'section 6.2).',
             ].join('\n');
 

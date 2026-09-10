@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """
 Design branch intake gate -- for native Claude Design exports landing on the
-persistent `design` branch (not `main`). See specs/DESIGN-HANDOFF-BUNDLE-SPEC.md
+persistent `design` branch (not `main`). See specs/DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md
 section 6.2 and specs/GITHUB-PLATFORM-ADAPTER-SPEC.md section 6.1.
 
 Sibling to, not a replacement for, bundle_gate.py -- that script still governs
 the hand-authored `bundle.md` path against `main` (a bare Figma link, a
-written spec + screenshots -- DESIGN-HANDOFF-BUNDLE-SPEC.md section 6.1).
+written spec + screenshots -- DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md section 6.1).
 This script governs the native, tool-exported path instead: a version folder
 of untouched Claude Design output (README.md, optionally PARITY_RULE.md,
 designs/*.dc.html, support files, _ds/ tokens) plus one small framework-added
@@ -34,7 +34,7 @@ this repository has no separate agent/bot GitHub identity, so the upload
 PR's author and the required Design Reviewer are, today, unavoidably the
 same account. A `listReviews`-based check can therefore never pass. The
 required signal instead is an explicit, exact checkbox line in the PR
-description (DESIGN-HANDOFF-BUNDLE-SPEC.md section 6.2), the same pattern
+description (DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md section 6.2), the same pattern
 bundle_gate.py already uses for the Pre-Registration Checklist -- see
 `REVIEWER_SIGNOFF_RE` below for the exact required text.
 """
@@ -48,7 +48,7 @@ import yaml
 
 # Matches "<platform>/design/v<N>/..." or "<platform>/<app>/design/v<N>/...",
 # i.e. one or two leading segments before the literal "design/v<N>/" anchor --
-# DESIGN-HANDOFF-BUNDLE-SPEC.md section 6.2's folder shape. Deliberately does
+# DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md section 6.2's folder shape. Deliberately does
 # not care what precedes it beyond that, since app is optional.
 VERSION_DIR_RE = re.compile(r"^((?:[^/]+/){1,2}design/v\d+)/")
 
@@ -142,7 +142,7 @@ def check(args):
         problems.append(f"No designs/*.dc.html files found under {version_dir}.")
 
     # Rule 4: every .dc.html path referenced in README.md resolves to a real file.
-    # One-directional deliberately -- see DESIGN-HANDOFF-BUNDLE-SPEC.md section 6.2.
+    # One-directional deliberately -- see DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md section 6.2.
     for ref in DC_HTML_REF_RE.findall(readme_text):
         if not (vdir_path / ref).is_file():
             problems.append(f"README.md references `{ref}`, but that file doesn't exist.")

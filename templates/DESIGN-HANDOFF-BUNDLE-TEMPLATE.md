@@ -1,6 +1,6 @@
 # Design Handoff Bundle Templates
 
-Reusable starting points for the structure defined in [DESIGN-HANDOFF-BUNDLE-SPEC.md](../specs/DESIGN-HANDOFF-BUNDLE-SPEC.md). Designers use these as starting points; the Business Agent and intake process read them directly -- no separate machine schema to validate against.
+Reusable starting points for the structure defined in [DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md](../specs/DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md). Designers use these as starting points; the Business Agent and intake process read them directly -- no separate machine schema to validate against.
 
 Section 6.1 of the spec shows how these scale down for a bare Figma link, a written document with screenshots, or wireframe images. Parts 1-3 below show the fully detailed case; skip whatever a lighter source doesn't need.
 
@@ -110,7 +110,7 @@ This is the narrative companion to `bundle.md` and `screens/*.md` -- the busines
 | Empty Cart (`cart-empty`) | Displayed when the user has no items in their cart | `screens/screen-cart-empty-cart-optimization.md` |
 | Cart with Items (`cart-full`) | Displays cart with one or more items | `screens/screen-cart-full-cart-optimization.md` |
 
-*(If a screen has no `screens/*.md` file yet -- a lightweight reference, per DESIGN-HANDOFF-BUNDLE-SPEC.md section 6.1 -- describe it here in prose instead, and reference any attached screenshot: `![cart with items](assets/images/cart-full.png)`.)*
+*(If a screen has no `screens/*.md` file yet -- a lightweight reference, per DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md section 6.1 -- describe it here in prose instead, and reference any attached screenshot: `![cart with items](assets/images/cart-full.png)`.)*
 
 ### Business Rules
 - Quantity per item stays within a stated minimum and maximum (state the actual bound as a business rule, not an implementation limit)
@@ -267,7 +267,7 @@ designTokensUsed: [color-primary, color-error, typography-heading-2, typography-
 # Pre-Registration Checklist
 
 ## Content Completeness
-- [ ] bundle.md frontmatter has all required fields (DESIGN-HANDOFF-BUNDLE-SPEC.md section 5)
+- [ ] bundle.md frontmatter has all required fields (DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md section 5)
 - [ ] design-spec.md covers every section, and every screen in bundle.md's Manifest is at least named there
 - [ ] Every screen in the Manifest that has structured detail has a corresponding screens/*.md file (a lightweight reference, section 6.1, may have none yet -- that's fine, say so in knownLimitations)
 - [ ] Every state named in a screens/*.md file is complete (Description, Evidence, and either Elements & Interactions or a Diff)
@@ -298,7 +298,7 @@ designTokensUsed: [color-primary, color-error, typography-heading-2, typography-
 
 ## Ready to Register?
 Once the checks above pass:
-1. Set `status` to `Approved` in bundle.md (bundle's own lifecycle -- see DESIGN-HANDOFF-BUNDLE-SPEC.md section 7)
+1. Set `status` to `Approved` in bundle.md (bundle's own lifecycle -- see DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md section 7)
 2. Register the bundle as source material per PRODUCT-SOURCE-MATERIAL-SPEC.md sections 8-9; the intake process assigns `readiness`
 3. Once `readiness` is `Ready` or `Ready with Limitations`, the bundle is available for Design Analysis
 4. Tag the commit: `[platform-slug]/[app-slug (optional)]/design/[feature-slug]/v[version]`
@@ -310,7 +310,7 @@ Once the checks above pass:
 
 **File:** `<platform-slug>/[<app-slug> (optional)]/design/v<N>/_cover-sheet.md`
 
-Only for a genuine Claude Design export uploaded to the persistent `design` branch, per [DESIGN-HANDOFF-BUNDLE-SPEC.md](../specs/DESIGN-HANDOFF-BUNDLE-SPEC.md) section 6.2 -- **not** used for Parts 1-4's hand-authored path against `main`. Sits alongside the untouched native files (`README.md`, optionally `PARITY_RULE.md`, `designs/*.dc.html`, `designs/_ds/`); never edit those.
+Only for a genuine Claude Design export uploaded to the persistent `design` branch, per [DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md](../specs/DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md) section 6.2 -- **not** used for Parts 1-4's hand-authored path against `main`. Sits alongside the untouched native files (`README.md`, optionally `PARITY_RULE.md`, `designs/*.dc.html`, `designs/_ds/`); never edit those.
 
 Only the first five fields below are filled in before opening the PR. `status`, `readiness`, `knownLimitations`, and `screens` are left `null`/empty and are written by `.github/workflows/design-branch-intake.yml` on merge -- do not fill them in by hand.
 
@@ -346,7 +346,7 @@ Before opening the PR into `design`, confirm (the merge gate checks these mechan
 - [ ] **Design Reviewer sign-off (ROLE-004):** I have reviewed this drop and accept it.
 ```
 
-Check the box only once you have actually reviewed the drop, then merge. This replaces a GitHub PR review as the approval signal for this one gate -- discovered 2026-09-04, GitHub never allows a PR's author to formally Approve their own PR, and this repository has no separate agent/bot GitHub identity, so the account opening an upload PR and the required Design Reviewer are, today, the same account. `design_branch_gate.py check` looks for this exact line (see `REVIEWER_SIGNOFF_RE`) -- a paraphrase won't match, and approving *after* merge does not retroactively satisfy it, since the gate only runs at PR-update and merge time. See DESIGN-HANDOFF-BUNDLE-SPEC.md section 6.2.
+Check the box only once you have actually reviewed the drop, then merge. This replaces a GitHub PR review as the approval signal for this one gate -- discovered 2026-09-04, GitHub never allows a PR's author to formally Approve their own PR, and this repository has no separate agent/bot GitHub identity, so the account opening an upload PR and the required Design Reviewer are, today, the same account. `design_branch_gate.py check` looks for this exact line (see `REVIEWER_SIGNOFF_RE`) -- a paraphrase won't match, and approving *after* merge does not retroactively satisfy it, since the gate only runs at PR-update and merge time. See DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md section 6.2.
 
 ## Summary
 
@@ -361,4 +361,4 @@ Check the box only once you have actually reviewed the drop, then merge. This re
 
 See [ARTIFACT-STORAGE-SPEC.md](../specs/ARTIFACT-STORAGE-SPEC.md) section 5 for the hand-authored path's naming convention, and section 10 for the `design` branch's independent shape.
 
-Designers use the templates in Parts 1-3 as starting points for the hand-authored path, filling in only as much as the source material actually supports -- see [DESIGN-HANDOFF-BUNDLE-SPEC.md](../specs/DESIGN-HANDOFF-BUNDLE-SPEC.md) section 6.1. For a genuine Claude Design export, use Part 5 instead and leave the native files untouched.
+Designers use the templates in Parts 1-3 as starting points for the hand-authored path, filling in only as much as the source material actually supports -- see [DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md](../specs/DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md) section 6.1. For a genuine Claude Design export, use Part 5 instead and leave the native files untouched.

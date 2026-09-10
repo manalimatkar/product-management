@@ -8,7 +8,7 @@
 | Source Name | Mapping Report -- Design Handoff v4 |
 | Source Type | Design material |
 | Location | `branch: design`, `path: pdf-workflow/workflow-manager/design/v4/`, `commit: f5de2a0fbdac4033b2a8aecf523d15948c6801f5` -- per ARTIFACT-STORAGE-SPEC.md section 10's pointer format for native Claude Design exports on the `design` branch |
-| Version | `4` (integer, matches the native export's own versioning -- DESIGN-HANDOFF-BUNDLE-SPEC.md section 6.2) |
+| Version | `4` (integer, matches the native export's own versioning -- DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md section 6.2) |
 | Status | Active |
 | Owner | Manali, Producing Designer (`ROLE-005`) |
 | Authority Level | Design Reviewer-accepted per `GATE-002`'s PR-description sign-off (PR #15, merged 2026-09-08) |
@@ -16,13 +16,13 @@
 | Effective At | 2026-09-08 (merge into `design`) |
 | Registered By | Business Agent (this run) |
 | Registered At | 2026-09-08 |
-| Access Notes | Native Claude Design export: `README.md` (prose handoff, 8 screens), `PARITY_RULE.md`, `designs/*.dc.html` (Dashboard, Mapping Report, Settings Dialog, Page Editor, full auth flow), shared `_ds/nocturne-8201375c-.../` token bundle. This registration scopes only to the **Mapping Report** feature-slice of the v4 drop -- the other seven screens are out of scope, registered separately if/when taken up, per DESIGN-HANDOFF-BUNDLE-SPEC.md section 6.2's per-feature-slice rule. |
+| Access Notes | Native Claude Design export: `README.md` (prose handoff, 8 screens), `PARITY_RULE.md`, `designs/*.dc.html` (Dashboard, Mapping Report, Settings Dialog, Page Editor, full auth flow), shared `_ds/nocturne-8201375c-.../` token bundle. This registration scopes only to the **Mapping Report** feature-slice of the v4 drop -- the other seven screens are out of scope, registered separately if/when taken up, per DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md section 6.2's per-feature-slice rule. |
 
 **ID numbering note:** `SRC-001` (checkout dry run) and `SRC-002` (a Mapping Report analysis mistakenly built against the `design` branch's v2 test drop rather than the specified v4) were both removed 2026-09-08 rather than reused -- see CLAUDE.md open items 7/17/18. This registration starts at `SRC-003` deliberately, since `SRC-002` was already referenced in a merged PR and closed Issues; reusing that number for different content would make that history confusing to read later.
 
 ## If This Source Is a Design Handoff Bundle
 
-This source is the native-export shape (DESIGN-HANDOFF-BUNDLE-SPEC.md section 6.2), not the hand-authored `bundle.md` shape -- there is no separate bundle-manifest file to point to beyond the `Location` above. `README.md`'s "### 2. Mapping Report" section (plus the shared "Interactions & behavior," "Known UX issues," "State management," and "Responsive behavior" sections where they describe Mapping Report specifically) is the reviewed narrative; `designs/Mapping Report.dc.html` / `(Light).dc.html` are the visual canvas artboards.
+This source is the native-export shape (DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md section 6.2), not the hand-authored `bundle.md` shape -- there is no separate bundle-manifest file to point to beyond the `Location` above. `README.md`'s "### 2. Mapping Report" section (plus the shared "Interactions & behavior," "Known UX issues," "State management," and "Responsive behavior" sections where they describe Mapping Report specifically) is the reviewed narrative; `designs/Mapping Report.dc.html` / `(Light).dc.html` are the visual canvas artboards.
 
 **Verified against the prior (v2) drop, not assumed identical:** `README.md`'s Mapping Report section is materially the same between v2 and v4, with one real, deliberate correction -- v2's "Interactions & behavior" section still described an old dropdown-based remap pattern and an "optimistic, no confirm dialog" unlink, directly contradicting that same document's own "Screens" and "Known UX issues" sections. v4's "Interactions & behavior" section fixes both: "there is no remap-via-dropdown; clicking unlink opens a confirm dialog," plus a new clarifying line, "all are optimistic, no confirmation except unlink." This is why v4, not v2, is the correct source for this analysis.
 

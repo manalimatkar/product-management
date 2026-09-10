@@ -85,7 +85,7 @@ The Business Agent consumes the committed bundle. It does not regenerate or rewr
 
 A Story must reference the applicable design handoff bundle and version.
 
-**Two upload paths (specs/DESIGN-HANDOFF-BUNDLE-SPEC.md section 6.2, added 2026-09-03):** a genuine Claude Design export lands untouched on a persistent `design` branch (`<platform-slug>/[<app-slug>/]design/v<N>/`), not `main` -- its merge opens a tracked GitHub Issue that is the real Business Agent trigger. A hand-authored bundle (a bare Figma link, a written spec + screenshots) still goes directly against `main`'s existing `design/` convention, unchanged.
+**Two upload paths (specs/DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md section 6.2, added 2026-09-03):** a genuine Claude Design export lands untouched on a persistent `design` branch (`<platform-slug>/[<app-slug>/]design/v<N>/`), not `main` -- its merge opens a tracked GitHub Issue that is the real Business Agent trigger. A hand-authored bundle (a bare Figma link, a written spec + screenshots) still goes directly against `main`'s existing `design/` convention, unchanged.
 
 ## Agents and Responsibilities
 
@@ -166,7 +166,7 @@ Organized 2026-09-01 (see ARTIFACT-STORAGE-SPEC.md for how generated instances -
 ### specs/ -- the rules each artifact type and process must follow
 
 - [BUSINESS-REPOSITORY-WORKFLOW.md](specs/BUSINESS-REPOSITORY-WORKFLOW.md) - business-stage workflow and Business Owner gate
-- [DESIGN-HANDOFF-BUNDLE-SPEC.md](specs/DESIGN-HANDOFF-BUNDLE-SPEC.md) - Design Handoff Bundle schema, manifest, and design/implementation boundary
+- [DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md](specs/DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md) - Design Handoff Bundle schema, manifest, and design/implementation boundary
 - [DESIGN-ANALYSIS-SPEC.md](specs/DESIGN-ANALYSIS-SPEC.md) - Design Analysis structure, evidence, and Business Agent inference rules
 - [DESIGN-ANALYSIS-REVIEW-SPEC.md](specs/DESIGN-ANALYSIS-REVIEW-SPEC.md) - analysis intake, validation, review, approval, and change process
 - [PRODUCT-SOURCE-MATERIAL-SPEC.md](specs/PRODUCT-SOURCE-MATERIAL-SPEC.md) - source registration, authority, versioning, readiness, and change handling
