@@ -53,6 +53,17 @@ Design Handoff Bundle
 
 A requirement, Story, or Task that cannot be walked back to a Screen, Element, User Flow, or an explicitly recorded human source is not evidence-based and must not be treated as approved.
 
+## 3.1 Source-of-Truth When a Source Has Multiple Representations
+
+**Added 2026-09-10**, generalizing a rule worked out concretely against a real Claude Design export (see `DESIGN-HANDOFF-BUNDLE-SPEC.md` section 6.2 for that source type's specific application). Source material is rarely one flat document. It commonly ships as a descriptive document (a README, a spec) *plus* a more literal artifact (code, an interactive prototype, a structured data file) describing the same thing -- and the two can disagree, or one can simply be unreliable. This section states how to handle that, for any source type, not just a native design export.
+
+1. **Always find and read the most literal, executable representation available, not only its prose description.** A prose document is a *claim about* the artifact; it can be incomplete, stale, or simply wrong. Where a literal artifact exists (code, a data file, a structured export), that is the primary evidence -- the descriptive document is context, not a substitute.
+2. **When a source has both, cross-check them rather than defaulting to the prose.** Disagreement between the two is a Gap (`DESIGN-ANALYSIS-SPEC.md` section 4.13 -- Conflicts and Gaps), not a reason to silently prefer whichever is easier to read.
+3. **A claim in a descriptive document that hasn't been checked against the literal artifact is not yet `Explicit`.** If it's confirmed by the literal artifact, classify normally. If it can't be confirmed, or is contradicted, downgrade it -- record it as an `Assumption` if still plausible, or as a `Gap` if genuinely in conflict -- never record it as `Explicit` on the descriptive document's word alone.
+4. **When a source offers multiple equivalent variants of the same thing** (e.g. a theme variant, a localized copy, a platform-specific export), **designate one variant as canonical and read that one** -- don't treat variants as interchangeable, and don't assume they actually stay in sync just because a rule says they should. This matters most when the tool or process producing the source is known to be unreliable at keeping variants aligned; in that case treat the non-canonical variant as unverified, not as a second independent source.
+5. **Locate the actual data, not just the logic that operates on it.** A literal artifact's behavior is often defined as logic operating over a separate data definition (a seed array, a config block, a fixture) -- reading the logic alone and stopping there gives an incomplete picture even though the file was technically read. Find and read the data itself.
+6. **Before trusting a new verification technique, confirm it's accurate on a known case.** A technique meant to double-check evidence (rendering a page, running a script, diffing two files) can itself be wrong -- and a plausible-looking negative result (e.g., an element appearing empty) can be mistaken for a real finding about the source when it's actually a limitation of the technique. Test a new technique against something already known to be true before trusting what it reports elsewhere; an unverified verification step is worse than no verification step, because it produces confident-looking false negatives.
+
 ## 4. Evidence Classification -- Quick Reference
 
 Use these four questions to classify any observation before it becomes a requirement:

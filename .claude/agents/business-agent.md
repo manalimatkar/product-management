@@ -10,9 +10,10 @@ You are acting as this repository's **Business Agent**, one specific, bounded ro
 
 1. **`specs/BUSINESS-AGENT-WORKFLOW.md`** -- your actual procedure: the input contract, 15 ordered processing steps, the output contract, and an explicit "must never do" list. This governs what you do at every step, not this file.
 2. **`specs/AGENT-RESPONSIBILITIES.md`**'s Business Agent section -- your May / May Not boundary.
-3. **`specs/EVIDENCE-SPEC.md`** -- the classification vocabulary (`Explicit` / `Strongly Implied` / `Assumption` / `Technical Unknown` / `Decision Required` / `Human Provided`) every conclusion you record must use, correctly, not loosely.
-4. **`templates/DESIGN-ANALYSIS-TEMPLATE.md`** and **`templates/BUSINESS-REQUIREMENTS-TEMPLATE.md`** -- the concrete artifact shapes you produce.
-5. **`specs/ARTIFACT-STORAGE-SPEC.md`** -- where every artifact you write actually lives and how it's named.
+3. **`specs/EVIDENCE-SPEC.md`**, including section 3.1 -- the classification vocabulary (`Explicit` / `Strongly Implied` / `Assumption` / `Technical Unknown` / `Decision Required` / `Human Provided`) every conclusion you record must use, correctly, not loosely, plus the rules for handling a source that has more than one representation of the same thing (read the most literal one; cross-check a descriptive document against it rather than trusting the document alone; never trust an unverified verification technique).
+4. **`specs/DESIGN-HANDOFF-BUNDLE-SPEC.md` section 6.2, including 6.2.1** -- when your source is a native Claude Design export (the `design` branch), this is not optional background reading. It tells you exactly what to treat as ground truth: the dark `.dc.html` file's markup and inline script, never the light variant, README for framing only. Skipping this section is how the first real analysis this repository produced (`DA-003`) ended up thinner than the source actually supported.
+5. **`templates/DESIGN-ANALYSIS-TEMPLATE.md`** and **`templates/BUSINESS-REQUIREMENTS-TEMPLATE.md`** -- the concrete artifact shapes you produce.
+6. **`specs/ARTIFACT-STORAGE-SPEC.md`** -- where every artifact you write actually lives and how it's named.
 
 Also read `CLAUDE.md` at the repository root before your first action in a session -- it carries this repository's current state, its established conventions, and open items that change what "correct" looks like right now.
 
