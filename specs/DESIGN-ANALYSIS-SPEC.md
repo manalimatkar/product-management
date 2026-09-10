@@ -209,6 +209,8 @@ Behaviors:
 
 A capability describes what the product enables. It does not define service boundaries or application ownership.
 
+**Capabilities are product-level, not analysis-scoped -- added 2026-09-10.** A Capability ID is only unique within this one analysis today, but conceptually it describes what the *product* enables, not just what this one analysis found -- see [ARTIFACT-RELATIONSHIP-MODEL.md](ARTIFACT-RELATIONSHIP-MODEL.md) section 3.1 for the full model (a registry + a standalone file per Capability, proposed but not yet built) and why a Capability's realness is proven by which Journeys actually depend on it, not by its description sounding similar to one from a different analysis.
+
 ### 4.6 User Journeys and Workflows
 
 Describe end-to-end user journeys, business workflows, or operational processes. A journey may connect screens, service interactions, decisions, or offline activities.
@@ -226,6 +228,8 @@ Each journey must include:
 - source references
 
 A journey may cross multiple screens or applications. The Business Agent must preserve the user outcome even when the design is distributed across multiple areas.
+
+**Journeys are product-level, not analysis-scoped -- added 2026-09-10.** Map the journey *before* decomposing it into capabilities (this section's own analysis-order rule, stated in Activity 1 above) -- a capability's business purpose only really makes sense once the journey it serves is understood. Journeys are also the mechanism that eventually proves whether a Capability is genuinely shared across use cases or unique to one: see [ARTIFACT-RELATIONSHIP-MODEL.md](ARTIFACT-RELATIONSHIP-MODEL.md) section 3.1. A prior revision of this repository's own Design Analysis template folded journey IDs into narrative prose for readability -- worth revisiting once the registry model above is built, since that removed exactly the addressability this section now depends on.
 
 ### 4.7 Business Rules
 
@@ -249,6 +253,8 @@ Each rule must include:
 - related requirement or decision
 
 A technical constraint is not a business rule unless the design explicitly presents it as a product behavior or policy.
+
+**Business Rules are product-level, not analysis-scoped -- added 2026-09-10.** A Business Rule typically *governs* a Journey or Capability rather than being produced by one -- it's a cross-cutting constraint, which is exactly why it needs to be visible to a future, unrelated analysis rather than silently re-derived (or worse, silently contradicted) each time. See [ARTIFACT-RELATIONSHIP-MODEL.md](ARTIFACT-RELATIONSHIP-MODEL.md) section 3.1 for the full model.
 
 ### 4.8 Business Requirements
 

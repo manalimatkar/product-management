@@ -4,6 +4,8 @@
 
 **Format revised 2026-09-08 -- Editorial, no content change.** Reshaped to [DESIGN-ANALYSIS-TEMPLATE.md](../../../../templates/DESIGN-ANALYSIS-TEMPLATE.md)'s narrative format per direct feedback that the numbered-section version was hard to navigate for a new Business Analyst or Designer. Every requirement, capability, business rule, gap, decision, assumption, and technical unknown from the original numbered-section version is preserved with the same evidence and classification -- none dropped, none reworded in substance. The lower-level UI inventory (screens, navigation, actions, states, journeys, alternate paths, domain concepts) is preserved as narrative detail rather than as separate ID catalogs, since nothing downstream ever traced to those IDs directly -- only to Requirements, Capabilities, and Business Rules.
 
+**Reading a `CAP-` or `BRULE-` ID below?** Those describe the Mapping Report *product*, not just this one document -- see [ARTIFACT-RELATIONSHIP-MODEL.md](../../../../specs/ARTIFACT-RELATIONSHIP-MODEL.md) section 3.1 (added 2026-09-10) for how Capabilities and Business Rules are meant to relate across every Design Analysis this repository produces, not only this one. That cross-analysis registry isn't built yet -- today these IDs are still scoped to this file alone -- but the intended model is documented there. Journeys were folded into this document's narrative prose during the reformat above rather than kept as their own addressable IDs; section 3.1 notes that choice is worth revisiting once the registry model exists, since it removed exactly the addressability that model depends on.
+
 ---
 
 | | |

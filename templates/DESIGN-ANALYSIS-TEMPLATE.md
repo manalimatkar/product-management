@@ -6,6 +6,8 @@
 
 **The one rule that makes links survive a rewrite:** every linkable item (`BR-`, `CAP-`, `OBS-`, `GAP-`, `DEC-`, `ASM-`, `TECH-`, `BRULE-`) gets its own heading containing **only the ID** -- `##### BR-003`, never `##### BR-003: Some Descriptive Title`. GitHub's auto-generated anchor is built from the whole heading text, so an ID-only heading keeps its anchor (`#br-003`) permanently, even after the bold title on the next line gets reworded later. Put the descriptive title as **bold text on the line right after the heading**, not in the heading itself.
 
+**Reading a `CAP-`, `JRN-`, or `BRULE-` ID in a generated artifact?** Those three describe the *product*, not just this one analysis -- unlike a `BR-`/`OBS-`/`GAP-`/`DEC-`/`ASM-`/`TECH-` ID, which is scoped to this document alone. See [ARTIFACT-RELATIONSHIP-MODEL.md](../specs/ARTIFACT-RELATIONSHIP-MODEL.md) section 3.1 for how they're meant to relate across every Design Analysis this repository produces, not only this one -- including why a Capability's realness is proven by which Journeys actually depend on it, not by its description alone.
+
 ---
 
 | | |
