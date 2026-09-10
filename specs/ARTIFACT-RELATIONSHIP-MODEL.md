@@ -27,6 +27,9 @@ Versioning mechanics referenced here are defined in [REQUIREMENTS-VERSIONING-SPE
 | Source Material | `SRC-<number>` | PRODUCT-SOURCE-MATERIAL-SPEC.md §4 | Source owner | Registry entry |
 | Design Handoff Bundle | `{platformSlug}/[{appSlug}/]{featureSlug}@v{MAJOR.MINOR}` | DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md §5 | Designer | `bundle.md` + files |
 | Design Analysis | `ANALYSIS-<number>` (feature-scoped) | DESIGN-ANALYSIS-SPEC.md §3 | Business Agent | Markdown, `analysis/<feature>/` |
+| Journey *(proposed, not yet built)* | `JRN-<number>`, global | DESIGN-ANALYSIS-SPEC.md §4.6; see §3.1 below | Business Agent | Today: subsection of its originating Design Analysis. Proposed: registry entry + own file. |
+| Capability *(proposed, not yet built)* | `CAP-<number>`, global | DESIGN-ANALYSIS-SPEC.md §4.5; see §3.1 below | Business Agent | Today: subsection of its originating Design Analysis. Proposed: registry entry + own file. |
+| Business Rule *(proposed, not yet built)* | `BRULE-<number>`, global | DESIGN-ANALYSIS-SPEC.md §4.7; see §3.1 below | Business Agent | Today: subsection of its originating Design Analysis. Proposed: registry entry + own file. |
 | Business Requirements Set | `REQSET-<number>`, requirements `BR-<number>` | REQUIREMENTS-VERSIONING-SPEC.md §3; BUSINESS-REQUIREMENTS-SPEC.md §4 | Business Agent | Markdown |
 | Epic | `EPIC-<number>` | BUSINESS-REQUIREMENTS-SPEC.md §12 | Business Agent | Markdown or Issue |
 | Story | `STORY-<number>` | BUSINESS-PR-SPEC.md §7 | Business Agent | Markdown or Issue |
@@ -37,6 +40,83 @@ Versioning mechanics referenced here are defined in [REQUIREMENTS-VERSIONING-SPE
 | Implementation PR | *(engineering repository's own numbering)* | TECHNICAL-HANDOFF.md | Developer Agent | Engineering repository PR |
 
 `Design Analysis` has no canonical ID format defined elsewhere in the repository; `ANALYSIS-<number>` is proposed here for consistency with every other artifact's format and should be adopted or replaced explicitly, not left implicit. `Technical Plan` (optional -- most Tasks never produce one) follows the same pattern, defined directly in TECHNICAL-AGENT-WORKFLOW.md section 4.1 rather than proposed here first.
+
+## 3.1 Product-Level vs. Analysis-Scoped Sub-Entities
+
+**Added 2026-09-10.** A Design Analysis (section 4.5-4.7 of DESIGN-ANALYSIS-SPEC.md) generates several kinds of sub-entity -- Journeys, Capabilities, Business Rules, Observations, Gaps, Decisions, Assumptions, Technical Unknowns. None of these appear in the Artifact Inventory above, and that's been a real gap, surfaced directly: as this repository produces more than one Design Analysis, some of these sub-entities need to be findable and citable *across* analyses, and today none of them can be -- every ID (`CAP-001`, `JRN-001`, `BRULE-001`...) is only unique inside the one file that defines it.
+
+Not every sub-entity has the same problem. The dividing line is whether a future, unrelated analysis could legitimately need to point at "the same one":
+
+| Entity | Scope | Why |
+| --- | --- | --- |
+| **Journey** (`JRN-`) | Product-level | An end-to-end user goal. The same journey can span features and get touched by more than one analysis over time. |
+| **Capability** (`CAP-`) | Product-level | What the product enables. Proven real by which Journey(s) actually depend on it -- not by a similar-sounding description. |
+| **Business Rule** (`BRULE-`) | Product-level | A cross-cutting constraint that *governs* Journeys and Capabilities, rather than being produced by any single one. |
+| Observation (`OBS-`) | Analysis-scoped | A specific fact read from a specific source, at a specific reading. Not reusable -- a different source has different observations. |
+| Gap (`GAP-`) | Analysis-scoped | A conflict or missing piece found in *that* source. |
+| Decision (`DEC-`) | Analysis-scoped | A question that analysis raised. Once resolved, it's history. |
+| Assumption (`ASM-`) | Analysis-scoped | A provisional interpretation made to keep that one analysis moving. |
+| Technical Unknown (`TECH-`) | Analysis-scoped | A known business behavior with an undefined mechanism -- handed to the Technical Agent, not reused. |
+
+**Journey, Capability, and Business Rule are proposed here as three new first-class artifact types**, each needing its own global ID (assigned once, never re-numbered per analysis), its own registry, and its own file -- the same pattern [SOURCE-REGISTRY.md](../SOURCE-REGISTRY.md) already proves for Source Material: an index row here, the real detail in that entity's own file, so anything else can cite it by a stable ID without re-reading the analysis that first defined it. **Not yet built** -- see section 9's open item. Today, `CAP-`/`JRN-`/`BRULE-` IDs are still analysis-scoped in practice, exactly like the five entities below them in the table; this section documents the intended model so it can be built deliberately rather than retrofitted after more Design Analyses accumulate and renumbering becomes costly.
+
+How a fact flows through these, once built:
+
+```text
+Source
+  |
+  | read during analysis
+  v
+Observation (this analysis, this reading)
+  |
+  | informs
+  v
+                                        +----------------------------+
+                                        |        Journey  (JRN-)     |
+                                        |  end-to-end user goal,     |
+                                        |  step by step               |
+                                        +----------------------------+
+                                              |               ^
+                                              | needs         | constrains
+                                              v               |
+                                        +----------------------------+
+                                        |      Capability (CAP-)     |  <---+
+                                        |  what the product           |      |
+                                        |  enables                    |      |
+                                        +----------------------------+      |
+                                              |                             |
+Gap (GAP-) --------\                          | "used by" (a real link,     |
+Decision (DEC-) -----> feed the Observation    |  not a name guess)          |
+Assumption (ASM-) --/    reading above          |                             |
+                                               v                             |
+                                        +----------------------------+       |
+                                        |   Business Rule (BRULE-)   |------+
+                                        | cross-cutting constraint    |
+                                        | (governs, isn't produced    |
+                                        |  by any one Journey)        |
+                                        +----------------------------+
+
+Technical Unknown (TECH-)
+  |  handed off, not resolved here
+  v
+Technical Agent stage
+                                        +----------------------------+
+                                        |    Business Requirement    |
+                                        |  (BR-, already modeled --   |
+                                        |   REQSET / Epic / Story)    |
+                                        +----------------------------+
+```
+
+Business Rules sit beside this chain, not inside it -- attached to whichever Journey/Capability they constrain, the way `BRULE-005` in `DA-003` constrains the Table/Card capability's shared state without being "produced by" any one journey.
+
+What actually makes this traceable, once built (not just diagrammed):
+
+1. Global IDs for the three product-level entities, assigned once from a central registry.
+2. A registry + a standalone file per entity, mirroring `SOURCE-REGISTRY.md`.
+3. Two-way links stated explicitly, not implied -- a Capability's file names which Journeys use it; a Journey's file names which Capabilities it needs. Same "used by" back-link discipline already built into `DESIGN-ANALYSIS-TEMPLATE.md` for Observations, applied at the product level.
+4. A "check the registry before minting" step added to `DESIGN-ANALYSIS-SPEC.md` section 4 (Business Agent Activity 1) -- cite an existing Journey/Capability/Business Rule when the analysis is genuinely describing the same one; only create a new entry when it's actually new.
+5. A cross-repo verification check, not just a per-file one -- `.claude/skills/verify-design-analysis` only checks *inside one document*; confirming every `CAP-`/`JRN-`/`BRULE-` cited anywhere actually exists in its registry needs a sibling tool.
+6. A versioning rule for when a product-level entity's own definition changes -- reusing `REQUIREMENTS-VERSIONING-SPEC.md`'s existing Major/Editorial classification rather than inventing a fourth scheme.
 
 ## 4. Relationship Table
 
@@ -124,3 +204,4 @@ Three relationships had no explicit rule anywhere in the repository. Each is res
 - Should an Epic be allowed to close before every one of its phased Business PRs is merged, or must all PRs for an Epic merge before the Epic itself is considered delivered?
 - Does a Spike ever produce its own Implementation PR (e.g., a throwaway prototype), or is it always investigation-only with zero code output, as CANONICAL-TASK-SPEC.md currently implies?
 - Should this document's relationship table be the literal schema validated by tooling, or remain a human-readable reference with validation defined separately?
+- **Added 2026-09-10, from section 3.1**: the Journey/Capability/Business Rule registry model is documented but not yet built. Open questions for whenever it is: should the registries live at root like `SOURCE-REGISTRY.md`, or nested per-platform given a Capability is more likely to be platform-scoped than truly cross-platform? Should `verify-design-analysis` grow a `--check-registries` mode, or should this be a genuinely separate tool? Does "check the registry before minting a new ID" become a hard gate (Business Agent literally cannot proceed without checking) or a documented discipline the agent is instructed to follow?

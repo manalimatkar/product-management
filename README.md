@@ -178,7 +178,7 @@ Organized 2026-09-01 (see ARTIFACT-STORAGE-SPEC.md for how generated instances -
 - [BUSINESS-PR-SPEC.md](specs/BUSINESS-PR-SPEC.md) - Business PR minimum content, the controlled Design-to-Story transformation, and the required Stage Trace
 - [EVIDENCE-SPEC.md](specs/EVIDENCE-SPEC.md) - the evidence rule: classification quick reference and the required traceability chain from source to Task
 - [REQUIREMENTS-VERSIONING-SPEC.md](specs/REQUIREMENTS-VERSIONING-SPEC.md) - requirement identity, versioning, approval validity, and change impact
-- [ARTIFACT-RELATIONSHIP-MODEL.md](specs/ARTIFACT-RELATIONSHIP-MODEL.md) - the structural data model: artifact IDs, cardinality between every artifact type, and versioning propagation
+- [ARTIFACT-RELATIONSHIP-MODEL.md](specs/ARTIFACT-RELATIONSHIP-MODEL.md) - the structural data model: artifact IDs, cardinality between every artifact type, and versioning propagation. Section 3.1 covers how Journeys, Capabilities, and Business Rules -- reading a `CAP-`/`JRN-`/`BRULE-` ID in any generated Design Analysis starts here.
 - [HANDOFF-SEQUENCE.md](specs/HANDOFF-SEQUENCE.md) - the same pipeline as a PlantUML sequence diagram: who does what, in order, with the governing rule noted at each step
 - [FRAMEWORK-CONFIGURATION-SPEC.md](specs/FRAMEWORK-CONFIGURATION-SPEC.md) - configurable sources, artifacts, roles, gates, platforms, and delivery targets
 - [TECHNICAL-HANDOFF.md](specs/TECHNICAL-HANDOFF.md) - technical analysis, Task readiness, and engineering boundary
