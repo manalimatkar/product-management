@@ -202,6 +202,7 @@ Added 2026-09-09, closing the gap between describing an agent (this document, AG
 
 - [.claude/agents/business-agent.md](.claude/agents/business-agent.md) - a real Claude Code subagent definition for `ROLE-006`: declared tool access, and instructions that point at BUSINESS-AGENT-WORKFLOW.md, AGENT-RESPONSIBILITIES.md, EVIDENCE-SPEC.md, and the relevant templates, plus the hard constraints restated for safety.
 - [.claude/skills/verify-design-analysis/SKILL.md](.claude/skills/verify-design-analysis/SKILL.md) - checks a Design Analysis's internal traceability (every ID-only heading unique, every link resolves, every evidence entry has an inbound citation), backed by `.github/scripts/verify_design_analysis.py`. Run after drafting or revising any Design Analysis, before opening or updating its review PR.
+- [.claude/skills/run-gate-checks/SKILL.md](.claude/skills/run-gate-checks/SKILL.md) - runs the right merge gate (`design_branch_gate`, `bundle_gate`, or `business_pr_gate`) against a real PR or a local diff, backed by `.github/scripts/run_gate_checks.py`. Run before asking for a PR to be opened whenever the change touches a native design export, a hand-authored bundle, or a Business PR.
 
 ## Current Status
 
