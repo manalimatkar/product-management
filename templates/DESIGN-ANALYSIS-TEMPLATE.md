@@ -56,8 +56,23 @@ Evidence: [OBS-001](#obs-001). `<Explicit / Strongly Implied / Assumption / Huma
 
 `<Only include this section if the capabilities genuinely need their own entry point distinct from the feature-area narrative above -- e.g. a capability spanning multiple feature areas, or one a Story will need to reference directly. Most features won't need this section at all; the feature-area headings above already are the capabilities, just named for a human instead of numbered.>`
 
+**Group by the Journey that proves each Capability is real -- never a flat ID-ordered list.** A Capability's realness comes from the Journey that needs it (`ARTIFACT-RELATIONSHIP-MODEL.md` section 3.1) -- so the section that lists Capabilities should show that relationship, not hide it behind a "used by" line a reader has to go looking for. One `###` subheading per Journey, its Capabilities underneath; a closing subsection for anything identified but not yet tied to a real Journey, stated honestly, not smoothed over.
+
+### Serving Journey `<JRN-001>` -- `<journey name>`
+
+`<One sentence: what this journey needs and why these capabilities serve it.>`
+
 ##### CAP-001
 **`<name>`.** `<business purpose, one sentence>`. Evidence: [OBS-002](#obs-002).
+
+<!-- Duplicate the "### Serving Journey ..." subheading for every Journey that has Capabilities, with its own Capabilities nested under it. -->
+
+### Not yet tied to a Journey
+
+`<Capabilities identified from the source, but no recorded Journey walks through them end to end yet. A real, honest gap -- not hidden, not force-fit into a Journey that doesn't actually need it.>`
+
+##### CAP-00X
+**`<name>`.** `<business purpose, one sentence>`. Evidence: [OBS-00X](#obs-00x).
 
 ## Open Decisions
 

@@ -344,31 +344,43 @@ Only two Technical Unknowns remain ([TECH-001](#tech-001), [TECH-002](#tech-002)
 
 ## Capabilities
 
-*Each capability spans one or more of the feature areas above; listed here as a stable entry point for the Business Requirements stage, which will need to reference these directly when grouping Stories.*
+*Grouped by the Journey that actually needs them -- a capability's real purpose only makes sense next to the goal it serves, per `ARTIFACT-RELATIONSHIP-MODEL.md` section 3.1. Listed here as a stable entry point for the Business Requirements stage, which will need to reference these directly when grouping Stories.*
+
+### Serving [JRN-001](#jrn-001) -- Review and correct a low-confidence field mapping
+
+A reviewer narrows down to what needs fixing, then corrects it in place -- these two capabilities are the whole journey, back to back.
+
+##### CAP-002
+**Filter and Search Mappings.** Let the reviewer narrow a potentially large mapping down to what needs checking. Evidence: [OBS-002](#obs-002), [OBS-013](#obs-013). *(↩ used by [BR-004](#br-004))* Registry: [CAPABILITY-REGISTRY.md](../../../../registries/CAPABILITY-REGISTRY.md#cap-002) / [full record](../../capabilities/capability-filter-and-search-mappings-CAP-002.md).
+
+##### CAP-004
+**Edit a Mapped Field's Details.** Let the reviewer correct what the extraction got wrong, with controls appropriate to what kind of element it is. Evidence: [OBS-005](#obs-005), [OBS-008](#obs-008), [OBS-009](#obs-009), [OBS-010](#obs-010). *(↩ used by [BR-005](#br-005), [BR-006](#br-006), [BR-007](#br-007), [BR-014](#br-014))* Registry: [CAPABILITY-REGISTRY.md](../../../../registries/CAPABILITY-REGISTRY.md#cap-004) / [full record](../../capabilities/capability-edit-mapped-field-details-CAP-004.md).
+
+### Serving [JRN-002](#jrn-002) -- Remove an incorrectly extracted field
+
+##### CAP-005
+**Unlink an Incorrect Mapping.** Let the reviewer remove a wrong mapping while understanding its cost. Evidence: [OBS-009](#obs-009), [OBS-011](#obs-011). *(↩ used by [BR-008](#br-008))* Registry: [CAPABILITY-REGISTRY.md](../../../../registries/CAPABILITY-REGISTRY.md#cap-005) / [full record](../../capabilities/capability-unlink-incorrect-mapping-CAP-005.md).
+
+### Serving [JRN-003](#jrn-003) -- Add a section the extraction missed
+
+##### CAP-006
+**Manually Add Structure.** Let the reviewer fill in whatever the extraction missed, and let a new workflow begin from the same structure editor regardless of creation path. Evidence: [OBS-012](#obs-012), [OBS-014](#obs-014), [OBS-015](#obs-015), [OBS-016](#obs-016), [OBS-021](#obs-021), [OBS-022](#obs-022). *(↩ used by [BR-009](#br-009), [BR-010](#br-010), [BR-011](#br-011), [BR-016](#br-016))* Registry: [CAPABILITY-REGISTRY.md](../../../../registries/CAPABILITY-REGISTRY.md#cap-006) / [full record](../../capabilities/capability-manually-add-structure-CAP-006.md).
+
+### Not yet tied to a Journey
+
+Identified as real capabilities from the source, but none of `DA-003`'s three recorded journeys happens to walk through them end to end -- an honest gap this document surfaces rather than hides, not something to force-fit into a journey that doesn't actually need it. Worth a journey each if this feature-slice is revisited.
 
 ##### CAP-001
 **Review Extraction Confidence and Structure.** Let the reviewer gauge how much attention a workflow's mapping needs before working through it in detail. Evidence: [OBS-001](#obs-001), [OBS-006](#obs-006), [OBS-007](#obs-007). *(↩ used by [BR-001](#br-001), [BR-002](#br-002))* Registry: [CAPABILITY-REGISTRY.md](../../../../registries/CAPABILITY-REGISTRY.md#cap-001) / [full record](../../capabilities/capability-review-extraction-confidence-CAP-001.md).
 
-##### CAP-002
-**Filter and Search Mappings.** Let the reviewer narrow a potentially large mapping down to what needs checking. Evidence: [OBS-002](#obs-002), [OBS-013](#obs-013). *(↩ used by [BR-004](#br-004))* Registry: [CAPABILITY-REGISTRY.md](../../../../registries/CAPABILITY-REGISTRY.md#cap-002) / [full record](../../capabilities/capability-filter-and-search-mappings-CAP-002.md). Used by [JRN-001](#jrn-001).
-
 ##### CAP-003
-**Switch Between Table and Card Views.** Let the reviewer choose a layout without losing filter or edit state -- Table view only is built this phase. Evidence: [OBS-003](#obs-003). *(↩ used by [BR-003](#br-003))* Registry: [CAPABILITY-REGISTRY.md](../../../../registries/CAPABILITY-REGISTRY.md#cap-003) / [full record](../../capabilities/capability-switch-table-card-views-CAP-003.md). No Journey uses it yet -- Card view isn't built this phase, so no journey exercises a toggle.
-
-##### CAP-004
-**Edit a Mapped Field's Details.** Let the reviewer correct what the extraction got wrong, with controls appropriate to what kind of element it is. Evidence: [OBS-005](#obs-005), [OBS-008](#obs-008), [OBS-009](#obs-009), [OBS-010](#obs-010). *(↩ used by [BR-005](#br-005), [BR-006](#br-006), [BR-007](#br-007), [BR-014](#br-014))* Registry: [CAPABILITY-REGISTRY.md](../../../../registries/CAPABILITY-REGISTRY.md#cap-004) / [full record](../../capabilities/capability-edit-mapped-field-details-CAP-004.md). Used by [JRN-001](#jrn-001).
-
-##### CAP-005
-**Unlink an Incorrect Mapping.** Let the reviewer remove a wrong mapping while understanding its cost. Evidence: [OBS-009](#obs-009), [OBS-011](#obs-011). *(↩ used by [BR-008](#br-008))* Registry: [CAPABILITY-REGISTRY.md](../../../../registries/CAPABILITY-REGISTRY.md#cap-005) / [full record](../../capabilities/capability-unlink-incorrect-mapping-CAP-005.md). Used by [JRN-002](#jrn-002).
-
-##### CAP-006
-**Manually Add Structure.** Let the reviewer fill in whatever the extraction missed, and let a new workflow begin from the same structure editor regardless of creation path. Evidence: [OBS-012](#obs-012), [OBS-014](#obs-014), [OBS-015](#obs-015), [OBS-016](#obs-016), [OBS-021](#obs-021), [OBS-022](#obs-022). *(↩ used by [BR-009](#br-009), [BR-010](#br-010), [BR-011](#br-011), [BR-016](#br-016))* Registry: [CAPABILITY-REGISTRY.md](../../../../registries/CAPABILITY-REGISTRY.md#cap-006) / [full record](../../capabilities/capability-manually-add-structure-CAP-006.md). Used by [JRN-003](#jrn-003).
+**Switch Between Table and Card Views.** Let the reviewer choose a layout without losing filter or edit state -- Table view only is built this phase. Evidence: [OBS-003](#obs-003). *(↩ used by [BR-003](#br-003))* Registry: [CAPABILITY-REGISTRY.md](../../../../registries/CAPABILITY-REGISTRY.md#cap-003) / [full record](../../capabilities/capability-switch-table-card-views-CAP-003.md). Card view isn't built this phase, so no journey exercises a view toggle.
 
 ##### CAP-007
-**Remove Empty Structure.** Let the reviewer clean up structure that's no longer needed, without risking accidental data loss. Evidence: [OBS-012](#obs-012), [OBS-017](#obs-017). *(↩ used by [BR-012](#br-012))* Registry: [CAPABILITY-REGISTRY.md](../../../../registries/CAPABILITY-REGISTRY.md#cap-007) / [full record](../../capabilities/capability-remove-empty-structure-CAP-007.md). No Journey uses it yet -- none of `JRN-001`-`003` walks through a delete path; worth one if this feature-slice is revisited.
+**Remove Empty Structure.** Let the reviewer clean up structure that's no longer needed, without risking accidental data loss. Evidence: [OBS-012](#obs-012), [OBS-017](#obs-017). *(↩ used by [BR-012](#br-012))* Registry: [CAPABILITY-REGISTRY.md](../../../../registries/CAPABILITY-REGISTRY.md#cap-007) / [full record](../../capabilities/capability-remove-empty-structure-CAP-007.md).
 
 ##### CAP-008
-**Reorder Structure.** Let the reviewer fix the order pages, sections, or fields appear in. Evidence: [OBS-012](#obs-012), [OBS-018](#obs-018). *(↩ used by [BR-013](#br-013))* Registry: [CAPABILITY-REGISTRY.md](../../../../registries/CAPABILITY-REGISTRY.md#cap-008) / [full record](../../capabilities/capability-reorder-structure-CAP-008.md). No Journey uses it yet -- none of `JRN-001`-`003` walks through a reorder path; worth one if this feature-slice is revisited.
+**Reorder Structure.** Let the reviewer fix the order pages, sections, or fields appear in. Evidence: [OBS-012](#obs-012), [OBS-018](#obs-018). *(↩ used by [BR-013](#br-013))* Registry: [CAPABILITY-REGISTRY.md](../../../../registries/CAPABILITY-REGISTRY.md#cap-008) / [full record](../../capabilities/capability-reorder-structure-CAP-008.md).
 
 ## Evidence and Traceability
 
