@@ -7,10 +7,17 @@ filenames -- so every existing internal markdown link keeps resolving
 exactly as it does on GitHub. Not a rewrite: source files are canonical,
 this staging copy is disposable and gitignored.
 
+Also generates the Journey/Capability/Business Rule relationship-graph
+page (generate_relationship_graph.py) straight into the staged copy --
+that page is computed from the registries at build time, never authored,
+so it isn't one of the real content dirs copied below.
+
 Usage: python .github/scripts/build_docs_site.py
 """
 
 import shutil
+import subprocess
+import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -34,6 +41,15 @@ def main() -> None:
         src = REPO_ROOT / name
         if src.is_file():
             shutil.copy2(src, STAGING_DIR / name)
+
+    graph_script = Path(__file__).resolve().parent / "generate_relationship_graph.py"
+    graph_out = STAGING_DIR / "relationships" / "index.md"
+    result = subprocess.run(
+        [sys.executable, str(graph_script), "--repo-root", str(REPO_ROOT), "--out", str(graph_out)],
+        cwd=REPO_ROOT,
+    )
+    if result.returncode != 0:
+        raise SystemExit("build_docs_site.py: relationship graph generation failed, aborting build.")
 
     md_count = sum(1 for _ in STAGING_DIR.rglob("*.md"))
     print(f"Staged {md_count} markdown files into {STAGING_DIR}")
