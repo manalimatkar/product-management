@@ -34,11 +34,47 @@ from verify_registries import (  # noqa: E402
 
 NAME_RE = re.compile(r"^#\s+(?:Journey|Capability|Business Rule):\s*(.+?)\s*$", re.MULTILINE)
 
+# One real sentence per entity type, for the Mermaid node's hover tooltip --
+# a block on the graph is otherwise just an ID and a name, with no way to
+# tell what it actually means without leaving the diagram.
+ONE_LINER_RE_BY_SECTION = {
+    "JRN-": re.compile(r"## Goal\s*\n\s*\n(.*?)(?:\n##|\Z)", re.DOTALL),
+    "CAP-": re.compile(r"## Business purpose\s*\n\s*\n(.*?)(?:\n##|\Z)", re.DOTALL),
+    "BRULE-": re.compile(r"## Statement\s*\n\s*\n(.*?)(?:\n##|\Z)", re.DOTALL),
+}
+MAX_TOOLTIP_LEN = 160
+
 
 def record_name(rows, entity_id, fallback=None):
     text = rows.get(entity_id, {}).get("record_text", "")
     m = NAME_RE.search(text)
     return m.group(1) if m else (fallback or entity_id)
+
+
+def record_one_liner(rows, entity_id, prefix):
+    text = rows.get(entity_id, {}).get("record_text", "")
+    section_re = ONE_LINER_RE_BY_SECTION[prefix]
+    m = section_re.search(text)
+    if not m:
+        return ""
+    # Collapse to one line, strip markdown link syntax down to its text (a
+    # tooltip that reads "[CAP-002](../foo.md)" is noise, not a definition),
+    # and cap the length so one long paragraph doesn't dwarf the diagram.
+    flat = " ".join(m.group(1).split())
+    flat = re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", flat)
+    flat = flat.replace('"', "'")
+    if len(flat) > MAX_TOOLTIP_LEN:
+        flat = flat[: MAX_TOOLTIP_LEN - 1].rsplit(" ", 1)[0] + "…"
+    return flat
+
+
+def click_target_url(site_rel_path):
+    """MkDocs' default use_directory_urls turns 'foo/bar.md' into the URL
+    'foo/bar/' (index.html inside), not 'foo/bar.md' or 'foo/bar.html'.
+    Mermaid's click directive is a literal href, not a markdown link MkDocs
+    post-processes -- so this has to be computed by hand to match."""
+    without_ext = site_rel_path[:-3] if site_rel_path.endswith(".md") else site_rel_path
+    return f"../{without_ext}/"
 
 
 def mermaid_id(entity_id):
@@ -75,7 +111,7 @@ def build(repo_root):
     # which platform/app subtree a Capability or Business Rule lives under --
     # never hardcode "pdf-workflow/workflow-manager/..." here.
     site_rel = {}
-    for rows in (cap_rows, brule_rows):
+    for rows in (jrn_rows, cap_rows, brule_rows):
         for entity_id, row in rows.items():
             site_rel[entity_id] = row["record_path"].relative_to(repo_root).as_posix()
 
@@ -90,6 +126,7 @@ def build(repo_root):
 
 
 def render_mermaid(data):
+    site_rel = data["site_rel"]
     lines = ["```mermaid", "flowchart LR"]
     for jrn_id in sorted(data["jrn_rows"]):
         name = record_name(data["jrn_rows"], jrn_id)
@@ -107,6 +144,16 @@ def render_mermaid(data):
     for cap_id, rules in sorted(data["cap_to_rules"].items()):
         for brule_id in rules:
             lines.append(f"    {mermaid_id(cap_id)} -.governed by.-> {mermaid_id(brule_id)}")
+
+    # Click each block through to its own record page, with a one-line
+    # definition as the hover tooltip -- otherwise a block is just an ID and
+    # a name, and there's no way to tell what it actually means without
+    # leaving the diagram to go read the list below it.
+    for prefix, rows in (("JRN-", data["jrn_rows"]), ("CAP-", data["cap_rows"]), ("BRULE-", data["brule_rows"])):
+        for entity_id in sorted(rows):
+            url = click_target_url(site_rel[entity_id])
+            tooltip = record_one_liner(rows, entity_id, prefix) or record_name(rows, entity_id)
+            lines.append(f'    click {mermaid_id(entity_id)} "{url}" "{tooltip}"')
 
     lines.append("```")
     return "\n".join(lines)
