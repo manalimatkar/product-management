@@ -21,7 +21,8 @@ Checks:
      names a Journey that really does list that Capability back in its own
      "Uses Capabilities" field, and vice versa -- catches a link stated on
      only one side, which is worse than no link (it looks verified but
-     isn't).
+     isn't). Same check applied to Capability <-> Business Rule ("Governed
+     by" / "Governs").
   4. Every JRN-/CAP-/BRULE- ID cited in any real Design Analysis
      (`**/analysis/**/*.md`) actually exists in its registry -- a Design
      Analysis must never reference a product-level ID that was never
@@ -48,6 +49,16 @@ REGISTRIES = [
 ROW_RE = re.compile(r"^\|\s*`([A-Z]+-\d+)`\s*\|.*\|\s*\[[^\]]*\]\(([^)]+)\)\s*\|\s*$", re.MULTILINE)
 ID_FIELD_RE_TMPL = r"\|\s*{field}\s*\|\s*`({prefix}\d+)`"
 ID_CITATION_RE = re.compile(r"\b(JRN|CAP|BRULE)-(\d+)\b")
+
+# Section-heading regexes for each two-way "used by"/"uses" pair a record file
+# carries. Hoisted to module level (rather than defined inline per check
+# function) so a second tool -- generate_relationship_graph.py -- can import
+# and reuse the exact same parsing logic instead of re-implementing it.
+LINK_RE_TMPL = r"\[({prefix}-\d+)\]\("
+CAP_USED_BY_JOURNEYS_RE = re.compile(r"## Used by journeys\s*\n\s*\n(.*?)(?:\n##|\Z)", re.DOTALL)
+JRN_USES_CAPABILITIES_RE = re.compile(r"## Uses capabilities\s*\n\s*\n(.*?)(?:\n##|\Z)", re.DOTALL)
+CAP_GOVERNED_BY_RE = re.compile(r"## Governed by\s*\n\s*\n(.*?)(?:\n##|\Z)", re.DOTALL)
+BRULE_GOVERNS_RE = re.compile(r"## Governs\s*\n\s*\n(.*?)(?:\n##|\Z)", re.DOTALL)
 
 
 def read(path):
@@ -102,29 +113,58 @@ def check_two_way_links(cap_rows, jrn_rows):
     counting bare backticks produced a false positive on exactly this
     pattern the first time this script ran for real."""
     errors = []
-    cap_used_by_re = re.compile(r"## Used by journeys\s*\n\s*\n(.*?)(?:\n##|\Z)", re.DOTALL)
-    jrn_uses_re = re.compile(r"## Uses capabilities\s*\n\s*\n(.*?)(?:\n##|\Z)", re.DOTALL)
-    link_re_tmpl = r"\[({prefix}-\d+)\]\("
 
     for cap_id, cap in cap_rows.items():
-        section = cap_used_by_re.search(cap.get("record_text", ""))
-        cited_journeys = re.findall(link_re_tmpl.format(prefix="JRN"), section.group(1)) if section else []
+        section = CAP_USED_BY_JOURNEYS_RE.search(cap.get("record_text", ""))
+        cited_journeys = re.findall(LINK_RE_TMPL.format(prefix="JRN"), section.group(1)) if section else []
         for jrn_id in cited_journeys:
             jrn = jrn_rows.get(jrn_id)
             if jrn is None:
                 errors.append(f"{cap_id}'s record says it's used by `{jrn_id}`, but that Journey isn't registered at all.")
                 continue
-            jrn_section = jrn_uses_re.search(jrn.get("record_text", ""))
-            jrn_cites_back = jrn_section and cap_id in re.findall(link_re_tmpl.format(prefix="CAP"), jrn_section.group(1))
+            jrn_section = JRN_USES_CAPABILITIES_RE.search(jrn.get("record_text", ""))
+            jrn_cites_back = jrn_section and cap_id in re.findall(LINK_RE_TMPL.format(prefix="CAP"), jrn_section.group(1))
             if not jrn_cites_back:
                 errors.append(f"{cap_id} says it's used by `{jrn_id}`, but `{jrn_id}`'s own record doesn't link `{cap_id}` back under \"Uses capabilities\" -- link only stated one-directionally.")
 
     for jrn_id, jrn in jrn_rows.items():
-        section = jrn_uses_re.search(jrn.get("record_text", ""))
-        cited_caps = re.findall(link_re_tmpl.format(prefix="CAP"), section.group(1)) if section else []
+        section = JRN_USES_CAPABILITIES_RE.search(jrn.get("record_text", ""))
+        cited_caps = re.findall(LINK_RE_TMPL.format(prefix="CAP"), section.group(1)) if section else []
         for cap_id in cited_caps:
             if cap_id not in cap_rows:
                 errors.append(f"{jrn_id}'s record says it uses `{cap_id}`, but that Capability isn't registered at all.")
+
+    return errors
+
+
+def check_capability_rule_links(cap_rows, brule_rows):
+    """Same two-way discipline as check_two_way_links, applied to the other
+    stated relationship the record files carry: a Capability's 'Governed by'
+    must be matched by that Business Rule's own 'Governs' listing it back.
+    Not previously checked -- this tool only verified Journey<->Capability
+    links before, despite the Capability<->Business Rule pair using the
+    identical pattern and being just as capable of drifting apart."""
+    errors = []
+
+    for cap_id, cap in cap_rows.items():
+        section = CAP_GOVERNED_BY_RE.search(cap.get("record_text", ""))
+        cited_rules = re.findall(LINK_RE_TMPL.format(prefix="BRULE"), section.group(1)) if section else []
+        for brule_id in cited_rules:
+            brule = brule_rows.get(brule_id)
+            if brule is None:
+                errors.append(f"{cap_id}'s record says it's governed by `{brule_id}`, but that Business Rule isn't registered at all.")
+                continue
+            brule_section = BRULE_GOVERNS_RE.search(brule.get("record_text", ""))
+            brule_cites_back = brule_section and cap_id in re.findall(LINK_RE_TMPL.format(prefix="CAP"), brule_section.group(1))
+            if not brule_cites_back:
+                errors.append(f"{cap_id} says it's governed by `{brule_id}`, but `{brule_id}`'s own record doesn't link `{cap_id}` back under \"Governs\" -- link only stated one-directionally.")
+
+    for brule_id, brule in brule_rows.items():
+        section = BRULE_GOVERNS_RE.search(brule.get("record_text", ""))
+        cited_caps = re.findall(LINK_RE_TMPL.format(prefix="CAP"), section.group(1)) if section else []
+        for cap_id in cited_caps:
+            if cap_id not in cap_rows:
+                errors.append(f"{brule_id}'s record says it governs `{cap_id}`, but that Capability isn't registered at all.")
 
     return errors
 
@@ -161,6 +201,9 @@ def main():
 
     two_way_errors = check_two_way_links(parsed["CAP-"], parsed["JRN-"])
     all_errors.extend(two_way_errors)
+
+    rule_link_errors = check_capability_rule_links(parsed["CAP-"], parsed["BRULE-"])
+    all_errors.extend(rule_link_errors)
 
     all_registered_ids = set()
     for rows in parsed.values():
