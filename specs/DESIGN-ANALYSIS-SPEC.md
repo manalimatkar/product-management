@@ -74,6 +74,8 @@ The metadata must be sufficient to answer:
 
 > Which source version produced these requirements, and which analysis version did the configured reviewer approve?
 
+`Related Epic` and `Related Stories` start as `Pending` and must be updated once those artifacts actually exist -- per `BUSINESS-AGENT-WORKFLOW.md` section 4.4, this is a required part of deriving Business Requirements and Epics, not an optional cleanup pass. A Design Analysis left reading `Pending` after its Requirements have been drafted is out of date.
+
 ## 4. Required Artifact Structure
 
 ### Business Agent Activity 1: Understand the Design
@@ -484,6 +486,9 @@ A Design Analysis is ready for Business PR review only when:
 - user journeys include relevant alternate and failure paths
 - requirements, rules, Stories, and acceptance criteria are cross-referenced
 - limitations and missing source information are visible
+- **the feature-area narrative is readable end to end by a first-time reader without resolving an evidence link, a classification tag, or a Gherkin block** -- that detail exists, in the Requirements register and Evidence and Traceability sections (`DESIGN-ANALYSIS-TEMPLATE.md`), never interleaved into the narrative itself
+- **the document contains no commentary about its own revision history in its primary content** -- format changes, prior drafts, review-round corrections belong in this specification's own changelog (section 11), never repeated inside an instance
+- **every requirement, capability, and business rule links upstream to its source reference and, once they exist, downstream to its Story, Epic, and Business PR** -- each a real, followable link, not just a fact stated in the metadata table (`BUSINESS-AGENT-WORKFLOW.md` section 4.4)
 
 ## 8. Approval and Change Rules
 

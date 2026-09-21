@@ -148,8 +148,10 @@ Evidence: [OBS-001](#obs-001). `<Explicit / Strongly Implied / Assumption / Huma
 ## Quality Checklist
 
 - [ ] Exact source path, branch/commit, and version are recorded.
-- [ ] "What this is" is understandable with zero IDs, by someone who has never seen the feature.
+- [ ] The whole document -- not just "What this is" -- reads as a first-time target reader would read it: the narrative needs no evidence link, classification tag, or Gherkin block resolved to be understood. "What this is" itself has zero IDs.
+- [ ] No commentary about this document's own revision history appears in its content -- format changes, prior drafts, review-round corrections belong in `DESIGN-ANALYSIS-SPEC.md` section 11's changelog, never repeated here. This is easy to reintroduce even while fixing it -- check explicitly.
 - [ ] Every requirement has evidence, a classification, and a confidence level -- linked, not just named.
+- [ ] Every Requirement/Capability/Business Rule links upstream to its source, and -- once they exist -- downstream to its Story/Epic; `Related Epic`/`Related Stories` in the metadata table are updated, not left `Pending` once known (`BUSINESS-AGENT-WORKFLOW.md` section 4.4).
 - [ ] Acceptance criteria live with their requirement in `## Requirements`, not scattered in a separate section.
 - [ ] The feature-area narrative contains no `##### BR-XXX` headings -- each exists exactly once, in `## Requirements`.
 - [ ] Strong inferences are labeled `Strongly Implied`; human-supplied answers are labeled `Human Provided`, not `Explicit`.
