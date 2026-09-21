@@ -1,0 +1,30 @@
+site_name: Product Management (POC)
+site_description: Rendering POC only -- testing whether MkDocs can serve this repo's existing markdown, links, and ID-only-heading anchors as-is.
+docs_dir: site-src
+site_dir: site
+
+exclude_docs: |
+  !/templates/
+
+theme:
+  name: material
+
+markdown_extensions:
+  - toc:
+      permalink: true
+
+nav:
+  - Home: README.md
+  - Registries:
+      - Source Registry: registries/SOURCE-REGISTRY.md
+      - Journey Registry: registries/JOURNEY-REGISTRY.md
+      - Capability Registry: registries/CAPABILITY-REGISTRY.md
+      - Business Rule Registry: registries/BUSINESS-RULE-REGISTRY.md
+  - Specs:
+      - Artifact Relationship Model: specs/ARTIFACT-RELATIONSHIP-MODEL.md
+      - Design Analysis Spec: specs/DESIGN-ANALYSIS-SPEC.md
+  - Real Analysis:
+      - Mapping Report (DA-003): pdf-workflow/workflow-manager/analysis/mapping-report/design-analysis-mapping-report-DA-003.md
+  - Sample records:
+      - "CAP-001": pdf-workflow/workflow-manager/capabilities/capability-review-extraction-confidence-CAP-001.md
+      - "JRN-001": pdf-workflow/workflow-manager/journeys/journey-review-correct-low-confidence-mapping-JRN-001.md
