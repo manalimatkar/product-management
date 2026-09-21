@@ -13,18 +13,8 @@ markdown_extensions:
   - toc:
       permalink: true
 
-nav:
-  - Home: README.md
-  - Registries:
-      - Source Registry: registries/SOURCE-REGISTRY.md
-      - Journey Registry: registries/JOURNEY-REGISTRY.md
-      - Capability Registry: registries/CAPABILITY-REGISTRY.md
-      - Business Rule Registry: registries/BUSINESS-RULE-REGISTRY.md
-  - Specs:
-      - Artifact Relationship Model: specs/ARTIFACT-RELATIONSHIP-MODEL.md
-      - Design Analysis Spec: specs/DESIGN-ANALYSIS-SPEC.md
-  - Real Analysis:
-      - Mapping Report (DA-003): pdf-workflow/workflow-manager/analysis/mapping-report/design-analysis-mapping-report-DA-003.md
-  - Sample records:
-      - "CAP-001": pdf-workflow/workflow-manager/capabilities/capability-review-extraction-confidence-CAP-001.md
-      - "JRN-001": pdf-workflow/workflow-manager/journeys/journey-review-correct-low-confidence-mapping-JRN-001.md
+# No explicit nav: -- MkDocs auto-generates it from site-src/'s real folder
+# structure (alphabetical, titled from each file's own H1). A smarter nav
+# driven by the registries themselves (Journey -> Capability -> Business
+# Rule relationship graph) is a later, separate step -- this is the
+# built-in default, proven first before adding anything custom.
