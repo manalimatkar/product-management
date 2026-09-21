@@ -7,6 +7,20 @@ filenames -- so every existing internal markdown link keeps resolving
 exactly as it does on GitHub. Not a rewrite: source files are canonical,
 this staging copy is disposable and gitignored.
 
+Scope, confirmed 2026-09-21: this site is for one sample project's actual
+product content (pdf-workflow/workflow-manager -- its Design Analysis,
+Journeys, Capabilities, Business Rules) not for this repository's own
+agent framework. specs/, templates/, and the root framework docs
+(README.md, CLAUDE.md, PRD.md, IMPLEMENTATION-PLAN.md) describe the
+Business Agent and the pipeline that produced this content -- they don't
+belong in a site about the sample project, any more than .claude/ and
+.github/ do. A separate
+site for the framework itself may exist later, but that's a distinct,
+not-yet-started effort, not this one. registries/ stays in scope: it's
+the actual index of this sample project's Journeys/Capabilities/Business
+Rules (100% sample-project data today), and the relationship graph
+depends on it.
+
 Also generates the Journey/Capability/Business Rule relationship-graph
 page (generate_relationship_graph.py) straight into the staged copy --
 that page is computed from the registries at build time, never authored,
@@ -23,8 +37,8 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[2]
 STAGING_DIR = REPO_ROOT / "site-src"
 
-CONTENT_DIRS = ["registries", "specs", "templates", "pdf-workflow"]
-CONTENT_FILES = ["README.md", "CLAUDE.md", "PRD.md", "IMPLEMENTATION-PLAN.md"]
+CONTENT_DIRS = ["registries", "pdf-workflow"]
+CONTENT_FILES = []
 
 
 def main() -> None:

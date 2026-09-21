@@ -1,6 +1,6 @@
 # Journey Registry
 
-The running index of every Journey registered under [ARTIFACT-STORAGE-SPEC.md](../specs/ARTIFACT-STORAGE-SPEC.md) section 4.1 and [ARTIFACT-RELATIONSHIP-MODEL.md](../specs/ARTIFACT-RELATIONSHIP-MODEL.md) section 3.1. Each row here has a full record at `<platform-slug>/[<app-slug>/]journeys/journey-<slug>-<JRN-id>.md`.
+The running index of every Journey registered under [ARTIFACT-STORAGE-SPEC.md](https://github.com/manalimatkar/product-management/blob/main/specs/ARTIFACT-STORAGE-SPEC.md) section 4.1 and [ARTIFACT-RELATIONSHIP-MODEL.md](https://github.com/manalimatkar/product-management/blob/main/specs/ARTIFACT-RELATIONSHIP-MODEL.md) section 3.1. Each row here has a full record at `<platform-slug>/[<app-slug>/]journeys/journey-<slug>-<JRN-id>.md`.
 
 This file is an index, not a record -- add one row per Journey here; put the actual detail (actor, goal, ordered steps, which Capabilities it needs) in that Journey's own file.
 

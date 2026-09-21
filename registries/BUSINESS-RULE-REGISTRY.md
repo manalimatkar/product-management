@@ -1,6 +1,6 @@
 # Business Rule Registry
 
-The running index of every Business Rule registered under [ARTIFACT-STORAGE-SPEC.md](../specs/ARTIFACT-STORAGE-SPEC.md) section 4.1 and [ARTIFACT-RELATIONSHIP-MODEL.md](../specs/ARTIFACT-RELATIONSHIP-MODEL.md) section 3.1. Each row here has a full record at `<platform-slug>/[<app-slug>/]business-rules/business-rule-<slug>-<BRULE-id>.md`.
+The running index of every Business Rule registered under [ARTIFACT-STORAGE-SPEC.md](https://github.com/manalimatkar/product-management/blob/main/specs/ARTIFACT-STORAGE-SPEC.md) section 4.1 and [ARTIFACT-RELATIONSHIP-MODEL.md](https://github.com/manalimatkar/product-management/blob/main/specs/ARTIFACT-RELATIONSHIP-MODEL.md) section 3.1. Each row here has a full record at `<platform-slug>/[<app-slug>/]business-rules/business-rule-<slug>-<BRULE-id>.md`.
 
 This file is an index, not a record -- add one row per Business Rule here; put the actual detail (statement, scope, evidence) in that rule's own file.
 

@@ -171,7 +171,7 @@ def render_page(data):
         "sides, not just one. Solid arrows: a Journey uses a Capability. Dashed "
         "arrows: a Business Rule governs a Capability -- a constraint, not a step "
         "in the flow, per "
-        "[ARTIFACT-RELATIONSHIP-MODEL.md](../specs/ARTIFACT-RELATIONSHIP-MODEL.md) section 3.1."
+        "[ARTIFACT-RELATIONSHIP-MODEL.md](https://github.com/manalimatkar/product-management/blob/main/specs/ARTIFACT-RELATIONSHIP-MODEL.md) section 3.1."
     )
     parts.append(render_mermaid(data))
 
