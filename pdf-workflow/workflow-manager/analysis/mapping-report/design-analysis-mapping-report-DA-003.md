@@ -4,6 +4,8 @@
 
 **Format revised 2026-09-08 -- Editorial, no content change.** Reshaped to [DESIGN-ANALYSIS-TEMPLATE.md](https://github.com/manalimatkar/product-management/blob/main/templates/DESIGN-ANALYSIS-TEMPLATE.md)'s narrative format per direct feedback that the numbered-section version was hard to navigate for a new Business Analyst or Designer. Every requirement, capability, business rule, gap, decision, assumption, and technical unknown from the original numbered-section version is preserved with the same evidence and classification -- none dropped, none reworded in substance. The lower-level UI inventory (screens, navigation, actions, states, journeys, alternate paths, domain concepts) is preserved as narrative detail rather than as separate ID catalogs, since nothing downstream ever traced to those IDs directly -- only to Requirements, Capabilities, and Business Rules.
 
+**Format revised again 2026-09-21 -- Editorial, no content change.** Every Business Requirement's full acceptance criteria and evidence classification moved out of the feature-area narrative into a new [Requirements](#requirements) register section -- the narrative now reads as pure prose, the same content just relocated, not reworded or dropped. Each `## Capabilities` entry lost its redundant inline Evidence citation, since the full record it already links to carries the same evidence. Two paragraphs that duplicated an existing Gap entry almost word-for-word (`BR-003`, `BR-015`) were trimmed to one-line pointers. See [DESIGN-ANALYSIS-SPEC.md](https://github.com/manalimatkar/product-management/blob/main/specs/DESIGN-ANALYSIS-SPEC.md) section 11 for the full rationale.
+
 **Reading a `CAP-`, `JRN-`, or `BRULE-` ID below?** Those describe the Mapping Report *product*, not just this one document. **Updated 2026-09-10: the registry is real now, not just documented.** Each has a full record and a root-level index -- [CAPABILITY-REGISTRY.md](../../../../registries/CAPABILITY-REGISTRY.md), [JOURNEY-REGISTRY.md](../../../../registries/JOURNEY-REGISTRY.md), [BUSINESS-RULE-REGISTRY.md](../../../../registries/BUSINESS-RULE-REGISTRY.md) -- per [ARTIFACT-RELATIONSHIP-MODEL.md](https://github.com/manalimatkar/product-management/blob/main/specs/ARTIFACT-RELATIONSHIP-MODEL.md) section 3.1 and [ARTIFACT-STORAGE-SPEC.md](https://github.com/manalimatkar/product-management/blob/main/specs/ARTIFACT-STORAGE-SPEC.md) section 4.1. Every `CAP-`/`BRULE-` entry below links out to its registry record; `JRN-001`-`003`, previously folded into narrative "for example" prose during the 2026-09-08 reformat (a real regression, self-flagged), are re-instated here as real, addressable headings.
 
 ---
@@ -15,14 +17,14 @@
 | Source Material | `branch: design`, `path: pdf-workflow/workflow-manager/design/v4/`, `commit: f5de2a0fbdac4033b2a8aecf523d15948c6801f5` |
 | Source Version | `4` |
 | Analysis Version | `1.0` |
-| Created By | Business Agent workflow -- second real run, replacing the retracted v2-based `DA-002` |
+| Created By | Business Agent workflow |
 | Created At | 2026-09-08 |
 | Status | `Approved` -- 16/16 requirements, `BR-003` revised per direct feedback after `PR #17` merged (see [Review history](#review-history)) |
 | Related Epic | Pending -- created at the Business PR stage |
 | Related Stories | Pending -- created at the Business PR stage |
 | Business Owner Approval | Approved 2026-09-08 -- see [Review history](#review-history) |
 
-**Supersedes `DA-002` in intent, not in the formal sense** -- `DA-002` was deleted, not marked `Superseded`, since it was built against the wrong source version entirely (see CLAUDE.md open item 17), not a legitimate prior version of this same analysis. This document is a fresh run, `DA-003`, not `DA-002`'s successor version.
+**Supersedes `DA-002` in intent, not in the formal sense.** `DA-002` was deleted, not marked `Superseded`, since it was built against the wrong source version entirely (see CLAUDE.md open item 17), not a legitimate prior version of this same analysis -- this document is a fresh run, `DA-003`, not `DA-002`'s successor version. It also corrects two things `DA-002` got wrong by reading the wrong source version: whether field editing is an in-place panel or a dropdown remap, and whether unlink/discard require confirmation. Both are unambiguous and resolved in the real v4 text, re-verified directly rather than assumed -- see [OBS-009](#obs-009). This analysis does not carry forward `DA-002`'s two now-void gaps or decisions.
 
 ## What this is
 
@@ -30,9 +32,7 @@ Workflows created by uploading a PDF get their page/section/field structure auto
 
 Source reviewed: `SRC-003`, `pdf-workflow/workflow-manager/design/v4/README.md` (the "Mapping Report" section, plus the shared Scope note, Known UX issues, Interactions & behavior, and State management sections where they describe this screen specifically).
 
-**Correction from the retracted `DA-002`, verified directly against the real v4 text, not assumed:** `DA-002` (built against the `design` branch's v2 test drop) flagged two internal contradictions in the source -- one on whether field editing is an in-place panel or a dropdown remap, one on whether unlink/discard require confirmation. Re-reading v4's actual "Interactions & behavior" section directly: *"clicking the pencil expands the row/card in place with kind-specific fields... there is no remap-via-dropdown; clicking unlink opens a confirm dialog (names the sub-field cost for FieldGroups) before removing the mapping"* -- and a line v2 didn't have at all: *"Add page/section/field, delete empty page/section, and reorder... all are optimistic, no confirmation except unlink."* Both contradictions are resolved in v4, unambiguous and internally consistent. This analysis does not carry forward `DA-002`'s two now-void gaps or decisions.
-
-**Source limitations, stated up front:** mobile/tablet layout for the mapping table was explicitly deferred by the source itself (resolved below, [BRULE-008](#brule-008)); no numeric bound is stated for page, section, field, or FieldGroup sub-field counts; the exact navigation trigger into the report and the zero-mappings empty state were both unstated in the source (both resolved below, [BR-016](#br-016)).
+**Source limitations, stated up front:** mobile/tablet layout for the mapping table was explicitly deferred by the source itself, resolved by direct clarification to horizontal scroll rather than stacked cards; no numeric bound is stated for page, section, field, or FieldGroup sub-field counts; the exact navigation trigger into the report and the zero-mappings empty state were both unstated in the source, both resolved by direct clarification below.
 
 ## Reviewing the mapping
 
@@ -43,6 +43,47 @@ Below that, the mapping is a collapsible three-level hierarchy: Page, then Secti
 Search is live text matching with no submit button; a confidence segmented control (All/High/Medium/Low) narrows the same view. Both apply at the field level -- a Section only stays visible if it still has a matching field or its own heading matches, and a Page only stays visible if it still has a visible Section. Filtering never leaves an empty Section or Page on screen.
 
 **Table view only, for this phase.** The design fully specifies a Card view -- same data, card layout, sharing all state (search, filter, an in-progress edit) with Table view -- but building it is deferred; see [BR-003](#br-003) for why, and [BRULE-005](#brule-005) for the modeling constraint that keeps it addable later without rework. Below roughly 900px, the table uses horizontal scroll rather than a stacked-card row layout -- the source explicitly left this open rather than silently picking one; see [BRULE-008](#brule-008).
+
+## Editing a mapped field
+
+Every mapping has a `kind` -- what the PDF element actually is (`heading`, `description`, `field`, `field-group`, or `custom`) -- and maps to a `targetType` (Section, Content, Field, FieldGroup, or Custom), shown to the reviewer as a compound label like `Field-Date` or `Field-List-3x` (item count) so sub-cases are distinguishable without opening the row (exact label format: [BR-005](#br-005)). A mapping can only ever be remapped within its own kind -- a `field` can't become a `FieldGroup`; whether the UI actively blocks the attempt or simply never lists the incompatible option is a technical detail, not a business one.
+
+Clicking the pencil expands that row in place with controls specific to its kind -- a single Text box for headings/descriptions, Label + type for a Field, Label + an editable per-item list + Min/Max items for a FieldGroup, Label only for Custom. There is no dropdown-based remapping anywhere in the current design ([BR-006](#br-006)). Only one row can be open for edit at a time, and every panel ends in an explicit Cancel or Save. Saving persists the change and shows a success toast; Cancel discards. Trying to navigate away -- switching rows, or leaving the page -- while an edit is dirty prompts a discard-confirmation dialog first.
+
+##### JRN-001
+**Review and correct a low-confidence field mapping.** A reviewer filters to Low confidence, opens the first flagged field, corrects its label and type, and saves -- the panel closes, a toast confirms, and the row returns to its normal state. Uses [CAP-002](#cap-002) and [CAP-004](#cap-004). Registry: [JOURNEY-REGISTRY.md](../../../../registries/JOURNEY-REGISTRY.md) / [full record](../../journeys/journey-review-correct-low-confidence-mapping-JRN-001.md).
+
+## Unlinking a mapping
+
+Clicking unlink opens a confirmation dialog before the mapping is removed -- and for a FieldGroup, the dialog names the specific sub-fields that would be lost, so the reviewer understands the actual cost before confirming.
+
+##### JRN-002
+**Remove an incorrectly extracted field.** A reviewer decides a 2-field FieldGroup mapping is entirely wrong, clicks unlink, sees a dialog naming both sub-fields that would be lost, and confirms -- the mapping is removed. Uses [CAP-005](#cap-005). Registry: [JOURNEY-REGISTRY.md](../../../../registries/JOURNEY-REGISTRY.md) / [full record](../../journeys/journey-remove-incorrectly-extracted-field-JRN-002.md).
+
+## Manually adding structure, and starting a new workflow
+
+"+ Add page" appends a new, empty, auto-numbered page with no confirmation dialog; "+ Add section" (title required, description optional) and "+ Add field" (label required, type selected) follow the same low-ceremony inline-form pattern, each with Add disabled until its required field is filled. A manually-added item groups exactly like something the extraction found for real -- a manually-added section gets a synthetic mapped heading at 100% confidence, so it's indistinguishable in structure from an extracted one.
+
+This same starting surface is also where a **brand-new workflow lands**, right after its Workflow Settings are saved -- not a PDF-specific behavior. This refines the source's own "Scope note," which reads as PDF-only for the whole screen: only the confidence-review chrome genuinely is PDF-only (see [BR-015](#br-015) below); the structure editor underneath is reused across creation paths. See [BR-016](#br-016) and [GAP-003](#gap-003).
+
+##### JRN-003
+**Add a section the extraction missed.** A reviewer expands a page with no sections yet, clicks "+ Add section," enters a title, and clicks Add -- the new section appears immediately, grouped under that page exactly like an extracted one. Uses [CAP-006](#cap-006). Registry: [JOURNEY-REGISTRY.md](../../../../registries/JOURNEY-REGISTRY.md) / [full record](../../journeys/journey-add-section-extraction-missed-JRN-003.md).
+
+## Removing empty structure, and reordering
+
+A page or section only shows a delete option once it has zero children -- nothing to lose, so no confirmation dialog either; there's no error state to design here, since the action simply isn't offered otherwise. Every page, section, and field also gets up/down controls to move it one position among its siblings, stored as an explicit per-level override list rather than a full re-index every time (the exact storage mechanism is a technical question, not a business one -- see [TECH-002](#tech-002)).
+
+## Who sees this
+
+The confidence-review chrome -- stat tiles, confidence filter, source (llm/manual) tags -- only shows for workflows created via the PDF path; it's meaningless without an extraction step to review ([BR-015](#br-015)). Manually-created workflows don't get that chrome, though they do land on the same structure editor described above ([BR-016](#br-016)). An LLM-created path is named in the source as a possible future reuse target, not built now.
+
+No permission or role distinction is represented anywhere in the Mapping Report material itself -- one reviewer role covers everything described here. The wider product does show org-level "Members"/"Billing" controls, implying a multi-user org, but whether reviewing or editing mappings is restricted to certain org members is left open until a login/auth capability exists -- not a remaining open question, but also not yet actionable as a requirement.
+
+Each mapping arrives already carrying a `kind` and a confidence score, extracted from the PDF before the reviewer ever sees the report -- what mechanism produces that extraction is a technical question for the Technical Agent stage, not a business concern here (see [TECH-001](#tech-001)).
+
+## Requirements
+
+*Every Business Requirement's full statement, acceptance criteria, and evidence classification -- in the same order the narrative above introduces them, not flat ID order. Click a `BR-XXX` reference from the narrative to jump straight here.*
 
 ##### BR-001
 **Show extraction confidence summary.**
@@ -86,7 +127,7 @@ Note: the source's own criterion (switching Table↔Card without losing state) b
 
 Evidence: [OBS-003](#obs-003), [OBS-025](#obs-025). Explicit (Table/Card sync design), narrowed by Human Provided input (Table-only for now) -- see [GAP-004](#gap-004).
 
-**Revised 2026-09-08, narrowed rather than removed -- `PR #17` review:** the source describes a fully-built Card view as a first-class second rendering of the same data. Direct feedback on that PR ("For now work on table view") scopes the *build* to Table view only for this phase -- Card view is real in the design and not rejected, just deferred. [BRULE-005](#brule-005) is kept as the modeling constraint for when Card view is picked up.
+**Narrowed 2026-09-08, not removed** -- see [GAP-004](#gap-004) for the full `PR #17` review history.
 
 ##### BR-004
 **Search and filter by confidence, with hierarchical visibility.**
@@ -102,15 +143,6 @@ And any Page with no remaining visible Section is hidden
 ```
 
 Evidence: [OBS-002](#obs-002), [OBS-013](#obs-013). Explicit, High confidence.
-
-## Editing a mapped field
-
-Every mapping has a `kind` -- what the PDF element actually is (`heading`, `description`, `field`, `field-group`, or `custom`) -- and maps to a `targetType` (Section, Content, Field, FieldGroup, or Custom), shown to the reviewer as a compound label like `Field-Date` or `Field-List-3x` (item count) so sub-cases are distinguishable without opening the row. A mapping can only ever be remapped within its own kind -- a `field` can't become a `FieldGroup`; whether the UI actively blocks the attempt or simply never lists the incompatible option is a technical detail, not a business one.
-
-Clicking the pencil expands that row in place with controls specific to its kind -- a single Text box for headings/descriptions, Label + type for a Field, Label + an editable per-item list + Min/Max items for a FieldGroup, Label only for Custom. There is no dropdown-based remapping anywhere in the current design -- an earlier pass, working from a stale test version of this document, thought it had found a contradiction here; re-checked directly against the real v4 text, it's unambiguous. Only one row can be open for edit at a time, and every panel ends in an explicit Cancel or Save. Saving persists the change and shows a success toast; Cancel discards. Trying to navigate away -- switching rows, or leaving the page -- while an edit is dirty prompts a discard-confirmation dialog first.
-
-##### JRN-001
-**Review and correct a low-confidence field mapping.** A reviewer filters to Low confidence, opens the first flagged field, corrects its label and type, and saves -- the panel closes, a toast confirms, and the row returns to its normal state. Uses [CAP-002](#cap-002) and [CAP-004](#cap-004). Registry: [JOURNEY-REGISTRY.md](../../../../registries/JOURNEY-REGISTRY.md) / [full record](../../journeys/journey-review-correct-low-confidence-mapping-JRN-001.md).
 
 ##### BR-005
 **Show a compound Target Type label; no cross-kind remapping.**
@@ -175,13 +207,6 @@ And the navigation completes only if the reviewer confirms discarding
 
 Evidence: [OBS-011](#obs-011). Explicit, High confidence.
 
-## Unlinking a mapping
-
-Clicking unlink opens a confirmation dialog before the mapping is removed -- and for a FieldGroup, the dialog names the specific sub-fields that would be lost, so the reviewer understands the actual cost before confirming.
-
-##### JRN-002
-**Remove an incorrectly extracted field.** A reviewer decides a 2-field FieldGroup mapping is entirely wrong, clicks unlink, sees a dialog naming both sub-fields that would be lost, and confirms -- the mapping is removed. Uses [CAP-005](#cap-005). Registry: [JOURNEY-REGISTRY.md](../../../../registries/JOURNEY-REGISTRY.md) / [full record](../../journeys/journey-remove-incorrectly-extracted-field-JRN-002.md).
-
 ##### BR-008
 **Unlink a mapping with cost-aware confirmation.**
 
@@ -195,15 +220,6 @@ And the mapping is removed only if the reviewer confirms
 ```
 
 Evidence: [OBS-009](#obs-009), [OBS-011](#obs-011). Explicit, High confidence.
-
-## Manually adding structure, and starting a new workflow
-
-"+ Add page" appends a new, empty, auto-numbered page with no confirmation dialog; "+ Add section" (title required, description optional) and "+ Add field" (label required, type selected) follow the same low-ceremony inline-form pattern, each with Add disabled until its required field is filled. A manually-added item groups exactly like something the extraction found for real -- a manually-added section gets a synthetic mapped heading at 100% confidence, so it's indistinguishable in structure from an extracted one.
-
-This same starting surface is also where a **brand-new workflow lands**, right after its Workflow Settings are saved -- not a PDF-specific behavior. This refines the source's own "Scope note," which reads as PDF-only for the whole screen: only the confidence-review chrome genuinely is PDF-only (see [BR-015](#br-015) below); the structure editor underneath is reused across creation paths. See [BR-016](#br-016) and [GAP-003](#gap-003).
-
-##### JRN-003
-**Add a section the extraction missed.** A reviewer expands a page with no sections yet, clicks "+ Add section," enters a title, and clicks Add -- the new section appears immediately, grouped under that page exactly like an extracted one. Uses [CAP-006](#cap-006). Registry: [JOURNEY-REGISTRY.md](../../../../registries/JOURNEY-REGISTRY.md) / [full record](../../journeys/journey-add-section-extraction-missed-JRN-003.md).
 
 ##### BR-009
 **Manually add a page.**
@@ -261,10 +277,6 @@ And they can begin building structure immediately via "+ Add page" / "+ Add sect
 
 Evidence: [OBS-021](#obs-021), [OBS-022](#obs-022). Human Provided, from direct clarification on `PR #17`. This also resolved what were previously open Decisions about the report's entry trigger and its zero-mappings empty state -- see [GAP-003](#gap-003).
 
-## Removing empty structure, and reordering
-
-A page or section only shows a delete option once it has zero children -- nothing to lose, so no confirmation dialog either; there's no error state to design here, since the action simply isn't offered otherwise. Every page, section, and field also gets up/down controls to move it one position among its siblings, stored as an explicit per-level override list rather than a full re-index every time (the exact storage mechanism is a technical question, not a business one -- see [TECH-002](#tech-002)).
-
 ##### BR-012
 **Delete only empty structure.**
 
@@ -294,14 +306,6 @@ And fields not explicitly moved retain their natural relative order
 
 Evidence: [OBS-018](#obs-018). Explicit, High confidence.
 
-## Who sees this
-
-The confidence-review chrome -- stat tiles, confidence filter, source (llm/manual) tags -- only shows for workflows created via the PDF path; it's meaningless without an extraction step to review. Manually-created workflows don't get that chrome, though they do land on the same structure editor described above ([BR-016](#br-016)). An LLM-created path is named in the source as a possible future reuse target, not built now.
-
-No permission or role distinction is represented anywhere in the Mapping Report material itself -- one reviewer role covers everything described here. The wider product does show org-level "Members"/"Billing" controls, implying a multi-user org, but whether reviewing or editing mappings is restricted to certain org members is left open until a login/auth capability exists -- not a remaining open question, but also not yet actionable as a requirement.
-
-Each mapping arrives already carrying a `kind` and a confidence score, extracted from the PDF before the reviewer ever sees the report -- what mechanism produces that extraction is a technical question for the Technical Agent stage, not a business concern here (see [TECH-001](#tech-001)).
-
 ##### BR-015
 **Restrict confidence-review chrome to PDF-created workflows.**
 
@@ -318,7 +322,7 @@ but the underlying structure editor is still used as its starting surface (see B
 
 Evidence: [OBS-019](#obs-019). Explicit, High confidence.
 
-**Revised 2026-09-08, narrowed rather than removed:** the retracted `DA-002` and this analysis's own first draft both read the source's "Scope note" ("Manually-created workflows: no report needed... don't build one") as meaning the *entire screen* is PDF-only. [OBS-021](#obs-021) (Human Provided) directly refines this: the underlying structure editor is reused as the general workflow-structure editing surface across all creation paths. Only the confidence-review-specific chrome this requirement describes is genuinely PDF-only. See [GAP-003](#gap-003).
+**Narrowed 2026-09-08, not removed** -- see [GAP-003](#gap-003) for the full `PR #17` review history.
 
 ## Open Decisions
 
@@ -344,43 +348,43 @@ Only two Technical Unknowns remain ([TECH-001](#tech-001), [TECH-002](#tech-002)
 
 ## Capabilities
 
-*Grouped by the Journey that actually needs them -- a capability's real purpose only makes sense next to the goal it serves, per `ARTIFACT-RELATIONSHIP-MODEL.md` section 3.1. Listed here as a stable entry point for the Business Requirements stage, which will need to reference these directly when grouping Stories.*
+*Grouped by the Journey that actually needs them -- a capability's real purpose only makes sense next to the goal it serves, per `ARTIFACT-RELATIONSHIP-MODEL.md` section 3.1. Listed here as a stable entry point for the Business Requirements stage, which will need to reference these directly when grouping Stories. Full evidence for each lives in its own record, linked below -- not repeated here.*
 
 ### Serving [JRN-001](#jrn-001) -- Review and correct a low-confidence field mapping
 
 A reviewer narrows down to what needs fixing, then corrects it in place -- these two capabilities are the whole journey, back to back.
 
 ##### CAP-002
-**Filter and Search Mappings.** Let the reviewer narrow a potentially large mapping down to what needs checking. Evidence: [OBS-002](#obs-002), [OBS-013](#obs-013). *(↩ used by [BR-004](#br-004))* Registry: [CAPABILITY-REGISTRY.md](../../../../registries/CAPABILITY-REGISTRY.md) / [full record](../../capabilities/capability-filter-and-search-mappings-CAP-002.md).
+**Filter and Search Mappings.** Let the reviewer narrow a potentially large mapping down to what needs checking. *(↩ used by [BR-004](#br-004))* Registry: [CAPABILITY-REGISTRY.md](../../../../registries/CAPABILITY-REGISTRY.md) / [full record](../../capabilities/capability-filter-and-search-mappings-CAP-002.md).
 
 ##### CAP-004
-**Edit a Mapped Field's Details.** Let the reviewer correct what the extraction got wrong, with controls appropriate to what kind of element it is. Evidence: [OBS-005](#obs-005), [OBS-008](#obs-008), [OBS-009](#obs-009), [OBS-010](#obs-010). *(↩ used by [BR-005](#br-005), [BR-006](#br-006), [BR-007](#br-007), [BR-014](#br-014))* Registry: [CAPABILITY-REGISTRY.md](../../../../registries/CAPABILITY-REGISTRY.md) / [full record](../../capabilities/capability-edit-mapped-field-details-CAP-004.md).
+**Edit a Mapped Field's Details.** Let the reviewer correct what the extraction got wrong, with controls appropriate to what kind of element it is. *(↩ used by [BR-005](#br-005), [BR-006](#br-006), [BR-007](#br-007), [BR-014](#br-014))* Registry: [CAPABILITY-REGISTRY.md](../../../../registries/CAPABILITY-REGISTRY.md) / [full record](../../capabilities/capability-edit-mapped-field-details-CAP-004.md).
 
 ### Serving [JRN-002](#jrn-002) -- Remove an incorrectly extracted field
 
 ##### CAP-005
-**Unlink an Incorrect Mapping.** Let the reviewer remove a wrong mapping while understanding its cost. Evidence: [OBS-009](#obs-009), [OBS-011](#obs-011). *(↩ used by [BR-008](#br-008))* Registry: [CAPABILITY-REGISTRY.md](../../../../registries/CAPABILITY-REGISTRY.md) / [full record](../../capabilities/capability-unlink-incorrect-mapping-CAP-005.md).
+**Unlink an Incorrect Mapping.** Let the reviewer remove a wrong mapping while understanding its cost. *(↩ used by [BR-008](#br-008))* Registry: [CAPABILITY-REGISTRY.md](../../../../registries/CAPABILITY-REGISTRY.md) / [full record](../../capabilities/capability-unlink-incorrect-mapping-CAP-005.md).
 
 ### Serving [JRN-003](#jrn-003) -- Add a section the extraction missed
 
 ##### CAP-006
-**Manually Add Structure.** Let the reviewer fill in whatever the extraction missed, and let a new workflow begin from the same structure editor regardless of creation path. Evidence: [OBS-012](#obs-012), [OBS-014](#obs-014), [OBS-015](#obs-015), [OBS-016](#obs-016), [OBS-021](#obs-021), [OBS-022](#obs-022). *(↩ used by [BR-009](#br-009), [BR-010](#br-010), [BR-011](#br-011), [BR-016](#br-016))* Registry: [CAPABILITY-REGISTRY.md](../../../../registries/CAPABILITY-REGISTRY.md) / [full record](../../capabilities/capability-manually-add-structure-CAP-006.md).
+**Manually Add Structure.** Let the reviewer fill in whatever the extraction missed, and let a new workflow begin from the same structure editor regardless of creation path. *(↩ used by [BR-009](#br-009), [BR-010](#br-010), [BR-011](#br-011), [BR-016](#br-016))* Registry: [CAPABILITY-REGISTRY.md](../../../../registries/CAPABILITY-REGISTRY.md) / [full record](../../capabilities/capability-manually-add-structure-CAP-006.md).
 
 ### Not yet tied to a Journey
 
 Identified as real capabilities from the source, but none of `DA-003`'s three recorded journeys happens to walk through them end to end -- an honest gap this document surfaces rather than hides, not something to force-fit into a journey that doesn't actually need it. Worth a journey each if this feature-slice is revisited.
 
 ##### CAP-001
-**Review Extraction Confidence and Structure.** Let the reviewer gauge how much attention a workflow's mapping needs before working through it in detail. Evidence: [OBS-001](#obs-001), [OBS-006](#obs-006), [OBS-007](#obs-007). *(↩ used by [BR-001](#br-001), [BR-002](#br-002))* Registry: [CAPABILITY-REGISTRY.md](../../../../registries/CAPABILITY-REGISTRY.md) / [full record](../../capabilities/capability-review-extraction-confidence-CAP-001.md).
+**Review Extraction Confidence and Structure.** Let the reviewer gauge how much attention a workflow's mapping needs before working through it in detail. *(↩ used by [BR-001](#br-001), [BR-002](#br-002))* Registry: [CAPABILITY-REGISTRY.md](../../../../registries/CAPABILITY-REGISTRY.md) / [full record](../../capabilities/capability-review-extraction-confidence-CAP-001.md).
 
 ##### CAP-003
-**Switch Between Table and Card Views.** Let the reviewer choose a layout without losing filter or edit state -- Table view only is built this phase. Evidence: [OBS-003](#obs-003). *(↩ used by [BR-003](#br-003))* Registry: [CAPABILITY-REGISTRY.md](../../../../registries/CAPABILITY-REGISTRY.md) / [full record](../../capabilities/capability-switch-table-card-views-CAP-003.md). Card view isn't built this phase, so no journey exercises a view toggle.
+**Switch Between Table and Card Views.** Let the reviewer choose a layout without losing filter or edit state -- Table view only is built this phase. *(↩ used by [BR-003](#br-003))* Registry: [CAPABILITY-REGISTRY.md](../../../../registries/CAPABILITY-REGISTRY.md) / [full record](../../capabilities/capability-switch-table-card-views-CAP-003.md). Card view isn't built this phase, so no journey exercises a view toggle.
 
 ##### CAP-007
-**Remove Empty Structure.** Let the reviewer clean up structure that's no longer needed, without risking accidental data loss. Evidence: [OBS-012](#obs-012), [OBS-017](#obs-017). *(↩ used by [BR-012](#br-012))* Registry: [CAPABILITY-REGISTRY.md](../../../../registries/CAPABILITY-REGISTRY.md) / [full record](../../capabilities/capability-remove-empty-structure-CAP-007.md).
+**Remove Empty Structure.** Let the reviewer clean up structure that's no longer needed, without risking accidental data loss. *(↩ used by [BR-012](#br-012))* Registry: [CAPABILITY-REGISTRY.md](../../../../registries/CAPABILITY-REGISTRY.md) / [full record](../../capabilities/capability-remove-empty-structure-CAP-007.md).
 
 ##### CAP-008
-**Reorder Structure.** Let the reviewer fix the order pages, sections, or fields appear in. Evidence: [OBS-012](#obs-012), [OBS-018](#obs-018). *(↩ used by [BR-013](#br-013))* Registry: [CAPABILITY-REGISTRY.md](../../../../registries/CAPABILITY-REGISTRY.md) / [full record](../../capabilities/capability-reorder-structure-CAP-008.md).
+**Reorder Structure.** Let the reviewer fix the order pages, sections, or fields appear in. *(↩ used by [BR-013](#br-013))* Registry: [CAPABILITY-REGISTRY.md](../../../../registries/CAPABILITY-REGISTRY.md) / [full record](../../capabilities/capability-reorder-structure-CAP-008.md).
 
 ## Evidence and Traceability
 
@@ -466,28 +470,28 @@ Manali, `PR #17` review comment (Review Outcome, `BR-003` left unchecked), 2026-
 ### Business Rules
 
 ##### BRULE-001
-A mapping's `kind` constrains which `targetType`s it may be remapped to (e.g. `field` → `Field` only, `field-group` → `FieldGroup` only). Explicit, High. Evidence: [OBS-004](#obs-004). *(↩ used by [BR-005](#br-005))* Registry: [BUSINESS-RULE-REGISTRY.md](../../../../registries/BUSINESS-RULE-REGISTRY.md) / [full record](../../business-rules/business-rule-kind-constrains-remap-BRULE-001.md).
+A mapping's `kind` constrains which `targetType`s it may be remapped to (e.g. `field` → `Field` only, `field-group` → `FieldGroup` only). Explicit, High. *(↩ used by [BR-005](#br-005))* Registry: [BUSINESS-RULE-REGISTRY.md](../../../../registries/BUSINESS-RULE-REGISTRY.md) / [full record](../../business-rules/business-rule-kind-constrains-remap-BRULE-001.md).
 
 ##### BRULE-002
-Only one field row may be in edit mode at a time. Explicit, High. Evidence: [OBS-010](#obs-010). *(↩ used by [BR-007](#br-007))* Registry: [BUSINESS-RULE-REGISTRY.md](../../../../registries/BUSINESS-RULE-REGISTRY.md) / [full record](../../business-rules/business-rule-one-edit-at-a-time-BRULE-002.md).
+Only one field row may be in edit mode at a time. Explicit, High. *(↩ used by [BR-007](#br-007))* Registry: [BUSINESS-RULE-REGISTRY.md](../../../../registries/BUSINESS-RULE-REGISTRY.md) / [full record](../../business-rules/business-rule-one-edit-at-a-time-BRULE-002.md).
 
 ##### BRULE-003
-A page or section may be deleted only when it has zero children. Explicit, High. Evidence: [OBS-017](#obs-017). *(↩ used by [BR-012](#br-012))* Registry: [BUSINESS-RULE-REGISTRY.md](../../../../registries/BUSINESS-RULE-REGISTRY.md) / [full record](../../business-rules/business-rule-delete-only-when-empty-BRULE-003.md).
+A page or section may be deleted only when it has zero children. Explicit, High. *(↩ used by [BR-012](#br-012))* Registry: [BUSINESS-RULE-REGISTRY.md](../../../../registries/BUSINESS-RULE-REGISTRY.md) / [full record](../../business-rules/business-rule-delete-only-when-empty-BRULE-003.md).
 
 ##### BRULE-004
-A Section is visible only if it has a matching field or its own heading matches; a Page is visible only if it has a visible Section. Explicit, High. Evidence: [OBS-013](#obs-013). *(↩ used by [BR-004](#br-004))* Registry: [BUSINESS-RULE-REGISTRY.md](../../../../registries/BUSINESS-RULE-REGISTRY.md) / [full record](../../business-rules/business-rule-hierarchical-filter-visibility-BRULE-004.md).
+A Section is visible only if it has a matching field or its own heading matches; a Page is visible only if it has a visible Section. Explicit, High. *(↩ used by [BR-004](#br-004))* Registry: [BUSINESS-RULE-REGISTRY.md](../../../../registries/BUSINESS-RULE-REGISTRY.md) / [full record](../../business-rules/business-rule-hierarchical-filter-visibility-BRULE-004.md).
 
 ##### BRULE-005
-Table view and Card view must show identical filtered/grouped data and share all state. Explicit, High. Evidence: [OBS-003](#obs-003). *(↩ used by [BR-003](#br-003) -- kept as the modeling constraint for whenever Card view is built)* Registry: [BUSINESS-RULE-REGISTRY.md](../../../../registries/BUSINESS-RULE-REGISTRY.md) / [full record](../../business-rules/business-rule-table-card-parity-BRULE-005.md).
+Table view and Card view must show identical filtered/grouped data and share all state. Explicit, High. *(↩ used by [BR-003](#br-003) -- kept as the modeling constraint for whenever Card view is built)* Registry: [BUSINESS-RULE-REGISTRY.md](../../../../registries/BUSINESS-RULE-REGISTRY.md) / [full record](../../business-rules/business-rule-table-card-parity-BRULE-005.md).
 
 ##### BRULE-006
-This report applies only to workflows created via the PDF path. Explicit, High. Evidence: [OBS-019](#obs-019). *(↩ used by [BR-015](#br-015))* Registry: [BUSINESS-RULE-REGISTRY.md](../../../../registries/BUSINESS-RULE-REGISTRY.md) / [full record](../../business-rules/business-rule-pdf-path-only-BRULE-006.md).
+This report applies only to workflows created via the PDF path. Explicit, High. *(↩ used by [BR-015](#br-015))* Registry: [BUSINESS-RULE-REGISTRY.md](../../../../registries/BUSINESS-RULE-REGISTRY.md) / [full record](../../business-rules/business-rule-pdf-path-only-BRULE-006.md).
 
 ##### BRULE-007
-Structural edits (add page/section/field, delete empty page/section, reorder) never require confirmation; unlinking a mapping is the sole exception. Explicit, High. Evidence: [OBS-012](#obs-012). *(↩ used by [BR-008](#br-008), [BR-009](#br-009), [BR-010](#br-010), [BR-011](#br-011), [BR-012](#br-012), [BR-013](#br-013))* Registry: [BUSINESS-RULE-REGISTRY.md](../../../../registries/BUSINESS-RULE-REGISTRY.md) / [full record](../../business-rules/business-rule-no-confirmation-except-unlink-BRULE-007.md).
+Structural edits (add page/section/field, delete empty page/section, reorder) never require confirmation; unlinking a mapping is the sole exception. Explicit, High. *(↩ used by [BR-008](#br-008), [BR-009](#br-009), [BR-010](#br-010), [BR-011](#br-011), [BR-012](#br-012), [BR-013](#br-013))* Registry: [BUSINESS-RULE-REGISTRY.md](../../../../registries/BUSINESS-RULE-REGISTRY.md) / [full record](../../business-rules/business-rule-no-confirmation-except-unlink-BRULE-007.md).
 
 ##### BRULE-008
-Below roughly 900px, the mapping table uses horizontal scroll -- never a stacked-card row layout. Human Provided, High. Evidence: [OBS-023](#obs-023). *(↩ used by [BR-002](#br-002), [BR-004](#br-004), [BR-006](#br-006))* Registry: [BUSINESS-RULE-REGISTRY.md](../../../../registries/BUSINESS-RULE-REGISTRY.md) / [full record](../../business-rules/business-rule-horizontal-scroll-mobile-BRULE-008.md).
+Below roughly 900px, the mapping table uses horizontal scroll -- never a stacked-card row layout. Human Provided, High. *(↩ used by [BR-002](#br-002), [BR-004](#br-004), [BR-006](#br-006))* Registry: [BUSINESS-RULE-REGISTRY.md](../../../../registries/BUSINESS-RULE-REGISTRY.md) / [full record](../../business-rules/business-rule-horizontal-scroll-mobile-BRULE-008.md).
 
 ### Assumptions
 
@@ -522,7 +526,7 @@ Conflict, Human Provided evidence vs. design source. The design source's own "Sc
 ##### GAP-004
 Scope narrowing, Human Provided evidence vs. design source. The design source presents Card view ([OBS-003](#obs-003), [OBS-007](#obs-007)) as a fully-built, first-class second rendering, on equal footing with Table view; [OBS-025](#obs-025) (from the Review Outcome checklist) scopes the *build* to Table view only for this phase. **Resolved 2026-09-08** -- same authority basis as [GAP-003](#gap-003). Card view is not rejected -- it remains fully specified in the source for whenever it's prioritized -- only deferred out of the current build. [BR-003](#br-003)'s original framing (build both, kept in sync) was too broad for this phase -- narrowed, not removed; [BRULE-005](#brule-005) kept as the modeling constraint for whenever Card view is picked up.
 
-**No contradiction-type gap remains open in this analysis.** The retracted `DA-002`'s internal-text contradictions were re-verified directly against v4 and found resolved -- see the correction note under "What this is." [GAP-003](#gap-003) and [GAP-004](#gap-004) above are a different kind of finding -- real, newly-discovered tensions between the design document and direct Business Owner input, resolved by evidence authority, not leftovers from the prior analysis.
+**No contradiction-type gap remains open in this analysis.** The retracted `DA-002`'s internal-text contradictions were re-verified directly against v4 and found resolved -- see the correction note under the metadata table. [GAP-003](#gap-003) and [GAP-004](#gap-004) above are a different kind of finding -- real, newly-discovered tensions between the design document and direct Business Owner input, resolved by evidence authority, not leftovers from the prior analysis.
 
 ### Technical Unknowns
 
