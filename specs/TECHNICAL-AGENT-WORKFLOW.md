@@ -57,7 +57,7 @@ Steps 1-8 run in order for each Story reaching this stage. Unlike the Business A
 
 ### 4.1 Technical Plan: Optional, and Its Format When Used
 
-**Resolved 2026-09-01** (see section 10). [TECHNICAL-HANDOFF.md](TECHNICAL-HANDOFF.md) already establishes that "the Task is the handoff contract between agents. A separate Technical Plan document is optional and should be used only when the scope requires more detail than the canonical Tasks can contain." This section makes that concrete rather than leaving "more detail than the Tasks can contain" undefined.
+[TECHNICAL-HANDOFF.md](TECHNICAL-HANDOFF.md) already establishes that "the Task is the handoff contract between agents. A separate Technical Plan document is optional and should be used only when the scope requires more detail than the canonical Tasks can contain." This section makes that concrete rather than leaving "more detail than the Tasks can contain" undefined.
 
 **Default: no separate Technical Plan.** The Task and Spike fields in [CANONICAL-TASK-SPEC.md](CANONICAL-TASK-SPEC.md) sections 6-7 are the default, sufficient handoff contract for the large majority of Tasks. Where no separate plan is needed, the Architect approves the technical detail directly on the canonical Tasks and Spikes, per TECHNICAL-HANDOFF.md's Architect Review Gate.
 
@@ -106,7 +106,7 @@ If a step in section 4 would require crossing one of these lines to proceed, the
 
 ### 6.1 Engineering PR Reference Format (`Traces to:`)
 
-**Resolved 2026-09-01** (see section 10). [GITHUB-PLATFORM-ADAPTER-SPEC.md](GITHUB-PLATFORM-ADAPTER-SPEC.md) section 3 already requires that "every Issue and PR body must include a `Traces to:` line citing the artifact IDs it implements or is implemented by, using the same evidence-chain vocabulary EVIDENCE-SPEC.md already defines." That rule was stated generically; this is its concrete form for the one reference direction not yet made concrete -- an Implementation PR, living in an engineering repository, referencing a canonical Task that lives in this business repository:
+[GITHUB-PLATFORM-ADAPTER-SPEC.md](GITHUB-PLATFORM-ADAPTER-SPEC.md) section 3 already requires that "every Issue and PR body must include a `Traces to:` line citing the artifact IDs it implements or is implemented by, using the same evidence-chain vocabulary EVIDENCE-SPEC.md already defines." That rule was stated generically; this is its concrete form for the one reference direction not yet made concrete -- an Implementation PR, living in an engineering repository, referencing a canonical Task that lives in this business repository:
 
 ```text
 Traces to: TASK-<id> (business repository: <business-repo-name>)
@@ -170,8 +170,12 @@ This is already fully defined, not newly resolved here -- [CANONICAL-TASK-SPEC.m
 - [ ] Every Implementation PR's `Traces to:` line follows section 6.1's format
 - [ ] A Major change to the upstream Story after a Task exists blocked that Task, per CANONICAL-TASK-SPEC.md §12 (section 8.1)
 
-## 10. Open Decisions
+## 10. Revision History
 
-- ~~What minimum content must a Technical Plan contain before Architect review?~~ Resolved 2026-09-01 -- see section 4.1. Default is none (Task/Spike fields suffice); when scope genuinely spans multiple Tasks, a Markdown document per ARTIFACT-STORAGE-SPEC.md's convention, reviewed under the same Architect Review Gate as the Tasks it covers.
-- ~~What reference format do Implementation PRs use to link back to canonical Tasks?~~ Resolved 2026-09-01 -- see section 6.1. `Traces to: TASK-<id> (business repository: <name>)`, extending GITHUB-PLATFORM-ADAPTER-SPEC.md section 3's existing rule to the one reference direction it had not yet made concrete.
-- ~~How is change management handled when a design or approved Story changes after canonical Tasks already exist downstream?~~ Already resolved, not newly so -- see section 8.1. CANONICAL-TASK-SPEC.md section 12 already defines this in full; PRD.md and IMPLEMENTATION-PLAN.md's open-item tracking simply wasn't cross-referencing it.
+*No open decisions remain -- every question this section once tracked is resolved and stated directly at its governing section (4.1, 6.1, 8.1). What and when, not why -- the current rule lives at the cited section.*
+
+| Date | Section | Change |
+| --- | --- | --- |
+| 2026-09-01 | 4.1 | Decided the Technical Plan's minimum content: none by default (Task/Spike fields suffice); a Markdown document only when scope genuinely spans multiple Tasks. |
+| 2026-09-01 | 6.1 | Decided the Implementation PR reference format: `Traces to: TASK-<id> (business repository: <name>)`. |
+| 2026-09-01 | 8.1 | Found this document's change-management question was already fully answered by `CANONICAL-TASK-SPEC.md` section 12 -- `PRD.md`/`IMPLEMENTATION-PLAN.md` just weren't cross-referencing it. |

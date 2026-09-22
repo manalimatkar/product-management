@@ -133,7 +133,7 @@ Then <observable product behavior>
 
 - [ ] **Business Owner sign-off (ROLE-001):** I have reviewed this Business PR and accept it.
 
-*(Added 2026-09-04. This exact checked line, not a GitHub PR review, is what `business_pr_gate.py`'s merge gate checks -- GitHub never lets a PR's author formally Approve their own PR, and this repository has no separate agent identity, so author and required reviewer are unavoidably the same account today. Check it only once genuinely reviewed, then fill in the table below and merge -- see GITHUB-PLATFORM-ADAPTER-SPEC.md section 8.)*
+*(This exact checked line, not a GitHub PR review, is what `business_pr_gate.py`'s merge gate checks -- GitHub never lets a PR's author formally Approve their own PR, and this repository has no separate agent identity, so author and required reviewer are unavoidably the same account today. Check it only once genuinely reviewed, then fill in the table below and merge -- see GITHUB-PLATFORM-ADAPTER-SPEC.md section 8.)*
 
 | Field | Value |
 | --- | --- |

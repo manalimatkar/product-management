@@ -294,7 +294,7 @@ designTokensUsed: [color-primary, color-error, typography-heading-2, typography-
 - [ ] Owner is identified in bundle.md
 - [ ] Any design-level reviewedBy entries carry a role and timestamp
 - [ ] knownLimitations lists anything incomplete, excluded, unclear, or -- for a lightweight reference -- not yet broken down at all
-- [ ] **Design Reviewer sign-off (ROLE-004):** I have reviewed this bundle and accept it. *(Added 2026-09-04 -- this exact checked line, pasted into the PR description, is what bundle_gate.py's merge gate checks; not a GitHub PR review, since GitHub never lets a PR's author formally approve their own PR. Check only once genuinely reviewed. See GITHUB-PLATFORM-ADAPTER-SPEC.md section 8.)*
+- [ ] **Design Reviewer sign-off (ROLE-004):** I have reviewed this bundle and accept it. *(This exact checked line, pasted into the PR description, is what bundle_gate.py's merge gate checks; not a GitHub PR review, since GitHub never lets a PR's author formally approve their own PR. Check only once genuinely reviewed. See GITHUB-PLATFORM-ADAPTER-SPEC.md section 8.)*
 
 ## Ready to Register?
 Once the checks above pass:
@@ -340,13 +340,13 @@ Before opening the PR into `design`, confirm (the merge gate checks these mechan
 
 ## Part 5a: PR Description Sign-off (native path only)
 
-**Added 2026-09-04.** Paste this exact line into the description of every PR opened against the `design` branch, unchecked at first:
+Paste this exact line into the description of every PR opened against the `design` branch, unchecked at first:
 
 ```markdown
 - [ ] **Design Reviewer sign-off (ROLE-004):** I have reviewed this drop and accept it.
 ```
 
-Check the box only once you have actually reviewed the drop, then merge. This replaces a GitHub PR review as the approval signal for this one gate -- discovered 2026-09-04, GitHub never allows a PR's author to formally Approve their own PR, and this repository has no separate agent/bot GitHub identity, so the account opening an upload PR and the required Design Reviewer are, today, the same account. `design_branch_gate.py check` looks for this exact line (see `REVIEWER_SIGNOFF_RE`) -- a paraphrase won't match, and approving *after* merge does not retroactively satisfy it, since the gate only runs at PR-update and merge time. See DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md section 6.2.
+Check the box only once you have actually reviewed the drop, then merge. This replaces a GitHub PR review as the approval signal for this one gate -- GitHub never allows a PR's author to formally Approve their own PR, and this repository has no separate agent/bot GitHub identity, so the account opening an upload PR and the required Design Reviewer are, today, the same account. `design_branch_gate.py check` looks for this exact line (see `REVIEWER_SIGNOFF_RE`) -- a paraphrase won't match, and approving *after* merge does not retroactively satisfy it, since the gate only runs at PR-update and merge time. See DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md section 6.2.
 
 ## Summary
 
