@@ -34,7 +34,7 @@ Design Analysis
 
 Entry condition: readiness must be `Ready` or `Ready with Limitations` per [PRODUCT-SOURCE-MATERIAL-SPEC.md](PRODUCT-SOURCE-MATERIAL-SPEC.md) section 9. If readiness is `Blocked`, the Business Agent must not proceed -- it records the blocker and stops (section 8 below).
 
-**Revised 2026-09-03:** for a native Claude Design export, this entry condition is signaled by a tracked GitHub Issue (`agent:business`/`status:queued`, opened by `.github/workflows/design-branch-intake.yml` on merge into the `design` branch) naming the readiness value directly, not by the PR comment GITHUB-PLATFORM-ADAPTER-SPEC.md section 6.1's legacy path used -- see that section and DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md section 6.2. The entry condition itself, and everything below in this section, is unchanged.
+For a native Claude Design export, this entry condition is signaled by a tracked GitHub Issue (`agent:business`/`status:queued`, opened by `.github/workflows/design-branch-intake.yml` on merge into the `design` branch) naming the readiness value directly -- see GITHUB-PLATFORM-ADAPTER-SPEC.md section 6.1 and DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md section 6.2. A hand-authored bundle instead uses the legacy PR-comment path GITHUB-PLATFORM-ADAPTER-SPEC.md section 6.1 also describes.
 
 ## 4. Processing
 
@@ -60,7 +60,7 @@ Steps 1-9 run in order and together produce one coherent Design Analysis. Steps 
 
 ### 4.1 Continuous Execution, With One Pause Trigger
 
-**Resolved 2026-09-01** (see section 10). Steps 1-15 run as one continuous Business Agent invocation by default, ending in Design Analysis approval and Business Scope approval being combined through the Business PR -- the "combined-review default" DESIGN-ANALYSIS-REVIEW-SPEC.md section 17 already allows "when configured." This matches how the dry run actually happened (BPR-001 combined both reviews into one Business Owner decision).
+Steps 1-15 run as one continuous Business Agent invocation by default, ending in Design Analysis approval and Business Scope approval being combined through the Business PR -- the "combined-review default" DESIGN-ANALYSIS-REVIEW-SPEC.md section 17 already allows "when configured." (The combined-vs-separate *review-package configuration* question in that section is a separate, still-open item -- this section resolves the Business Agent's own execution shape, not that configuration question.)
 
 The Business Agent must instead pause after step 9 -- submitting the Design Analysis for its own review per DESIGN-ANALYSIS-REVIEW-SPEC.md sections 10-11, before proceeding to step 10 -- when either is true:
 
@@ -71,7 +71,7 @@ Either condition is evidence the analysis itself is less certain than usual, and
 
 ### 4.2 An Ambiguity That Could Eliminate an Epic
 
-**Resolved 2026-09-01** (see section 10). When step 8 surfaces a Decision Required item that, if resolved one way, would eliminate an Epic entirely, the Epic is still included in the Business PR at step 15 -- with its Status set to `Blocked` and the triggering Decision Required item referenced directly on it. It is never silently omitted.
+When step 8 surfaces a Decision Required item that, if resolved one way, would eliminate an Epic entirely, the Epic is still included in the Business PR at step 15 -- with its Status set to `Blocked` and the triggering Decision Required item referenced directly on it. It is never silently omitted.
 
 This matches how this repository already treats every other unresolved Decision Required and Assumption: BUSINESS-PR-SPEC.md section 9 requires every unresolved item to stay visible in the PR, and PRODUCT-SOURCE-MATERIAL-SPEC.md section 12's "must not silently alter" rule applies the same principle to change handling generally. Scope under real uncertainty stays visible to the Business Owner rather than disappearing from the reviewed PR without anyone deciding to drop it.
 
@@ -165,7 +165,7 @@ A blocked run must state the reason, the affected step, and the owner who can un
 
 ### 8.1 Resuming After `Changes Requested`
 
-**Resolved 2026-09-01** (see section 10). Whether a `Changes Requested` outcome -- from Design Analysis review or Business Owner review -- requires re-running the full sequence from step 1 depends on the same Major/Editorial distinction REQUIREMENTS-VERSIONING-SPEC.md section 9 already uses for approval validity, applied here rather than defined a second time:
+Whether a `Changes Requested` outcome -- from Design Analysis review or Business Owner review -- requires re-running the full sequence from step 1 depends on the same Major/Editorial distinction REQUIREMENTS-VERSIONING-SPEC.md section 9 already uses for approval validity, applied here rather than defined a second time:
 
 - **Editorial feedback** -- wording, an acceptance criterion's phrasing, a Story description -- may be patched directly at the step that produced it and resubmitted, without re-running earlier steps, provided the audit record confirms meaning was unchanged.
 - **Material feedback** -- a wrong actor, a business rule that doesn't actually apply, anything that changes meaning -- must flow back through whichever step actually produced it (not necessarily step 1), and every step downstream of that one must be re-run. Patching only the symptom risks the same artifact drift REQUIREMENTS-VERSIONING-SPEC.md exists to prevent.
@@ -189,8 +189,14 @@ The Business Agent classifies feedback as Editorial or Material using this same 
 - [ ] No output contains a technical implementation detail (section 6)
 - [ ] The Business Agent has not approved or merged its own PR
 
-## 10. Open Decisions
+## 10. Revision History
 
-- ~~Should steps 1-9 (Design Analysis) and steps 10-15 (Business Requirements through Business PR) run as one continuous Business Agent invocation, or as two separate runs gated by an explicit human review between them?~~ Resolved 2026-09-01 -- see section 4.1. Continuous by default, with a defined pause trigger (unresolved-item count, or source readiness `Ready with Limitations`). The combined-vs-separate *review-package configuration* question in DESIGN-ANALYSIS-REVIEW-SPEC.md section 17 remains its own open item -- this resolves the Business Agent's own execution shape, not that configuration question.
-- ~~What happens when step 8 surfaces a Decision Required item that, if answered one way, would eliminate an Epic entirely?~~ Resolved 2026-09-01 -- see section 4.2. The Epic is always included, marked `Blocked`, never silently omitted.
-- ~~Should this workflow support resuming from a `Changes Requested` outcome without re-running the entire sequence from step 1?~~ Resolved 2026-09-01 -- see section 8.1. Editorial feedback may be patched and resubmitted; material feedback must flow back through the step that produced it, using REQUIREMENTS-VERSIONING-SPEC.md section 9's existing Major/Editorial test.
+*No open decisions remain in this document -- every question this section once tracked is resolved and stated directly at its governing section (4.1, 4.2, 4.3, 4.4, 8.1). This table is what and when, not why -- the current rule and its rationale live at the cited section, not here.*
+
+| Date | Section | Change |
+| --- | --- | --- |
+| 2026-09-21 | 4.3, 4.4 | Added the self-review-before-finalizing requirement and the keep-downstream-links-current requirement, after real use (`DA-003`) needed a direct rewrite to add both after the fact. |
+| 2026-09-03 | 3 | Native Claude Design export entry condition changed from a PR-comment signal to a tracked GitHub Issue (`design-branch-intake.yml`); the PR-comment path continues for hand-authored bundles only. |
+| 2026-09-01 | 4.1 | Decided steps 1-15 run continuously by default (single combined Business Owner review) rather than as two separately-gated runs. |
+| 2026-09-01 | 4.2 | Decided an Epic threatened by an unresolved Decision Required item stays in the Business PR, marked `Blocked`, rather than being omitted. |
+| 2026-09-01 | 8.1 | Decided `Changes Requested` resumption uses the existing Major/Editorial distinction (`REQUIREMENTS-VERSIONING-SPEC.md` section 9) rather than a new one. |
