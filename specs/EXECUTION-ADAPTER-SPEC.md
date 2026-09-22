@@ -6,9 +6,9 @@ This document defines this repository's **Execution Adapter**: which AI platform
 
 This is a different concern from [GITHUB-PLATFORM-ADAPTER-SPEC.md](GITHUB-PLATFORM-ADAPTER-SPEC.md), which is a **Storage Adapter** -- it defines where artifacts are tracked and stored (files, Issues, PRs, labels) once produced. This document defines who or what produces them. The two are independent: a run executed on Claude, ChatGPT, or Copilot all write to the same GitHub-light storage layer, unchanged.
 
-The need for this document is not new -- it was deferred, not overlooked. [PRD.md](../PRD.md) section 4 already requires "the business artifact model must remain portable beyond a particular automation engine or agent runtime," and [AGENT-RESPONSIBILITIES.md](AGENT-RESPONSIBILITIES.md)'s Purpose already states it "does not define the implementation of any particular model or automation engine." Both left the actual adapter undefined until an automation phase existed to need it. Decided 2026-09-03: that phase has started, and platform-agnostic execution -- run this automatically, or run any single stage by hand on whichever platform is at hand (Claude, ChatGPT, or Copilot) -- is an explicit goal of it.
+The need for this document is not new -- it was deferred, not overlooked. [PRD.md](../PRD.md) section 4 already requires "the business artifact model must remain portable beyond a particular automation engine or agent runtime," and [AGENT-RESPONSIBILITIES.md](AGENT-RESPONSIBILITIES.md)'s Purpose already states it "does not define the implementation of any particular model or automation engine." Both left the actual adapter undefined until an automation phase existed to need it. That phase has started, and platform-agnostic execution -- run this automatically, or run any single stage by hand on whichever platform is at hand (Claude, ChatGPT, or Copilot) -- is an explicit goal of it.
 
-**Scope, decided 2026-09-03:** this document defines the invocation contract only -- what a platform must be given, and what it must return, to correctly execute one pipeline stage. It does not define how a given platform's internal mechanics (tool-calling format, context-window handling, its own prompting conventions) get normalized, and it does not define credential or configuration management for any platform. Those stay out of scope so this document does not overreach into implementation detail before [FRAMEWORK-CONFIGURATION-SPEC.md](FRAMEWORK-CONFIGURATION-SPEC.md)'s companion Tool Contract (per-stage callable functions, not yet written) exists to build on.
+**Scope:** this document defines the invocation contract only -- what a platform must be given, and what it must return, to correctly execute one pipeline stage. It does not define how a given platform's internal mechanics (tool-calling format, context-window handling, its own prompting conventions) get normalized, and it does not define credential or configuration management for any platform. Those stay out of scope so this document does not overreach into implementation detail before [FRAMEWORK-CONFIGURATION-SPEC.md](FRAMEWORK-CONFIGURATION-SPEC.md)'s companion Tool Contract (per-stage callable functions, not yet written) exists to build on.
 
 ## 2. Relationship to Other Artifacts
 
@@ -16,7 +16,7 @@ The need for this document is not new -- it was deferred, not overlooked. [PRD.m
 - [GITHUB-PLATFORM-ADAPTER-SPEC.md](GITHUB-PLATFORM-ADAPTER-SPEC.md) is the sibling Storage Adapter. Nothing here changes its artifact mapping, labels, or automation triggers -- a Business PR is a Business PR whichever platform produced its contents.
 - [FRAMEWORK-CONFIGURATION-SPEC.md](FRAMEWORK-CONFIGURATION-SPEC.md) section 13 (Platform and Storage Adapters) maps framework concepts to this repository's storage tooling only. It does not cover execution platform -- this document is that missing sibling table, kept separate rather than folded in, so the two adapter concerns stay as cleanly divided as they are conceptually.
 - [AGENT-RESPONSIBILITIES.md](AGENT-RESPONSIBILITIES.md) defines each agent's May/May-not boundary platform-agnostically. This document does not add or remove anything from those lists -- a Business Agent run on ChatGPT still may not approve its own Business PR, exactly as on Claude.
-- A platform-neutral Tool Contract (per-stage callable functions derived from each workflow document's Processing/Output tables) and a stage-level runner/orchestrator are both still undesigned -- later items on the automation roadmap discussed with Manali 2026-09-03. This document is deliberately narrow enough not to presuppose either.
+- A platform-neutral Tool Contract (per-stage callable functions derived from each workflow document's Processing/Output tables) and a stage-level runner/orchestrator are both still undesigned -- later items on the automation roadmap. This document is deliberately narrow enough not to presuppose either.
 
 ## 3. Governing Principle
 
@@ -28,11 +28,11 @@ The need for this document is not new -- it was deferred, not overlooked. [PRD.m
 
 ## 4. Per-Platform Invocation Mapping
 
-Decided 2026-09-03: all three platforms Manali named are specified now, even though only Claude is implemented today (item 4 on the automation roadmap). ChatGPT and Copilot are specified to the same invocation-contract depth as Claude, not left as placeholders.
+All three platforms Manali named are specified now, even though only Claude is implemented today (item 4 on the automation roadmap). ChatGPT and Copilot are specified to the same invocation-contract depth as Claude, not left as placeholders.
 
 | Platform | Invocation Mechanism | Input Delivery | Output Capture | Notes |
 | --- | --- | --- | --- | --- |
-| Claude | Claude Code (CLI, local or bridged) or a Claude Agent SDK session, run with repository access | The relevant workflow document (BUSINESS-AGENT-WORKFLOW.md or TECHNICAL-AGENT-WORKFLOW.md) as the session's instructions, plus direct read access to the repository files that satisfy that stage's Input Contract | Direct: commits, file edits, and PR creation happen in the same session, against the repository directly | Reference implementation platform (item 4). Direct file access means no packaging step is needed between input contract and actual files. **Built 2026-09-09**: [.claude/agents/business-agent.md](https://github.com/manalimatkar/product-management/blob/main/.claude/agents/business-agent.md) is the real, invokable form of this row for the Business Agent -- declared tool access (`Read, Grep, Glob, Write, Edit, Bash`) plus this same "workflow document as instructions" mechanism, not a rewrite of it. Technical Agent and Developer Agent definitions are not yet built. |
+| Claude | Claude Code (CLI, local or bridged) or a Claude Agent SDK session, run with repository access | The relevant workflow document (BUSINESS-AGENT-WORKFLOW.md or TECHNICAL-AGENT-WORKFLOW.md) as the session's instructions, plus direct read access to the repository files that satisfy that stage's Input Contract | Direct: commits, file edits, and PR creation happen in the same session, against the repository directly | Reference implementation platform (item 4). Direct file access means no packaging step is needed between input contract and actual files. [.claude/agents/business-agent.md](https://github.com/manalimatkar/product-management/blob/main/.claude/agents/business-agent.md) is the real, invokable form of this row for the Business Agent -- declared tool access (`Read, Grep, Glob, Write, Edit, Bash`) plus this same "workflow document as instructions" mechanism, not a rewrite of it. Technical Agent and Developer Agent definitions are not yet built. |
 | ChatGPT | A configured GPT, or a plain API/chat session, without native git repository access | The relevant workflow document supplied as context, plus the specific files that satisfy that stage's Input Contract packaged into the conversation (pasted or uploaded) -- ChatGPT cannot read the repository on its own | Indirect: ChatGPT returns the stage's output as text or a patch; a human, or a thin wrapper script once the orchestrator (roadmap item 5) exists, applies it as an actual commit against the repository | Until an automated wrapper exists, applying ChatGPT's output to the repository is a manual step -- documented here as the current fallback, not a gap in this specification. |
 | Copilot | Copilot Chat or agent mode inside an IDE with the repository open, or the Copilot CLI | Same as Claude -- the relevant workflow document as instructions, direct read access to the repository files satisfying the Input Contract | Direct, same as Claude -- Copilot's IDE/CLI integration edits and commits against the repository directly | Mirrors Claude's mechanism since both have native repository access; differs from ChatGPT for that reason. |
 
@@ -40,7 +40,7 @@ Whichever platform runs a stage, it is given exactly two things and nothing else
 
 ## 5. Stage-Level Invocation
 
-This section states the contract that satisfies Manali's explicit requirement (2026-09-03): the ability to run one specific stage of the pipeline, on any platform, without running the full end-to-end sequence.
+This section states the contract that satisfies Manali's explicit requirement: the ability to run one specific stage of the pipeline, on any platform, without running the full end-to-end sequence.
 
 Both BUSINESS-AGENT-WORKFLOW.md section 4 and TECHNICAL-AGENT-WORKFLOW.md section 4 already number their Processing steps in dependency order and cite what governs each one. That existing structure is what makes stage-level invocation possible, without any change to either document:
 
@@ -60,3 +60,10 @@ Whichever platform executes a stage, the artifact it produces is attributed to t
 - How is a platform's output verified as conforming to a stage's Output Contract before being accepted -- an automated check, or human review every time? Likely a concern for the Tool Contract (roadmap item 3) rather than this document, but not yet resolved either place.
 - Should this document define fallback behavior when a preferred platform is unavailable (rate-limited, offline), or does that stay an operator decision made at run time?
 - Should Execution Adapter choice be recorded per-run (e.g. a field alongside the Stage Trace) so a completed artifact's provenance shows which platform executed it, the way GITHUB-PLATFORM-ADAPTER-SPEC.md records storage provenance? Not addressed here.
+
+## 8. Revision History
+
+| Date | Section | Change |
+| --- | --- | --- |
+| 2026-09-09 | 4 | `.claude/agents/business-agent.md` built -- the real, invokable form of the Claude row. |
+| 2026-09-03 | 1, 3, 4, 5 | This document created: scoped to the invocation contract only, all three named platforms (Claude/ChatGPT/Copilot) specified to the same depth, and stage-level (not only end-to-end) invocation made an explicit requirement. |
