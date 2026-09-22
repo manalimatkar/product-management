@@ -6,7 +6,7 @@ This is the single canonical reference for where every generated artifact lives 
 
 Two problems this resolves, both found by actually auditing the repo rather than assumed:
 
-- **Inconsistent nesting.** Only `design/` had a real multi-level convention (`design/<product-slug>/<feature-slug>/v<version>/`). Every other artifact type had a different, shallower, ad hoc depth invented as the first dry run went. (Terminology updated 2026-09-01, see section 4 -- `product-slug` is now `platform-slug`, with an optional `app-slug` level added.)
+- **Inconsistent nesting.** Only `design/` had a real multi-level convention (`design/<product-slug>/<feature-slug>/v<version>/`). Every other artifact type had a different, shallower, ad hoc depth invented as the first dry run went. (`product-slug` is now `platform-slug`, with an optional `app-slug` level added -- see section 4.)
 - **Generic filenames.** `bundle.md`, `design-analysis.md`, `business-requirements.md`, and a bare `BPR-001.md` all depend entirely on their folder path for identity. Opened as an editor tab, attached to a message, or found in a search result, none of them says what they are. A file's name should identify it on its own, and the artifact ID already in every file's metadata should be visible in the name too, so the chain from Design Handoff Bundle through to Task can be followed by reading filenames, not only by opening files and reading their internal cross-reference tables.
 
 ## 2. Relationship to Other Artifacts
@@ -48,7 +48,7 @@ A filename this pattern produces is never ambiguous: `design-analysis-cart-optim
 
 ### 4.1 Journey, Capability, and Business Rule: Product-Level, Not Feature-Scoped
 
-**Added 2026-09-10**, building out [ARTIFACT-RELATIONSHIP-MODEL.md](ARTIFACT-RELATIONSHIP-MODEL.md) section 3.1's model into a real storage location. Every other artifact type above belongs to exactly one feature -- that's why `feature-slug` is part of its filename and its folder path. A Journey, Capability, or Business Rule is different in kind: it describes the product, and a later Design Analysis for a *different* feature may need to cite the same one. Nesting it under a feature-slug the way `sources/`, `analysis/`, etc. do would make that impossible to express -- a Capability shared by two features can't live under both.
+This section builds out [ARTIFACT-RELATIONSHIP-MODEL.md](ARTIFACT-RELATIONSHIP-MODEL.md) section 3.1's model into a real storage location. Every other artifact type above belongs to exactly one feature -- that's why `feature-slug` is part of its filename and its folder path. A Journey, Capability, or Business Rule is different in kind: it describes the product, and a later Design Analysis for a *different* feature may need to cite the same one. Nesting it under a feature-slug the way `sources/`, `analysis/`, etc. do would make that impossible to express -- a Capability shared by two features can't live under both.
 
 So these three nest one level shallower -- directly under the platform (and app, where present), with no feature-slug segment at all:
 
@@ -58,13 +58,13 @@ So these three nest one level shallower -- directly under the platform (and app,
 <platform-slug>/[<app-slug>/]business-rules/business-rule-<slug>-<BRULE-id>.md
 ```
 
-`<slug>` here is a short descriptive slug for the entity itself (e.g. `review-extraction-confidence`), not a feature. Each has a registry under `registries/` at the repository root (added 2026-09-10, alongside `SOURCE-REGISTRY.md`, moved there the same day so root itself stays uncluttered), following the same "index here, real detail in the entity's own file" pattern: [CAPABILITY-REGISTRY.md](../registries/CAPABILITY-REGISTRY.md), [JOURNEY-REGISTRY.md](../registries/JOURNEY-REGISTRY.md), [BUSINESS-RULE-REGISTRY.md](../registries/BUSINESS-RULE-REGISTRY.md).
+`<slug>` here is a short descriptive slug for the entity itself (e.g. `review-extraction-confidence`), not a feature. Each has a registry under `registries/` at the repository root, alongside `SOURCE-REGISTRY.md`, following the same "index here, real detail in the entity's own file" pattern: [CAPABILITY-REGISTRY.md](../registries/CAPABILITY-REGISTRY.md), [JOURNEY-REGISTRY.md](../registries/JOURNEY-REGISTRY.md), [BUSINESS-RULE-REGISTRY.md](../registries/BUSINESS-RULE-REGISTRY.md).
 
 A Design Analysis still narrates a Capability/Journey/Business Rule in its own prose, for a reader who wants to understand the feature without jumping between files -- but the ID it uses is assigned from the registry, not invented locally, and its entry links out to the registry file as the canonical, cross-feature record.
 
 ## 4. Folder Convention
 
-**Revised 2026-09-08.** Platform (and app, where present) is always the top-level root; every artifact type nests *under* it, then feature: `<platform-slug>/[<app-slug>/]<type-root>/<feature-slug>/`. This inverts the 2026-09-01 order (which put the type root first) to match the shape already used for the `design` branch (section 10) -- everything belonging to one platform/app now lives under one subtree, browsable as a unit, rather than scattered across six type-named roots at the repository's own top level.
+Platform (and app, where present) is always the top-level root; every artifact type nests *under* it, then feature: `<platform-slug>/[<app-slug>/]<type-root>/<feature-slug>/`. This matches the shape already used for the `design` branch (section 10) -- everything belonging to one platform/app lives under one subtree, browsable as a unit, rather than scattered across six type-named roots at the repository's own top level.
 
 ```text
 <platform-slug>/[<app-slug>/]sources/<feature-slug>/source-<feature-slug>-<SRC-id>.md
@@ -78,7 +78,7 @@ A Design Analysis still narrates a Capability/Journey/Business Rule in its own p
 
 The optional Technical Plan is defined in [TECHNICAL-AGENT-WORKFLOW.md](TECHNICAL-AGENT-WORKFLOW.md) section 4.1 -- most Tasks never produce one.
 
-**Platform is always present** -- the top-level identifier for the overall project or monolith an artifact belongs to (what this section called `product-slug` before 2026-09-01).
+**Platform is always present** -- the top-level identifier for the overall project or monolith an artifact belongs to (previously called `product-slug`).
 
 **App is optional.** It is inserted only when a platform genuinely contains multiple, distinct applications sharing one stack -- for example a platform with a web app, an API app, and an LLM layer, each wanting its own separable set of business artifacts. When a platform's features sit directly on it, with no meaningful application-level subdivision, the app segment is omitted entirely -- not left as an empty or placeholder folder. Section 6 shows both shapes.
 
@@ -104,7 +104,7 @@ The folder groups everything for one feature together for browsing; the filename
 
 ## 6. Worked Example: a Flat Platform
 
-**Cleared 2026-09-08** -- see CLAUDE.md open item 18. No artifact instances currently exist in this repository; the illustrative `checkout/cart-optimization` dry run and a `pdf-workflow/workflow-manager` analysis built against the wrong source version were both removed rather than left stale. The shape below is illustrative only, no files exist at these paths:
+No flat-platform instance exists in this repository yet -- the real example, `pdf-workflow`/`workflow-manager`, uses the app-layer shape instead (see the next section). The pattern below is illustrative only; no files exist at these exact paths:
 
 ```text
 <platform-slug>/design/<feature-slug>/v<version>/design-handoff-<feature-slug>-v<version>.md
@@ -118,14 +118,14 @@ The folder groups everything for one feature together for browsing; the filename
 
 Reading down this list top to bottom is reading the controlled transformation (BUSINESS-PR-SPEC.md section 3) itself -- each filename names the artifact, and each artifact's own metadata table names the one before it. A flat platform (no distinct applications) omits the app segment entirely, as shown here -- this is the flat, two-level shape.
 
-### Illustrative Only: a Platform With an App Layer
+### A Platform With an App Layer
 
 ```text
 <platform-slug>/<app-slug>/sources/<feature-slug>/source-<feature-slug>-<SRC-id>.md
 <platform-slug>/<app-slug>/analysis/<feature-slug>/design-analysis-<feature-slug>-<DA-id>.md
 ```
 
-A platform with, say, a web application and a separate API application uses two different `app-slug` values here, each with its own independent set of sources, analyses, requirements, and so on -- while still sharing one `platform-slug` and one FRAMEWORK-CONFIGURATION-SPEC.md configuration. `pdf-workflow` (`workflow-manager` app) is expected to become a real instance of this shape once the fresh v4 analysis (item 18) is registered.
+A platform with, say, a web application and a separate API application uses two different `app-slug` values here, each with its own independent set of sources, analyses, requirements, and so on -- while still sharing one `platform-slug` and one FRAMEWORK-CONFIGURATION-SPEC.md configuration. `pdf-workflow` (`workflow-manager` app) is a real instance of this shape -- see `registries/SOURCE-REGISTRY.md` and `pdf-workflow/workflow-manager/analysis/mapping-report/design-analysis-mapping-report-DA-003.md`.
 
 ## 7. Versioning and Supersession
 
@@ -140,17 +140,22 @@ The superseded file is never deleted or overwritten -- its `Status` field change
 
 ## 8. Canonical Tasks and Spikes: Local Fallback
 
-Per [CANONICAL-TASK-SPEC.md](CANONICAL-TASK-SPEC.md) section 2 and [PRD.md](../PRD.md) section 7.6, canonical Tasks and Spikes are meant to live as GitHub Issues once this repository has a real engineering-adjacent GitHub setup. That does not exist yet (see CLAUDE.md's open items). Until it does, the `<platform-slug>/[<app-slug>/]tasks/<feature-slug>/` layout in section 4 is the local-file fallback, so the Technical Agent stage is not blocked on git existing. When GitHub Issues become the actual store -- confirmed 2026-08-31 as this repository's chosen adapter, see [GITHUB-PLATFORM-ADAPTER-SPEC.md](GITHUB-PLATFORM-ADAPTER-SPEC.md) section 7 -- a retired local file's `Status` is set to `Superseded` and a `GitHub Issue: #<number>` line is added; the file itself is kept, never deleted, per the same non-destructive rule as section 7 above.
+Per [CANONICAL-TASK-SPEC.md](CANONICAL-TASK-SPEC.md) section 2 and [PRD.md](../PRD.md) section 7.6, canonical Tasks and Spikes are meant to live as GitHub Issues once this repository has a real engineering-adjacent GitHub setup. That does not exist yet (see CLAUDE.md's open items). Until it does, the `<platform-slug>/[<app-slug>/]tasks/<feature-slug>/` layout in section 4 is the local-file fallback, so the Technical Agent stage is not blocked on git existing. When GitHub Issues become the actual store -- this repository's chosen adapter, see [GITHUB-PLATFORM-ADAPTER-SPEC.md](GITHUB-PLATFORM-ADAPTER-SPEC.md) section 7 -- a retired local file's `Status` is set to `Superseded` and a `GitHub Issue: #<number>` line is added; the file itself is kept, never deleted, per the same non-destructive rule as section 7 above.
 
-## 9. Migration Note
+## 9. Revision History
 
-On 2026-08-31 the cart-optimization dry-run files were renamed and moved to match this convention (see section 6) -- this was the first real test of the convention, done immediately rather than left to apply "going forward" only, at the user's explicit direction. Every internal cross-reference (metadata tables, Stage Traces, the Source Registry) was swept and verified afterward.
+*What and when -- the current rule lives at the cited section, not here.*
 
-**2026-09-08: re-migrated to platform-first order.** The type-root-first order above (`<type>/<platform-slug>/...`) was inconsistent with the `design` branch's own shape (section 10), which had already put platform/app first. All real files -- the `checkout` dry run and the real `pdf-workflow/workflow-manager` example -- were moved to the platform-first order in section 4/6 immediately, not left on the old order; every internal cross-reference was swept and verified the same way as the 2026-08-31 migration. The six former top-level roots (`sources/`, `analysis/`, `requirements/`, `business-prs/`, `design/`, `tasks/`) no longer exist at the repository root -- each platform/app subtree now owns its own copies of them.
+| Date | Section | Change |
+| --- | --- | --- |
+| 2026-09-01 | 4 | Decided the app layer is optional, present only when a platform genuinely has multiple distinct applications, not required for every platform. |
+| 2026-09-08 | 4 | Re-migrated to platform-first order (`<platform-slug>/[<app-slug>/]<type-root>/<feature-slug>/`), to match the `design` branch's own shape (section 10). The six former top-level type roots (`sources/`, `analysis/`, `requirements/`, `business-prs/`, `design/`, `tasks/`) no longer exist at the repository root. All real files at the time were moved and every cross-reference swept and verified. |
+| 2026-08-31 | 6 | First real test of this convention: the cart-optimization dry-run files were renamed and moved to match it immediately, not left to apply "going forward" only. Every internal cross-reference (metadata tables, Stage Traces, the Source Registry) was swept and verified. |
+| 2026-08-31 | 8 | Decided what links a retired local Task/Spike fallback file to its eventual GitHub Issue, once one exists -- see section 8 and `GITHUB-PLATFORM-ADAPTER-SPEC.md` section 7. |
 
 ## 10. The `design` Branch: An Independent Shape
 
-**Added 2026-09-03.** [DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md](DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md) section 6.2 defines a second design-source location: a persistent `design` branch (not `main`), holding native Claude Design exports untouched. Its folder shape --
+[DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md](DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md) section 6.2 defines a second design-source location: a persistent `design` branch (not `main`), holding native Claude Design exports untouched. Its folder shape --
 
 ```text
 <platform-slug>/[<app-slug>/]design/v<N>/
@@ -171,6 +176,6 @@ A commit SHA pins an exact snapshot even after `design`'s tip advances to a late
 ## 11. Open Decisions
 
 - Should `feature-slug` be required to be globally unique across all platforms, or only unique within its `platform-slug` (and `app-slug`, where present)? (This convention currently assumes the latter -- two platforms could each have a `cart-optimization` feature without collision, since the platform-slug folder disambiguates them, but no spec states this explicitly yet.)
-- ~~Should the storage hierarchy always include an app level, even for a platform with only one application?~~ Resolved 2026-09-01: no -- app is optional, present only when a platform genuinely has multiple distinct applications. See section 4.
+- ~~Should the storage hierarchy always include an app level, even for a platform with only one application?~~ **Resolved**: no -- app is optional, present only when a platform genuinely has multiple distinct applications. See section 4.
 - Should this filename convention be enforced by a lint/check script, or remain a documented convention only?
-- ~~When Canonical Tasks and Spikes do move to real GitHub Issues, what exactly links the retired local file to the Issue~~ -- resolved 2026-08-31, see section 8 above and GITHUB-PLATFORM-ADAPTER-SPEC.md section 7.
+- ~~When Canonical Tasks and Spikes do move to real GitHub Issues, what exactly links the retired local file to the Issue~~ -- **Resolved**, see section 8 above and GITHUB-PLATFORM-ADAPTER-SPEC.md section 7.
