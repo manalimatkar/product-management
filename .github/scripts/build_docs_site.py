@@ -21,10 +21,10 @@ the actual index of this sample project's Journeys/Capabilities/Business
 Rules (100% sample-project data today), and the relationship graph
 depends on it.
 
-Also generates the Journey/Capability/Business Rule relationship-graph
-page (generate_relationship_graph.py) straight into the staged copy --
-that page is computed from the registries at build time, never authored,
-so it isn't one of the real content dirs copied below.
+Also generates two pages straight into the staged copy, computed at build
+time rather than authored, so neither is one of the real content dirs
+copied below: the home page (generate_index_page.py) and the Journey/
+Capability/Business Rule relationship graph (generate_relationship_graph.py).
 
 Usage: python .github/scripts/build_docs_site.py
 """
@@ -56,14 +56,17 @@ def main() -> None:
         if src.is_file():
             shutil.copy2(src, STAGING_DIR / name)
 
-    graph_script = Path(__file__).resolve().parent / "generate_relationship_graph.py"
-    graph_out = STAGING_DIR / "relationships" / "index.md"
-    result = subprocess.run(
-        [sys.executable, str(graph_script), "--repo-root", str(REPO_ROOT), "--out", str(graph_out)],
-        cwd=REPO_ROOT,
-    )
-    if result.returncode != 0:
-        raise SystemExit("build_docs_site.py: relationship graph generation failed, aborting build.")
+    scripts_dir = Path(__file__).resolve().parent
+    for script_name, out_rel in (
+        ("generate_index_page.py", "index.md"),
+        ("generate_relationship_graph.py", "relationships/index.md"),
+    ):
+        result = subprocess.run(
+            [sys.executable, str(scripts_dir / script_name), "--repo-root", str(REPO_ROOT), "--out", str(STAGING_DIR / out_rel)],
+            cwd=REPO_ROOT,
+        )
+        if result.returncode != 0:
+            raise SystemExit(f"build_docs_site.py: {script_name} failed, aborting build.")
 
     md_count = sum(1 for _ in STAGING_DIR.rglob("*.md"))
     print(f"Staged {md_count} markdown files into {STAGING_DIR}")

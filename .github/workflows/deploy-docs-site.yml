@@ -1,0 +1,63 @@
+# Builds and deploys the sample-project docs site (pdf-workflow/workflow-manager's
+# Journeys, Capabilities, Business Rules, and Design Analysis) to GitHub Pages.
+#
+# Requires two one-time repository settings changes, neither done by this workflow:
+#   1. Repository visibility: Public (GitHub Pages is not available on a private repo
+#      below GitHub Pro/Team/Enterprise).
+#   2. Settings -> Pages -> Build and deployment -> Source: "GitHub Actions".
+#
+# Scope is deliberately narrow: build_docs_site.py stages only registries/ and
+# pdf-workflow/ (the sample project's real content) -- specs/, templates/, .claude/,
+# and .github/ are framework/tooling, not product content, and are never part of
+# this site. See memory: docs-site-excludes-framework-tooling.
+
+name: Deploy docs site
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install MkDocs
+        run: pip install mkdocs==1.6.1 mkdocs-material==9.7.7
+
+      - name: Stage sample-project content
+        run: python .github/scripts/build_docs_site.py
+
+      - name: Build site (fails on any broken internal link)
+        run: mkdocs build --strict
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/deploy-pages@v4
+        id: deployment
