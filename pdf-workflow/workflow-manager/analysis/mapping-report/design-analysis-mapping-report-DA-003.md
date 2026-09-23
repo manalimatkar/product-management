@@ -447,19 +447,19 @@ This report only applies to PDF-created workflows; manually-created workflows ge
 The mapping table's mobile/tablet behavior (horizontal scroll vs. stacked cards) is explicitly left as an undecided choice: "decide with the user ... Don't silently pick one." Explicit, High -- a real, source-flagged open decision, not an omission. *(↩ used by [DEC-003](#dec-003), resolved by [OBS-023](#obs-023))*
 
 ##### OBS-021
-Manali, `PR #17` review comment, 2026-09-08: "Mapping Report is view used to see workflow-page structure. It can be triggered by [the] process of pdf to workflow conversion on pdf upload, or it can also load an existing mapping for review, or it can also act as a start from scratch for workflow creation." Human Provided, High. Refines `SRC-003`'s own "Scope note" text, which frames the report as PDF-path-only. *(↩ used by [BR-016](#br-016), [GAP-003](#gap-003), resolves [DEC-001](#dec-001))*
+Manali, [`PR #17` review comment](https://github.com/manalimatkar/product-management/pull/17#discussion_r3960647709), 2026-09-08: "Mapping Report is view used to see workflow-page structure. It can be triggered by [the] process of pdf to workflow conversion on pdf upload, or it can also load an existing mapping for review, or it can also act as a start from scratch for workflow creation." Human Provided, High. Refines `SRC-003`'s own "Scope note" text, which frames the report as PDF-path-only. *(↩ used by [BR-016](#br-016), [GAP-003](#gap-003), resolves [DEC-001](#dec-001))*
 
 ##### OBS-022
-Manali, `PR #17` review comment, 2026-09-08: "For [a] new workflow, [the] user experience is to first go to [the] workflow settings page, and then on save[,] user will land on [the] workflow mapping page where they start by adding [a] page." Human Provided, High. Establishes the real navigation trigger and empty-state entry flow for a brand-new workflow. *(↩ used by [BR-016](#br-016), resolves [DEC-002](#dec-002))*
+Manali, [`PR #17` review comment](https://github.com/manalimatkar/product-management/pull/17#discussion_r3960657394), 2026-09-08: "For [a] new workflow, [the] user experience is to first go to [the] workflow settings page, and then on save[,] user will land on [the] workflow mapping page where they start by adding [a] page." Human Provided, High. Establishes the real navigation trigger and empty-state entry flow for a brand-new workflow. *(↩ used by [BR-016](#br-016), resolves [DEC-002](#dec-002))*
 
 ##### OBS-023
-Manali, `PR #17` review comment, 2026-09-08: "Keep table horizontal scroll." Human Provided, High. *(↩ used by [BRULE-008](#brule-008), resolves [DEC-003](#dec-003))*
+Manali, [`PR #17` review comment](https://github.com/manalimatkar/product-management/pull/17#discussion_r3960664130), 2026-09-08: "Keep table horizontal scroll." Human Provided, High. *(↩ used by [BRULE-008](#brule-008), resolves [DEC-003](#dec-003))*
 
 ##### OBS-024
-Manali, `PR #17` review comment, 2026-09-08: "This is deferred for later when login capability is enabled." (re: org role/permission distinctions for reviewing or editing mappings) Human Provided, High. *(↩ resolves [DEC-004](#dec-004))*
+Manali, [`PR #17` review comment](https://github.com/manalimatkar/product-management/pull/17#discussion_r3960668770), 2026-09-08: "This is deferred for later when login capability is enabled." (re: org role/permission distinctions for reviewing or editing mappings) Human Provided, High. *(↩ resolves [DEC-004](#dec-004))*
 
 ##### OBS-025
-Manali, `PR #17` review comment (Review Outcome, `BR-003` left unchecked), 2026-09-08: "For now work on table view." Human Provided, High. Card view is deferred for this phase, not rejected -- only Table view is being built now. *(↩ used by [BR-003](#br-003), [GAP-004](#gap-004))*
+Manali, [`PR #17` review comment](https://github.com/manalimatkar/product-management/pull/17#issuecomment-5589857757) (Review Outcome, `BR-003` left unchecked), 2026-09-08: "For now work on table view." Human Provided, High. Card view is deferred for this phase, not rejected -- only Table view is being built now. *(↩ used by [BR-003](#br-003), [GAP-004](#gap-004))*
 
 ### Business Rules
 

@@ -25,6 +25,8 @@ This returns three things, each real and unedited:
 
 ## Step 2 -- match each comment to what it's actually answering
 
+If a comment carries `in_reply_to_id`, it's a reply -- read it together with the comment it replies to, not on its own. A reply often doesn't repeat enough context to make sense alone ("yes, that's right" only means something next to what it's agreeing with).
+
 Read every comment's context and decide, concretely:
 
 - Which specific ID (a `DEC-`, or a `BR-` left unchecked in the Review Outcome task list, or something else entirely) is this comment attached to?
@@ -35,7 +37,7 @@ Read every comment's context and decide, concretely:
 
 For each resolved item:
 
-1. Add a new `OBS-<next number>` entry in the Evidence and Traceability section: who said it, on which PR, the comment quoted directly (fix only obvious typos if quoting inline, or quote verbatim and note the typo), classified `Human Provided`, confidence `High`. Link it `↩ used by` whatever it resolves.
+1. Add a new `OBS-<next number>` entry in the Evidence and Traceability section: who said it, **the comment's own permalink** (its `html_url` from step 1's output -- not just "PR #17"), the comment quoted directly (fix only obvious typos if quoting inline, or quote verbatim and note the typo), classified `Human Provided`, confidence `High`. Link it `↩ used by` whatever it resolves. The permalink is what makes a comment's resolution mechanically checkable later (`check-review-completeness` skill) -- an entry citing only "PR #17" with no link can't be matched back to the exact comment it came from.
 2. Update the `DEC-<id>` entry itself: mark **Resolved** (or **Resolved (deferred)** when that's what actually happened), with a link to the new Observation.
 3. Update every Business Requirement or Business Rule the resolution actually affects -- not just the Decision's own line. If a comment narrows or extends a requirement's scope (like `BR-003` or `BR-015`), say so explicitly in that requirement's own entry, the way `BR-003`'s "Revised... narrowed rather than removed" note does -- never silently rewrite a requirement's statement without a visible note explaining why it changed.
 4. If a resolution reveals something the original analysis didn't have at all (like `DA-003`'s `BR-016`, which didn't exist until a comment described a whole third entry path into the report), add it as a new, properly ID'd entry -- don't force a new fact into an existing item that doesn't actually cover it.
@@ -43,6 +45,8 @@ For each resolved item:
 ## Step 4 -- verify before calling it done
 
 Run the `verify-design-analysis` skill against the file. A resolution pass that adds new `OBS-`/`DEC-` cross-links is exactly the kind of edit that can quietly break an anchor or leave a new entry with no inbound link.
+
+Then run the `check-review-completeness` skill against the same PR and file. `verify-design-analysis` only checks the document's own internal structure -- it has no way to know whether every comment on the PR actually got addressed. A comment this pass never got to is a silent gap, not a visible one, unless this check runs.
 
 ## What this skill does not do
 
