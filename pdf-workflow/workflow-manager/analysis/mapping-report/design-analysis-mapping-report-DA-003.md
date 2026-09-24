@@ -183,6 +183,14 @@ Given field row A is expanded for edit
 When the reviewer clicks the pencil icon on field row B
 Then row A collapses without saving
 And row B expands with its own edit controls
+
+Given a field's edit panel is open
+When the reviewer clicks Save
+Then the change persists and a success toast confirms it
+
+Given a field's edit panel is open
+When the reviewer clicks Cancel
+Then the edit is discarded and the row returns to its prior state
 ```
 
 Evidence: [OBS-010](#obs-010). Explicit, High confidence.
