@@ -13,12 +13,19 @@
 # Same two one-time repository settings this depends on as
 # deploy-docs-site.yml: repo visibility Public, and
 # Settings -> Pages -> Source: "Deploy from a branch" (gh-pages, root).
+#
+# Scoped to PRs targeting main only (matching deploy-docs-site.yml's own
+# push trigger) -- fixed 2026-09-24 after PRs against the agents
+# integration branch (agent-framework changes, never sample-project
+# content) were triggering this preview and posting an irrelevant
+# preview-link comment on every one of them.
 
 name: Preview docs site for a PR
 
 on:
   pull_request:
     types: [opened, synchronize, reopened, closed]
+    branches: [main]
 
 permissions:
   contents: write # pushes to the gh-pages branch
