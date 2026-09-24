@@ -1,5 +1,6 @@
-# Builds and deploys the sample-project docs site (pdf-workflow/workflow-manager's
-# Journeys, Capabilities, Business Rules, and Design Analysis) to GitHub Pages.
+# Builds and deploys the product docs site (real product content this framework
+# has been used to analyze -- Journeys, Capabilities, Business Rules, Design
+# Analyses -- for whichever platform-slug folder(s) exist) to GitHub Pages.
 #
 # Publishes to the gh-pages branch root rather than using the modern
 # actions/deploy-pages flow, because that flow replaces the entire published
@@ -14,16 +15,48 @@
 #   2. Settings -> Pages -> Build and deployment -> Source: "Deploy from a branch",
 #      branch "gh-pages", folder "/ (root)".
 #
-# Scope is deliberately narrow: build_docs_site.py stages only registries/ and
-# pdf-workflow/ (the sample project's real content) -- specs/, templates/, .claude/,
-# and .github/ are framework/tooling, not product content, and are never part of
-# this site. See memory: docs-site-excludes-framework-tooling.
+# Scope is deliberately open-ended on the content side and narrow only on the
+# framework side: build_docs_site.py stages every top-level directory EXCEPT a
+# small, stable denylist of framework-owned folders (specs/, templates/,
+# .claude/, .github/, .venv/, .git/, the gitignored site/site-src build output)
+# -- see that script's own FRAMEWORK_DIRS constant, the single source of truth
+# both it and this trigger's paths filter are kept in sync with by hand.
+# Deliberately NOT a list naming specific product folders (e.g. "pdf-workflow"):
+# that would silently exclude the next real product this framework analyzes.
+# See memory: docs-site-excludes-framework-tooling.
+#
+# The push trigger's paths filter (added 2026-09-24, generalized the same day)
+# mirrors that scope with a "match everything, then exclude framework paths,
+# then re-include the specific scripts/config that generate the site" pattern
+# -- GitHub evaluates the LAST matching pattern in this list for each changed
+# file, so order matters: the framework exclusions must come before the
+# specific re-inclusions below them for a build script to correctly override
+# the broader ".github/**" exclusion. A framework/agent-only change (e.g. a
+# spec or a .claude/ file) produces byte-identical site output, so it must
+# never trigger a deploy; a new product folder needs zero changes here to
+# start triggering one.
 
 name: Deploy docs site
 
 on:
   push:
     branches: [main]
+    paths:
+      - "**"
+      - "!specs/**"
+      - "!templates/**"
+      - "!.claude/**"
+      - "!README.md"
+      - "!CLAUDE.md"
+      - "!PRD.md"
+      - "!IMPLEMENTATION-PLAN.md"
+      - "!.github/**"
+      - ".github/scripts/build_docs_site.py"
+      - ".github/scripts/generate_index_page.py"
+      - ".github/scripts/generate_relationship_graph.py"
+      - ".github/scripts/verify_registries.py"
+      - ".github/workflows/deploy-docs-site.yml"
+      - "mkdocs.yml"
   workflow_dispatch: {}
 
 permissions:
