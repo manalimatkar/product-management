@@ -31,6 +31,14 @@
 # deploy-docs-site.yml; see that workflow's own header for the full
 # explanation. A hardcoded "pdf-workflow/**" would silently stop matching
 # the moment this framework analyzes a second product.
+#
+# "Stage sample-project content" passes the real PR head SHA/number/repo
+# through to build_docs_site.py -- required for the in-preview commenting
+# widget (comment-map.json) to know which PR/commit to post a GitHub
+# review comment against. Missing this was a real bug caught while first
+# testing the widget live: the preview built and deployed fine, but
+# comment-map.json came out with all three fields null, so the widget
+# correctly (but unhelpfully) hid itself entirely.
 
 name: Preview docs site for a PR
 
@@ -80,7 +88,11 @@ jobs:
         run: pip install mkdocs==1.6.1 mkdocs-material==9.7.7
 
       - name: Stage sample-project content
-        run: python .github/scripts/build_docs_site.py
+        run: |
+          python .github/scripts/build_docs_site.py \
+            --commit-sha "${{ github.event.pull_request.head.sha }}" \
+            --pr-number "${{ github.event.pull_request.number }}" \
+            --repo "${{ github.repository }}"
 
       - name: Build site (fails on any broken internal link)
         run: mkdocs build --strict

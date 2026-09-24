@@ -33,10 +33,22 @@ Also generates two pages straight into the staged copy, computed at build
 time rather than authored, so neither is one of the real content dirs
 copied below: the home page (generate_index_page.py) and the Journey/
 Capability/Business Rule relationship graph (generate_relationship_graph.py).
+A third generated file, comment-map.json (generate_comment_map.py), is
+not a page -- it's the ID-to-line data the in-preview commenting widget
+reads; MkDocs copies it into the built site as a static file automatically
+since it isn't markdown.
 
-Usage: python .github/scripts/build_docs_site.py
+Usage:
+  python .github/scripts/build_docs_site.py
+  python .github/scripts/build_docs_site.py --commit-sha <sha> --pr-number <n> --repo <owner/name>
+
+The three PR-context args are only meaningful for a PR preview build
+(preview-docs-site.yml passes them) -- the main-site build (deploy-docs-site.yml)
+omits them, and comment-map.json is written with those fields null, which
+the widget reads as "no PR to comment on here" and hides itself entirely.
 """
 
+import argparse
 import shutil
 import subprocess
 import sys
@@ -65,6 +77,12 @@ def discover_content_dirs() -> list[str]:
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--commit-sha", default=None)
+    parser.add_argument("--pr-number", default=None)
+    parser.add_argument("--repo", default=None)
+    args = parser.parse_args()
+
     if STAGING_DIR.exists():
         shutil.rmtree(STAGING_DIR)
     STAGING_DIR.mkdir()
@@ -79,6 +97,9 @@ def main() -> None:
         if src.is_file():
             shutil.copy2(src, STAGING_DIR / name)
 
+    assets_src = Path(__file__).resolve().parent / "docs-assets"
+    shutil.copytree(assets_src, STAGING_DIR / "assets", dirs_exist_ok=True)
+
     scripts_dir = Path(__file__).resolve().parent
     for script_name, out_rel in (
         ("generate_index_page.py", "index.md"),
@@ -90,6 +111,20 @@ def main() -> None:
         )
         if result.returncode != 0:
             raise SystemExit(f"build_docs_site.py: {script_name} failed, aborting build.")
+
+    comment_map_cmd = [
+        sys.executable, str(scripts_dir / "generate_comment_map.py"),
+        "--repo-root", str(REPO_ROOT), "--out", str(STAGING_DIR / "comment-map.json"),
+    ]
+    if args.commit_sha:
+        comment_map_cmd += ["--commit-sha", args.commit_sha]
+    if args.pr_number:
+        comment_map_cmd += ["--pr-number", args.pr_number]
+    if args.repo:
+        comment_map_cmd += ["--repo", args.repo]
+    result = subprocess.run(comment_map_cmd, cwd=REPO_ROOT)
+    if result.returncode != 0:
+        raise SystemExit("build_docs_site.py: generate_comment_map.py failed, aborting build.")
 
     md_count = sum(1 for _ in STAGING_DIR.rglob("*.md"))
     print(f"Staged content dirs: {', '.join(content_dirs)}")
