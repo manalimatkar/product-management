@@ -74,6 +74,8 @@ The metadata must be sufficient to answer:
 
 > Which source version produced these requirements, and which analysis version did the configured reviewer approve?
 
+`Related Epic` and `Related Stories` start as `Pending` and must be updated once those artifacts actually exist -- per `BUSINESS-AGENT-WORKFLOW.md` section 4.4, this is a required part of deriving Business Requirements and Epics, not an optional cleanup pass. A Design Analysis left reading `Pending` after its Requirements have been drafted is out of date.
+
 ## 4. Required Artifact Structure
 
 ### Business Agent Activity 1: Understand the Design
@@ -105,9 +107,11 @@ For every extracted item, the analysis must identify:
 
 The agent must not jump directly from a screen or visual element to a requirement without first recording the design understanding that supports it.
 
-**Analysis order, added 2026-09-10: understand flows before decomposing into capabilities.** This is a generic rule, common to every source tool -- not something that changes between a Claude Design export, a Figma link, or a written spec. Build an end-to-end understanding of what the actor is actually trying to accomplish, step by step (this activity's "user flows," expanded in section 4.4 and 4.6), *before* decomposing that understanding into discrete capabilities (section 4.5) and requirements (section 4.8). Capabilities and requirements should emerge from an understood flow, not be assembled first from a flat inventory of screens or elements and then stitched into a flow afterward -- the second order produces requirements that are individually plausible but don't cohere into anything an actor would actually do. This section's own list above (screens, then flows, then actions, then states...) is a checklist of what to extract, not the order to extract it in.
+**Analysis order: understand flows before decomposing into capabilities.** This is a generic rule, common to every source tool -- not something that changes between a Claude Design export, a Figma link, or a written spec. Build an end-to-end understanding of what the actor is actually trying to accomplish, step by step (this activity's "user flows," expanded in section 4.4 and 4.6), *before* decomposing that understanding into discrete capabilities (section 4.5) and requirements (section 4.8). Capabilities and requirements should emerge from an understood flow, not be assembled first from a flat inventory of screens or elements and then stitched into a flow afterward -- the second order produces requirements that are individually plausible but don't cohere into anything an actor would actually do. This section's own list above (screens, then flows, then actions, then states...) is a checklist of what to extract, not the order to extract it in.
 
-**Reading the source accurately, added 2026-09-10:** this activity is where reading *technique* matters most (distinct from analysis *order*, above), and where a Design Analysis has previously fallen short (see `CLAUDE.md`'s history of the retracted `DA-002` and the first draft of `DA-003`). `EVIDENCE-SPEC.md` section 3.1 states the generic rules -- read the most literal representation available, cross-check a descriptive document against the literal artifact rather than trusting it alone, locate actual data rather than stopping at the logic that operates on it, and don't trust an unverified verification technique. These generic rules are tool-agnostic; how they apply concretely depends on which tool produced the source -- for a native Claude Design export, see [CLAUDE-DESIGN-READING-SPEC.md](CLAUDE-DESIGN-READING-SPEC.md) (the dark `.dc.html` file as sole source of truth, the README as reference only). A different source tool gets its own sibling reading-spec document, not a rewrite of this one.
+**Reading the source accurately:** this activity is where reading *technique* matters most (distinct from analysis *order*, above), and where a Design Analysis has previously fallen short (see `CLAUDE.md`'s history of the retracted `DA-002` and the first draft of `DA-003`). `EVIDENCE-SPEC.md` section 3.1 states the generic rules -- read the most literal representation available, cross-check a descriptive document against the literal artifact rather than trusting it alone, locate actual data rather than stopping at the logic that operates on it, and don't trust an unverified verification technique. These generic rules are tool-agnostic; how they apply concretely depends on which tool produced the source -- for a native Claude Design export, see [CLAUDE-DESIGN-READING-SPEC.md](CLAUDE-DESIGN-READING-SPEC.md) (the dark `.dc.html` file as sole source of truth, the README as reference only). A different source tool gets its own sibling reading-spec document, not a rewrite of this one.
+
+**Check the registry before minting a new Journey, Capability, or Business Rule ID.** Unlike an Observation, Gap, Decision, Assumption, or Technical Unknown -- all genuinely scoped to this one analysis -- a Journey, Capability, or Business Rule is product-level (`ARTIFACT-RELATIONSHIP-MODEL.md` section 3.1) and has a real registry: [JOURNEY-REGISTRY.md](../registries/JOURNEY-REGISTRY.md), [CAPABILITY-REGISTRY.md](../registries/CAPABILITY-REGISTRY.md), [BUSINESS-RULE-REGISTRY.md](../registries/BUSINESS-RULE-REGISTRY.md). Before assigning a new `JRN-`/`CAP-`/`BRULE-` ID, check whether an existing entry is genuinely the same one -- cite it and link to its record instead of re-deriving a new ID locally. This matters most for Business Rules, which typically constrain behavior across features rather than being produced by any one of them -- a rule like "structural edits never require confirmation" should be inherited by a later, unrelated analysis, not silently re-derived or contradicted.
 
 ### 4.1 Source Summary
 
@@ -209,7 +213,7 @@ Behaviors:
 
 A capability describes what the product enables. It does not define service boundaries or application ownership.
 
-**Capabilities are product-level, not analysis-scoped -- added 2026-09-10.** A Capability ID is only unique within this one analysis today, but conceptually it describes what the *product* enables, not just what this one analysis found -- see [ARTIFACT-RELATIONSHIP-MODEL.md](ARTIFACT-RELATIONSHIP-MODEL.md) section 3.1 for the full model (a registry + a standalone file per Capability, proposed but not yet built) and why a Capability's realness is proven by which Journeys actually depend on it, not by its description sounding similar to one from a different analysis.
+**Capabilities are product-level, not analysis-scoped.** A Capability ID is global, assigned from [CAPABILITY-REGISTRY.md](../registries/CAPABILITY-REGISTRY.md) -- check it before minting a new one; cite an existing entry when the analysis is genuinely describing the same Capability. See [ARTIFACT-RELATIONSHIP-MODEL.md](ARTIFACT-RELATIONSHIP-MODEL.md) section 3.1 for the full model and why a Capability's realness is proven by which Journeys actually depend on it, not by its description sounding similar to one from a different analysis.
 
 ### 4.6 User Journeys and Workflows
 
@@ -229,7 +233,7 @@ Each journey must include:
 
 A journey may cross multiple screens or applications. The Business Agent must preserve the user outcome even when the design is distributed across multiple areas.
 
-**Journeys are product-level, not analysis-scoped -- added 2026-09-10.** Map the journey *before* decomposing it into capabilities (this section's own analysis-order rule, stated in Activity 1 above) -- a capability's business purpose only really makes sense once the journey it serves is understood. Journeys are also the mechanism that eventually proves whether a Capability is genuinely shared across use cases or unique to one: see [ARTIFACT-RELATIONSHIP-MODEL.md](ARTIFACT-RELATIONSHIP-MODEL.md) section 3.1. A prior revision of this repository's own Design Analysis template folded journey IDs into narrative prose for readability -- worth revisiting once the registry model above is built, since that removed exactly the addressability this section now depends on.
+**Journeys are product-level, not analysis-scoped.** A Journey ID is global, assigned from [JOURNEY-REGISTRY.md](../registries/JOURNEY-REGISTRY.md). Map the journey *before* decomposing it into capabilities (this section's own analysis-order rule, stated in Activity 1 above) -- a capability's business purpose only really makes sense once the journey it serves is understood. Journeys are also the mechanism that proves whether a Capability is genuinely shared across use cases or unique to one: see [ARTIFACT-RELATIONSHIP-MODEL.md](ARTIFACT-RELATIONSHIP-MODEL.md) section 3.1. Keep Journey IDs as real, addressable headings -- never folded into narrative prose.
 
 ### 4.7 Business Rules
 
@@ -254,7 +258,7 @@ Each rule must include:
 
 A technical constraint is not a business rule unless the design explicitly presents it as a product behavior or policy.
 
-**Business Rules are product-level, not analysis-scoped -- added 2026-09-10.** A Business Rule typically *governs* a Journey or Capability rather than being produced by one -- it's a cross-cutting constraint, which is exactly why it needs to be visible to a future, unrelated analysis rather than silently re-derived (or worse, silently contradicted) each time. See [ARTIFACT-RELATIONSHIP-MODEL.md](ARTIFACT-RELATIONSHIP-MODEL.md) section 3.1 for the full model.
+**Business Rules are product-level, not analysis-scoped.** A Business Rule ID is global, assigned from [BUSINESS-RULE-REGISTRY.md](../registries/BUSINESS-RULE-REGISTRY.md) -- check it before minting a new one. A Business Rule typically *governs* a Journey or Capability rather than being produced by one -- it's a cross-cutting constraint, which is exactly why it needs to be visible to a future, unrelated analysis rather than silently re-derived (or worse, silently contradicted) each time. See [ARTIFACT-RELATIONSHIP-MODEL.md](ARTIFACT-RELATIONSHIP-MODEL.md) section 3.1 for the full model.
 
 ### 4.8 Business Requirements
 
@@ -482,6 +486,9 @@ A Design Analysis is ready for Business PR review only when:
 - user journeys include relevant alternate and failure paths
 - requirements, rules, Stories, and acceptance criteria are cross-referenced
 - limitations and missing source information are visible
+- **the feature-area narrative is readable end to end by a first-time reader without resolving an evidence link, a classification tag, or a Gherkin block** -- that detail exists, in the Requirements register and Evidence and Traceability sections (`DESIGN-ANALYSIS-TEMPLATE.md`), never interleaved into the narrative itself
+- **the document contains no commentary about its own revision history in its primary content** -- format changes, prior drafts, review-round corrections belong in this specification's own changelog (section 11), never repeated inside an instance
+- **every requirement, capability, and business rule links upstream to its source reference and, once they exist, downstream to its Story, Epic, and Business PR** -- each a real, followable link, not just a fact stated in the metadata table (`BUSINESS-AGENT-WORKFLOW.md` section 4.4)
 
 ## 8. Approval and Change Rules
 
@@ -547,20 +554,21 @@ The boundary between these questions must remain intact.
 
 ## 11. Reusable Template
 
-The concrete artifact format is defined in [DESIGN-ANALYSIS-TEMPLATE.md](../templates/DESIGN-ANALYSIS-TEMPLATE.md). Business Agent runs should use that template or produce an equivalent artifact containing every required section.
-
-**Format revised 2026-09-08 -- narrative first, not numbered-sections-first.** The original template organized the artifact as a fixed sequence of numbered sections (1. Metadata, 2. Source Summary, ... 16. Requirement Mapping), each holding tables keyed by ID. Real use (`DA-003`) surfaced a genuine usability problem raised directly by Manali: a new Business Analyst or Designer reading the artifact had to reassemble a feature's actual shape by cross-referencing IDs across a dozen tables, rather than reading a coherent account of how the feature works. This is an *editorial* revision per REQUIREMENTS-VERSIONING-SPEC.md section 9 (presentation only) -- every piece of required content in the list below still appears, none was dropped or reworded in substance:
+The concrete artifact format is defined in [DESIGN-ANALYSIS-TEMPLATE.md](../templates/DESIGN-ANALYSIS-TEMPLATE.md). Business Agent runs should use that template or produce an equivalent artifact containing every required section:
 
 - source and design version metadata
 - a plain-language overview, before any ID appears
-- the feature described as prose, grouped by feature area rather than by artifact type, with each Business Requirement given its own ID-only heading (stable anchor) plus statement, acceptance criteria, evidence link, classification, and confidence inline -- not scattered across separate sections
-- capabilities, given their own stable entry point only where a later stage (Stories) will need to reference one directly
+- the feature described as prose, grouped by feature area rather than by artifact type -- readable end to end without resolving an evidence link, a classification tag, or a Gherkin block
+- a `## Requirements` register: every Business Requirement's own ID-only heading (stable anchor), statement, acceptance criteria, evidence link, classification, and confidence, grouped in the order the narrative introduces them, not flat ID order
+- capabilities, given their own stable entry point as reference material -- not needed to understand the feature, needed once a later stage (Stories) references one directly
 - open Decisions surfaced near the top, resolved or not
 - what's explicitly not built yet, surfaced near the top rather than buried at the end
 - an "Evidence and Traceability" section for everything that supports a claim above but isn't needed to understand the feature itself: observations, business rules, assumptions, decisions (full detail), gaps, and technical unknowns -- each with a real link back to what cited it
 - a quality checklist
 
 The lower-level UI inventory this spec's section 4.3 permits (screens, navigation, controls, states) is folded into the feature-area prose rather than kept as separate ID catalogs (`SCR-`, `NAV-`, `ACT-`, `STATE-`, `PATH-`, `JRN-`, `DOMAIN-`) -- nothing in this pipeline traces to those IDs directly, only to Requirements, Capabilities, and Business Rules, so preserving them as prose detail rather than permanent anchors loses no traceability. No HTML is used anywhere in the template, consistent with this repository's standing format preference -- every cross-reference is a real markdown link to a heading with a stable ID-only anchor.
+
+See section 14 (Revision History) for how this structure was reached.
 
 ## 12. Optional Analysis Modules
 
@@ -586,5 +594,15 @@ Each module must add evidence-backed detail without replacing the core actors, g
 - Define how missing or unreadable source files block or limit analysis.
 - Define the minimum completeness criteria for the Design Analysis before Business PR review.
 - Define how a new design version triggers impact analysis against existing requirements and Stories.
-- ~~Define the exact Business Agent output format and validation checks.~~ **Resolved 2026-09-08** -- see section 11 and [DESIGN-ANALYSIS-TEMPLATE.md](../templates/DESIGN-ANALYSIS-TEMPLATE.md)'s own Quality Checklist, exercised for real against `DA-003`.
+- ~~Define the exact Business Agent output format and validation checks.~~ **Resolved** -- see section 11 and [DESIGN-ANALYSIS-TEMPLATE.md](../templates/DESIGN-ANALYSIS-TEMPLATE.md)'s own Quality Checklist, exercised for real against `DA-003`.
 - Define whether the Business Owner approves the Design Analysis separately or only through the complete Business PR.
+
+## 14. Revision History
+
+*What and when -- the current rule and its rationale live at the cited section, not here.*
+
+| Date | Section | Change |
+| --- | --- | --- |
+| 2026-09-21 | 7, 11 | Split Business Requirement detail (Gherkin, Evidence, classification) out of the feature-area narrative into a dedicated `## Requirements` register section; repositioned Capabilities as reference material; added narrative-readability and upstream/downstream-traceability checks to Quality Checks. |
+| 2026-09-10 | 4 (Activity 1), 4.5, 4.6, 4.7 | Added the flows-before-capabilities analysis order, the accurate-source-reading requirement, and the check-the-registry-before-minting rule; made Journey/Capability/Business Rule product-level with their own registries (previously analysis-scoped, like an Observation). Reverted an earlier template revision that had folded Journey IDs into narrative prose, removing their addressability. |
+| 2026-09-08 | 11 | Reshaped the template from numbered-sections-first to narrative-first, after real use (`DA-003`) showed a new Business Analyst had to reassemble the feature's shape from a dozen ID-keyed tables. Also resolved section 13's "exact output format" item. |

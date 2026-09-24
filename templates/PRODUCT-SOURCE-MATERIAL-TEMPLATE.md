@@ -2,7 +2,7 @@
 
 Reusable formats implementing [PRODUCT-SOURCE-MATERIAL-SPEC.md](../specs/PRODUCT-SOURCE-MATERIAL-SPEC.md). Every other artifact in this pipeline already had a fillable template; this was the one gap -- Source Material is artifact #1 in the chain and previously had only a table of required fields buried in the spec, nothing to actually fill in. Use this instead.
 
-Every source registered with this template gets one row added to [SOURCE-REGISTRY.md](../SOURCE-REGISTRY.md) -- see that file for the running index across all sources.
+Every source registered with this template gets one row added to [SOURCE-REGISTRY.md](../registries/SOURCE-REGISTRY.md) -- see that file for the running index across all sources.
 
 ---
 
@@ -114,4 +114,4 @@ For a Design Handoff Bundle specifically, this registration record points at its
 - [ ] Required source types for the active configuration are present
 - [ ] If this source is a Design Handoff Bundle, its bundle-specific metadata is complete per DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md
 - [ ] Readiness Check (Part 2) is complete with an outcome recorded
-- [ ] This source has been added to [SOURCE-REGISTRY.md](../SOURCE-REGISTRY.md)
+- [ ] This source has been added to [SOURCE-REGISTRY.md](../registries/SOURCE-REGISTRY.md)

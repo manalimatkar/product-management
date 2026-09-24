@@ -25,7 +25,18 @@ four inline comments, at original_line 681-684 of DA-003 as it stood at
 their commit_id, land exactly on the DEC-001 through DEC-004 table rows,
 in order -- confirmed by reading that exact historical version of the file.
 
-Fetches three things:
+Fetches three things, every one carrying its own `html_url` permalink so a
+downstream consumer (e.g. check_review_completeness.py) can verify every
+comment ends up cited somewhere, not just the inline ones. Each inline
+comment also carries `in_reply_to_id` (GitHub's real field, present only
+on a comment that is itself a reply) -- a reply comment often doesn't
+repeat enough context to be interpretable on its own ("yes, that's
+right"), so read a reply together with the comment it replies to, not as
+an independent comment. No PR this repository has actually run through
+this script has had a real reply thread yet -- confirmed by checking a
+real comment's raw API fields (`in_reply_to_id` was simply absent on
+every one of PR #17's top-level comments) -- so this is captured ahead of
+the first real case, not verified against one yet.
   - inline (line-anchored) review comments, each with surrounding context
     from the file as it existed at the comment's own commit
   - general PR-level comments (not anchored to any line)
@@ -114,6 +125,7 @@ def main():
             "body": c["body"],
             "context": context_around(lines, line_number, args.context_lines),
             "html_url": c["html_url"],
+            "in_reply_to_id": c.get("in_reply_to_id"),
         })
 
     issue_comments = [
@@ -121,6 +133,7 @@ def main():
             "author": c["user"]["login"],
             "created_at": c["created_at"],
             "body": c["body"],
+            "html_url": c["html_url"],
         }
         for c in issue_comments_raw
     ]
@@ -131,6 +144,7 @@ def main():
             "state": r["state"],
             "submitted_at": r.get("submitted_at"),
             "body": r["body"],
+            "html_url": r.get("html_url"),
         }
         for r in reviews_raw
         if r.get("body")

@@ -5,7 +5,7 @@ description: Checks a Design Analysis artifact's internal traceability -- every 
 
 # Verify Design Analysis
 
-This repository's Design Analysis format (`templates/DESIGN-ANALYSIS-TEMPLATE.md`, revised 2026-09-08) depends on two things holding for real, everywhere in the document: every linkable item (`BR-`, `CAP-`, `OBS-`, `GAP-`, `DEC-`, `ASM-`, `TECH-`, `BRULE-`) has exactly one ID-only heading, and every `[text](#anchor)` link actually resolves to one. Neither is obvious by eye in an 800-line document -- this is exactly the kind of drift that produced real breakage this session (`BR-003`'s anchor changing when its title was reworded, before the ID-only-heading rule existed).
+This repository's Design Analysis format (`templates/DESIGN-ANALYSIS-TEMPLATE.md`) depends on two things holding for real, everywhere in the document: every linkable item (`BR-`, `CAP-`, `OBS-`, `GAP-`, `DEC-`, `ASM-`, `TECH-`, `BRULE-`) has exactly one ID-only heading, and every `[text](#anchor)` link actually resolves to one. Neither is obvious by eye in an 800-line document -- this is exactly the kind of drift that produced real breakage this session (`BR-003`'s anchor changing when its title was reworded, before the ID-only-heading rule existed).
 
 ## When to run this
 

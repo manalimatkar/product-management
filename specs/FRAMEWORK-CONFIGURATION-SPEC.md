@@ -91,7 +91,7 @@ A configuration may use the framework defaults, replace them, or disable optiona
 
 Define which sources may initiate or inform analysis.
 
-**This repository's filled-in default profile, decided 2026-09-01.** Source types are carried forward from [PRODUCT-SOURCE-MATERIAL-SPEC.md](PRODUCT-SOURCE-MATERIAL-SPEC.md) section 3, not reinvented here. Only Design material has actually been exercised (the `checkout` dry run); every other type is supported by the framework core but not yet required or registered against a real instance.
+**This repository's filled-in default profile.** Source types are carried forward from [PRODUCT-SOURCE-MATERIAL-SPEC.md](PRODUCT-SOURCE-MATERIAL-SPEC.md) section 3, not reinvented here. Only Design material has actually been exercised (the `checkout` dry run); every other type is supported by the framework core but not yet required or registered against a real instance.
 
 | Source Type | Required | Accepted Forms | Authority or Reliability | Owner | Handling Notes |
 | --- | --- | --- | --- | --- | --- |
@@ -118,7 +118,7 @@ The configuration must define:
 
 The framework core analyzes intent, actors, outcomes, capabilities, rules, states, evidence, assumptions, and decisions. Additional modules may be enabled for a product context.
 
-**This repository's filled-in default profile, decided 2026-09-01.** Modules are carried forward from [DESIGN-ANALYSIS-SPEC.md](DESIGN-ANALYSIS-SPEC.md) section 12's list, not reinvented here. Reviewer is `ROLE-001` Business Owner for every enabled module, per `GATE-003`'s Approval Authority (section 11 above) -- this repository does not yet configure a separate technical reviewer for any module (DESIGN-ANALYSIS-REVIEW-SPEC.md section 3's optional "Technical reviewer" row is unused).
+**This repository's filled-in default profile.** Modules are carried forward from [DESIGN-ANALYSIS-SPEC.md](DESIGN-ANALYSIS-SPEC.md) section 12's list, not reinvented here. Reviewer is `ROLE-001` Business Owner for every enabled module, per `GATE-003`'s Approval Authority (section 11 above) -- this repository does not yet configure a separate technical reviewer for any module (DESIGN-ANALYSIS-REVIEW-SPEC.md section 3's optional "Technical reviewer" row is unused).
 
 | Module | Enabled | Required Inputs | Output | Reviewer |
 | --- | --- | --- | --- | --- |
@@ -137,7 +137,7 @@ An optional module may add domain-specific fields, but it must preserve the core
 
 Configure the stages used by this product effort.
 
-**This repository's filled-in default profile, decided 2026-09-01.** The generic default lifecycle below maps directly onto this repository's own gates and artifacts -- it was never a separate design, just an unstated one until now. **These stages are this repository's kanban board columns**: an artifact instance (a feature, in practice) sits in exactly one stage at a time and moves forward only when that stage's Exit Condition is met, and -- consistent with a kanban rather than a batch/sprint model -- different features may sit in different stages concurrently, with no requirement that the whole repository advance together. Within a stage, each artifact's own `status` / `readiness` / `Technical Readiness` field (`Draft` / `In Review` / `Approved` / ... per each artifact-type spec) is the finer-grained column state a reader would actually see on a board. IMPLEMENTATION-PLAN.md's Phase 1 already names "project or Kanban views" as the intended visualization of this exact table -- unbuilt (it depends on a real platform adapter instance, e.g. GitHub Projects, which needs open item 8 resolved first), not a new gap.
+**This repository's filled-in default profile.** The generic default lifecycle below maps directly onto this repository's own gates and artifacts -- it was never a separate design, just an unstated one until now. **These stages are this repository's kanban board columns**: an artifact instance (a feature, in practice) sits in exactly one stage at a time and moves forward only when that stage's Exit Condition is met, and -- consistent with a kanban rather than a batch/sprint model -- different features may sit in different stages concurrently, with no requirement that the whole repository advance together. Within a stage, each artifact's own `status` / `readiness` / `Technical Readiness` field (`Draft` / `In Review` / `Approved` / ... per each artifact-type spec) is the finer-grained column state a reader would actually see on a board. IMPLEMENTATION-PLAN.md's Phase 1 already names "project or Kanban views" as the intended visualization of this exact table -- unbuilt (it depends on a real platform adapter instance, e.g. GitHub Projects, which needs open item 8 resolved first), not a new gap.
 
 | Stage ID | Stage Name | Purpose | Entry Condition | Exit Condition | Required Artifact | Enabled |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -152,7 +152,7 @@ Configure the stages used by this product effort.
 
 `STAGE-008` is disabled honestly, not by a considered trade-off: this framework currently has no compensating control for it anywhere in the pipeline, which is itself the gap already tracked as CLAUDE.md open item 11. The "skipping a stage must identify equivalent control" rule below is stated plainly as unsatisfied here rather than papered over with an invented one -- item 11 remains the place this gets designed, not this table.
 
-The `checkout` dry run has cleared `STAGE-001` through `STAGE-004` for real (Business PR `BPR-001` approved 2026-08-31, per CLAUDE.md open item 7); `STAGE-005` onward remain illustrative-only, since no real engineering repository exists yet (open item 8).
+The real `pdf-workflow`/`workflow-manager` example has cleared `STAGE-001` and `STAGE-002` for real (source registered, `DA-003` approved); `STAGE-003` onward await Business Requirements being drafted, and `STAGE-005` onward remain illustrative-only regardless, since no real engineering repository exists yet (open item 8).
 
 A typical default lifecycle is:
 
@@ -196,11 +196,11 @@ For each artifact type, define:
 
 Roles are configured per product context. A role may be performed by a person, group, agent, or system, but authority must be attributable.
 
-**This repository's filled-in default profile, decided 2026-09-01.** This is a solo-operator instance on a personal GitHub account (not an organization account) -- every human role below is currently held by the same person. Responsibilities and permissions are carried forward from AGENT-RESPONSIBILITIES.md and DESIGN-HANDOFF-BUNDLE-TEMPLATE.md's Bundle Acceptance table, not invented here.
+**This repository's filled-in default profile.** This is a solo-operator instance on a personal GitHub account (not an organization account) -- every human role below is currently held by the same person. Responsibilities and permissions are carried forward from AGENT-RESPONSIBILITIES.md and DESIGN-HANDOFF-BUNDLE-TEMPLATE.md's Bundle Acceptance table, not invented here.
 
 | Role ID | Role Name | Identity | Responsibilities | May Draft | May Approve | May Transition | May Not Do |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `ROLE-001` | Business Owner | Manali (manali.matkar@gmail.com; GitHub username: `manalimatkar`, repository live 2026-09-03 -- see CLAUDE.md open item 8) | Approves the Business PR; final authority on business scope | -- | Business PR (BUSINESS-PR-SPEC.md section 10); Epic/Story acceptance criteria | Business PR `status:` Draft -> Approved; `readiness:` -> Ready | Draft the Business PR it is reviewing; approve its own Business-Agent-drafted output without review |
+| `ROLE-001` | Business Owner | Manali (manali.matkar@gmail.com; GitHub username: `manalimatkar` -- see CLAUDE.md open item 8) | Approves the Business PR; final authority on business scope | -- | Business PR (BUSINESS-PR-SPEC.md section 10); Epic/Story acceptance criteria | Business PR `status:` Draft -> Approved; `readiness:` -> Ready | Draft the Business PR it is reviewing; approve its own Business-Agent-drafted output without review |
 | `ROLE-002` | Architect | Manali (same identity as ROLE-001) | Reviews and approves the Technical Plan / technical decomposition | -- | Technical Plan; Canonical Task and Spike technical-readiness (CANONICAL-TASK-SPEC.md section 9) | Canonical Task `tech-ready:` false -> true | Approve its own technical output without review; mark a Task technically ready before this review; bypass Business Owner approval |
 | `ROLE-003` | Engineering Reviewer | Manali (same identity as ROLE-001) | Reviews Implementation PRs in the engineering repository; applies its quality gates | -- | Implementation PR merge | Implementation PR Open -> Merged | Change business scope or Business Owner approval; approve its own Developer-Agent-drafted output without review |
 | `ROLE-004` | Design Reviewer | Manali (same identity as ROLE-001) | Reviews the Design Handoff Bundle for Bundle Acceptance (DESIGN-HANDOFF-BUNDLE-TEMPLATE.md) | -- | Design Handoff Bundle `status:` -> Approved | Bundle `status:` Draft -> Approved | Approve a bundle it produced as Producing Designer without a distinct, separately recorded review pass (see solo-operator note below) |
@@ -217,7 +217,7 @@ The configuration must identify:
 - **technical or architecture authority**: `ROLE-002` Architect (Manali)
 - **delivery authority**: `ROLE-003` Engineering Reviewer (Manali)
 - **agents and their limited permissions**: `ROLE-006`/`ROLE-007`/`ROLE-008`/`ROLE-009`, per the May Draft / May Not Do columns above. `ROLE-009` is the one exception to "no agent role ever appears in a May Approve column" -- it may finalize the Source Readiness outcome (a data-completeness check, not a business/technical/design judgment), with a mandatory escalation to `ROLE-001` when authority can't be determined automatically. Every other agent role, including `ROLE-009` at every other gate, never approves.
-- **separation-of-duty requirements**: none enforced between human roles -- this is a personal-account, single-operator instance, and `ROLE-001` through `ROLE-005` are the same identity. The sharpest case is `ROLE-004`/`ROLE-005`: the same person produces the Design Handoff Bundle and reviews it for Bundle Acceptance. `ROLE-009` (decided 2026-09-01, see section 11) partially mitigates this -- an agent independent of the Producing Designer now runs the completeness checklist before the human review, so the mechanical part of the review is no longer self-certified even though the final Approved call still is. This is accepted as a stated solo-operator default, not a structural recommendation -- if a second reviewer ever joins, Design Reviewer should be the first role reassigned, since design self-review is the weakest link in evidence classification (EVIDENCE-SPEC.md).
+- **separation-of-duty requirements**: none enforced between human roles -- this is a personal-account, single-operator instance, and `ROLE-001` through `ROLE-005` are the same identity. The sharpest case is `ROLE-004`/`ROLE-005`: the same person produces the Design Handoff Bundle and reviews it for Bundle Acceptance. `ROLE-009` (see section 11) partially mitigates this -- an agent independent of the Producing Designer now runs the completeness checklist before the human review, so the mechanical part of the review is no longer self-certified even though the final Approved call still is. This is accepted as a stated solo-operator default, not a structural recommendation -- if a second reviewer ever joins, Design Reviewer should be the first role reassigned, since design self-review is the weakest link in evidence classification (EVIDENCE-SPEC.md).
 - **fallback authority when the primary reviewer is unavailable**: not defined -- there is only one identity to fall back to. Left open in section 19 below rather than invented.
 
 An agent must not approve its own generated work unless the configuration explicitly permits it and records the associated control. No agent role above is granted that permission.
@@ -226,7 +226,7 @@ An agent must not approve its own generated work unless the configuration explic
 
 Approval gates are configured controls, not assumptions about a particular organization.
 
-**This repository's filled-in default profile, decided 2026-09-01.** Every gate below follows the same two-step shape: `ROLE-009` (Compliance/Gate Assistant Agent) runs the mechanical completeness checklist that the relevant spec already defines, then the accountable human or agent role in section 10 makes the actual approval call on what the checklist can't judge. `ROLE-009` never replaces the accountable authority -- it only removes the mechanical-checking part of that authority's workload, per the discussion that led to adding `ROLE-009` in section 10.
+**This repository's filled-in default profile.** Every gate below follows the same two-step shape: `ROLE-009` (Compliance/Gate Assistant Agent) runs the mechanical completeness checklist that the relevant spec already defines, then the accountable human or agent role in section 10 makes the actual approval call on what the checklist can't judge. `ROLE-009` never replaces the accountable authority -- it only removes the mechanical-checking part of that authority's workload, per the discussion that led to adding `ROLE-009` in section 10.
 
 | Gate ID | Gate Name | Approval Authority | Applies To | Required Evidence | Transition Authorized | Failure or Rework Path |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -251,7 +251,7 @@ Each required gate must define:
 
 Define how artifacts are assembled for review.
 
-**This repository's filled-in default profile, decided 2026-09-01.** One review package per gate defined in section 11 above -- this section names what each package actually contains; section 11 named who reviews it and what it authorizes.
+**This repository's filled-in default profile.** One review package per gate defined in section 11 above -- this section names what each package actually contains; section 11 named who reviews it and what it authorizes.
 
 | Review Package | Included Artifacts | Required Checks | Approval Gate | Publication or Merge Action |
 | --- | --- | --- | --- | --- |
@@ -281,7 +281,7 @@ The package may be a pull request, document review, workflow record, ticket grou
 
 The framework core uses platform-neutral concepts. This section maps them to the tools used by the product effort.
 
-This repository's default profile, decided 2026-08-31 ("GitHub-light" -- see [GITHUB-PLATFORM-ADAPTER-SPEC.md](GITHUB-PLATFORM-ADAPTER-SPEC.md) for the full mapping and rationale):
+This repository's default profile ("GitHub-light" -- see [GITHUB-PLATFORM-ADAPTER-SPEC.md](GITHUB-PLATFORM-ADAPTER-SPEC.md) for the full mapping and rationale):
 
 | Framework Concept | Platform or Tool | Representation | Authority Notes |
 | --- | --- | --- | --- |
@@ -294,15 +294,15 @@ This repository's default profile, decided 2026-08-31 ("GitHub-light" -- see [GI
 
 GitHub PRs, Issues, Projects, and Actions may be used as an implementation adapter. They are not requirements of the framework core -- the table above is this repository's chosen instance, not a mandated default for every deployment of this framework.
 
-This table maps *storage* adapters only -- where artifacts are tracked once produced. It has a sibling table for *execution* adapters -- which AI platform actually produces them -- in [EXECUTION-ADAPTER-SPEC.md](EXECUTION-ADAPTER-SPEC.md), added 2026-09-03. The two are independent: a stage executed on Claude, ChatGPT, or Copilot all write to the same storage adapter above, unchanged.
+This table maps *storage* adapters only -- where artifacts are tracked once produced. It has a sibling table for *execution* adapters -- which AI platform actually produces them -- in [EXECUTION-ADAPTER-SPEC.md](EXECUTION-ADAPTER-SPEC.md). The two are independent: a stage executed on Claude, ChatGPT, or Copilot all write to the same storage adapter above, unchanged.
 
-**Added 2026-09-03:** this repository now has a second long-lived branch, `design`, alongside `main` -- a raw landing zone for native Claude Design exports, with its own independent folder shape and its own merge gate (`.github/workflows/design-branch-intake.yml`), deliberately not governed by ARTIFACT-STORAGE-SPEC.md's storage convention above. See DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md section 6.2, ARTIFACT-STORAGE-SPEC.md section 10, and GITHUB-PLATFORM-ADAPTER-SPEC.md section 6.1.
+This repository has a second long-lived branch, `design`, alongside `main` -- a raw landing zone for native Claude Design exports, with its own independent folder shape and its own merge gate (`.github/workflows/design-branch-intake.yml`), deliberately not governed by ARTIFACT-STORAGE-SPEC.md's storage convention above. See DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md section 6.2, ARTIFACT-STORAGE-SPEC.md section 10, and GITHUB-PLATFORM-ADAPTER-SPEC.md section 6.1.
 
 ## 14. Delivery Configuration
 
 Define where approved work is delivered.
 
-**This repository's filled-in default profile, decided 2026-09-01.** The registration process is fully specified below; no concrete delivery target is registered yet, because no real engineering repository exists (CLAUDE.md open item 8 -- the same blocker already noted against GITHUB-PLATFORM-ADAPTER-SPEC.md sections 6 and 6.1). This is what PRD.md section 13's "how are engineering repositories registered, selected, and authorized" question was waiting on: registration is a row added to the table below once a real repository exists, following the process this section defines -- not a separate mechanism still to be designed.
+**This repository's filled-in default profile.** The registration process is fully specified below; no concrete delivery target is registered yet, because no real engineering repository exists (CLAUDE.md open item 8 -- the same blocker already noted against GITHUB-PLATFORM-ADAPTER-SPEC.md sections 6 and 6.1). This is what PRD.md section 13's "how are engineering repositories registered, selected, and authorized" question was waiting on: registration is a row added to the table below once a real repository exists, following the process this section defines -- not a separate mechanism still to be designed.
 
 | Delivery Target ID | Application, Service, or Process | Repository or System | Work Item Mapping | Responsible Role | Quality Gates |
 | --- | --- | --- | --- | --- | --- |
@@ -343,7 +343,7 @@ The configuration must specify:
 
 Define what constitutes a material change.
 
-**This repository's filled-in default profile, decided 2026-09-01.** Every row below consolidates a rule already defined elsewhere -- this section does not invent a new change-management policy, it names which existing rule governs each of the framework's four generic change types.
+**This repository's filled-in default profile.** Every row below consolidates a rule already defined elsewhere -- this section does not invent a new change-management policy, it names which existing rule governs each of the framework's four generic change types.
 
 | Change Type | Example | Affected Artifacts | Re-review Required | Owner |
 | --- | --- | --- | --- | --- |
@@ -406,3 +406,13 @@ These are defaults for this implementation, not universal framework requirements
 - How are platform adapters validated for equivalent approval and traceability behavior?
 - What minimum evidence is required for non-design source types?
 - Which optional analysis modules should be standardized first?
+
+## 20. Revision History
+
+*What and when -- the current rule lives at the cited section, not here.*
+
+| Date | Section | Change |
+| --- | --- | --- |
+| 2026-09-03 | 13 | Added the `design` branch as a second long-lived branch, deliberately outside `ARTIFACT-STORAGE-SPEC.md`'s storage convention. Added the sibling execution-adapter table, `EXECUTION-ADAPTER-SPEC.md`. |
+| 2026-09-01 | 6, 7, 8, 10, 11, 12, 14, 16 | All eight sections filled in as this repository's default configuration profile, in one pass -- synthesizing rules already defined elsewhere, not new policy. Completed all 16 configuration sections. |
+| 2026-08-31 | 13 | Decided the storage adapter: "GitHub-light" (files stay canonical, GitHub objects are a tracking layer) -- see `GITHUB-PLATFORM-ADAPTER-SPEC.md`. |

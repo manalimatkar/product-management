@@ -1,0 +1,25 @@
+site_name: Product Management (POC)
+site_description: Rendering POC only -- testing whether MkDocs can serve this repo's existing markdown, links, and ID-only-heading anchors as-is.
+docs_dir: site-src
+site_dir: site
+
+exclude_docs: |
+  !/templates/
+
+theme:
+  name: material
+
+markdown_extensions:
+  - toc:
+      permalink: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
+# No explicit nav: -- MkDocs auto-generates it from site-src/'s real folder
+# structure (alphabetical, titled from each file's own H1). A smarter nav
+# driven by the registries themselves (Journey -> Capability -> Business
+# Rule relationship graph) is a later, separate step -- this is the
+# built-in default, proven first before adding anything custom.

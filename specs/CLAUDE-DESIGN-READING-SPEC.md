@@ -23,7 +23,7 @@ This specification covers only how to read the actual content of a native Claude
 
 ## 4. Reading Rules
 
-**Added 2026-09-10**, after auditing what a real export actually contains in depth (four real versions of one export compared directly, `pdf-workflow/workflow-manager/design/`) and testing two candidate reading techniques against real content. `DA-003`, this repository's first real analysis of this format, was produced before this document existed and reflects some of the gaps it closes (see `CLAUDE.md` for that history).
+These rules come from auditing what a real export actually contains in depth (four real versions of one export compared directly, `pdf-workflow/workflow-manager/design/`) and testing two candidate reading techniques against real content -- not assumed.
 
 **The dark `designs/*.dc.html` file -- both its markup and its inline `<script type="text/x-dc" data-dc-script">` block -- is the sole source of truth for a screen's functionality.** That script is not a rendering afterthought; it is a real, complete class: actual state, actual methods (e.g. `toggleSection`, `moveField`, `confirmUnlink`), actual conditional logic, and exact copy text (confirmation-dialog wording, computed labels). Read it directly for every screen in scope. Within it, **explicitly locate and read the seed/mock data definition** (typically a constant such as `SEED` assigned to the initial state, e.g. `mappings: SEED`) -- this is where real field-level content actually lives (exact text, exact confidence values, exact source attribution per entry), separate from the methods that operate on it. Reading the methods without finding this data gives an incomplete picture even though the file was technically read in full.
 
@@ -42,3 +42,9 @@ This specification covers only how to read the actual content of a native Claude
 ## 5. Open Decisions
 
 - No sibling reading spec exists yet for any other tool (a bare Figma link, a written spec, or a future tool). When one is needed, it should follow this document's shape (Purpose / Relationship / Scope / Reading Rules), not be folded into this file -- keeps each tool's real, concrete quirks from accumulating into one unbounded document.
+
+## 6. Revision History
+
+| Date | Section | Change |
+| --- | --- | --- |
+| 2026-09-10 | 4 | This document created, closing gaps `DA-003`'s first draft had hit (see `CLAUDE.md`). |
