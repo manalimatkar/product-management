@@ -9,6 +9,14 @@ exclude_docs: |
 theme:
   name: material
 
+hooks:
+  - .github/scripts/mkdocs_hooks.py
+
+extra_css:
+  - assets/comment-widget.css
+extra_javascript:
+  - assets/comment-widget.js
+
 markdown_extensions:
   - toc:
       permalink: true
