@@ -23,6 +23,14 @@
 # its own: an unrelated main-targeted change (e.g. a typo fix in a root
 # doc) would still have triggered a pointless build without the paths
 # filter too.
+#
+# The paths filter itself (generalized 2026-09-24) excludes framework-owned
+# folders rather than naming specific product folders -- same
+# match-everything-then-exclude-then-reinclude pattern and same
+# FRAMEWORK_DIRS-in-build_docs_site.py source of truth as
+# deploy-docs-site.yml; see that workflow's own header for the full
+# explanation. A hardcoded "pdf-workflow/**" would silently stop matching
+# the moment this framework analyzes a second product.
 
 name: Preview docs site for a PR
 
@@ -31,14 +39,21 @@ on:
     types: [opened, synchronize, reopened, closed]
     branches: [main]
     paths:
-      - "registries/**"
-      - "pdf-workflow/**"
+      - "**"
+      - "!specs/**"
+      - "!templates/**"
+      - "!.claude/**"
+      - "!README.md"
+      - "!CLAUDE.md"
+      - "!PRD.md"
+      - "!IMPLEMENTATION-PLAN.md"
+      - "!.github/**"
       - ".github/scripts/build_docs_site.py"
       - ".github/scripts/generate_index_page.py"
       - ".github/scripts/generate_relationship_graph.py"
       - ".github/scripts/verify_registries.py"
-      - "mkdocs.yml"
       - ".github/workflows/preview-docs-site.yml"
+      - "mkdocs.yml"
 
 permissions:
   contents: write # pushes to the gh-pages branch
