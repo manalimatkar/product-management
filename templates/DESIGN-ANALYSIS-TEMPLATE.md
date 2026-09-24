@@ -39,7 +39,7 @@ comment is the one template-authoring exception, and it gets deleted before publ
 
 ---
 
-| | |
+| Field | Value |
 | --- | --- |
 | Analysis ID | `DA-<number>` |
 | Feature | `<feature name>` |
