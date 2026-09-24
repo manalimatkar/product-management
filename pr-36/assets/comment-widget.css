@@ -70,10 +70,12 @@
 /* GitHub's own dark brand color, white text -- matches GitHub's own
    button style, and visually distinct from the blue "Post as general
    comment" action since this one leaves the preview entirely rather
-   than posting from it. */
+   than posting from it. !important on color: Material's own
+   `.md-typeset a` rule otherwise wins and renders this as its default
+   link blue instead. */
 .comment-widget-github-link {
   background: #24292f;
-  color: white;
+  color: white !important;
   border-color: #24292f;
 }
 
