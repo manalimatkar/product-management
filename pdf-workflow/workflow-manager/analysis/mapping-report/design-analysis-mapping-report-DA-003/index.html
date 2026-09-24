@@ -3938,8 +3938,8 @@
 <table>
 <thead>
 <tr>
-<th></th>
-<th></th>
+<th>Field</th>
+<th>Value</th>
 </tr>
 </thead>
 <tbody>
@@ -4091,6 +4091,14 @@ Then the row expands in place -- no dropdown/select-based remapping is ever offe
 When the reviewer clicks the pencil icon on field row B
 Then row A collapses without saving
 And row B expands with its own edit controls
+
+Given a field's edit panel is open
+When the reviewer clicks Save
+Then the change persists and a success toast confirms it
+
+Given a field's edit panel is open
+When the reviewer clicks Cancel
+Then the edit is discarded and the row returns to its prior state
 </code></pre></div>
 <p>Evidence: <a href="#obs-010">OBS-010</a>. Explicit, High confidence.</p>
 <h5 id="br-014">BR-014<a class="headerlink" href="#br-014" title="Permanent link">&para;</a></h5>
