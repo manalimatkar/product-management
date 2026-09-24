@@ -291,23 +291,8 @@
     });
   }
 
-  // Try the real inline comment first (best result -- anchored right at
-  // the section); fall back to a general PR comment only when GitHub
-  // specifically rejects it for being outside the diff. Any other
-  // failure (auth, rate limit, network) surfaces as a real error instead
-  // of silently falling back -- a fallback should never mask an actual
-  // problem the reviewer needs to know about.
-  function postComment(target, body) {
-    return postInlineComment(target, body)
-      .then(function (comment) {
-        return { comment: comment, kind: "inline" };
-      })
-      .catch(function (err) {
-        if (!err.lineNotInDiff) throw err;
-        return postGeneralComment(target, body).then(function (comment) {
-          return { comment: comment, kind: "general" };
-        });
-      });
+  function filesChangedUrl(target) {
+    return "https://github.com/" + target.repo + "/pull/" + target.prNumber + "/files";
   }
 
   function buildCommentBox(target, onClose) {
@@ -336,34 +321,83 @@
       var body = textarea.value.trim();
       if (!body) return;
 
+      attemptPost(body);
+    });
+
+    function showSuccess(comment, note) {
+      status.className = "comment-widget-status success";
+      status.innerHTML =
+        note + ' <a href="' + comment.html_url + '" target="_blank" rel="noopener">View on GitHub</a>';
+      textarea.value = "";
+      textarea.disabled = true;
+      postBtn.style.display = "none";
+    }
+
+    function showChoice(body) {
+      // The line isn't part of this PR's diff, so GitHub can't place an
+      // inline comment there -- not a failure, a real choice for the
+      // reviewer: post as an ordinary PR comment (still traceable, still
+      // read by resolve-review-decisions), or go leave a true inline
+      // comment on GitHub themselves, e.g. after expanding context to a
+      // nearby line that IS in the diff.
+      status.className = "comment-widget-status choice";
+      status.innerHTML =
+        "This section isn't part of the current diff, so GitHub can't place an inline comment there.";
+
+      var generalBtn = document.createElement("button");
+      generalBtn.type = "button";
+      generalBtn.className = "comment-widget-post";
+      generalBtn.textContent = "Post as general comment";
+      generalBtn.addEventListener("click", function () {
+        generalBtn.disabled = true;
+        postGeneralComment(target, body)
+          .then(function (comment) {
+            showSuccess(comment, "Posted as a general PR comment.");
+          })
+          .catch(function (err) {
+            status.className = "comment-widget-status error";
+            status.textContent = "Failed to post: " + err.message;
+          });
+      });
+
+      var githubLink = document.createElement("a");
+      githubLink.className = "comment-widget-post";
+      githubLink.href = filesChangedUrl(target);
+      githubLink.target = "_blank";
+      githubLink.rel = "noopener";
+      githubLink.textContent = "Open on GitHub instead";
+
+      var choiceActions = document.createElement("div");
+      choiceActions.className = "comment-widget-actions";
+      choiceActions.appendChild(generalBtn);
+      choiceActions.appendChild(githubLink);
+      status.appendChild(choiceActions);
+
+      postBtn.disabled = false;
+      postBtn.textContent = "Post";
+    }
+
+    function attemptPost(body) {
       postBtn.disabled = true;
       postBtn.textContent = "Posting…";
       status.className = "comment-widget-status";
       status.textContent = "";
 
-      postComment(target, body)
-        .then(function (result) {
-          status.className = "comment-widget-status success";
-          var note =
-            result.kind === "general"
-              ? "Posted as a general PR comment (this section isn't part of the current diff, so GitHub can't anchor it to an exact line)."
-              : "Posted.";
-          status.innerHTML =
-            note +
-            ' <a href="' +
-            result.comment.html_url +
-            '" target="_blank" rel="noopener">View on GitHub</a>';
-          textarea.value = "";
-          textarea.disabled = true;
-          postBtn.style.display = "none";
+      postInlineComment(target, body)
+        .then(function (comment) {
+          showSuccess(comment, "Posted.");
         })
         .catch(function (err) {
+          if (err.lineNotInDiff) {
+            showChoice(body);
+            return;
+          }
           status.className = "comment-widget-status error";
           status.textContent = "Failed to post: " + err.message;
           postBtn.disabled = false;
           postBtn.textContent = "Post";
         });
-    });
+    }
 
     var cancelBtn = document.createElement("button");
     cancelBtn.type = "button";
