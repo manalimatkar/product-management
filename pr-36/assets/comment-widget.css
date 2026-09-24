@@ -67,13 +67,14 @@
   border-color: #2f7dd1;
 }
 
-/* Light orange -- visually distinct from the blue "Post as general
-   comment" action, since this one leaves the preview entirely rather
+/* GitHub's own dark brand color, white text -- matches GitHub's own
+   button style, and visually distinct from the blue "Post as general
+   comment" action since this one leaves the preview entirely rather
    than posting from it. */
 .comment-widget-github-link {
-  background: #ffb74d;
-  color: #3e2600;
-  border-color: #ffb74d;
+  background: #24292f;
+  color: white;
+  border-color: #24292f;
 }
 
 .comment-widget-cancel {
