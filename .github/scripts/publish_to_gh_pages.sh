@@ -29,6 +29,20 @@
 #   publish_to_gh_pages.sh <build_dir> <dest_subdir> <commit_message>
 #
 # <dest_subdir> is "." for the main site, or "pr-<number>" for a preview.
+#
+# Auth note, found by actually running this in CI, not assumed: actions/
+# checkout wires GITHUB_TOKEN into git as an http.extraheader, scoped to the
+# .git directory it checked out -- it does NOT transfer to a fresh `git
+# clone`/`git init` into a separate temp directory, which is exactly what
+# this script does for its own worktree. Real symptom hit on the first live
+# run: "fatal: could not read Username for 'https://github.com'". Fixed by
+# building an explicitly authenticated URL from GITHUB_TOKEN + GITHUB_REPOSITORY
+# (both already set by the Actions runner; only GITHUB_TOKEN needs to be
+# passed into the step's `env:` explicitly) rather than trusting ambient
+# credential state. Falls back to the plain `origin` URL when those aren't
+# set, so this script still runs unmodified against a real scratch remote
+# for local testing.
+#
 # Requires GIT_AUTHOR/COMMITTER identity to already be configured by the
 # caller (the workflow sets this to github-actions[bot], not a real person,
 # since these are machine-generated publish commits, not authored content).
@@ -44,7 +58,11 @@ if [ ! -d "$build_dir" ]; then
   exit 1
 fi
 
-remote_url=$(git remote get-url origin)
+if [ -n "${GITHUB_TOKEN:-}" ] && [ -n "${GITHUB_REPOSITORY:-}" ]; then
+  remote_url="https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+else
+  remote_url=$(git remote get-url origin)
+fi
 max_attempts=5
 
 for attempt in $(seq 1 "$max_attempts"); do

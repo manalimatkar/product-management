@@ -9,6 +9,13 @@
 # <dest_subdir> is "pr-<number>" -- this script deliberately refuses to
 # remove "." (the main site) or anything that doesn't look like a preview
 # folder, since a typo here would otherwise be destructive to the real site.
+#
+# Auth note -- see publish_to_gh_pages.sh's header for the full explanation:
+# actions/checkout's injected credentials don't transfer to a fresh clone
+# into a separate temp directory, so this builds an explicitly authenticated
+# URL from GITHUB_TOKEN + GITHUB_REPOSITORY instead of trusting ambient
+# credential state, falling back to the plain `origin` URL when those
+# aren't set (local/scratch-remote testing).
 
 set -euo pipefail
 
@@ -23,7 +30,11 @@ case "$dest_dir" in
     ;;
 esac
 
-remote_url=$(git remote get-url origin)
+if [ -n "${GITHUB_TOKEN:-}" ] && [ -n "${GITHUB_REPOSITORY:-}" ]; then
+  remote_url="https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+else
+  remote_url=$(git remote get-url origin)
+fi
 max_attempts=5
 
 for attempt in $(seq 1 "$max_attempts"); do

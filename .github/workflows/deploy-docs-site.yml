@@ -53,4 +53,6 @@ jobs:
         run: mkdocs build --strict
 
       - name: Publish to gh-pages branch root
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: bash .github/scripts/publish_to_gh_pages.sh site . "Deploy main site (${{ github.sha }})"
