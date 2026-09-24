@@ -49,18 +49,31 @@
 }
 
 .comment-widget-post,
+.comment-widget-github-link,
 .comment-widget-cancel {
   font-size: 0.8rem;
   padding: 0.3em 0.9em;
   border-radius: 0.3em;
   cursor: pointer;
   border: 1px solid rgba(127, 127, 127, 0.4);
+  display: inline-block;
+  text-decoration: none;
+  text-align: center;
 }
 
 .comment-widget-post {
   background: #2f7dd1;
   color: white;
   border-color: #2f7dd1;
+}
+
+/* GitHub's own dark brand color -- visually distinct from the blue
+   "Post as general comment" action, since this one leaves the preview
+   entirely rather than posting from it. */
+.comment-widget-github-link {
+  background: #24292f;
+  color: white;
+  border-color: #24292f;
 }
 
 .comment-widget-cancel {
@@ -151,14 +164,4 @@
 
 .comment-widget-status.error {
   color: #c62828;
-}
-
-.comment-widget-status.choice .comment-widget-actions {
-  margin-top: 0.6em;
-}
-
-a.comment-widget-post {
-  display: inline-block;
-  text-decoration: none;
-  text-align: center;
 }
