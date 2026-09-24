@@ -1,0 +1,83 @@
+# Builds and publishes a live preview of the docs site for an open PR, at
+# https://<owner>.github.io/<repo>/pr-<number>/ -- so reviewing a change
+# starts from the actual rendered page, not a raw markdown diff. Removes
+# the preview when the PR closes, so previews don't accumulate forever.
+#
+# Shares the same gh-pages branch as deploy-docs-site.yml's main-site
+# deploy, in its own pr-<number>/ subfolder -- both use
+# publish_to_gh_pages.sh, the mechanism verified (against an isolated
+# scratch git remote, not just reasoned about) to update one destination
+# on that branch without disturbing the main site or any other PR's
+# preview. See that script's own header for what was tested.
+#
+# Same two one-time repository settings this depends on as
+# deploy-docs-site.yml: repo visibility Public, and
+# Settings -> Pages -> Source: "Deploy from a branch" (gh-pages, root).
+
+name: Preview docs site for a PR
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+
+permissions:
+  contents: write # pushes to the gh-pages branch
+  pull-requests: write # comments the preview link on the PR
+
+concurrency:
+  group: preview-pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  deploy-preview:
+    if: github.event.action != 'closed'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install MkDocs
+        run: pip install mkdocs==1.6.1 mkdocs-material==9.7.7
+
+      - name: Stage sample-project content
+        run: python .github/scripts/build_docs_site.py
+
+      - name: Build site (fails on any broken internal link)
+        run: mkdocs build --strict
+
+      - name: Publish preview to gh-pages branch
+        run: |
+          bash .github/scripts/publish_to_gh_pages.sh site "pr-${{ github.event.pull_request.number }}" \
+            "Preview for PR #${{ github.event.pull_request.number }} (${{ github.event.pull_request.head.sha }})"
+
+      - name: Comment the preview link on the PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          bash .github/scripts/post_preview_comment.sh "${{ github.event.pull_request.number }}" \
+            "**Docs preview:** https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/pr-${{ github.event.pull_request.number }}/
+
+          Updates automatically on every push to this PR. Removed when the PR closes."
+
+  remove-preview:
+    if: github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Remove preview from gh-pages branch
+        run: |
+          bash .github/scripts/remove_gh_pages_preview.sh "pr-${{ github.event.pull_request.number }}" \
+            "Remove preview for closed PR #${{ github.event.pull_request.number }}"
+
+      - name: Note the preview was removed on the PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          bash .github/scripts/post_preview_comment.sh "${{ github.event.pull_request.number }}" \
+            "Docs preview removed -- this PR is closed."

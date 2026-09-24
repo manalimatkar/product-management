@@ -1,10 +1,18 @@
 # Builds and deploys the sample-project docs site (pdf-workflow/workflow-manager's
 # Journeys, Capabilities, Business Rules, and Design Analysis) to GitHub Pages.
 #
+# Publishes to the gh-pages branch root rather than using the modern
+# actions/deploy-pages flow, because that flow replaces the entire published
+# site on every run -- incompatible with preview-docs-site.yml's per-PR
+# preview subfolders (pr-<number>/) needing to coexist alongside this site.
+# publish_to_gh_pages.sh is the shared, tested mechanism both workflows use;
+# see that script's own header for what was verified before it was trusted.
+#
 # Requires two one-time repository settings changes, neither done by this workflow:
 #   1. Repository visibility: Public (GitHub Pages is not available on a private repo
 #      below GitHub Pro/Team/Enterprise).
-#   2. Settings -> Pages -> Build and deployment -> Source: "GitHub Actions".
+#   2. Settings -> Pages -> Build and deployment -> Source: "Deploy from a branch",
+#      branch "gh-pages", folder "/ (root)".
 #
 # Scope is deliberately narrow: build_docs_site.py stages only registries/ and
 # pdf-workflow/ (the sample project's real content) -- specs/, templates/, .claude/,
@@ -19,16 +27,14 @@ on:
   workflow_dispatch: {}
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write # pushes to the gh-pages branch
 
 concurrency:
-  group: pages
+  group: gh-pages-root
   cancel-in-progress: false
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -46,18 +52,5 @@ jobs:
       - name: Build site (fails on any broken internal link)
         run: mkdocs build --strict
 
-      - uses: actions/configure-pages@v5
-
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: site
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - uses: actions/deploy-pages@v4
-        id: deployment
+      - name: Publish to gh-pages branch root
+        run: bash .github/scripts/publish_to_gh_pages.sh site . "Deploy main site (${{ github.sha }})"
