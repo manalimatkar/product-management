@@ -2,14 +2,20 @@
 //
 // Adds a "Comment" button next to every ID-only heading (BR-006, DEC-002,
 // ...) that comment-map.json (generate_comment_map.py) knows a source
-// line for. "Post" calls GitHub's REST API directly from the browser --
-// POST /repos/{repo}/pulls/{pr}/comments -- to create a real inline PR
-// review comment, using the reviewer's own token (below). This assumes
-// api.github.com's CORS policy allows an authenticated browser POST from
-// an arbitrary origin (GitHub has supported this for a few years) --
-// genuinely unverified until tested against a real PR; if it turns out
-// CORS blocks this, the fetch will reject and the error path (below)
-// surfaces that instead of failing silently.
+// line for. "Post" calls GitHub's REST API directly from the browser,
+// using the reviewer's own token (below) -- CORS confirmed working
+// against a real PR, not just assumed.
+//
+// Tries a real inline PR review comment first (anchored to the exact
+// line). GitHub only allows that when the line is part of the PR's diff
+// hunks, though -- confirmed live: most ID headings in a real document
+// are NOT part of any given PR's diff (only what that PR actually
+// changed is), so this is the common case, not an edge case. When
+// GitHub rejects the line for that reason, this falls back to a general
+// (not line-anchored) PR comment, prefixed with the ID it's about --
+// still a real GitHub comment, still readable by resolve-review-decisions
+// (which already treats general comments as first-class input), just
+// not anchored to an exact line GitHub won't allow anyway.
 //
 // Hides itself entirely when there's no PR to comment on (main-site
 // build, where comment-map.json's commit_sha/pr_number/repo are null)
@@ -210,17 +216,49 @@
     return wrap;
   }
 
-  function postComment(target, body) {
+  function apiHeaders() {
+    return {
+      Authorization: "Bearer " + getToken(),
+      Accept: "application/vnd.github+json",
+      "X-GitHub-Api-Version": "2022-11-28",
+      "Content-Type": "application/json",
+    };
+  }
+
+  function githubError(err, status) {
+    var message = (err && err.message) || "GitHub API error " + status;
+    var e = new Error(message);
+    // GitHub's specific shape when the requested line isn't part of the
+    // PR's diff hunks -- confirmed against a real 422 while testing this
+    // live: {"errors":[{"field":"pull_request_review_thread.line",
+    // "message":"could not be resolved"}]}. Most ID headings in a real
+    // document are NOT part of any given PR's diff (only what that PR
+    // actually changed is), so this isn't an edge case -- it's the
+    // common case, and needs a real fallback, not just a surfaced error.
+    e.lineNotInDiff =
+      !!err &&
+      Array.isArray(err.errors) &&
+      err.errors.some(function (x) {
+        return x.field === "pull_request_review_thread.line";
+      });
+    return e;
+  }
+
+  function parseErrorBody(r) {
+    return r.json().catch(function () {
+      return {};
+    });
+  }
+
+  // Real inline PR review comment, anchored to an exact line -- only
+  // succeeds when that line is part of the PR's diff (GitHub's own
+  // constraint, not something this widget can relax).
+  function postInlineComment(target, body) {
     var url =
       "https://api.github.com/repos/" + target.repo + "/pulls/" + target.prNumber + "/comments";
     return fetch(url, {
       method: "POST",
-      headers: {
-        Authorization: "Bearer " + getToken(),
-        Accept: "application/vnd.github+json",
-        "X-GitHub-Api-Version": "2022-11-28",
-        "Content-Type": "application/json",
-      },
+      headers: apiHeaders(),
       body: JSON.stringify({
         body: body,
         commit_id: target.commitSha,
@@ -229,15 +267,47 @@
         side: "RIGHT",
       }),
     }).then(function (r) {
-      if (!r.ok) {
-        return r.json().catch(function () {
-          return {};
-        }).then(function (err) {
-          throw new Error((err && err.message) || "GitHub API error " + r.status);
-        });
-      }
+      if (!r.ok) return parseErrorBody(r).then(function (err) { throw githubError(err, r.status); });
       return r.json();
     });
+  }
+
+  // General (not line-anchored) PR comment -- PRs are issues in GitHub's
+  // API, so this is the ordinary issue-comments endpoint. Used as the
+  // fallback whenever the target line isn't part of the diff; prefixed
+  // with the ID so it's still traceable back to what it's about, same
+  // as resolve-review-decisions already expects for general comments.
+  function postGeneralComment(target, body) {
+    var url =
+      "https://api.github.com/repos/" + target.repo + "/issues/" + target.prNumber + "/comments";
+    var prefixed = "Re: `" + target.id + "`: " + body;
+    return fetch(url, {
+      method: "POST",
+      headers: apiHeaders(),
+      body: JSON.stringify({ body: prefixed }),
+    }).then(function (r) {
+      if (!r.ok) return parseErrorBody(r).then(function (err) { throw githubError(err, r.status); });
+      return r.json();
+    });
+  }
+
+  // Try the real inline comment first (best result -- anchored right at
+  // the section); fall back to a general PR comment only when GitHub
+  // specifically rejects it for being outside the diff. Any other
+  // failure (auth, rate limit, network) surfaces as a real error instead
+  // of silently falling back -- a fallback should never mask an actual
+  // problem the reviewer needs to know about.
+  function postComment(target, body) {
+    return postInlineComment(target, body)
+      .then(function (comment) {
+        return { comment: comment, kind: "inline" };
+      })
+      .catch(function (err) {
+        if (!err.lineNotInDiff) throw err;
+        return postGeneralComment(target, body).then(function (comment) {
+          return { comment: comment, kind: "general" };
+        });
+      });
   }
 
   function buildCommentBox(target, onClose) {
@@ -272,11 +342,16 @@
       status.textContent = "";
 
       postComment(target, body)
-        .then(function (comment) {
+        .then(function (result) {
           status.className = "comment-widget-status success";
+          var note =
+            result.kind === "general"
+              ? "Posted as a general PR comment (this section isn't part of the current diff, so GitHub can't anchor it to an exact line)."
+              : "Posted.";
           status.innerHTML =
-            'Posted. <a href="' +
-            comment.html_url +
+            note +
+            ' <a href="' +
+            result.comment.html_url +
             '" target="_blank" rel="noopener">View on GitHub</a>';
           textarea.value = "";
           textarea.disabled = true;
