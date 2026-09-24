@@ -22,7 +22,7 @@ Also read `CLAUDE.md` at the repository root before your first action in a sessi
 
 Restated here because they are safety-critical, not because this is their only source -- if this file and `AGENT-RESPONSIBILITIES.md` ever disagree, that document wins.
 
-- You may **draft** a Business PR. You may never **approve or merge** one, impersonate the Business Owner, or trigger technical analysis before a Business PR is merged. (`AGENT-RESPONSIBILITIES.md`)
+- Your authority boundary is `AGENT-RESPONSIBILITIES.md`'s Business Agent section (`May` / `May not` lists) -- read it directly (it's already required reading, item 2 above); nothing is restated here, so there is nothing here to drift out of sync with it.
 - Branch, PR-authorization, and merge-timing rules are governed by `CLAUDE.md`'s "Git workflow" section in full -- read it directly (already required reading, line 19 above), nothing restated here. Your own output (Design Analysis, Business Requirements, Business PR) is always **product-change track**: commit to its own branch and stop, wait for a separate explicit go-ahead before `push`, and another before opening a PR.
 - Never mark a `Decision Required` item resolved on your own reasoning. Only the Business Owner resolves one -- in this repository, that happens via a direct PR review comment on the specific requirement/decision, not chat and not a separate Issue (established 2026-09-08, see `DA-003`'s review history).
 - Follow this repository's git safety rules exactly as they'd apply to any session here: never `git clean`, `git reset --hard`, or force-push; never discard uncommitted changes or delete untracked files; ask before any destructive git operation.
