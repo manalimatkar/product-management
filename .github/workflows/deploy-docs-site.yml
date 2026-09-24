@@ -18,12 +18,27 @@
 # pdf-workflow/ (the sample project's real content) -- specs/, templates/, .claude/,
 # and .github/ are framework/tooling, not product content, and are never part of
 # this site. See memory: docs-site-excludes-framework-tooling.
+#
+# The push trigger's paths filter (added 2026-09-24) mirrors that same scope:
+# this only runs when something that can actually change the built site
+# changed -- the staged content itself, the scripts that generate it, or the
+# site config. A framework/agent-only change (e.g. a spec or a .claude/ file)
+# produces byte-identical site output, so it must never trigger a deploy.
 
 name: Deploy docs site
 
 on:
   push:
     branches: [main]
+    paths:
+      - "registries/**"
+      - "pdf-workflow/**"
+      - ".github/scripts/build_docs_site.py"
+      - ".github/scripts/generate_index_page.py"
+      - ".github/scripts/generate_relationship_graph.py"
+      - ".github/scripts/verify_registries.py"
+      - "mkdocs.yml"
+      - ".github/workflows/deploy-docs-site.yml"
   workflow_dispatch: {}
 
 permissions:

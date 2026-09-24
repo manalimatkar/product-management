@@ -15,10 +15,14 @@
 # Settings -> Pages -> Source: "Deploy from a branch" (gh-pages, root).
 #
 # Scoped to PRs targeting main only (matching deploy-docs-site.yml's own
-# push trigger) -- fixed 2026-09-24 after PRs against the agents
-# integration branch (agent-framework changes, never sample-project
+# push trigger), and further scoped by paths to only the files that can
+# actually change the built site -- fixed 2026-09-24 after PRs against the
+# agents integration branch (agent-framework changes, never sample-project
 # content) were triggering this preview and posting an irrelevant
-# preview-link comment on every one of them.
+# preview-link comment on every one of them. Branch-only was not enough on
+# its own: an unrelated main-targeted change (e.g. a typo fix in a root
+# doc) would still have triggered a pointless build without the paths
+# filter too.
 
 name: Preview docs site for a PR
 
@@ -26,6 +30,15 @@ on:
   pull_request:
     types: [opened, synchronize, reopened, closed]
     branches: [main]
+    paths:
+      - "registries/**"
+      - "pdf-workflow/**"
+      - ".github/scripts/build_docs_site.py"
+      - ".github/scripts/generate_index_page.py"
+      - ".github/scripts/generate_relationship_graph.py"
+      - ".github/scripts/verify_registries.py"
+      - "mkdocs.yml"
+      - ".github/workflows/preview-docs-site.yml"
 
 permissions:
   contents: write # pushes to the gh-pages branch
