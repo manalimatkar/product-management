@@ -10,7 +10,7 @@
 | Feature | Mapping Report (pdf-workflow / workflow-manager) |
 | Source Material | `branch: design`, `path: pdf-workflow/workflow-manager/design/v4/`, `commit: f5de2a0fbdac4033b2a8aecf523d15948c6801f5` |
 | Source Version | `4` |
-| Analysis Version | `1.0` |
+| Analysis Version | `1.1` |
 | Created By | Business Agent workflow |
 | Created At | 2026-09-08 |
 | Status | `Approved` -- 16/16 requirements, `BR-003` revised per direct feedback after `PR #17` merged (see [Review history](#review-history)) |
@@ -27,6 +27,22 @@ Workflows created by uploading a PDF get their page/section/field structure auto
 Source reviewed: `SRC-003`, `pdf-workflow/workflow-manager/design/v4/README.md` (the "Mapping Report" section, plus the shared Scope note, Known UX issues, Interactions & behavior, and State management sections where they describe this screen specifically).
 
 **Source limitations, stated up front:** mobile/tablet layout for the mapping table was explicitly deferred by the source itself, resolved by direct clarification to horizontal scroll rather than stacked cards; no numeric bound is stated for page, section, field, or FieldGroup sub-field counts; the exact navigation trigger into the report and the zero-mappings empty state were both unstated in the source, both resolved by direct clarification below.
+
+## Problem
+
+Automatic extraction assigns every proposed mapping a confidence score rather than treating extraction as reliable, and the source explicitly names extraction as carrying real risk when discussing the related LLM-based creation path ("same class of risk as PDF extraction -- the LLM can misread intent"). Without a review step, an incorrectly extracted or mapped field would carry through unchecked into a workflow used to collect real submissions. The source never states this as a single problem sentence -- this synthesizes confidence scoring's own existence with the extraction-risk language stated elsewhere in the source.
+
+Evidence: [OBS-026](#obs-026). Strongly Implied, Medium confidence.
+
+## Goals
+
+Ensure an incorrect or low-confidence field extraction is caught and corrected before a workflow goes live to collect real submissions. This is the direct inverse of the Problem above, using the same evidence -- the source does not state it as a goal independently.
+
+Evidence: [OBS-026](#obs-026). Strongly Implied, Medium confidence.
+
+## Success Metrics
+
+Not defined in source. **Decision Required** -- see [DEC-005](#dec-005), owner: Business Owner.
 
 ## Reviewing the mapping
 
@@ -328,14 +344,15 @@ Evidence: [OBS-019](#obs-019). Explicit, High confidence.
 
 ## Open Decisions
 
-All four resolved 2026-09-08, directly on `PR #17`'s review -- per Manali's stated preference that resolution happen inside the PR review itself, not in chat or as separate Issues.
+The first four were resolved 2026-09-08, directly on `PR #17`'s review -- per Manali's stated preference that resolution happen inside the PR review itself, not in chat or as separate Issues.
 
 - [DEC-001](#dec-001): navigation trigger into the Mapping Report -- **Resolved**, three real entry paths (PDF conversion, reopening an existing mapping, starting a new workflow from scratch).
 - [DEC-002](#dec-002): empty state for zero mappings -- **Resolved**, via the new-workflow flow ([BR-016](#br-016)).
 - [DEC-003](#dec-003): mobile/tablet table layout -- **Resolved**, horizontal scroll, not stacked cards ([BRULE-008](#brule-008)).
 - [DEC-004](#dec-004): org role/permission requirements -- **Resolved (deferred)**, no permission layer until login/auth exists.
+- [DEC-005](#dec-005): success metric for this feature -- **Open**, owner: Business Owner.
 
-Only two Technical Unknowns remain ([TECH-001](#tech-001), [TECH-002](#tech-002)) -- not business decisions, not a blocker to Business Requirements; for the Technical Agent stage.
+Only two Technical Unknowns remain ([TECH-001](#tech-001), [TECH-002](#tech-002)) -- not business decisions, not a blocker to Business Requirements; for the Technical Agent stage. [DEC-005](#dec-005) (success metric, added 2026-09-25) is genuinely open, but doesn't block Business Requirements either -- it affects how success is measured after launch, not what gets built.
 
 ## Not built yet
 
@@ -469,6 +486,9 @@ Manali, [`PR #17` review comment](https://github.com/manalimatkar/product-manage
 ##### OBS-025
 Manali, [`PR #17` review comment](https://github.com/manalimatkar/product-management/pull/17#issuecomment-5589857757) (Review Outcome, `BR-003` left unchecked), 2026-09-08: "For now work on table view." Human Provided, High. Card view is deferred for this phase, not rejected -- only Table view is being built now. *(↩ used by [BR-003](#br-003), [GAP-004](#gap-004))*
 
+##### OBS-026
+Source (Scope note / Known UX issues sections): every proposed mapping carries a confidence score rather than being treated as reliable; discussing the related LLM-based creation path, the source states it would carry "the same class of risk as PDF extraction -- the LLM can misread intent." No single sentence states the resulting problem or goal directly -- synthesized across these two passages. Strongly Implied, Medium. *(↩ used by [Problem](#problem), [Goals](#goals))*
+
 ### Business Rules
 
 ##### BRULE-001
@@ -514,6 +534,9 @@ Should the mapping table, below roughly 900px, horizontally scroll (matches desk
 ##### DEC-004
 Does reviewing or editing a workflow's mapping require a specific org role/permission, given the wider product shows org-level Members/Billing controls? **Resolved (deferred) 2026-09-08** -- see [OBS-024](#obs-024). No permission layer now; explicitly pending a not-yet-built login/auth capability. Revisit when that capability is scoped.
 
+##### DEC-005
+What measurable signal would tell the team this feature is working (e.g. reduction in post-extraction correction time, or in downstream data-quality issues traced to a bad mapping)? The source states no success criteria for this feature at all -- not deferred, simply never addressed. **Open**, owner: Business Owner.
+
 ### Gaps
 
 ##### GAP-001
@@ -551,11 +574,13 @@ Business behavior known: reordering persists an explicit per-level override list
 - [x] "Not built yet" is present and honest -- nothing silently dropped.
 - [x] Technical implementation choices are excluded.
 - [x] Every ID-only heading in the Evidence section has at least one "used by" back-link, and every "Evidence:" link above resolves to a real heading below.
+- [x] `## Problem`, `## Goals`, and `## Success Metrics` are each present and either grounded in real evidence or explicitly recorded as a Decision Required.
 
 ## Review history
 
 | Review Item | Outcome | Reviewer | Date | Notes |
 | --- | --- | --- | --- | --- |
+| Problem/Goals/Success Metrics added | Editorial addition | Business Agent | 2026-09-25 | `DESIGN-ANALYSIS-SPEC.md` sections 4.14-4.16 added these as required sections after a content review found the document never stated why the feature exists or what success looks like. Problem and Goals grounded in [OBS-026](#obs-026) (Strongly Implied -- the source never states either directly); Success Metrics genuinely has no source basis, recorded as [DEC-005](#dec-005), Open, owner Business Owner. Analysis Version bumped `1.0` → `1.1`; no existing requirement changed. |
 | Design Analysis | Approved -- 16/16 requirements, after one revision | Manali | 2026-09-08 | `PR #17` merged with 15/16 requirements checked directly; `BR-003` was left unchecked with an inline note ("For now work on table view") -- incorporated as [OBS-025](#obs-025), `BR-003` narrowed to Table view only ([GAP-004](#gap-004), resolved the same way as [GAP-003](#gap-003)), Card view kept in the source record as deferred, not rejected. All four Decisions ([DEC-001](#dec-001)-[004](#dec-004)) were also resolved via `PR #17`'s review comments, incorporated as Human Provided evidence throughout. Only [TECH-001](#tech-001)/[TECH-002](#tech-002) (Technical Unknowns, not business decisions) remain, for the Technical Agent stage -- not a blocker. Proceeding to Business Requirements. |
 | Business Requirements | Not started | -- | -- | Awaiting this Design Analysis's final review outcome. |
 | Design Version | Not yet accepted | -- | -- | Awaiting review. |

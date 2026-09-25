@@ -378,6 +378,20 @@ Every generated requirement must have at least one source reference or be explic
 
 See [EVIDENCE-SPEC.md](EVIDENCE-SPEC.md) for the plain-language evidence rule, the full cross-artifact traceability chain, and a quick-reference mapping onto the classifications defined below.
 
+### 4.14 Problem
+
+State what goes wrong, or what's missing, without this feature -- the actual pain, not a restatement of the feature's own function. Ground it in the source when the source states one (a Scope note, a stated rationale, a linked ticket). When the source is silent on why the feature exists, the Business Agent must not infer a plausible-sounding reason -- record it as a Decision Required (section 4.10) instead, owner Business Owner. A guessed problem statement is a more dangerous failure than an honest gap here, since it's the framing everything else in the analysis gets read against.
+
+Numbered here at the end of this activity's checklist for stability (existing subsection numbers are cited from 19 other files repo-wide -- see this section's own Revision History entry); [DESIGN-ANALYSIS-TEMPLATE.md](../templates/DESIGN-ANALYSIS-TEMPLATE.md) places the published `## Problem` section directly after `## What this is`, near the top, matching product-writing practice (a reader needs the problem before the mechanism) -- this spec's internal activity numbering and the template's reading order are deliberately independent of each other.
+
+### 4.15 Goals
+
+List the business outcomes this feature is meant to achieve -- not restated functionality. "Reduce incorrect data reaching live workflows downstream" is a goal; "the reviewer can edit a mapped field" is a capability, not a goal. Same rule as 4.14: when the source doesn't state goals and no direct Business Owner answer exists either, record a Decision Required rather than inferring one that merely sounds reasonable.
+
+### 4.16 Success Metrics
+
+State how the team would know this feature is working -- one or two measurable signals, when the source or a direct Business Owner answer gives real basis for one. Design source material very often does not state this. When it doesn't, the analysis must say so explicitly ("Not defined in source; Decision Required, owner: Business Owner") rather than omitting the section -- an omitted section reads as an oversight; an explicit "not yet defined" reads as complete, the same standard section 4.12 (Exclusions and Limitations) already holds every other silence to.
+
 ## 5. Evidence Classification
 
 Every observation, rule, requirement, and interpretation must use one of these classifications:
@@ -477,6 +491,7 @@ A Design Analysis is ready for Business PR review only when:
 - the exact Design Handoff Bundle version is recorded
 - all reviewed source areas are listed
 - the universal product context and domain inventory are complete
+- `## Problem`, `## Goals`, and `## Success Metrics` (sections 4.14-4.16) are each present, and each either grounded in real evidence or explicitly recorded as a Decision Required -- never silently blank, never a guessed answer presented as a confirmed one
 - each capability has evidence
 - each requirement is atomic and testable
 - each requirement has a source reference or human-origin marker
@@ -603,6 +618,7 @@ Each module must add evidence-backed detail without replacing the core actors, g
 
 | Date | Section | Change |
 | --- | --- | --- |
+| 2026-09-25 | 4.14-4.16, 7 | Added Problem/Goals/Success Metrics as required subsections, closing a real gap found reviewing `DA-003` as a lead product reader: the activity-1 checklist already asked the agent to extract "what feature or user problem it addresses" and "user or business goals," but the template gave neither a required place to land, so they never reliably surfaced in the published document. Numbered 4.14-4.16 (appended, not inserted in reading order) since existing subsection numbers are cited from 19 other files -- see 4.14's own note. Added the corresponding Quality Check. |
 | 2026-09-21 | 7, 11 | Split Business Requirement detail (Gherkin, Evidence, classification) out of the feature-area narrative into a dedicated `## Requirements` register section; repositioned Capabilities as reference material; added narrative-readability and upstream/downstream-traceability checks to Quality Checks. |
 | 2026-09-10 | 4 (Activity 1), 4.5, 4.6, 4.7 | Added the flows-before-capabilities analysis order, the accurate-source-reading requirement, and the check-the-registry-before-minting rule; made Journey/Capability/Business Rule product-level with their own registries (previously analysis-scoped, like an Observation). Reverted an earlier template revision that had folded Journey IDs into narrative prose, removing their addressability. |
 | 2026-09-08 | 11 | Reshaped the template from numbered-sections-first to narrative-first, after real use (`DA-003`) showed a new Business Analyst had to reassemble the feature's shape from a dozen ID-keyed tables. Also resolved section 13's "exact output format" item. |
