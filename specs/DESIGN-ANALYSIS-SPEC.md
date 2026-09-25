@@ -378,6 +378,26 @@ Every generated requirement must have at least one source reference or be explic
 
 See [EVIDENCE-SPEC.md](EVIDENCE-SPEC.md) for the plain-language evidence rule, the full cross-artifact traceability chain, and a quick-reference mapping onto the classifications defined below.
 
+### 4.14 Problem
+
+State what goes wrong, or what's missing, without this feature -- the actual pain, not a restatement of the feature's own function. Ground it in the source when the source states one (a Scope note, a stated rationale, a linked ticket). When the source is silent on why the feature exists, the Business Agent must not infer a plausible-sounding reason -- record it as a Decision Required (section 4.10) instead, owner Business Owner. A guessed problem statement is a more dangerous failure than an honest gap here, since it's the framing everything else in the analysis gets read against.
+
+**Quality bar, not just presence.** One to three sentences. Check it by asking: could a reader answer "what's the problem?" just by re-reading `## What this is` instead? If yes, this section restated the mechanism, not the pain, and hasn't done its job. This isn't an internal preference -- it's how real product teams write this section: Amazon's [Working Backwards / PR-FAQ process](https://workingbackwards.com/concepts/working-backwards-pr-faq-process/) states customer value before any spec detail; Lenny Rachitsky's [widely-used PRD template](https://www.lennysnewsletter.com/p/prds-1-pagers-examples) calls nailing the problem statement "the single most important step," done in a few strong sentences near the top -- exactly why `DESIGN-ANALYSIS-TEMPLATE.md` places `## Problem` immediately after `## What this is`, not deep in the document.
+
+Numbered here at the end of this activity's checklist for stability (existing subsection numbers are cited from 19 other files repo-wide -- see this section's own Revision History entry); the template's placement (near the top) and this spec's internal activity numbering (at the end) are deliberately independent of each other.
+
+### 4.15 Goals
+
+List the business outcomes this feature is meant to achieve -- not restated functionality. "Reduce incorrect data reaching live workflows downstream" is a goal; "the reviewer can edit a mapped field" is a capability, not a goal. Same rule as 4.14: when the source doesn't state goals and no direct Business Owner answer exists either, record a Decision Required rather than inferring one that merely sounds reasonable.
+
+**Quality bar.** If every line here could be lifted verbatim from a feature-area heading, this section is restating functionality, not stating a goal -- rewrite it as the outcome that functionality exists to produce.
+
+### 4.16 Success Metrics
+
+State how the team would know this feature is working -- one or two measurable signals, when the source or a direct Business Owner answer gives real basis for one. Design source material very often does not state this. When it doesn't, the analysis must say so explicitly ("Not defined in source; Decision Required, owner: Business Owner") rather than omitting the section -- an omitted section reads as an oversight; an explicit "not yet defined" reads as complete, the same standard section 4.12 (Exclusions and Limitations) already holds every other silence to.
+
+**Quality bar.** One or two signals, not an exhaustive KPI list. Real company PRD templates -- surveyed across a [collection of 15 templates from teams including Stripe, Airbnb, and Intercom](https://www.prodmgmt.world/blog/prd-template-guide) -- consistently keep this section this small; a long list here usually means metrics from a different initiative got mixed in.
+
 ## 5. Evidence Classification
 
 Every observation, rule, requirement, and interpretation must use one of these classifications:
@@ -477,6 +497,8 @@ A Design Analysis is ready for Business PR review only when:
 - the exact Design Handoff Bundle version is recorded
 - all reviewed source areas are listed
 - the universal product context and domain inventory are complete
+- `## Problem`, `## Goals`, and `## Success Metrics` (sections 4.14-4.16) are each present, and each either grounded in evidence or explicitly recorded as a Decision Required -- never silently blank, never a guessed answer presented as a confirmed one
+- **`## Problem` meets its quality bar, not just its presence requirement**: one to three sentences, stating the pain rather than answerable by re-reading `## What this is`; **`## Goals`** states outcomes no line of which could be lifted verbatim from a feature-area heading; **`## Success Metrics`** holds to one or two signals, not an exhaustive list (section 4.14-4.16's own quality-bar notes)
 - each capability has evidence
 - each requirement is atomic and testable
 - each requirement has a source reference or human-origin marker
@@ -488,7 +510,9 @@ A Design Analysis is ready for Business PR review only when:
 - limitations and missing source information are visible
 - **the feature-area narrative is readable end to end by a first-time reader without resolving an evidence link, a classification tag, or a Gherkin block** -- that detail exists, in the Requirements register and Evidence and Traceability sections (`DESIGN-ANALYSIS-TEMPLATE.md`), never interleaved into the narrative itself
 - **the document contains no commentary about its own revision history in its primary content** -- format changes, prior drafts, review-round corrections belong in this specification's own changelog (section 11), never repeated inside an instance
+- **the document contains no self-assessment of its own quality, honesty, or rigor** -- state the fact, not an appraisal of how well it was stated; and no filler intensifier (`genuinely`, `real` as emphasis, `actually`, `honest(ly)`) that carries no information a reader would lose if it were cut
 - **every requirement, capability, and business rule links upstream to its source reference and, once they exist, downstream to its Story, Epic, and Business PR** -- each a real, followable link, not just a fact stated in the metadata table (`BUSINESS-AGENT-WORKFLOW.md` section 4.4)
+- **every Journey, Capability, and Business Rule record file (not just the Design Analysis itself) holds to every check on this list** -- `BUSINESS-AGENT-WORKFLOW.md` section 4.3 governs this explicitly; these files are not a separate, ungoverned artifact type
 
 ## 8. Approval and Change Rules
 
@@ -603,6 +627,8 @@ Each module must add evidence-backed detail without replacing the core actors, g
 
 | Date | Section | Change |
 | --- | --- | --- |
+| 2026-09-25 | 7 | Added Quality Checks for self-assessment/filler-intensifier language and for record-file coverage, mirroring `BUSINESS-AGENT-WORKFLOW.md` section 4.3's new step 3 -- a standing rule, not a one-time fix, after retrofitting `DA-003`'s own new content revealed the same voice failures the framework was meant to prevent. |
+| 2026-09-25 | 4.14-4.16, 7 | Added Problem/Goals/Success Metrics as required subsections, closing a real gap found reviewing `DA-003` as a lead product reader: the activity-1 checklist already asked the agent to extract "what feature or user problem it addresses" and "user or business goals," but the template gave neither a required place to land, so they never reliably surfaced in the published document. Numbered 4.14-4.16 (appended, not inserted in reading order) since existing subsection numbers are cited from 19 other files -- see 4.14's own note. Added the corresponding Quality Check. |
 | 2026-09-21 | 7, 11 | Split Business Requirement detail (Gherkin, Evidence, classification) out of the feature-area narrative into a dedicated `## Requirements` register section; repositioned Capabilities as reference material; added narrative-readability and upstream/downstream-traceability checks to Quality Checks. |
 | 2026-09-10 | 4 (Activity 1), 4.5, 4.6, 4.7 | Added the flows-before-capabilities analysis order, the accurate-source-reading requirement, and the check-the-registry-before-minting rule; made Journey/Capability/Business Rule product-level with their own registries (previously analysis-scoped, like an Observation). Reverted an earlier template revision that had folded Journey IDs into narrative prose, removing their addressability. |
 | 2026-09-08 | 11 | Reshaped the template from numbered-sections-first to narrative-first, after real use (`DA-003`) showed a new Business Analyst had to reassemble the feature's shape from a dozen ID-keyed tables. Also resolved section 13's "exact output format" item. |
