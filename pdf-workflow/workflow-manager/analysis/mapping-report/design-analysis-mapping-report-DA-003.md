@@ -30,13 +30,13 @@ Source reviewed: `SRC-003`, `pdf-workflow/workflow-manager/design/v4/README.md` 
 
 ## Problem
 
-Automatic extraction assigns every proposed mapping a confidence score rather than treating extraction as reliable, and the source explicitly names extraction as carrying real risk when discussing the related LLM-based creation path ("same class of risk as PDF extraction -- the LLM can misread intent"). Without a review step, an incorrectly extracted or mapped field would carry through unchecked into a workflow used to collect real submissions. The source never states this as a single problem sentence -- this synthesizes confidence scoring's own existence with the extraction-risk language stated elsewhere in the source.
+Automatic extraction assigns every proposed mapping a confidence score rather than treating extraction as reliable, and the source names extraction as carrying risk when discussing the related LLM-based creation path ("same class of risk as PDF extraction -- the LLM can misread intent"). Without a review step, an incorrectly extracted or mapped field would carry through unchecked into a workflow used to collect real submissions.
 
 Evidence: [OBS-026](#obs-026). Strongly Implied, Medium confidence.
 
 ## Goals
 
-Ensure an incorrect or low-confidence field extraction is caught and corrected before a workflow goes live to collect real submissions. This is the direct inverse of the Problem above, using the same evidence -- the source does not state it as a goal independently.
+Catch and correct an incorrect or low-confidence field extraction before a workflow goes live to collect real submissions.
 
 Evidence: [OBS-026](#obs-026). Strongly Implied, Medium confidence.
 
@@ -352,7 +352,7 @@ The first four were resolved 2026-09-08, directly on `PR #17`'s review -- per Ma
 - [DEC-004](#dec-004): org role/permission requirements -- **Resolved (deferred)**, no permission layer until login/auth exists.
 - [DEC-005](#dec-005): success metric for this feature -- **Open**, owner: Business Owner.
 
-Only two Technical Unknowns remain ([TECH-001](#tech-001), [TECH-002](#tech-002)) -- not business decisions, not a blocker to Business Requirements; for the Technical Agent stage. [DEC-005](#dec-005) (success metric, added 2026-09-25) is genuinely open, but doesn't block Business Requirements either -- it affects how success is measured after launch, not what gets built.
+Only two Technical Unknowns remain ([TECH-001](#tech-001), [TECH-002](#tech-002)) -- not business decisions, not a blocker to Business Requirements; for the Technical Agent stage. [DEC-005](#dec-005) (success metric, added 2026-09-25) is open too, but doesn't block Business Requirements either -- it affects how success is measured after launch, not what gets built.
 
 ## Not built yet
 
@@ -574,13 +574,13 @@ Business behavior known: reordering persists an explicit per-level override list
 - [x] "Not built yet" is present and honest -- nothing silently dropped.
 - [x] Technical implementation choices are excluded.
 - [x] Every ID-only heading in the Evidence section has at least one "used by" back-link, and every "Evidence:" link above resolves to a real heading below.
-- [x] `## Problem`, `## Goals`, and `## Success Metrics` are each present and either grounded in real evidence or explicitly recorded as a Decision Required.
+- [x] `## Problem`, `## Goals`, and `## Success Metrics` are each present and either grounded in evidence or explicitly recorded as a Decision Required.
 
 ## Review history
 
 | Review Item | Outcome | Reviewer | Date | Notes |
 | --- | --- | --- | --- | --- |
-| Problem/Goals/Success Metrics added | Editorial addition | Business Agent | 2026-09-25 | `DESIGN-ANALYSIS-SPEC.md` sections 4.14-4.16 added these as required sections after a content review found the document never stated why the feature exists or what success looks like. Problem and Goals grounded in [OBS-026](#obs-026) (Strongly Implied -- the source never states either directly); Success Metrics genuinely has no source basis, recorded as [DEC-005](#dec-005), Open, owner Business Owner. Analysis Version bumped `1.0` → `1.1`; no existing requirement changed. |
+| Problem/Goals/Success Metrics added | Editorial addition | Business Agent | 2026-09-25 | `DESIGN-ANALYSIS-SPEC.md` sections 4.14-4.16 added these as required sections after a content review found the document never stated why the feature exists or what success looks like. Problem and Goals grounded in [OBS-026](#obs-026) (Strongly Implied -- the source never states either directly); Success Metrics has no source basis at all, recorded as [DEC-005](#dec-005), Open, owner Business Owner. Analysis Version bumped `1.0` → `1.1`; no existing requirement changed. |
 | Design Analysis | Approved -- 16/16 requirements, after one revision | Manali | 2026-09-08 | `PR #17` merged with 15/16 requirements checked directly; `BR-003` was left unchecked with an inline note ("For now work on table view") -- incorporated as [OBS-025](#obs-025), `BR-003` narrowed to Table view only ([GAP-004](#gap-004), resolved the same way as [GAP-003](#gap-003)), Card view kept in the source record as deferred, not rejected. All four Decisions ([DEC-001](#dec-001)-[004](#dec-004)) were also resolved via `PR #17`'s review comments, incorporated as Human Provided evidence throughout. Only [TECH-001](#tech-001)/[TECH-002](#tech-002) (Technical Unknowns, not business decisions) remain, for the Technical Agent stage -- not a blocker. Proceeding to Business Requirements. |
 | Business Requirements | Not started | -- | -- | Awaiting this Design Analysis's final review outcome. |
 | Design Version | Not yet accepted | -- | -- | Awaiting review. |

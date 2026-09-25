@@ -160,7 +160,7 @@ Evidence: [OBS-001](#obs-001). `<Explicit / Strongly Implied / Assumption / Huma
 ## Quality Checklist
 
 - [ ] Exact source path, branch/commit, and version are recorded.
-- [ ] `## Problem`, `## Goals`, and `## Success Metrics` are each present and either filled with real content grounded in the source/a direct Business Owner answer, or explicitly recorded as a Decision Required -- never silently blank, and never a guessed answer dressed up as a real one.
+- [ ] `## Problem`, `## Goals`, and `## Success Metrics` are each present and either filled with content grounded in the source or a direct Business Owner answer, or explicitly recorded as a Decision Required -- never silently blank, and never a guessed answer presented as a confirmed one.
 - [ ] The whole document -- not just "What this is" -- reads as a first-time target reader would read it: the narrative needs no evidence link, classification tag, or Gherkin block resolved to be understood. "What this is" itself has zero IDs.
 - [ ] No commentary about this document's own revision history appears in its content -- format changes, prior drafts, review-round corrections belong in `DESIGN-ANALYSIS-SPEC.md` section 11's changelog, never repeated here. This is easy to reintroduce even while fixing it -- check explicitly.
 - [ ] Every requirement has evidence, a classification, and a confidence level -- linked, not just named.
