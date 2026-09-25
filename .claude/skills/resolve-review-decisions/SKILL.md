@@ -5,9 +5,9 @@ description: Turns a Design Analysis review PR's comments into recorded resoluti
 
 # Resolve Review Decisions
 
-This repository's established pattern (2026-09-08): open Decisions on a Design Analysis get resolved directly on its review PR -- inline comments on the specific line, or a general comment on the PR -- never in chat, never as a separate Issue. This skill is the mechanical half of turning those comments into the document's actual recorded resolution. It is deliberately not fully automated: **matching a comment to the Decision it answers, and judging whether it actually resolves that Decision, stays a human-supervised, agent-assisted reading step, never a script's guess.**
+The governing rule -- open Decisions on a Design Analysis get resolved directly on its review PR, inline or general comments, never chat, never a separate Issue -- lives in `specs/GITHUB-PLATFORM-ADAPTER-SPEC.md` section 8, not here. This skill is the mechanical half of turning those comments into the document's actual recorded resolution. It is deliberately not fully automated: **matching a comment to the Decision it answers, and judging whether it actually resolves that Decision, stays a human-supervised, agent-assisted reading step, never a script's guess.**
 
-## Hard constraint, restated from `.claude/agents/business-agent.md`
+## Hard constraint
 
 **Never mark a `Decision Required` item resolved on your own reasoning.** Only transcribe what the Business Owner actually said. If a comment is ambiguous, off-topic, or doesn't clearly answer the Decision it's attached to, leave the Decision open and flag the ambiguity back -- don't guess at what they probably meant.
 

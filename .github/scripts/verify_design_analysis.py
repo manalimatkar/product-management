@@ -37,6 +37,13 @@ LINK_RE = re.compile(r"\]\(#([a-z0-9-]+)\)")
 ID_ONLY_RE = re.compile(r"^[A-Z]+-\d+$")
 LINKABLE_PREFIXES = ("OBS-", "GAP-", "DEC-", "ASM-", "TECH-", "BRULE-", "CAP-", "BR-")
 
+# DESIGN-ANALYSIS-SPEC.md sections 4.14-4.16: Problem, Goals, and Success
+# Metrics must each be present with real content (or an explicit Decision
+# Required), never silently missing or left as the template's own
+# placeholder text.
+REQUIRED_TOP_SECTIONS = ["Problem", "Goals", "Success Metrics"]
+PLACEHOLDER_ONLY_RE = re.compile(r"^\s*`<.*>`\s*$", re.DOTALL)
+
 
 def slugify(heading_text):
     """Reproduce GitHub's heading-to-anchor slug algorithm closely enough
@@ -47,6 +54,36 @@ def slugify(heading_text):
     s = s.strip()
     s = re.sub(r"\s+", "-", s)
     return s
+
+
+def check_required_top_sections(text):
+    """Confirm Problem, Goals, and Success Metrics are each present with
+    real content -- missing entirely, empty, or still the template's own
+    `<placeholder>` text are all errors, not warnings, since a document
+    can otherwise pass every other check while silently omitting all
+    three (the exact failure mode found reviewing DA-003)."""
+    errors = []
+    for name in REQUIRED_TOP_SECTIONS:
+        pattern = re.compile(
+            r"^## " + re.escape(name) + r"\s*\n(.*?)(?=^## |\Z)",
+            re.MULTILINE | re.DOTALL,
+        )
+        m = pattern.search(text)
+        if not m:
+            errors.append(
+                f'Required section "## {name}" is missing entirely '
+                f"(DESIGN-ANALYSIS-SPEC.md section 4.14-4.16)."
+            )
+            continue
+        content = m.group(1).strip()
+        if not content:
+            errors.append(f'"## {name}" is present but empty.')
+        elif PLACEHOLDER_ONLY_RE.match(content):
+            errors.append(
+                f'"## {name}" still contains only the template placeholder -- '
+                f"fill it in, or record a Decision Required if genuinely unknown."
+            )
+    return errors
 
 
 def main():
@@ -64,6 +101,8 @@ def main():
 
     errors = []
     warnings = []
+
+    errors.extend(check_required_top_sections(text))
 
     headings = HEADING_RE.findall(text)
     anchor_owner = {}  # slug -> heading text that first claimed it

@@ -39,7 +39,7 @@ comment is the one template-authoring exception, and it gets deleted before publ
 
 ---
 
-| | |
+| Field | Value |
 | --- | --- |
 | Analysis ID | `DA-<number>` |
 | Feature | `<feature name>` |
@@ -58,6 +58,18 @@ comment is the one template-authoring exception, and it gets deleted before publ
 ## What this is
 
 `<Two or three sentences, plain language: what does this feature do, who is it for, what business problem or outcome does it address. No IDs in this paragraph, and no links -- someone who has never seen the feature should be able to read only this and understand the point of it. State source limitations as plain prose here too if useful context, without linking out to the requirement that resolves them -- save the link for where the resolution is explained.>`
+
+## Problem
+
+`<One or two sentences: what goes wrong, or what's missing, without this feature -- the actual pain, not a restatement of what the feature does ("reviewers currently have no way to catch extraction errors before they reach a live workflow," not "this feature lets reviewers check mappings"). Ground it in the source if it states one (a Scope note, a stated rationale). If the source is silent on why this exists, don't invent a plausible-sounding reason -- say so directly and record it as a Decision Required in "## Open Decisions" below, owner: Business Owner. A guessed problem statement is worse than an honest gap here, same as any other unconfirmed claim.>`
+
+## Goals
+
+`<A short list: the business outcomes this feature is meant to achieve -- not restated functionality. "Reduce incorrect data reaching live workflows" is a goal; "the reviewer can edit a mapped field" is a capability, not a goal -- if every line here could be lifted straight from a feature-area heading, this section hasn't done its job. Same rule as Problem: if the source doesn't state goals and there's no direct Business Owner answer either, record it as a Decision Required rather than inferring one that sounds reasonable.>`
+
+## Success Metrics
+
+`<How the team would know this is working -- one or two measurable signals, if the source or a direct Business Owner answer gives real basis for one. This is very often not stated in design source material. When it isn't, say so directly -- "Not defined in source; Decision Required, owner: Business Owner" -- rather than leaving the section silently absent. An empty section reads as an oversight; an explicit "not yet defined" reads as complete, the same honesty standard "Not built yet" already holds itself to.>`
 
 ## `<Feature area 1, named the way a person would recognize it -- not "Capability CAP-001">`
 
@@ -148,6 +160,7 @@ Evidence: [OBS-001](#obs-001). `<Explicit / Strongly Implied / Assumption / Huma
 ## Quality Checklist
 
 - [ ] Exact source path, branch/commit, and version are recorded.
+- [ ] `## Problem`, `## Goals`, and `## Success Metrics` are each present and either filled with content grounded in the source or a direct Business Owner answer, or explicitly recorded as a Decision Required -- never silently blank, and never a guessed answer presented as a confirmed one.
 - [ ] The whole document -- not just "What this is" -- reads as a first-time target reader would read it: the narrative needs no evidence link, classification tag, or Gherkin block resolved to be understood. "What this is" itself has zero IDs.
 - [ ] No commentary about this document's own revision history appears in its content -- format changes, prior drafts, review-round corrections belong in `DESIGN-ANALYSIS-SPEC.md` section 11's changelog, never repeated here. This is easy to reintroduce even while fixing it -- check explicitly.
 - [ ] Every requirement has evidence, a classification, and a confidence level -- linked, not just named.
