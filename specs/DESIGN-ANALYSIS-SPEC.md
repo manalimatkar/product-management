@@ -491,7 +491,7 @@ A Design Analysis is ready for Business PR review only when:
 - the exact Design Handoff Bundle version is recorded
 - all reviewed source areas are listed
 - the universal product context and domain inventory are complete
-- `## Problem`, `## Goals`, and `## Success Metrics` (sections 4.14-4.16) are each present, and each either grounded in real evidence or explicitly recorded as a Decision Required -- never silently blank, never a guessed answer presented as a confirmed one
+- `## Problem`, `## Goals`, and `## Success Metrics` (sections 4.14-4.16) are each present, and each either grounded in evidence or explicitly recorded as a Decision Required -- never silently blank, never a guessed answer presented as a confirmed one
 - each capability has evidence
 - each requirement is atomic and testable
 - each requirement has a source reference or human-origin marker
@@ -503,7 +503,9 @@ A Design Analysis is ready for Business PR review only when:
 - limitations and missing source information are visible
 - **the feature-area narrative is readable end to end by a first-time reader without resolving an evidence link, a classification tag, or a Gherkin block** -- that detail exists, in the Requirements register and Evidence and Traceability sections (`DESIGN-ANALYSIS-TEMPLATE.md`), never interleaved into the narrative itself
 - **the document contains no commentary about its own revision history in its primary content** -- format changes, prior drafts, review-round corrections belong in this specification's own changelog (section 11), never repeated inside an instance
+- **the document contains no self-assessment of its own quality, honesty, or rigor** -- state the fact, not an appraisal of how well it was stated; and no filler intensifier (`genuinely`, `real` as emphasis, `actually`, `honest(ly)`) that carries no information a reader would lose if it were cut
 - **every requirement, capability, and business rule links upstream to its source reference and, once they exist, downstream to its Story, Epic, and Business PR** -- each a real, followable link, not just a fact stated in the metadata table (`BUSINESS-AGENT-WORKFLOW.md` section 4.4)
+- **every Journey, Capability, and Business Rule record file (not just the Design Analysis itself) holds to every check on this list** -- `BUSINESS-AGENT-WORKFLOW.md` section 4.3 governs this explicitly; these files are not a separate, ungoverned artifact type
 
 ## 8. Approval and Change Rules
 
@@ -618,6 +620,7 @@ Each module must add evidence-backed detail without replacing the core actors, g
 
 | Date | Section | Change |
 | --- | --- | --- |
+| 2026-09-25 | 7 | Added Quality Checks for self-assessment/filler-intensifier language and for record-file coverage, mirroring `BUSINESS-AGENT-WORKFLOW.md` section 4.3's new step 3 -- a standing rule, not a one-time fix, after retrofitting `DA-003`'s own new content revealed the same voice failures the framework was meant to prevent. |
 | 2026-09-25 | 4.14-4.16, 7 | Added Problem/Goals/Success Metrics as required subsections, closing a real gap found reviewing `DA-003` as a lead product reader: the activity-1 checklist already asked the agent to extract "what feature or user problem it addresses" and "user or business goals," but the template gave neither a required place to land, so they never reliably surfaced in the published document. Numbered 4.14-4.16 (appended, not inserted in reading order) since existing subsection numbers are cited from 19 other files -- see 4.14's own note. Added the corresponding Quality Check. |
 | 2026-09-21 | 7, 11 | Split Business Requirement detail (Gherkin, Evidence, classification) out of the feature-area narrative into a dedicated `## Requirements` register section; repositioned Capabilities as reference material; added narrative-readability and upstream/downstream-traceability checks to Quality Checks. |
 | 2026-09-10 | 4 (Activity 1), 4.5, 4.6, 4.7 | Added the flows-before-capabilities analysis order, the accurate-source-reading requirement, and the check-the-registry-before-minting rule; made Journey/Capability/Business Rule product-level with their own registries (previously analysis-scoped, like an Observation). Reverted an earlier template revision that had folded Journey IDs into narrative prose, removing their addressability. |
