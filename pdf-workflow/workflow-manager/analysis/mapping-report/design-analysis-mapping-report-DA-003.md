@@ -22,7 +22,7 @@
 
 ## What this is
 
-Workflows created by uploading a PDF get their page/section/field structure auto-extracted, with a confidence score attached to every proposed mapping. The Mapping Report is where a reviewer -- the only role this feature currently supports -- checks that extraction, corrects what's wrong, and fills in whatever it missed, before the workflow is used to collect submissions. This report only applies to the PDF-creation path; an LLM-based creation path is named in the source as a possible future reuse target, not built now.
+Workflows created by uploading a PDF get their page/section/field structure auto-extracted, with a confidence score attached to every proposed mapping. The Mapping Report is where a reviewer -- the only role this feature currently supports -- checks that extraction, corrects what's wrong, and fills in whatever it missed. This report only applies to the PDF-creation path; an LLM-based creation path is named in the source as a possible future reuse target, not built now.
 
 Source reviewed: `SRC-003`, `pdf-workflow/workflow-manager/design/v4/README.md` (the "Mapping Report" section, plus the shared Scope note, Known UX issues, Interactions & behavior, and State management sections where they describe this screen specifically).
 
