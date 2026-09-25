@@ -494,6 +494,39 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Problem
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#goals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Goals
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#success-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Success Metrics
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#reviewing-the-mapping" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1297,6 +1330,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#obs-026" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-026
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1485,6 +1529,17 @@
     <span class="md-ellipsis">
       
         DEC-004
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dec-005" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DEC-005
       
     </span>
   </a>
@@ -2784,6 +2839,39 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Problem
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#goals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Goals
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#success-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Success Metrics
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#reviewing-the-mapping" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3587,6 +3675,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#obs-026" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-026
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3781,6 +3880,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#dec-005" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DEC-005
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3961,7 +4071,7 @@
 </tr>
 <tr>
 <td>Analysis Version</td>
-<td><code>1.0</code></td>
+<td><code>1.1</code></td>
 </tr>
 <tr>
 <td>Created By</td>
@@ -3991,9 +4101,17 @@
 </table>
 <p><strong>Supersedes <code>DA-002</code> in intent, not in the formal sense</strong> -- <code>DA-002</code> was deleted rather than marked <code>Superseded</code>, since it was built against the wrong source version entirely; this is a fresh run, not <code>DA-002</code>'s successor version. It corrects two things <code>DA-002</code> got wrong as a result -- see <a href="#obs-009">OBS-009</a>.</p>
 <h2 id="what-this-is">What this is<a class="headerlink" href="#what-this-is" title="Permanent link">&para;</a></h2>
-<p>Workflows created by uploading a PDF get their page/section/field structure auto-extracted, with a confidence score attached to every proposed mapping. The Mapping Report is where a reviewer -- the only role this feature currently supports -- checks that extraction, corrects what's wrong, and fills in whatever it missed, before the workflow is used to collect submissions. This report only applies to the PDF-creation path; an LLM-based creation path is named in the source as a possible future reuse target, not built now.</p>
+<p>Workflows created by uploading a PDF get their page/section/field structure auto-extracted, with a confidence score attached to every proposed mapping. The Mapping Report is where a reviewer -- the only role this feature currently supports -- checks that extraction, corrects what's wrong, and fills in whatever it missed. This report only applies to the PDF-creation path; an LLM-based creation path is named in the source as a possible future reuse target, not built now.</p>
 <p>Source reviewed: <code>SRC-003</code>, <code>pdf-workflow/workflow-manager/design/v4/README.md</code> (the "Mapping Report" section, plus the shared Scope note, Known UX issues, Interactions &amp; behavior, and State management sections where they describe this screen specifically).</p>
 <p><strong>Source limitations, stated up front:</strong> mobile/tablet layout for the mapping table was explicitly deferred by the source itself, resolved by direct clarification to horizontal scroll rather than stacked cards; no numeric bound is stated for page, section, field, or FieldGroup sub-field counts; the exact navigation trigger into the report and the zero-mappings empty state were both unstated in the source, both resolved by direct clarification below.</p>
+<h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">&para;</a></h2>
+<p>Automatic extraction assigns every proposed mapping a confidence score rather than treating extraction as reliable, and the source names extraction as carrying risk when discussing the related LLM-based creation path ("same class of risk as PDF extraction -- the LLM can misread intent"). Without a review step, an incorrectly extracted or mapped field would carry through unchecked into a workflow used to collect real submissions.</p>
+<p>Evidence: <a href="#obs-026">OBS-026</a>. Strongly Implied, Medium confidence.</p>
+<h2 id="goals">Goals<a class="headerlink" href="#goals" title="Permanent link">&para;</a></h2>
+<p>Catch and correct an incorrect or low-confidence field extraction before a workflow goes live to collect real submissions.</p>
+<p>Evidence: <a href="#obs-026">OBS-026</a>. Strongly Implied, Medium confidence.</p>
+<h2 id="success-metrics">Success Metrics<a class="headerlink" href="#success-metrics" title="Permanent link">&para;</a></h2>
+<p>Not defined in source. <strong>Decision Required</strong> -- see <a href="#dec-005">DEC-005</a>, owner: Business Owner.</p>
 <h2 id="reviewing-the-mapping">Reviewing the mapping<a class="headerlink" href="#reviewing-the-mapping" title="Permanent link">&para;</a></h2>
 <p>Before touching anything, the reviewer sees five stat tiles -- Total, High (≥80% confidence), Medium (50-79%), Low (&lt;50%), and Average -- each colored by its band, so they know at a glance how much attention this workflow's mapping needs.</p>
 <p>Below that, the mapping is a collapsible three-level hierarchy: Page, then Section (a page can hold more than one), then Field as the leaf row. A field row shows the original PDF text, its extracted <code>kind</code> (what the element actually <em>is</em>), the Target Type it's mapped to, a confidence percentage, and a source icon (llm/manual), alongside edit and unlink controls -- the same information whether shown as a table row or, in the deferred Card view, a card.</p>
@@ -4187,14 +4305,15 @@ but the underlying structure editor is still used as its starting surface (see B
 <p>Evidence: <a href="#obs-019">OBS-019</a>. Explicit, High confidence.</p>
 <p><strong>Narrowed 2026-09-08, not removed</strong> -- see <a href="#gap-003">GAP-003</a> for the full <code>PR #17</code> review history.</p>
 <h2 id="open-decisions">Open Decisions<a class="headerlink" href="#open-decisions" title="Permanent link">&para;</a></h2>
-<p>All four resolved 2026-09-08, directly on <code>PR #17</code>'s review -- per Manali's stated preference that resolution happen inside the PR review itself, not in chat or as separate Issues.</p>
+<p>The first four were resolved 2026-09-08, directly on <code>PR #17</code>'s review -- per Manali's stated preference that resolution happen inside the PR review itself, not in chat or as separate Issues.</p>
 <ul>
 <li><a href="#dec-001">DEC-001</a>: navigation trigger into the Mapping Report -- <strong>Resolved</strong>, three real entry paths (PDF conversion, reopening an existing mapping, starting a new workflow from scratch).</li>
 <li><a href="#dec-002">DEC-002</a>: empty state for zero mappings -- <strong>Resolved</strong>, via the new-workflow flow (<a href="#br-016">BR-016</a>).</li>
 <li><a href="#dec-003">DEC-003</a>: mobile/tablet table layout -- <strong>Resolved</strong>, horizontal scroll, not stacked cards (<a href="#brule-008">BRULE-008</a>).</li>
 <li><a href="#dec-004">DEC-004</a>: org role/permission requirements -- <strong>Resolved (deferred)</strong>, no permission layer until login/auth exists.</li>
+<li><a href="#dec-005">DEC-005</a>: success metric for this feature -- <strong>Open</strong>, owner: Business Owner.</li>
 </ul>
-<p>Only two Technical Unknowns remain (<a href="#tech-001">TECH-001</a>, <a href="#tech-002">TECH-002</a>) -- not business decisions, not a blocker to Business Requirements; for the Technical Agent stage.</p>
+<p>Only two Technical Unknowns remain (<a href="#tech-001">TECH-001</a>, <a href="#tech-002">TECH-002</a>) -- not business decisions, not a blocker to Business Requirements; for the Technical Agent stage. <a href="#dec-005">DEC-005</a> (success metric, added 2026-09-25) is open too, but doesn't block Business Requirements either -- it affects how success is measured after launch, not what gets built.</p>
 <h2 id="not-built-yet">Not built yet<a class="headerlink" href="#not-built-yet" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong>Card view</strong> -- fully designed, deferred for this phase. See <a href="#br-003">BR-003</a>, <a href="#gap-004">GAP-004</a>.</li>
@@ -4282,6 +4401,8 @@ but the underlying structure editor is still used as its starting surface (see B
 <p>Manali, <a href="https://github.com/manalimatkar/product-management/pull/17#discussion_r3960668770"><code>PR #17</code> review comment</a>, 2026-09-08: "This is deferred for later when login capability is enabled." (re: org role/permission distinctions for reviewing or editing mappings) Human Provided, High. <em>(↩ resolves <a href="#dec-004">DEC-004</a>)</em></p>
 <h5 id="obs-025">OBS-025<a class="headerlink" href="#obs-025" title="Permanent link">&para;</a></h5>
 <p>Manali, <a href="https://github.com/manalimatkar/product-management/pull/17#issuecomment-5589857757"><code>PR #17</code> review comment</a> (Review Outcome, <code>BR-003</code> left unchecked), 2026-09-08: "For now work on table view." Human Provided, High. Card view is deferred for this phase, not rejected -- only Table view is being built now. <em>(↩ used by <a href="#br-003">BR-003</a>, <a href="#gap-004">GAP-004</a>)</em></p>
+<h5 id="obs-026">OBS-026<a class="headerlink" href="#obs-026" title="Permanent link">&para;</a></h5>
+<p>Source (Scope note / Known UX issues sections): every proposed mapping carries a confidence score rather than being treated as reliable; discussing the related LLM-based creation path, the source states it would carry "the same class of risk as PDF extraction -- the LLM can misread intent." No single sentence states the resulting problem or goal directly -- synthesized across these two passages. Strongly Implied, Medium. <em>(↩ used by <a href="#problem">Problem</a>, <a href="#goals">Goals</a>)</em></p>
 <h3 id="business-rules">Business Rules<a class="headerlink" href="#business-rules" title="Permanent link">&para;</a></h3>
 <h5 id="brule-001">BRULE-001<a class="headerlink" href="#brule-001" title="Permanent link">&para;</a></h5>
 <p>A mapping's <code>kind</code> constrains which <code>targetType</code>s it may be remapped to (e.g. <code>field</code> → <code>Field</code> only, <code>field-group</code> → <code>FieldGroup</code> only). Explicit, High. <em>(↩ used by <a href="#br-005">BR-005</a>)</em> Registry: <a href="../../../../../registries/BUSINESS-RULE-REGISTRY/">BUSINESS-RULE-REGISTRY.md</a> / <a href="../../../business-rules/business-rule-kind-constrains-remap-BRULE-001/">full record</a>.</p>
@@ -4311,6 +4432,8 @@ but the underlying structure editor is still used as its starting surface (see B
 <p>Should the mapping table, below roughly 900px, horizontally scroll (matches desktop, simpler) or collapse each row into a stacked card (better mobile UX, more work)? The source explicitly deferred this rather than leaving it merely undocumented (<a href="#obs-020">OBS-020</a>). <strong>Resolved 2026-09-08</strong> -- see <a href="#obs-023">OBS-023</a>, <a href="#brule-008">BRULE-008</a>. Horizontal scroll, not stacked cards.</p>
 <h5 id="dec-004">DEC-004<a class="headerlink" href="#dec-004" title="Permanent link">&para;</a></h5>
 <p>Does reviewing or editing a workflow's mapping require a specific org role/permission, given the wider product shows org-level Members/Billing controls? <strong>Resolved (deferred) 2026-09-08</strong> -- see <a href="#obs-024">OBS-024</a>. No permission layer now; explicitly pending a not-yet-built login/auth capability. Revisit when that capability is scoped.</p>
+<h5 id="dec-005">DEC-005<a class="headerlink" href="#dec-005" title="Permanent link">&para;</a></h5>
+<p>What measurable signal would tell the team this feature is working (e.g. reduction in post-extraction correction time, or in downstream data-quality issues traced to a bad mapping)? The source states no success criteria for this feature at all -- not deferred, simply never addressed. <strong>Open</strong>, owner: Business Owner.</p>
 <h3 id="gaps">Gaps<a class="headerlink" href="#gaps" title="Permanent link">&para;</a></h3>
 <h5 id="gap-001">GAP-001<a class="headerlink" href="#gap-001" title="Permanent link">&para;</a></h5>
 <p>Unclear Behavior. The exact trigger that opens the Mapping Report, and where it goes on exit/back, were never stated in the design document itself -- inferred as <a href="#asm-001">ASM-001</a>, not confirmed by the design source alone. <strong>Resolved 2026-09-08</strong> via <a href="#dec-001">DEC-001</a> -- Human Provided evidence (<a href="#obs-021">OBS-021</a>), not the design document.</p>
@@ -4338,6 +4461,7 @@ but the underlying structure editor is still used as its starting surface (see B
 <li>[x] "Not built yet" is present and honest -- nothing silently dropped.</li>
 <li>[x] Technical implementation choices are excluded.</li>
 <li>[x] Every ID-only heading in the Evidence section has at least one "used by" back-link, and every "Evidence:" link above resolves to a real heading below.</li>
+<li>[x] <code>## Problem</code>, <code>## Goals</code>, and <code>## Success Metrics</code> are each present and either grounded in evidence or explicitly recorded as a Decision Required.</li>
 </ul>
 <h2 id="review-history">Review history<a class="headerlink" href="#review-history" title="Permanent link">&para;</a></h2>
 <table>
@@ -4351,6 +4475,13 @@ but the underlying structure editor is still used as its starting surface (see B
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>Problem/Goals/Success Metrics added</td>
+<td>Editorial addition</td>
+<td>Business Agent</td>
+<td>2026-09-25</td>
+<td><code>DESIGN-ANALYSIS-SPEC.md</code> sections 4.14-4.16 added these as required sections after a content review found the document never stated why the feature exists or what success looks like. Problem and Goals grounded in <a href="#obs-026">OBS-026</a> (Strongly Implied -- the source never states either directly); Success Metrics has no source basis at all, recorded as <a href="#dec-005">DEC-005</a>, Open, owner Business Owner. Analysis Version bumped <code>1.0</code> → <code>1.1</code>; no existing requirement changed.</td>
+</tr>
 <tr>
 <td>Design Analysis</td>
 <td>Approved -- 16/16 requirements, after one revision</td>
