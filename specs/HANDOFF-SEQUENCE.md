@@ -8,7 +8,7 @@ The other diagrams in this repository ([ARTIFACT-RELATIONSHIP-MODEL.md](ARTIFACT
 
 This is a visual index into documents that already exist -- it does not redefine any rule. Each note below cites the section it restates.
 
-- [BUSINESS-AGENT-WORKFLOW.md](BUSINESS-AGENT-WORKFLOW.md) -- the ordered steps this diagram's Business Agent lane compresses into single messages.
+- [DESIGN-ANALYSIS-AGENT-WORKFLOW.md](DESIGN-ANALYSIS-AGENT-WORKFLOW.md) and [BUSINESS-AGENT-WORKFLOW.md](BUSINESS-AGENT-WORKFLOW.md) -- the ordered steps this diagram's Design Analysis Agent and Business Agent lanes compress into single messages.
 - [TECHNICAL-AGENT-WORKFLOW.md](TECHNICAL-AGENT-WORKFLOW.md) -- the ordered steps this diagram's Technical Agent lane compresses into single messages.
 - [BUSINESS-PR-SPEC.md](BUSINESS-PR-SPEC.md) -- the Stage Trace requirement and Business Owner review outcomes.
 - [TECHNICAL-HANDOFF.md](TECHNICAL-HANDOFF.md) and [CANONICAL-TASK-SPEC.md](CANONICAL-TASK-SPEC.md) -- the Technical Agent entry condition, escalation rule, and Architect gate.
@@ -21,6 +21,7 @@ This is a visual index into documents that already exist -- it does not redefine
 title Business-to-Engineering Handoff Sequence
 
 actor "UX Designer" as Designer
+participant "Design Analysis Agent" as DAA
 participant "Business Agent" as BA
 actor "Business Owner" as BO
 participant "Technical Agent" as TA
@@ -28,23 +29,42 @@ actor "Architect" as Arch
 participant "Developer Agent" as DA
 database "Engineering Repository" as Eng
 
-Designer -> BA : commits Design Handoff Bundle (v1.0)
+Designer -> DAA : commits Design Handoff Bundle (v1.0)
 note right of Designer
   Bundle is source material.
-  Business Agent must not
-  regenerate or rewrite it.
+  No agent may regenerate
+  or rewrite it.
   (BUSINESS-REPOSITORY-WORKFLOW.md)
 end note
 
-BA -> BA : produce Design Analysis
-note right of BA
+DAA -> DAA : produce Design Analysis
+note right of DAA
   Every observation classified:
   Explicit / Inferred / Unknown /
-  Business Decision Required
-  (EVIDENCE-SPEC.md)
+  Business Decision Required.
+  Documents the design; never
+  improves it. (EVIDENCE-SPEC.md;
+  DESIGN-ANALYSIS-AGENT-WORKFLOW.md §4.2)
 end note
 
-BA -> BA : derive Business Requirements,\nEpic, Stories, Acceptance Criteria
+DAA -> BO : submit Design Analysis review PR
+alt Approved
+  BO -> DAA : Approved + merged (GATE-003)
+else Changes Requested / Rejected / Blocked
+  BO -> DAA : outcome + review comments
+  DAA -> BO : revised Design Analysis
+end
+
+BO -> BA : derive requirements from approved Design Analysis
+note right of BA
+  Entry condition: Design Analysis
+  approved and merged. Business
+  Agent never re-analyzes the source.
+  (BUSINESS-AGENT-WORKFLOW.md §3, §4.1)
+end note
+
+BA -> BA : derive Business Requirements,
+Epic, Stories, Acceptance Criteria
 
 BA -> BO : submit Business PR (BPR-014)
 note right of BA
@@ -55,7 +75,7 @@ note right of BA
 end note
 
 alt Approved
-  BO -> BA : Approved + merged
+  BO -> BA : Approved + merged (GATE-004)
   note left of BO
     Approval ties to the exact
     reviewed PR revision.

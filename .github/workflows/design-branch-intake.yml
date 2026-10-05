@@ -23,7 +23,7 @@ name: Design Branch Intake Gate
 #                      Re-confirms validate's checks, writes _cover-sheet.md's
 #                      machine-written fields (design_branch_gate.py apply),
 #                      and opens the tracked GitHub Issue that is this
-#                      repository's real Business Agent trigger -- deliberately
+#                      repository's real Design Analysis Agent trigger -- deliberately
 #                      not a PR comment nothing reads, which is what
 #                      design-bundle-merge.yml's older trigger comment is.
 
@@ -138,7 +138,7 @@ jobs:
             git push origin HEAD:${{ github.event.pull_request.base.ref }}
           fi
 
-      - name: Open Business Agent intake Issue
+      - name: Open Design Analysis Agent intake Issue
         uses: actions/github-script@v7
         with:
           script: |
@@ -178,7 +178,7 @@ jobs:
             await github.rest.issues.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              title: `[Design Intake] ${label} v${version} — ready for Business Agent`,
-              labels: ['agent:business', 'status:queued'],
+              title: `[Design Intake] ${label} v${version} — ready for Design Analysis Agent`,
+              labels: ['agent:design-analysis', 'status:queued'],
               body,
             });

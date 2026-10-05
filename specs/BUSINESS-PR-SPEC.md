@@ -177,6 +177,6 @@ The concrete PR description format is defined in [BUSINESS-PR-TEMPLATE.md](../te
 
 - Should the Stage Trace be a required PR section, or a machine-generated check run against the PR's referenced artifacts?
 - What automated validation can catch a technical-detail leak in the Stage Trace before human review (a keyword/pattern check against DESIGN-ANALYSIS-SPEC.md section 6's forbidden categories)?
-- Can Design Analysis approval and Business Requirements approval be combined into this single PR review, or must they remain separate review packages before the PR is opened (see DESIGN-ANALYSIS-REVIEW-SPEC.md section 17)?
+- ~~Can Design Analysis approval and Business Requirements approval be combined into this single PR review, or must they remain separate review packages before the PR is opened?~~ **Resolved: separate.** The Design Analysis is approved on its own review PR first; a Business PR is only ever built from an approved Design Analysis (DESIGN-ANALYSIS-AGENT-WORKFLOW.md section 5.1, BUSINESS-AGENT-WORKFLOW.md section 3). The Business PR cites the approved Design Analysis version; it doesn't re-review it.
 - How many Stories, or how much scope, may one Business PR carry before it should be split?
 - Who owns resolving a Decision Required item that blocks Business Owner approval, when no owner was assigned upstream?

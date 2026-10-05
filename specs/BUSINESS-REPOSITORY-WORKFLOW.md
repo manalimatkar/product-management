@@ -1,12 +1,12 @@
 # Business Repository Workflow
 
 ## Purpose
-The UX designer creates the design in Claude Design. The designer then commits versioned design handoff documents to the business repository, where the bundle becomes the input to the Business Agent process.
+The UX designer creates the design in Claude Design. The designer then commits versioned design handoff documents to the business repository, where the bundle becomes the input to the Design Analysis Agent, and through its approved Design Analysis, to the Business Agent.
 
  The committed bundle may contain:
-The versioned design handoff bundle is a first-class product artifact and must not be regenerated or rewritten by the Business Agent. Source inputs and design provenance should be retained or referenced so generated artifacts can be traced back to their origin.
+The versioned design handoff bundle is a first-class product artifact and must not be regenerated or rewritten by any agent. Source inputs and design provenance should be retained or referenced so generated artifacts can be traced back to their origin.
 ## Inputs
-The Business Agent may consume:
+The Design Analysis Agent may consume:
 
 - Claude design files
 Versioned Claude Design handoff bundle committed to repo
@@ -15,15 +15,21 @@ Versioned Claude Design handoff bundle committed to repo
 - screenshots
 - mockups
 - other approved product or design source material
- The Business Agent reads the committed design handoff bundle, produces a design analysis, and transforms the approved design context into a reviewable Business PR containing, as applicable:
+ The Design Analysis Agent reads the committed design handoff bundle and produces a design analysis, reviewed and approved on its own. The Business Agent then transforms the approved design analysis into a reviewable Business PR containing, as applicable:
 Source inputs must be retained or referenced so generated artifacts can be traced back to their origin.
 
-See [BUSINESS-AGENT-WORKFLOW.md](BUSINESS-AGENT-WORKFLOW.md) for the detailed, step-by-step Business Agent procedure this section summarizes.
+See [DESIGN-ANALYSIS-AGENT-WORKFLOW.md](DESIGN-ANALYSIS-AGENT-WORKFLOW.md) and [BUSINESS-AGENT-WORKFLOW.md](BUSINESS-AGENT-WORKFLOW.md) for the detailed, step-by-step procedures this section summarizes.
 
 ## Workflow
 The Business Agent may reference and associate the versioned design handoff bundle with the related Story and canonical Task, but must not regenerate or rewrite the bundle.
 ```text
 Requirement or design input
+        |
+        v
+Design Analysis Agent
+        |
+        v
+Design Analysis -- Business Owner approval
         |
         v
 Business Agent
@@ -46,7 +52,7 @@ Technical Agent
 ```
 
 ## Business Agent Output
-The Business Agent transforms source material into a reviewable Business PR containing, as applicable:
+The Business Agent transforms an approved design analysis into a reviewable Business PR containing, as applicable:
 
 The Business Agent may draft and revise these artifacts. It may not approve them or merge the Business PR.
 

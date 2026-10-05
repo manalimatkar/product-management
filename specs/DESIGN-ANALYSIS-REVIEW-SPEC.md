@@ -320,11 +320,10 @@ A blocked analysis must state the reason, impact, owner, and condition for resum
 For this repository's initial profile:
 
 - source material may include versioned design handoff bundles
-- the Business Agent is the analysis producer
+- the Design Analysis Agent is the analysis producer ([DESIGN-ANALYSIS-AGENT-WORKFLOW.md](DESIGN-ANALYSIS-AGENT-WORKFLOW.md))
 - the Business Owner is the default business reviewer
-- the Business PR is the default review package
+- the Design Analysis has its own review PR, approved and merged before the Business Agent starts -- Design Analysis approval and Business Scope approval are separate decisions in this repository's profile, not combined through the Business PR
 - approval is recorded against the exact reviewed revision
-- Design Analysis approval and Business Scope approval may be combined through the Business PR when configured
 - GitHub is the initial platform adapter
 
 These are defaults, not universal framework rules. The active framework configuration takes precedence.
@@ -346,4 +345,5 @@ The review package (section 10) must be preceded by a short, auto-generated summ
 
 | Date | Section | Change |
 | --- | --- | --- |
+| 2026-10-05 | 17 | Design Analysis producer is now the Design Analysis Agent; Design Analysis review is always a separate gate from Business PR review in this repository's profile (no longer combined through the Business PR). |
 | 2026-09-03 | 18 | Added tiered review depth (Editorial fast path with an objection window, vs. always-full Material review), in response to single-reviewer review-load. |

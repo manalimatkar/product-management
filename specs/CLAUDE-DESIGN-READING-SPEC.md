@@ -10,7 +10,7 @@ This document defines how to read a **native Claude Design export** accurately -
 
 - [EVIDENCE-SPEC.md](EVIDENCE-SPEC.md) section 3.1 states the generic, tool-agnostic rules (read the most literal representation, cross-check a descriptive document against it, locate actual data not just logic, never trust an unverified verification technique). This document is that section's concrete application to one specific tool's output.
 - [DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md](DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md) section 6.2 defines *where* a native Claude Design export is stored and its format (the `design` branch, folder shape, `_cover-sheet.md`, versioning, intake gates). That document is storage and format; this document is reading technique. Neither restates the other -- section 6.2's own Scope (section 3) explicitly excludes interpretation, which is what this document fills in.
-- [DESIGN-ANALYSIS-SPEC.md](DESIGN-ANALYSIS-SPEC.md) Business Agent Activity 1 ("Understand the Design") points here for the concrete technique when the source is this tool's output.
+- [DESIGN-ANALYSIS-SPEC.md](DESIGN-ANALYSIS-SPEC.md) Design Analysis Agent Activity 1 ("Understand the Design") points here for the concrete technique when the source is this tool's output.
 - `.claude/agents/business-agent.md` reads this document as part of its standing instructions whenever the source is a native Claude Design export.
 
 ## 3. Scope

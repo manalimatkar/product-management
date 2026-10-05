@@ -46,7 +46,7 @@ comment is the one template-authoring exception, and it gets deleted before publ
 | Source Material | `<repository path or link -- branch/path/commit for a design-branch source, per ARTIFACT-STORAGE-SPEC.md section 10>` |
 | Source Version | `<version, or Not Versioned>` |
 | Analysis Version | `<version>` |
-| Created By | `<Business Agent run or author -- keep this factual, a name/identifier, not a narrative sentence>` |
+| Created By | `<Design Analysis Agent run or author -- keep this factual, a name/identifier, not a narrative sentence>` |
 | Created At | `<timestamp>` |
 | Status | `Draft` / `In Review` / `Approved` / `Superseded` / `Rejected` |
 | Related Epic | `<Epic reference, or Pending -- created at the Business PR stage>` |
@@ -81,6 +81,18 @@ comment is the one template-authoring exception, and it gets deleted before publ
 
 `<...>`
 
+## Information users see or provide
+
+`<One row per business concept the experience shows or collects -- its meaning to the user, not a data model. No database entities, field types beyond what the design shows, or API contracts (DESIGN-ANALYSIS-SPEC.md section 4.17).>`
+
+| Concept | Shown / entered | Purpose to the user | Required? | Editable? | Unknowns |
+| --- | --- | --- | --- | --- | --- |
+| `<e.g. Confidence score>` | `<Shown>` | `<why the user needs it>` | `<Yes / No / Not shown>` | `<Yes / No / Not shown>` | `<what the source doesn't say>` |
+
+## Existing vs. new experience
+
+`<What changes relative to what users do today: new, changed, and removed behavior. If the source doesn't describe the existing experience, say exactly that -- "Existing experience not described in source" -- rather than writing as if the feature is entirely new (DESIGN-ANALYSIS-SPEC.md section 4.18).>`
+
 ## Requirements
 
 *Every Business Requirement's full statement, acceptance criteria, and evidence classification -- grouped in the same order the feature-area narrative above introduces them, not flat ID order, so this stays "coherent by area" rather than a table to reassemble. Click a `BR-XXX` reference from the narrative to jump straight here.*
@@ -112,6 +124,10 @@ Evidence: [OBS-001](#obs-001). `<Explicit / Strongly Implied / Assumption / Huma
 `<A short, flat list of what's explicitly out of scope or deferred -- LLM/future paths named in the source but not built, anything a Business Owner explicitly deferred, technical questions handed to the Technical Agent. This is often the first thing a new team member needs, so keep it near the top of the document, not buried at the end.>`
 
 - `<item>` -- `<why: deferred by direct decision, out of scope per the source, or a Technical Agent question>`.
+
+**Potentially related** -- areas the design touches or implies but doesn't define well enough to analyze. Name each and why it might be affected; don't analyze it (DESIGN-ANALYSIS-SPEC.md section 4.12).
+
+- `<area>` -- `<why it might be affected>`.
 
 ---
 
@@ -161,6 +177,8 @@ Evidence: [OBS-001](#obs-001). `<Explicit / Strongly Implied / Assumption / Huma
 
 - [ ] Exact source path, branch/commit, and version are recorded.
 - [ ] `## Problem`, `## Goals`, and `## Success Metrics` are each present and either filled with content grounded in the source or a direct Business Owner answer, or explicitly recorded as a Decision Required -- never silently blank, and never a guessed answer presented as a confirmed one.
+- [ ] `## Information users see or provide` and `## Existing vs. new experience` are filled in, or each explicitly says what the source doesn't describe.
+- [ ] `## Not built yet` separates out-of-scope items from **Potentially related** areas.
 - [ ] The whole document -- not just "What this is" -- reads as a first-time target reader would read it: the narrative needs no evidence link, classification tag, or Gherkin block resolved to be understood. "What this is" itself has zero IDs.
 - [ ] No commentary about this document's own revision history appears in its content -- format changes, prior drafts, review-round corrections belong in `DESIGN-ANALYSIS-SPEC.md` section 11's changelog, never repeated here. This is easy to reintroduce even while fixing it -- check explicitly.
 - [ ] Every requirement has evidence, a classification, and a confidence level -- linked, not just named.

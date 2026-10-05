@@ -51,7 +51,7 @@ Steps 1-8 run in order for each Story reaching this stage. Unlike the Business A
 | 4 | Identify affected engineering repositories per Story | CANONICAL-TASK-SPEC.md §4; a Story may produce multiple Tasks targeting different applications or repositories (§10) |
 | 5 | Determine implementation approach, at a guidance level | CANONICAL-TASK-SPEC.md §4 -- approach and guidance only, never the code itself (§4, citing AGENT-RESPONSIBILITIES.md) |
 | 6 | Identify dependencies, sequencing, and architecture impacts | CANONICAL-TASK-SPEC.md §6 required fields |
-| 7 | Identify required Spikes for any unresolved Technical Unknown | CANONICAL-TASK-SPEC.md §5, §7 -- originates from a Design Analysis `Technical Unknown` (BUSINESS-AGENT-WORKFLOW.md step 8) or a Technical Agent-discovered uncertainty |
+| 7 | Identify required Spikes for any unresolved Technical Unknown | CANONICAL-TASK-SPEC.md §5, §7 -- originates from a Design Analysis `Technical Unknown` (DESIGN-ANALYSIS-AGENT-WORKFLOW.md step 8) or a Technical Agent-discovered uncertainty |
 | 8 | Enrich the canonical Task(s) and Spike(s) with the fields required by CANONICAL-TASK-SPEC.md sections 6-7 | CANONICAL-TASK-SPEC.md §6-7 |
 | 9 | Submit for Architect Review | CANONICAL-TASK-SPEC.md §9 |
 

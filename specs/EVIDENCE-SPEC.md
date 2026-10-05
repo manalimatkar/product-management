@@ -101,7 +101,7 @@ No artifact in this repository should introduce a sixth term or a synonym for on
 | Business Decision Required (Decision Required) | Never | Record as a Decision Required item with an owner; block the requirement until answered. |
 | Human Provided | Yes | Record the human source and authority; still subject to the same review as any other requirement. |
 
-This restates, in one place, the behavior already required piecemeal by [DESIGN-ANALYSIS-SPEC.md](DESIGN-ANALYSIS-SPEC.md) section 6 ("The Business Agent must not infer...") and [BUSINESS-REQUIREMENTS-SPEC.md](BUSINESS-REQUIREMENTS-SPEC.md) section 6 ("must not convert an Assumption... into an approved requirement").
+This restates, in one place, the behavior already required piecemeal by [DESIGN-ANALYSIS-SPEC.md](DESIGN-ANALYSIS-SPEC.md) section 6 ("The Design Analysis Agent must not infer...") and [BUSINESS-REQUIREMENTS-SPEC.md](BUSINESS-REQUIREMENTS-SPEC.md) section 6 ("must not convert an Assumption... into an approved requirement").
 
 ## 7. Required Evidence Field
 

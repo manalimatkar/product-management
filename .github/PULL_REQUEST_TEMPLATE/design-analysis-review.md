@@ -1,7 +1,8 @@
 <!--
 Template for a standalone Design Analysis review PR (diff = a Design Analysis
 file only, no Business Requirements/Epic/Story/Business PR yet -- per
-BUSINESS-AGENT-WORKFLOW.md section 4.1's review pause).
+DESIGN-ANALYSIS-AGENT-WORKFLOW.md section 5.1 -- the Design Analysis is
+always reviewed and approved on its own before the Business Agent starts).
 
 Review Outcome below is a plain task list -- one real, clickable checkbox per
 requirement, text right next to it. (GitHub can't render a clickable checkbox

@@ -2,15 +2,16 @@
 
 ## 1. Purpose
 
-This document is the single, ordered, end-to-end contract for one Business Agent run: from registered source material to a submitted Business PR. It answers the TODO left open in [PRD.md](../PRD.md) section 13: "Define the complete Business Agent process from Design Handoff Bundle ingestion through Business PR creation."
+This document is the single, ordered contract for one Business Agent run: from an approved Design Analysis to a submitted Business PR. It answers the TODO left open in [PRD.md](../PRD.md) section 13: "Define the complete Business Agent process from Design Handoff Bundle ingestion through Business PR creation" -- together with [DESIGN-ANALYSIS-AGENT-WORKFLOW.md](DESIGN-ANALYSIS-AGENT-WORKFLOW.md), which covers the first half of that path, from source material to an approved Design Analysis.
+
+The business side of the pipeline is two agent stages, not one. The Design Analysis Agent establishes what was designed and what it means; this stage turns that approved understanding into reviewable scope -- Business Requirements, Epics, Stories, Acceptance Criteria, and the Business PR. This stage never re-analyzes the source and never starts from an analysis that hasn't passed its own review.
 
 It is a synthesis document, not a new set of rules. Every step below is already governed in detail by an existing specification; this document orders those steps into one procedure and states, in one place, the input contract, the output contract, and what the Business Agent must never do. Where this document and a cited section disagree, the cited section is authoritative -- this document must be corrected to match it, not the reverse.
 
 ## 2. Relationship to Other Artifacts
 
-- [PRODUCT-SOURCE-MATERIAL-SPEC.md](PRODUCT-SOURCE-MATERIAL-SPEC.md) governs the input.
-- [DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md](DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md) governs the optional UI-design source type.
-- [DESIGN-ANALYSIS-SPEC.md](DESIGN-ANALYSIS-SPEC.md) and [DESIGN-ANALYSIS-REVIEW-SPEC.md](DESIGN-ANALYSIS-REVIEW-SPEC.md) govern the analysis stage and its review gate.
+- [DESIGN-ANALYSIS-AGENT-WORKFLOW.md](DESIGN-ANALYSIS-AGENT-WORKFLOW.md) is the previous stage, and produces this stage's input.
+- [DESIGN-ANALYSIS-SPEC.md](DESIGN-ANALYSIS-SPEC.md) and [DESIGN-ANALYSIS-REVIEW-SPEC.md](DESIGN-ANALYSIS-REVIEW-SPEC.md) govern the input artifact and the review gate it must have passed.
 - [BUSINESS-REQUIREMENTS-SPEC.md](BUSINESS-REQUIREMENTS-SPEC.md) governs the requirements stage.
 - [BUSINESS-PR-SPEC.md](BUSINESS-PR-SPEC.md) governs Epic/Story decomposition and the Business PR itself.
 - [EVIDENCE-SPEC.md](EVIDENCE-SPEC.md) governs the evidence rule that runs through every step.
@@ -18,79 +19,50 @@ It is a synthesis document, not a new set of rules. Every step below is already 
 
 ## 3. Input Contract
 
-The Business Agent does not begin from an arbitrary document. It begins from source material that has already been registered and checked for readiness:
+The Business Agent begins from one thing only: an approved Design Analysis.
 
 ```text
-Source Material
-  (registered per PRODUCT-SOURCE-MATERIAL-SPEC.md sections 4 and 8)
+Approved Design Analysis
+  (DESIGN-ANALYSIS-AGENT-WORKFLOW.md section 5.1:
+   review PR merged, Status field reads Approved)
         |
         v
-Design Handoff Bundle (optional, per DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md)
-  or another configured source type (PRODUCT-SOURCE-MATERIAL-SPEC.md section 3)
-        |
-        v
-Design Analysis
+Business Requirements  (this stage)
 ```
 
-Entry condition: readiness must be `Ready` or `Ready with Limitations` per [PRODUCT-SOURCE-MATERIAL-SPEC.md](PRODUCT-SOURCE-MATERIAL-SPEC.md) section 9. If readiness is `Blocked`, the Business Agent must not proceed -- it records the blocker and stops (section 8 below).
+Entry condition: the Design Analysis has passed its review gate (`GATE-003`, DESIGN-ANALYSIS-REVIEW-SPEC.md §11) -- its review PR is merged and its own `Status` field reads `Approved`. If the Design Analysis is still `Draft` or `In Review`, or was `Rejected` or `Blocked`, the Business Agent must not proceed -- it records the blocker and stops (section 8 below).
 
-For a native Claude Design export, this entry condition is signaled by a tracked GitHub Issue (`agent:business`/`status:queued`, opened by `.github/workflows/design-branch-intake.yml` on merge into the `design` branch) naming the readiness value directly -- see GITHUB-PLATFORM-ADAPTER-SPEC.md section 6.1 and DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md section 6.2. A hand-authored bundle instead uses the legacy PR-comment path GITHUB-PLATFORM-ADAPTER-SPEC.md section 6.1 also describes.
+The hand-off is started manually by default: the Business Owner asks for Business Requirements to be derived from a named, approved Design Analysis (DESIGN-ANALYSIS-AGENT-WORKFLOW.md section 5.1).
 
 ## 4. Processing
 
-Steps 1-9 run in order and together produce one coherent Design Analysis. Steps 2-8 must all complete before step 9 is finalized -- a requirement must never be drafted in step 10 from a partially-completed analysis.
-
 | # | Step | Governed by |
 | --- | --- | --- |
-| 1 | Validate source readiness | PRODUCT-SOURCE-MATERIAL-SPEC.md §9; DESIGN-ANALYSIS-REVIEW-SPEC.md §5 (Source Readiness Check) |
-| 2 | Identify screens | DESIGN-ANALYSIS-SPEC.md §4.3 (Optional UI Design Inventory) |
-| 3 | Identify user flows | DESIGN-ANALYSIS-SPEC.md §4.3, §4.6 (User Journeys and Workflows) |
-| 4 | Identify actors | DESIGN-ANALYSIS-SPEC.md §4.2 (Product Context and Domain Inventory) |
-| 5 | Identify capabilities | DESIGN-ANALYSIS-SPEC.md §4.5 |
-| 6 | Identify observable behaviors | DESIGN-ANALYSIS-SPEC.md §4.4 (Product Understanding) |
-| 7 | Identify business rules | DESIGN-ANALYSIS-SPEC.md §4.7 |
-| 8 | Identify ambiguities | DESIGN-ANALYSIS-SPEC.md §4.10-4.11 (Decisions and Assumptions); EVIDENCE-SPEC.md §4-6 |
-| 9 | Produce Design Analysis | DESIGN-ANALYSIS-SPEC.md (full artifact); self-review and traceability check per section 4.3 before finalizing; submit for review per DESIGN-ANALYSIS-REVIEW-SPEC.md §10-11 |
-| 10 | Derive Business Requirements | BUSINESS-REQUIREMENTS-SPEC.md §2, §5-6 -- begins only from an analysis that has passed its configured review gate (DESIGN-ANALYSIS-REVIEW-SPEC.md §11, or the combined-review default in §17); see section 4.1 for when step 9 must pause before this step runs, and section 4.4 for updating the source Design Analysis's own traceability fields once Requirements exist |
-| 11 | Group requirements into Epics | BUSINESS-REQUIREMENTS-SPEC.md §12; BUSINESS-PR-SPEC.md §7 (Epic boundary follows business capability, never an application or repository boundary); see section 4.2 for an Epic threatened by an unresolved ambiguity |
-| 12 | Generate Stories | BUSINESS-PR-SPEC.md §7 (independently valuable, observable, traceable, no technical slicing, one approval decision each) |
-| 13 | Generate Acceptance Criteria | BUSINESS-REQUIREMENTS-SPEC.md §7 |
-| 14 | Identify unresolved decisions | Carried forward, never resolved by the agent -- EVIDENCE-SPEC.md §6; BUSINESS-REQUIREMENTS-SPEC.md §6 |
-| 15 | Prepare Business PR | BUSINESS-PR-SPEC.md §8 (Required Business PR Content), including the Required Stage Trace (§6) |
+| 1 | Confirm the Design Analysis is approved | DESIGN-ANALYSIS-REVIEW-SPEC.md §11, §13 (Approval Recording); section 3 above |
+| 2 | Derive Business Requirements | BUSINESS-REQUIREMENTS-SPEC.md §2, §5-6 -- see section 4.4 for updating the source Design Analysis's own traceability fields once Requirements exist |
+| 3 | Group requirements into Epics | BUSINESS-REQUIREMENTS-SPEC.md §12; BUSINESS-PR-SPEC.md §7 (Epic boundary follows business capability, never an application or repository boundary); see section 4.2 for an Epic threatened by an unresolved ambiguity |
+| 4 | Generate Stories | BUSINESS-PR-SPEC.md §7 (independently valuable, observable, traceable, no technical slicing, one approval decision each) |
+| 5 | Generate Acceptance Criteria | BUSINESS-REQUIREMENTS-SPEC.md §7 |
+| 6 | Carry forward unresolved decisions | Carried forward from the Design Analysis, never resolved by the agent -- EVIDENCE-SPEC.md §6; BUSINESS-REQUIREMENTS-SPEC.md §6 |
+| 7 | Prepare Business PR | BUSINESS-PR-SPEC.md §8 (Required Business PR Content), including the Required Stage Trace (§6) |
 
-### 4.1 Continuous Execution, With One Pause Trigger
+### 4.1 No Re-Analysis
 
-Steps 1-15 run as one continuous Business Agent invocation by default, ending in Design Analysis approval and Business Scope approval being combined through the Business PR -- the "combined-review default" DESIGN-ANALYSIS-REVIEW-SPEC.md section 17 already allows "when configured." (The combined-vs-separate *review-package configuration* question in that section is a separate, still-open item -- this section resolves the Business Agent's own execution shape, not that configuration question.)
-
-The Business Agent must instead pause after step 9 -- submitting the Design Analysis for its own review per DESIGN-ANALYSIS-REVIEW-SPEC.md sections 10-11, before proceeding to step 10 -- when either is true:
-
-- the Design Analysis carries more than three unresolved `Decision Required` or `Technical Unknown` items (a default threshold; may be overridden per initiative), or
-- the source readiness recorded at step 1 was `Ready with Limitations` rather than `Ready`
-
-Either condition is evidence the analysis itself is less certain than usual, and building Requirements, Epics, Stories, and a Business PR on top of it risks compounding an error before anyone has checked it. Outside these triggers, the agent proceeds straight through to step 15.
+The Business Agent works from the approved Design Analysis, not from the source material. If deriving a requirement reveals that the Design Analysis is wrong or incomplete -- a missing flow, a misread rule -- the Business Agent does not patch the gap itself. It stops, records what it found, and the Design Analysis goes back through the Design Analysis Agent and its review gate (DESIGN-ANALYSIS-AGENT-WORKFLOW.md section 8.1). Requirements built on an analysis the reviewer never saw are exactly what the separate gate exists to prevent.
 
 ### 4.2 An Ambiguity That Could Eliminate an Epic
 
-When step 8 surfaces a Decision Required item that, if resolved one way, would eliminate an Epic entirely, the Epic is still included in the Business PR at step 15 -- with its Status set to `Blocked` and the triggering Decision Required item referenced directly on it. It is never silently omitted.
+When the Design Analysis carries a Decision Required item that, if resolved one way, would eliminate an Epic entirely, the Epic is still included in the Business PR at step 7 -- with its Status set to `Blocked` and the triggering Decision Required item referenced directly on it. It is never silently omitted.
 
 This matches how this repository already treats every other unresolved Decision Required and Assumption: BUSINESS-PR-SPEC.md section 9 requires every unresolved item to stay visible in the PR, and PRODUCT-SOURCE-MATERIAL-SPEC.md section 12's "must not silently alter" rule applies the same principle to change handling generally. Scope under real uncertainty stays visible to the Business Owner rather than disappearing from the reviewed PR without anyone deciding to drop it.
 
-### 4.3 Self-Review and Traceability, Before Finalizing a Design Analysis (and Any Record File It Produces)
+### 4.3 Self-Review of the Design Analysis
 
-This section exists because real use (`DA-003`) needed a full, direct rewrite to fix what it now requires up front, instead of catching the problem after the fact. Evidence and classification being present and correct (steps 1-8, DESIGN-ANALYSIS-SPEC.md section 5) is necessary but not sufficient -- a Design Analysis that is technically complete but unreadable to its actual audience has still failed step 9. Applies to the Design Analysis document itself and to every Journey, Capability, and Business Rule record file the Business Agent writes or updates alongside it (`ARTIFACT-RELATIONSHIP-MODEL.md` section 3.1) -- a real sweep of those record files found the same failures this section was originally written to catch in the Design Analysis alone. Before finalizing any of them:
-
-1. **Read the draft as its target reader would** -- a Business Analyst or Designer who has never seen this feature, not a reviewer auditing evidence. Confirm the feature-area narrative is understandable on its own, without needing to resolve an evidence link, a classification tag, or a Gherkin block to follow what the product does. If it isn't, the content is misplaced, not missing -- move it to the Requirements register or Evidence and Traceability section (DESIGN-ANALYSIS-SPEC.md section 4, `DESIGN-ANALYSIS-TEMPLATE.md`); don't delete it.
-2. **Confirm no commentary about this document's own revision history appears in its primary content.** A note like "an earlier draft misread this" or "format revised because..." describes the document, not the product, and belongs in DESIGN-ANALYSIS-SPEC.md section 11's changelog -- never repeated inside an instance. This failure mode is easy to reintroduce even while actively fixing it -- it recurred three separate times across `DA-003`'s real revision history, including once while removing an earlier instance of itself, and again in the Journey/Capability/Business Rule record files, which this checklist didn't originally cover. Check for it explicitly; do not assume a prior pass already caught it.
-3. **Confirm the writing reads as product documentation, not the agent narrating its own process.** Two distinct failure modes, both found on a real sweep of this repository's own generated content:
-   - **No self-assessment of the analysis's own quality, honesty, or rigor** -- a phrase like "the clearest real example in this registry" or "an honest gap this document surfaces" grades the writing instead of stating the fact. State the fact; let a human reader judge its quality.
-   - **No filler intensifiers used out of habit rather than for information** -- `genuinely`, `real` (as an intensifier, not as a meaningful adjective like "real submissions" vs. test data), `actually`, `honest(ly)` are common tells of this specifically. Before keeping one, check whether removing it changes what the sentence says -- if not, cut it.
-4. **Confirm traceability is walkable, not just present.** Every Requirement, Capability, and Business Rule must link upstream to the exact source reference that produced it (already required by EVIDENCE-SPEC.md section 7) -- and, once a downstream artifact exists for it (a Story, an Epic, a Business PR), it must link there too, by a real link, not just a fact recorded in the metadata table. See section 4.4 for when this update happens.
-
-DESIGN-ANALYSIS-SPEC.md section 7's Quality Checks are the governing checklist for all four; this section states why they are a required step here, not a second definition of them.
+Moved to [DESIGN-ANALYSIS-AGENT-WORKFLOW.md](DESIGN-ANALYSIS-AGENT-WORKFLOW.md) section 4.1 -- it governs the Design Analysis and its record files, which the Design Analysis Agent produces. The same product-documentation voice rules (no self-assessment, no filler intensifiers, no revision-history commentary in primary content) apply to everything this stage writes as well: Business Requirements, Epics, Stories, and the Business PR description.
 
 ### 4.4 Keeping Downstream Links Current
 
-A Design Analysis's `Related Epic` / `Related Stories` metadata fields (DESIGN-ANALYSIS-SPEC.md section 3) and each Requirement's own forward reference start as `Pending` and stay accurate only if something updates them. When step 10 produces Business Requirements, and step 11 groups them into Epics, the agent returns to the source Design Analysis and fills in those fields and links -- this is a required part of steps 10-11, not a separate, optional cleanup pass. A Design Analysis whose metadata still reads `Pending` after its Requirements have actually been drafted is out of date, not merely incomplete.
+A Design Analysis's `Related Epic` / `Related Stories` metadata fields (DESIGN-ANALYSIS-SPEC.md section 3) and each requirement's own forward reference start as `Pending` and stay accurate only if something updates them. When step 2 produces Business Requirements, and step 3 groups them into Epics, the Business Agent returns to the source Design Analysis and fills in those fields and links -- this is a required part of steps 2-3, not a separate, optional cleanup pass. Only the metadata and forward links change; the analysis content itself is not edited at this stage (section 4.1).
 
 ## 5. Output Contract
 
@@ -98,7 +70,6 @@ A completed Business Agent run produces exactly these artifacts, each already sp
 
 | Output | Specified in |
 | --- | --- |
-| Design Analysis | DESIGN-ANALYSIS-SPEC.md |
 | Business Requirements | BUSINESS-REQUIREMENTS-SPEC.md |
 | Epics | BUSINESS-REQUIREMENTS-SPEC.md §12; BUSINESS-PR-SPEC.md §7 |
 | Stories | BUSINESS-PR-SPEC.md §3 (Epic and Stories) |
@@ -106,13 +77,16 @@ A completed Business Agent run produces exactly these artifacts, each already sp
 | Business Decisions (Decisions Required) | BUSINESS-REQUIREMENTS-SPEC.md §7; EVIDENCE-SPEC.md §6 |
 | Open Questions / Assumptions | BUSINESS-REQUIREMENTS-SPEC.md §6; DESIGN-ANALYSIS-SPEC.md §4.11 |
 | Traceability | BUSINESS-PR-SPEC.md §6 (Required Stage Trace); EVIDENCE-SPEC.md §3 |
+| Updated forward links on the source Design Analysis | Section 4.4 |
 
-None of these is optional. A Business PR missing any of them fails the quality gate in [BUSINESS-PR-SPEC.md](BUSINESS-PR-SPEC.md) section 9.
+None of these is optional. A Business PR missing any of them fails the quality gate in [BUSINESS-PR-SPEC.md](BUSINESS-PR-SPEC.md) section 9. The Design Analysis itself is an input, cited by the Business PR's Stage Trace, not an output of this stage.
 
 ## 6. The Business Agent MUST NOT
 
 This consolidates the technical-inference boundary in [DESIGN-ANALYSIS-SPEC.md](DESIGN-ANALYSIS-SPEC.md) section 6 and the process boundary in [AGENT-RESPONSIBILITIES.md](AGENT-RESPONSIBILITIES.md) into one checklist. The Business Agent must not:
 
+- start from a Design Analysis that hasn't passed its review gate (section 3)
+- re-analyze the source material, or edit the Design Analysis's content -- only its forward-link metadata (sections 4.1, 4.4)
 - choose programming languages, frameworks, or UI component libraries (for example, deciding to use an Angular component)
 - choose APIs, endpoints, or payloads
 - choose databases or storage services
@@ -129,28 +103,22 @@ If a step in section 4 would require crossing one of these lines to proceed, the
 ## 7. End-to-End Diagram
 
 ```text
-Source Material
+   Approved Design Analysis  (DESIGN-ANALYSIS-AGENT-WORKFLOW.md)
         |
         v
-Design Handoff Bundle / other configured source  --[readiness: Ready]-->
+   Business Requirements  (step 2)
         |
         v
-   Design Analysis  (steps 1-9)
+   Epics + Stories + Acceptance Criteria  (steps 3-5)
         |
         v
-   Business Requirements  (step 10)
+   Business Decisions + Open Questions  (step 6, carried forward, not resolved)
         |
         v
-   Epics + Stories + Acceptance Criteria  (steps 11-13)
+   Business PR  (step 7)
         |
         v
-   Business Decisions + Open Questions  (step 14, carried forward, not resolved)
-        |
-        v
-   Business PR  (step 15)
-        |
-        v
-   Business Owner Review  (BUSINESS-PR-SPEC.md §10)
+   Business Owner Review  (GATE-004, BUSINESS-PR-SPEC.md §10)
 ```
 
 Merge of an Approved Business PR is where this document's scope ends -- see [TECHNICAL-AGENT-WORKFLOW.md](TECHNICAL-AGENT-WORKFLOW.md) for the mirrored, ordered contract covering everything from that merge to Technical Ready Tasks and Spikes.
@@ -159,8 +127,8 @@ Merge of an Approved Business PR is where this document's scope ends -- see [TEC
 
 The Business Agent must stop and record a blocker, rather than proceeding, when:
 
-- source readiness is `Blocked` (PRODUCT-SOURCE-MATERIAL-SPEC.md §9)
-- the Design Analysis cannot pass its own quality checks (DESIGN-ANALYSIS-SPEC.md §7)
+- the Design Analysis has not passed its review gate (section 3)
+- deriving a requirement reveals the Design Analysis is wrong or incomplete (section 4.1)
 - a requirement candidate has no evidence and is not `Human Provided` (EVIDENCE-SPEC.md §7)
 - completing a step would require a decision listed in section 6 above
 
@@ -168,39 +136,38 @@ A blocked run must state the reason, the affected step, and the owner who can un
 
 ### 8.1 Resuming After `Changes Requested`
 
-Whether a `Changes Requested` outcome -- from Design Analysis review or Business Owner review -- requires re-running the full sequence from step 1 depends on the same Major/Editorial distinction REQUIREMENTS-VERSIONING-SPEC.md section 9 already uses for approval validity, applied here rather than defined a second time:
+Whether a `Changes Requested` outcome from Business Owner review requires re-running the full sequence depends on the same Major/Editorial distinction REQUIREMENTS-VERSIONING-SPEC.md section 9 already uses for approval validity, applied here rather than defined a second time:
 
 - **Editorial feedback** -- wording, an acceptance criterion's phrasing, a Story description -- may be patched directly at the step that produced it and resubmitted, without re-running earlier steps, provided the audit record confirms meaning was unchanged.
-- **Material feedback** -- a wrong actor, a business rule that doesn't actually apply, anything that changes meaning -- must flow back through whichever step actually produced it (not necessarily step 1), and every step downstream of that one must be re-run. Patching only the symptom risks the same artifact drift REQUIREMENTS-VERSIONING-SPEC.md exists to prevent.
+- **Material feedback** -- a wrong actor, a business rule that doesn't actually apply, anything that changes meaning -- must flow back through whichever step actually produced it, and every step downstream of that one must be re-run. If the root cause is in the Design Analysis itself, it goes back through the Design Analysis Agent and its review gate (section 4.1), not patched here.
 
 The Business Agent classifies feedback as Editorial or Material using this same test, not a second, competing definition.
 
 ## 9. One-Page Compliance Checklist
 
-- [ ] Source readiness confirmed before any analysis began (step 1)
-- [ ] Design Analysis covers screens, flows, actors, capabilities, behaviors, rules, and ambiguities (steps 2-8) before being finalized (step 9)
-- [ ] Before finalizing, the Design Analysis passed the self-review in section 4.3 -- read as its target reader would read it, narrative and audit-trail evidence structurally separated, no inline revision commentary about the document's own history
-- [ ] If the Design Analysis has more than three unresolved Decision Required/Technical Unknown items, or source readiness was `Ready with Limitations`, the run paused for review before step 10 (section 4.1)
-- [ ] Business Requirements were derived only from a reviewed/approved Design Analysis (step 10)
-- [ ] Once Business Requirements/Epics exist, the source Design Analysis's own `Related Epic`/`Related Stories` fields and requirement links were updated to match, not left `Pending` (section 4.4)
-- [ ] Every Epic groups a coherent business capability, not an application or repository (step 11)
+- [ ] The Design Analysis was approved (review PR merged, `Status: Approved`) before any requirement was drafted (step 1)
+- [ ] The source material was not re-analyzed and the Design Analysis's content was not edited -- only its forward links (sections 4.1, 4.4)
+- [ ] Once Business Requirements/Epics exist, the source Design Analysis's `Related Epic`/`Related Stories` fields and requirement links were updated, not left `Pending` (section 4.4)
+- [ ] Every Epic groups a coherent business capability, not an application or repository (step 3)
 - [ ] An Epic threatened by an unresolved ambiguity is included and marked `Blocked`, never omitted (section 4.2)
-- [ ] Every Story is independently valuable and free of technical slicing (step 12)
-- [ ] Acceptance criteria are observable in business language (step 13)
-- [ ] Every unresolved decision and assumption is still visible in the PR, not silently resolved (step 14)
-- [ ] The Business PR includes all eight outputs in section 5, including a complete Stage Trace (step 15)
+- [ ] Every Story is independently valuable and free of technical slicing (step 4)
+- [ ] Acceptance criteria are observable in business language (step 5)
+- [ ] Every unresolved decision and assumption is still visible in the PR, not silently resolved (step 6)
+- [ ] The Business PR includes every output in section 5, including a complete Stage Trace (step 7)
+- [ ] Everything written follows the product-documentation voice rules (section 4.3)
 - [ ] No output contains a technical implementation detail (section 6)
 - [ ] The Business Agent has not approved or merged its own PR
 
 ## 10. Revision History
 
-*No open decisions remain in this document -- every question this section once tracked is resolved and stated directly at its governing section (4.1, 4.2, 4.3, 4.4, 8.1). This table is what and when, not why -- the current rule and its rationale live at the cited section, not here.*
+*This table is what and when, not why -- the current rule and its rationale live at the cited section, not here.*
 
 | Date | Section | Change |
 | --- | --- | --- |
-| 2026-09-25 | 4.3 | Extended section 4.3 to every Journey/Capability/Business Rule record file, not just the Design Analysis, and added step 3 (product-documentation voice: no self-assessment of the analysis's own quality, no filler intensifiers) -- a sweep of this repository's own generated content, done as a genuine lead-product-reader review, found both failures repeated across `DA-003` and its record files. |
+| 2026-10-05 | all | Split in two. Former steps 1-9 (source readiness through producing the Design Analysis) moved to the new `DESIGN-ANALYSIS-AGENT-WORKFLOW.md`, along with former section 4.3 (self-review). This document now covers only approved Design Analysis to Business PR, renumbered steps 1-7. Former section 4.1 (continuous 15-step run with one pause trigger) replaced by section 4.1 (no re-analysis) -- the Design Analysis review gate now always runs separately, matching how `DA-003` was reviewed in practice. |
+| 2026-09-25 | 4.3 | Extended section 4.3 to every Journey/Capability/Business Rule record file, not just the Design Analysis, and added the product-documentation voice step (no self-assessment, no filler intensifiers). |
 | 2026-09-21 | 4.3, 4.4 | Added the self-review-before-finalizing requirement and the keep-downstream-links-current requirement, after real use (`DA-003`) needed a direct rewrite to add both after the fact. |
 | 2026-09-03 | 3 | Native Claude Design export entry condition changed from a PR-comment signal to a tracked GitHub Issue (`design-branch-intake.yml`); the PR-comment path continues for hand-authored bundles only. |
-| 2026-09-01 | 4.1 | Decided steps 1-15 run continuously by default (single combined Business Owner review) rather than as two separately-gated runs. |
+| 2026-09-01 | 4.1 | Decided steps 1-15 run continuously by default (single combined Business Owner review) rather than as two separately-gated runs. Superseded 2026-10-05. |
 | 2026-09-01 | 4.2 | Decided an Epic threatened by an unresolved Decision Required item stays in the Business PR, marked `Blocked`, rather than being omitted. |
 | 2026-09-01 | 8.1 | Decided `Changes Requested` resumption uses the existing Major/Editorial distinction (`REQUIREMENTS-VERSIONING-SPEC.md` section 9) rather than a new one. |
