@@ -3,26 +3,53 @@
 ## Purpose
 This document defines the responsibilities and boundaries of the agents in the product-development system. It does not define the implementation of any particular model or automation engine.
 
-## Business Agent
+## Design Analysis Agent
 
-See [BUSINESS-AGENT-WORKFLOW.md](BUSINESS-AGENT-WORKFLOW.md) for the ordered, end-to-end procedure this responsibility list applies to.
+See [DESIGN-ANALYSIS-AGENT-WORKFLOW.md](DESIGN-ANALYSIS-AGENT-WORKFLOW.md) for the ordered procedure this responsibility list applies to.
 
 ### Responsibility
-Transform source design and instruction files into structured product artifacts in the business repository.
+Analyze approved, ready source material and document what was designed and what it means -- the Design Analysis -- without adding to or improving the design.
 
 ### May
 
-- read approved source inputs
-- identify business goals, users, and outcomes
+- read approved, ready source inputs
+- identify business goals, users, outcomes, flows, capabilities, behaviors, information, and business rules represented by the design
+- create or update Journey, Capability, and Business Rule records and their registry rows
+- record observations, assumptions, gaps, decisions required, technical unknowns, and scope boundaries
+- prepare the Design Analysis review PR
+- revise the Design Analysis in response to review feedback
+
+### May not
+
+- draft Business Requirements, Epics, Stories, or a Business PR
+- invent behavior, rules, or states the source doesn't show
+- resolve a Decision Required item on its own reasoning
+- approve or merge the Design Analysis review PR
+- impersonate the Business Owner
+- modify the source material
+
+## Business Agent
+
+See [BUSINESS-AGENT-WORKFLOW.md](BUSINESS-AGENT-WORKFLOW.md) for the ordered procedure this responsibility list applies to.
+
+### Responsibility
+Turn an approved Design Analysis into reviewable business scope in the business repository: Business Requirements, Epics, Stories, Acceptance Criteria, and the Business PR.
+
+### May
+
+- read an approved Design Analysis and the records it cites
 - draft business requirements
 - create or update Epics and Stories
 - propose acceptance criteria
-- record assumptions, decisions, dependencies, and open questions
+- carry forward assumptions, decisions, dependencies, and open questions
+- update the source Design Analysis's forward links (`Related Epic`, `Related Stories`)
 - prepare a Business PR
 - revise content in response to review feedback
 
 ### May not
 
+- start from a Design Analysis that hasn't passed its review gate
+- re-analyze source material, or edit the Design Analysis's content
 - approve the Business PR
 - impersonate the Business Owner
 - merge the Business PR
@@ -81,7 +108,7 @@ Implement a technically ready canonical Task in the target engineering repositor
 ## Human Authorities
 
 ### Business Owner
-Approves the Business PR containing the Epic and Stories. This authorizes technical analysis after merge.
+Approves the Design Analysis, which authorizes the Business Agent to derive Business Requirements from it. Approves the Business PR containing the Epic and Stories, which authorizes technical analysis after merge.
 
 ### Architect
 Reviews and approves the Technical Plan. This authorizes creation of engineering issues.
@@ -93,6 +120,9 @@ Reviews implementation PRs in the engineering repository and applies repository 
 
 | Action | Required authority or condition |
 | --- | --- |
+| Create Design Analysis | Design Analysis Agent may draft, from ready source material |
+| Merge Design Analysis review PR | Business Owner approval |
+| Start Business Agent | Merged, approved Design Analysis |
 | Create Epic and Stories | Business Agent may draft |
 | Merge Business PR | Business Owner approval |
 | Start Technical Agent analysis | Merged Business PR with Business Owner approval |

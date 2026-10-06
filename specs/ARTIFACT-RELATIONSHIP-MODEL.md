@@ -26,10 +26,10 @@ Versioning mechanics referenced here are defined in [REQUIREMENTS-VERSIONING-SPE
 | --- | --- | --- | --- | --- |
 | Source Material | `SRC-<number>` | PRODUCT-SOURCE-MATERIAL-SPEC.md §4 | Source owner | Registry entry |
 | Design Handoff Bundle | `{platformSlug}/[{appSlug}/]{featureSlug}@v{MAJOR.MINOR}` | DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md §5 | Designer | `bundle.md` + files |
-| Design Analysis | `ANALYSIS-<number>` (feature-scoped) | DESIGN-ANALYSIS-SPEC.md §3 | Business Agent | Markdown, `analysis/<feature>/` |
-| Journey | `JRN-<number>`, global | DESIGN-ANALYSIS-SPEC.md §4.6; see §3.1 below | Business Agent | Registry entry ([JOURNEY-REGISTRY.md](../registries/JOURNEY-REGISTRY.md)) + own file, `<platform-slug>/[<app-slug>/]journeys/` (ARTIFACT-STORAGE-SPEC.md §4.1) |
-| Capability | `CAP-<number>`, global | DESIGN-ANALYSIS-SPEC.md §4.5; see §3.1 below | Business Agent | Registry entry ([CAPABILITY-REGISTRY.md](../registries/CAPABILITY-REGISTRY.md)) + own file, `<platform-slug>/[<app-slug>/]capabilities/` (ARTIFACT-STORAGE-SPEC.md §4.1) |
-| Business Rule | `BRULE-<number>`, global | DESIGN-ANALYSIS-SPEC.md §4.7; see §3.1 below | Business Agent | Registry entry ([BUSINESS-RULE-REGISTRY.md](../registries/BUSINESS-RULE-REGISTRY.md)) + own file, `<platform-slug>/[<app-slug>/]business-rules/` (ARTIFACT-STORAGE-SPEC.md §4.1) |
+| Design Analysis | `ANALYSIS-<number>` (feature-scoped) | DESIGN-ANALYSIS-SPEC.md §3 | Design Analysis Agent | Markdown, `analysis/<feature>/` |
+| Journey | `JRN-<number>`, global | DESIGN-ANALYSIS-SPEC.md §4.6; see §3.1 below | Design Analysis Agent | Registry entry ([JOURNEY-REGISTRY.md](../registries/JOURNEY-REGISTRY.md)) + own file, `<platform-slug>/[<app-slug>/]journeys/` (ARTIFACT-STORAGE-SPEC.md §4.1) |
+| Capability | `CAP-<number>`, global | DESIGN-ANALYSIS-SPEC.md §4.5; see §3.1 below | Design Analysis Agent | Registry entry ([CAPABILITY-REGISTRY.md](../registries/CAPABILITY-REGISTRY.md)) + own file, `<platform-slug>/[<app-slug>/]capabilities/` (ARTIFACT-STORAGE-SPEC.md §4.1) |
+| Business Rule | `BRULE-<number>`, global | DESIGN-ANALYSIS-SPEC.md §4.7; see §3.1 below | Design Analysis Agent | Registry entry ([BUSINESS-RULE-REGISTRY.md](../registries/BUSINESS-RULE-REGISTRY.md)) + own file, `<platform-slug>/[<app-slug>/]business-rules/` (ARTIFACT-STORAGE-SPEC.md §4.1) |
 | Business Requirements Set | `REQSET-<number>`, requirements `BR-<number>` | REQUIREMENTS-VERSIONING-SPEC.md §3; BUSINESS-REQUIREMENTS-SPEC.md §4 | Business Agent | Markdown |
 | Epic | `EPIC-<number>` | BUSINESS-REQUIREMENTS-SPEC.md §12 | Business Agent | Markdown or Issue |
 | Story | `STORY-<number>` | BUSINESS-PR-SPEC.md §7 | Business Agent | Markdown or Issue |
@@ -114,7 +114,7 @@ What actually makes this traceable, once built (not just diagrammed):
 1. Global IDs for the three product-level entities, assigned once from a central registry.
 2. A registry + a standalone file per entity, mirroring `SOURCE-REGISTRY.md`.
 3. Two-way links stated explicitly, not implied -- a Capability's file names which Journeys use it; a Journey's file names which Capabilities it needs. Same "used by" back-link discipline already built into `DESIGN-ANALYSIS-TEMPLATE.md` for Observations, applied at the product level.
-4. A "check the registry before minting" step added to `DESIGN-ANALYSIS-SPEC.md` section 4 (Business Agent Activity 1) -- cite an existing Journey/Capability/Business Rule when the analysis is genuinely describing the same one; only create a new entry when it's actually new.
+4. A "check the registry before minting" step added to `DESIGN-ANALYSIS-SPEC.md` section 4 (Design Analysis Agent Activity 1) -- cite an existing Journey/Capability/Business Rule when the analysis is genuinely describing the same one; only create a new entry when it's actually new.
 5. A cross-repo verification check, not just a per-file one: `.github/scripts/verify_registries.py`, a sibling tool to `.claude/skills/verify-design-analysis` (which only checks *inside one document*). It confirms every registry row's Record link resolves and matches the file's own ID, every two-way "used by"/"uses" link is genuinely stated on both sides, and every `CAP-`/`JRN-`/`BRULE-` ID cited anywhere actually exists in its registry.
 6. A versioning rule for when a product-level entity's own definition changes -- reusing `REQUIREMENTS-VERSIONING-SPEC.md`'s existing Major/Editorial classification rather than inventing a fourth scheme.
 

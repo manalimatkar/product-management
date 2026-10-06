@@ -81,26 +81,31 @@ A design handoff bundle is a first-class product artifact. It may contain:
 - interaction details
 - implementation-relevant design notes
 
-The Business Agent consumes the committed bundle. It does not regenerate or rewrite the design handoff.
+The Design Analysis Agent consumes the committed bundle. No agent regenerates or rewrites the design handoff.
 
 A Story must reference the applicable design handoff bundle and version.
 
-**Two upload paths (specs/DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md section 6.2, added 2026-09-03):** a genuine Claude Design export lands untouched on a persistent `design` branch (`<platform-slug>/[<app-slug>/]design/v<N>/`), not `main` -- its merge opens a tracked GitHub Issue that is the real Business Agent trigger. A hand-authored bundle (a bare Figma link, a written spec + screenshots) still goes directly against `main`'s existing `design/` convention, unchanged.
+**Two upload paths (specs/DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md section 6.2, added 2026-09-03):** a genuine Claude Design export lands untouched on a persistent `design` branch (`<platform-slug>/[<app-slug>/]design/v<N>/`), not `main` -- its merge opens a tracked GitHub Issue that is the real Design Analysis Agent trigger. A hand-authored bundle (a bare Figma link, a written spec + screenshots) still goes directly against `main`'s existing `design/` convention, unchanged.
 
 ## Agents and Responsibilities
 
-### Business Agent
+### Design Analysis Agent
 
 - reads the approved design handoff bundle
-- produces Design Analysis
-- identifies capabilities, user intent, and behavior
+- produces the Design Analysis: flows, capabilities, user intent, behavior, information, business rules, assumptions, and open decisions
+- documents what was designed, never improves on it
+- submits the Design Analysis for its own Business Owner review
+
+### Business Agent
+
+- starts only from an approved Design Analysis
 - drafts business requirements, Epics, Stories, and acceptance criteria
-- identifies business rules, assumptions, and open decisions
+- carries forward assumptions and open decisions
 - prepares a Business PR
 
-The Business Agent does not make technical architecture decisions, approve business scope, or merge the Business PR.
+Neither agent makes technical architecture decisions, approves anything, or merges its own PR.
 
-**Runnable, not just described** -- this everything above has been an authority/responsibility description since this document was written; as of 2026-09-09 there is a real, invokable definition of it for Claude Code: [.claude/agents/business-agent.md](https://github.com/manalimatkar/product-management/blob/main/.claude/agents/business-agent.md). See the `.claude/` entry in Documents below.
+**Runnable, not just described** -- this everything above has been an authority/responsibility description since this document was written; there are real, invokable definitions of both for Claude Code: [.claude/agents/design-analysis-agent.md](https://github.com/manalimatkar/product-management/blob/main/.claude/agents/design-analysis-agent.md) and [.claude/agents/business-agent.md](https://github.com/manalimatkar/product-management/blob/main/.claude/agents/business-agent.md). See the `.claude/` entry in Documents below.
 
 ### Technical Agent
 
@@ -169,7 +174,7 @@ Organized 2026-09-01 (see ARTIFACT-STORAGE-SPEC.md for how generated instances -
 - [BUSINESS-REPOSITORY-WORKFLOW.md](specs/BUSINESS-REPOSITORY-WORKFLOW.md) - business-stage workflow and Business Owner gate
 - [DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md](specs/DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md) - Design Handoff Bundle schema, manifest, and design/implementation boundary
 - [CLAUDE-DESIGN-READING-SPEC.md](specs/CLAUDE-DESIGN-READING-SPEC.md) - how to read a native Claude Design export accurately (dark `.dc.html` as source of truth, README as reference only) -- tool-specific, sibling to a future Figma equivalent; the generic analysis method (flows before capabilities) stays in DESIGN-ANALYSIS-SPEC.md
-- [DESIGN-ANALYSIS-SPEC.md](specs/DESIGN-ANALYSIS-SPEC.md) - Design Analysis structure, evidence, and Business Agent inference rules
+- [DESIGN-ANALYSIS-SPEC.md](specs/DESIGN-ANALYSIS-SPEC.md) - Design Analysis structure, evidence, and Design Analysis Agent inference rules
 - [DESIGN-ANALYSIS-REVIEW-SPEC.md](specs/DESIGN-ANALYSIS-REVIEW-SPEC.md) - analysis intake, validation, review, approval, and change process
 - [PRODUCT-SOURCE-MATERIAL-SPEC.md](specs/PRODUCT-SOURCE-MATERIAL-SPEC.md) - source registration, authority, versioning, readiness, and change handling
 - [ARTIFACT-STORAGE-SPEC.md](specs/ARTIFACT-STORAGE-SPEC.md) - single naming and folder convention for every generated artifact type
@@ -184,7 +189,8 @@ Organized 2026-09-01 (see ARTIFACT-STORAGE-SPEC.md for how generated instances -
 - [FRAMEWORK-CONFIGURATION-SPEC.md](specs/FRAMEWORK-CONFIGURATION-SPEC.md) - configurable sources, artifacts, roles, gates, platforms, and delivery targets
 - [TECHNICAL-HANDOFF.md](specs/TECHNICAL-HANDOFF.md) - technical analysis, Task readiness, and engineering boundary
 - [CANONICAL-TASK-SPEC.md](specs/CANONICAL-TASK-SPEC.md) - canonical Task and Spike schema, Technical Agent boundary, and the Architect review gate
-- [BUSINESS-AGENT-WORKFLOW.md](specs/BUSINESS-AGENT-WORKFLOW.md) - the ordered, end-to-end Business Agent contract from source material to Business PR
+- [DESIGN-ANALYSIS-AGENT-WORKFLOW.md](specs/DESIGN-ANALYSIS-AGENT-WORKFLOW.md) - the Design Analysis Agent contract, from ready source material to an approved Design Analysis
+- [BUSINESS-AGENT-WORKFLOW.md](specs/BUSINESS-AGENT-WORKFLOW.md) - the Business Agent contract, from an approved Design Analysis to a Business PR
 - [TECHNICAL-AGENT-WORKFLOW.md](specs/TECHNICAL-AGENT-WORKFLOW.md) - the ordered, end-to-end Technical Agent contract from a merged Business PR to Technical Ready Tasks and Spikes
 - [AGENT-RESPONSIBILITIES.md](specs/AGENT-RESPONSIBILITIES.md) - agent permissions and responsibilities
 
@@ -201,7 +207,8 @@ Organized 2026-09-01 (see ARTIFACT-STORAGE-SPEC.md for how generated instances -
 
 Added 2026-09-09, closing the gap between describing an agent (this document, AGENT-RESPONSIBILITIES.md, BUSINESS-AGENT-WORKFLOW.md) and being able to actually invoke one. Deliberately thin -- per EXECUTION-ADAPTER-SPEC.md section 3, no platform gets its own version of a workflow document, so these files point at the real specs rather than restating them.
 
-- [.claude/agents/business-agent.md](https://github.com/manalimatkar/product-management/blob/main/.claude/agents/business-agent.md) - a real Claude Code subagent definition for `ROLE-006`: declared tool access, and instructions that point at BUSINESS-AGENT-WORKFLOW.md, AGENT-RESPONSIBILITIES.md, EVIDENCE-SPEC.md, and the relevant templates, plus the hard constraints restated for safety.
+- [.claude/agents/design-analysis-agent.md](https://github.com/manalimatkar/product-management/blob/main/.claude/agents/design-analysis-agent.md) - a real Claude Code subagent definition for `ROLE-010`: declared tool access, and instructions that point at DESIGN-ANALYSIS-AGENT-WORKFLOW.md, AGENT-RESPONSIBILITIES.md, DESIGN-ANALYSIS-SPEC.md, and the reading specs.
+- [.claude/agents/business-agent.md](https://github.com/manalimatkar/product-management/blob/main/.claude/agents/business-agent.md) - a real Claude Code subagent definition for `ROLE-006`: declared tool access, and instructions that point at BUSINESS-AGENT-WORKFLOW.md, AGENT-RESPONSIBILITIES.md, and the requirements and Business PR specs and templates.
 - [.claude/skills/verify-design-analysis/SKILL.md](https://github.com/manalimatkar/product-management/blob/main/.claude/skills/verify-design-analysis/SKILL.md) - checks a Design Analysis's internal traceability (every ID-only heading unique, every link resolves, every evidence entry has an inbound citation), backed by `.github/scripts/verify_design_analysis.py`. Run after drafting or revising any Design Analysis, before opening or updating its review PR.
 - `.claude/skills/verify-registries/SKILL.md` - the cross-repo sibling: checks the Journey/Capability/Business Rule registries and every Design Analysis that cites them are consistent, backed by `.github/scripts/verify_registries.py`. Run after touching a registry or record, or citing a new product-level ID. *(Not linked -- still only on the local `agents` branch, not pushed anywhere yet, so there's nowhere real to point to. Becomes a link, matching the others above, once it merges to `main`.)*
 - [.claude/skills/run-gate-checks/SKILL.md](https://github.com/manalimatkar/product-management/blob/main/.claude/skills/run-gate-checks/SKILL.md) - runs the right merge gate (`design_branch_gate`, `bundle_gate`, or `business_pr_gate`) against a real PR or a local diff, backed by `.github/scripts/run_gate_checks.py`. Run before asking for a PR to be opened whenever the change touches a native design export, a hand-authored bundle, or a Business PR.

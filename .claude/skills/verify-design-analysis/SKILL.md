@@ -9,7 +9,7 @@ This repository's Design Analysis format (`templates/DESIGN-ANALYSIS-TEMPLATE.md
 
 ## When to run this
 
-- After drafting a new Design Analysis (Business Agent workflow step 9).
+- After drafting a new Design Analysis (Design Analysis Agent workflow step 9).
 - After any revision -- a review round, a Decision resolution, a narrowing/scope change like `BR-003`'s.
 - Before opening or updating that analysis's review PR. A Design Analysis with broken internal links is not ready for review, whatever else it says.
 

@@ -28,7 +28,7 @@ name: Design Handoff Bundle Merge Gate
 #                      validate's checks against the merged state, then
 #                      writes bundle.md's status/readiness fields and
 #                      comments the result on the PR -- the merge comment
-#                      that satisfies BUSINESS-AGENT-WORKFLOW.md section 3's
+#                      that satisfies DESIGN-ANALYSIS-AGENT-WORKFLOW.md section 3's
 #                      entry condition.
 
 on:
@@ -162,7 +162,7 @@ jobs:
                 ? `- \`knownLimitations\`: ${result.known_limitations.join(', ')}`
                 : '- `knownLimitations`: none',
               '',
-              "This comment is the entry-condition trigger for the Business Agent per BUSINESS-AGENT-WORKFLOW.md section 3.",
+              "This comment is the entry-condition trigger for the Design Analysis Agent per DESIGN-ANALYSIS-AGENT-WORKFLOW.md section 3.",
             ].join('\n');
             await github.rest.issues.createComment({
               owner: context.repo.owner,

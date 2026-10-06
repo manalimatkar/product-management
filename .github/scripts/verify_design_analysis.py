@@ -37,11 +37,17 @@ LINK_RE = re.compile(r"\]\(#([a-z0-9-]+)\)")
 ID_ONLY_RE = re.compile(r"^[A-Z]+-\d+$")
 LINKABLE_PREFIXES = ("OBS-", "GAP-", "DEC-", "ASM-", "TECH-", "BRULE-", "CAP-", "BR-")
 
-# DESIGN-ANALYSIS-SPEC.md sections 4.14-4.16: Problem, Goals, and Success
-# Metrics must each be present with real content (or an explicit Decision
-# Required), never silently missing or left as the template's own
+# DESIGN-ANALYSIS-SPEC.md sections 4.14-4.18: these must each be present
+# with content (or an explicit Decision Required / "not described in
+# source" note), never silently missing or left as the template's own
 # placeholder text.
-REQUIRED_TOP_SECTIONS = ["Problem", "Goals", "Success Metrics"]
+REQUIRED_TOP_SECTIONS = [
+    "Problem",
+    "Goals",
+    "Success Metrics",
+    "Information users see or provide",
+    "Existing vs. new experience",
+]
 PLACEHOLDER_ONLY_RE = re.compile(r"^\s*`<.*>`\s*$", re.DOTALL)
 
 
@@ -72,7 +78,7 @@ def check_required_top_sections(text):
         if not m:
             errors.append(
                 f'Required section "## {name}" is missing entirely '
-                f"(DESIGN-ANALYSIS-SPEC.md section 4.14-4.16)."
+                f"(DESIGN-ANALYSIS-SPEC.md sections 4.14-4.18)."
             )
             continue
         content = m.group(1).strip()

@@ -4,7 +4,7 @@
 
 This system is an agent-driven product development workspace spanning a business repository and one or more engineering repositories.
 
-The UX designer creates designs in Claude Design from product and design source material such as Figma designs, written instructions, PDFs, screenshots, and mockups. The designer then commits versioned design handoff documents to the business repository as a first-class product artifact. The Business Agent reads the committed bundle, creates a design analysis, and translates it into structured product-development artifacts including business requirements, Epics, Stories, acceptance criteria, decisions, technical Tasks, Spikes, project views, and workflow records. The Business Agent does not regenerate or rewrite the design handoff bundle.
+The UX designer creates designs in Claude Design from product and design source material such as Figma designs, written instructions, PDFs, screenshots, and mockups. The designer then commits versioned design handoff documents to the business repository as a first-class product artifact. The Design Analysis Agent reads the committed bundle and creates a design analysis, which the Business Owner reviews and approves on its own. The Business Agent then translates the approved design analysis into structured product-development artifacts including business requirements, Epics, Stories, acceptance criteria, decisions, technical Tasks, Spikes, project views, and workflow records. Neither agent regenerates or rewrites the design handoff bundle.
 
 The Business Owner reviews and approves the resulting Business PR. The merge of that approved Business PR is the handoff event that allows the Technical Agent to read the business repository and analyze the relevant engineering repositories. The Technical Agent enriches canonical Tasks and Spikes, which remain GitHub Issues in the business repository. An Architect reviews and approves the technical decomposition. Only then may Tasks become technically ready for the Developer Agent or human developers.
 
@@ -52,10 +52,13 @@ This system provides a governed path from unstructured product inputs to busines
 ## 4. Users and Authorities
 
 ### Product or Business Owner
-Reviews and approves the Business PR containing the business scope package. This approval allows the merged package to be handed to the Technical Agent.
+Reviews and approves the design analysis, which allows business requirements to be derived from it. Reviews and approves the Business PR containing the business scope package. This approval allows the merged package to be handed to the Technical Agent.
+
+### Design Analysis Agent
+Reads the committed, versioned design handoff bundle and produces a design analysis: what was designed and what it means, without adding to or improving the design. It does not regenerate or rewrite the design bundle.
 
 ### Business Agent
-Reads the committed, versioned design handoff bundle, produces a design analysis, and drafts business and agile planning artifacts in the business repository. It does not regenerate or rewrite the design bundle.
+Starts from an approved design analysis and drafts business and agile planning artifacts in the business repository. It does not re-analyze the design source.
 
 ### Architect
 Reviews and approves the technical decomposition produced after the approved Business PR is merged. This approval makes canonical Tasks technically ready for development.
@@ -80,10 +83,16 @@ BUSINESS REPOSITORY
 Versioned Design Handoff Bundle committed to business repo
         |
         v
-Business Agent analyzes the bundle
+Design Analysis Agent analyzes the bundle
         |
         v
-Design Analysis + Epic + Stories + business requirements + acceptance criteria
+Design Analysis
+        |
+        v
+Business Owner approves the Design Analysis
+        |
+        v
+Business Agent derives Epic + Stories + business requirements + acceptance criteria
         |
         v
 Business PR
@@ -122,6 +131,10 @@ Code + Tests + Architecture Docs + PRs + CI/CD + Quality Gates
 
 ## 6. Approval Gates
 
+### Before Gate 1: Design Analysis Approval
+
+The Business Owner must approve the design analysis, on its own review PR, before the Business Agent derives any business requirements from it. This gate confirms the design was understood correctly; it does not approve business scope. See [DESIGN-ANALYSIS-AGENT-WORKFLOW.md](specs/DESIGN-ANALYSIS-AGENT-WORKFLOW.md) section 5.1.
+
 ### Gate 1: Business Scope Approval
 
 The Business Owner must approve the Business PR before it can be merged as an authorized technical handoff. Approval applies to the reviewed PR version and must be attributable.
@@ -143,7 +156,7 @@ Implementation remains subject to the engineering repository's existing code rev
 ### 7.1 Source Input Intake
 
 - The system must support registering or dropping Claude design files, Figma files or exports, written instructions, PDFs, screenshots, mockups, and similar source material.
-- The system must preserve source references and make them available to the Business Agent.
+- The system must preserve source references and make them available to the Design Analysis Agent.
 - Generated artifacts must be traceable to the source material used to create them.
 
 ### 7.2 Business Artifact Generation
@@ -151,7 +164,7 @@ Implementation remains subject to the engineering repository's existing code rev
 - The Business Agent must be able to draft business requirements, Epics, Stories, acceptance criteria, decisions, dependencies, technical tasks, and spikes.
 - Generated artifacts must be created in the business repository.
 - Draft output must remain distinguishable from human approval.
-- The Business Agent must be able to revise artifacts based on review feedback.
+- The Design Analysis Agent and Business Agent must each be able to revise their artifacts based on review feedback.
 
 ### 7.3 Business PR and Approval
 
@@ -274,9 +287,9 @@ Implementation remains subject to the engineering repository's existing code rev
 
 ### Process Definition TODOs
 
-- ~~Define the complete Business Agent process from Design Handoff Bundle ingestion through Business PR creation.~~ Resolved -- see [BUSINESS-AGENT-WORKFLOW.md](specs/BUSINESS-AGENT-WORKFLOW.md).
+- ~~Define the complete Business Agent process from Design Handoff Bundle ingestion through Business PR creation.~~ Resolved -- see [DESIGN-ANALYSIS-AGENT-WORKFLOW.md](specs/DESIGN-ANALYSIS-AGENT-WORKFLOW.md) (bundle to approved Design Analysis) and [BUSINESS-AGENT-WORKFLOW.md](specs/BUSINESS-AGENT-WORKFLOW.md) (approved Design Analysis to Business PR).
 - ~~Define the required Design Analysis artifact format and evidence model.~~ Resolved -- see DESIGN-ANALYSIS-SPEC.md and EVIDENCE-SPEC.md.
-- ~~Define the allowed inference boundary for the Business Agent.~~ Resolved -- see DESIGN-ANALYSIS-SPEC.md's inference rules and EVIDENCE-SPEC.md's classification vocabulary.
+- ~~Define the allowed inference boundary for the Design Analysis Agent.~~ Resolved -- see DESIGN-ANALYSIS-SPEC.md's inference rules and EVIDENCE-SPEC.md's classification vocabulary.
 - ~~Define the minimum information required before a requirement can be drafted.~~ Resolved -- see BUSINESS-REQUIREMENTS-SPEC.md and EVIDENCE-SPEC.md.
 - ~~Define the minimum information required before a Story can enter Business Owner review.~~ Resolved -- see BUSINESS-PR-SPEC.md section 9's Quality Gate.
 - ~~Define how Business Owner approval identifies the approved Design Handoff Bundle and Design Analysis versions.~~ Resolved -- see BUSINESS-PR-SPEC.md's Stage Trace and version-recording requirements.
@@ -290,7 +303,7 @@ Implementation remains subject to the engineering repository's existing code rev
 
 The Design Analysis is the required bridge between the versioned Design Handoff Bundle and business requirements. It records the screens, flows, behaviors, states, capabilities, business rules, requirements, acceptance criteria, assumptions, and unresolved decisions identified from the design.
 
-The Business Agent must label each conclusion as explicit, strongly implied, an assumption, a decision required, or a technical unknown. It may infer strongly implied business behavior when supported by design evidence, but it must flag unresolved business policy and must not choose technical implementation details. The complete specification is maintained in [DESIGN-ANALYSIS-SPEC.md](specs/DESIGN-ANALYSIS-SPEC.md).
+The Design Analysis Agent must label each conclusion as explicit, strongly implied, an assumption, a decision required, or a technical unknown. It may infer strongly implied business behavior when supported by design evidence, but it must flag unresolved business policy and must not choose technical implementation details. The complete specification is maintained in [DESIGN-ANALYSIS-SPEC.md](specs/DESIGN-ANALYSIS-SPEC.md).
 
 ## 15. Artifact Set
 

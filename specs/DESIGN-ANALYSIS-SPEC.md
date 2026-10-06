@@ -4,7 +4,7 @@
 
 The Design Analysis is the bridge between versioned product source material and business requirements. It is reusable across product, service, process, platform, and change initiatives.
 
-It explains what the Business Agent understood from the design before it creates or updates business requirements, Epics, Stories, acceptance criteria, decisions, and open questions.
+It explains what the Design Analysis Agent understood from the design, before the Business Agent creates or updates business requirements, Epics, Stories, acceptance criteria, decisions, and open questions.
 
 The artifact exists to make the transformation inspectable:
 
@@ -33,7 +33,7 @@ The Design Analysis is a business/product analysis artifact. It must not become 
 
 ### Producer
 
-The Business Agent creates the Design Analysis from configured, versioned product source material. A Design Handoff Bundle is one supported source type.
+The Design Analysis Agent creates the Design Analysis from configured, versioned product source material. [DESIGN-ANALYSIS-AGENT-WORKFLOW.md](DESIGN-ANALYSIS-AGENT-WORKFLOW.md) orders the steps; this document defines the artifact. A Design Handoff Bundle is one supported source type.
 
 ### Human Review
 
@@ -41,7 +41,7 @@ The configured product or business reviewer reviews the Design Analysis as part 
 
 ### Source Immutability
 
-The Business Agent must read and reference the configured source material. It must not regenerate, rewrite, or silently modify authoritative sources.
+The Design Analysis Agent must read and reference the configured source material. It must not regenerate, rewrite, or silently modify authoritative sources.
 
 If an authoritative source needs to change, its owner creates a new source version or revision. The Design Analysis is then regenerated or revised against that explicit version.
 
@@ -64,7 +64,7 @@ Every Design Analysis must include:
 | Source Material | Repository path or link to the source material(s) -- an analysis may cite more than one registered source; see [ARTIFACT-RELATIONSHIP-MODEL.md](ARTIFACT-RELATIONSHIP-MODEL.md) section 7 |
 | Source Version | Exact source version, or `Not Versioned` |
 | Analysis Version | Version of this analysis artifact |
-| Created By | Business Agent identity or run identifier |
+| Created By | Design Analysis Agent identity or run identifier |
 | Created At | Timestamp |
 | Status | Draft, In Review, Approved, Superseded, or Rejected |
 | Related Epic | Epic reference when known |
@@ -78,9 +78,9 @@ The metadata must be sufficient to answer:
 
 ## 4. Required Artifact Structure
 
-### Business Agent Activity 1: Understand the Design
+### Design Analysis Agent Activity 1: Understand the Design
 
-The first Business Agent activity is to build an intermediate understanding of the Design Handoff Bundle. It must complete this activity before identifying capabilities or drafting requirements.
+The first Design Analysis Agent activity is to build an intermediate understanding of the Design Handoff Bundle. It must complete this activity before identifying capabilities or drafting requirements.
 
 The agent must extract and record:
 
@@ -231,7 +231,7 @@ Each journey must include:
 - error paths
 - source references
 
-A journey may cross multiple screens or applications. The Business Agent must preserve the user outcome even when the design is distributed across multiple areas.
+A journey may cross multiple screens or applications. The Design Analysis Agent must preserve the user outcome even when the design is distributed across multiple areas.
 
 **Journeys are product-level, not analysis-scoped.** A Journey ID is global, assigned from [JOURNEY-REGISTRY.md](../registries/JOURNEY-REGISTRY.md). Map the journey *before* decomposing it into capabilities (this section's own analysis-order rule, stated in Activity 1 above) -- a capability's business purpose only really makes sense once the journey it serves is understood. Journeys are also the mechanism that proves whether a Capability is genuinely shared across use cases or unique to one: see [ARTIFACT-RELATIONSHIP-MODEL.md](ARTIFACT-RELATIONSHIP-MODEL.md) section 3.1. Keep Journey IDs as real, addressable headings -- never folded into narrative prose.
 
@@ -334,7 +334,7 @@ Examples:
 - Which roles may approve the submission?
 - Is the operation recoverable after failure?
 
-The Business Agent must not invent answers to unresolved business questions.
+The Design Analysis Agent must not invent answers to unresolved business questions.
 
 ### 4.11 Assumptions
 
@@ -364,6 +364,14 @@ Record what the analysis does not establish:
 
 This section prevents downstream agents from treating silence as a decision.
 
+**Three scope tiers, not two.** Classify scope as:
+
+- **In scope** -- capabilities the design directly represents.
+- **Potentially related** -- areas the design touches or implies but doesn't define well enough to analyze (for example, a navigation entry point drawn but not specified, or a shared component whose other uses aren't shown). Name each one and why it might be affected; don't analyze it.
+- **Out of scope / not evidenced** -- anything the design doesn't show. Technical relatedness alone never moves an item into scope.
+
+The middle tier exists because a flat in/out split forces a choice the evidence doesn't support: marking a half-shown area "in scope" invites invented behavior, and marking it "out of scope" hides a real dependency from the Business Owner.
+
 ### 4.13 Requirement Mapping
 
 End the artifact with a mapping from design evidence to capabilities, requirements, and Stories.
@@ -380,7 +388,7 @@ See [EVIDENCE-SPEC.md](EVIDENCE-SPEC.md) for the plain-language evidence rule, t
 
 ### 4.14 Problem
 
-State what goes wrong, or what's missing, without this feature -- the actual pain, not a restatement of the feature's own function. Ground it in the source when the source states one (a Scope note, a stated rationale, a linked ticket). When the source is silent on why the feature exists, the Business Agent must not infer a plausible-sounding reason -- record it as a Decision Required (section 4.10) instead, owner Business Owner. A guessed problem statement is a more dangerous failure than an honest gap here, since it's the framing everything else in the analysis gets read against.
+State what goes wrong, or what's missing, without this feature -- the actual pain, not a restatement of the feature's own function. Ground it in the source when the source states one (a Scope note, a stated rationale, a linked ticket). When the source is silent on why the feature exists, the Design Analysis Agent must not infer a plausible-sounding reason -- record it as a Decision Required (section 4.10) instead, owner Business Owner. A guessed problem statement is a more dangerous failure than an honest gap here, since it's the framing everything else in the analysis gets read against.
 
 **Quality bar, not just presence.** One to three sentences. Check it by asking: could a reader answer "what's the problem?" just by re-reading `## What this is` instead? If yes, this section restated the mechanism, not the pain, and hasn't done its job. This isn't an internal preference -- it's how real product teams write this section: Amazon's [Working Backwards / PR-FAQ process](https://workingbackwards.com/concepts/working-backwards-pr-faq-process/) states customer value before any spec detail; Lenny Rachitsky's [widely-used PRD template](https://www.lennysnewsletter.com/p/prds-1-pagers-examples) calls nailing the problem statement "the single most important step," done in a few strong sentences near the top -- exactly why `DESIGN-ANALYSIS-TEMPLATE.md` places `## Problem` immediately after `## What this is`, not deep in the document.
 
@@ -398,6 +406,30 @@ State how the team would know this feature is working -- one or two measurable s
 
 **Quality bar.** One or two signals, not an exhaustive KPI list. Real company PRD templates -- surveyed across a [collection of 15 templates from teams including Stripe, Airbnb, and Intercom](https://www.prodmgmt.world/blog/prd-template-guide) -- consistently keep this section this small; a long list here usually means metrics from a different initiative got mixed in.
 
+### 4.17 Information Analysis
+
+Record the business information the experience shows or collects. For each item:
+
+- business concept (e.g. "confidence score," "page title")
+- whether it is displayed, entered, or both
+- its purpose to the user
+- its source, only if the design states it
+- whether it appears required
+- whether it appears editable
+- what remains unknown
+
+This is the business meaning of the information, not a data model. Do not infer database entities, field types beyond what the design shows, or API contracts -- those are Technical Agent questions (record them as Technical Unknowns if they matter).
+
+### 4.18 Existing vs. New Experience
+
+Where the source gives enough context, state what the design changes relative to what already exists:
+
+- existing experience (what users do today)
+- new behavior
+- changed behavior
+- removed behavior
+
+When the source doesn't describe the existing experience, say so explicitly ("Existing experience not described in source") rather than assuming the feature is entirely new. A reviewer reads a change very differently from a greenfield feature, and the difference often decides how much existing-user impact the Business Requirements must address.
 ## 5. Evidence Classification
 
 Every observation, rule, requirement, and interpretation must use one of these classifications:
@@ -435,7 +467,7 @@ Example:
 Decision-required items must not be silently inferred.
 
 ### Technical Unknown
-The business behavior is sufficiently clear, but implementation details are not defined. These belong to the Technical Agent, not the Business Agent.
+The business behavior is sufficiently clear, but implementation details are not defined. These belong to the Technical Agent, not the Design Analysis Agent.
 
 Example:
 
@@ -443,9 +475,9 @@ Example:
 
 ## 6. Inference Rules
 
-### The Business Agent may infer
+### The Design Analysis Agent may infer
 
-The Business Agent may infer only business behavior that is necessary to explain a coherent user journey and is strongly supported by the design.
+The Design Analysis Agent may infer only business behavior that is necessary to explain a coherent user journey and is strongly supported by the design.
 
 It may infer:
 
@@ -458,9 +490,9 @@ It may infer:
 
 All inferences must be labeled `Strongly Implied` and linked to design evidence.
 
-### The Business Agent must flag
+### The Design Analysis Agent must flag
 
-The Business Agent must create a Decision Required item instead of guessing when the design does not determine:
+The Design Analysis Agent must create a Decision Required item instead of guessing when the design does not determine:
 
 - business policy
 - supported formats or limits
@@ -472,9 +504,9 @@ The Business Agent must create a Decision Required item instead of guessing when
 - conflict between design sources
 - a choice that changes scope or user outcome
 
-### The Business Agent must not infer
+### The Design Analysis Agent must not infer
 
-The Business Agent must not choose or imply:
+The Design Analysis Agent must not choose or imply:
 
 - programming languages or frameworks
 - APIs, endpoints, or payloads
@@ -499,6 +531,8 @@ A Design Analysis is ready for Business PR review only when:
 - the universal product context and domain inventory are complete
 - `## Problem`, `## Goals`, and `## Success Metrics` (sections 4.14-4.16) are each present, and each either grounded in evidence or explicitly recorded as a Decision Required -- never silently blank, never a guessed answer presented as a confirmed one
 - **`## Problem` meets its quality bar, not just its presence requirement**: one to three sentences, stating the pain rather than answerable by re-reading `## What this is`; **`## Goals`** states outcomes no line of which could be lifted verbatim from a feature-area heading; **`## Success Metrics`** holds to one or two signals, not an exhaustive list (section 4.14-4.16's own quality-bar notes)
+- the information users see or provide is recorded (section 4.17), and existing-vs-new experience is stated or explicitly marked "not described in source" (section 4.18)
+- scope is classified into in scope, potentially related, and out of scope (section 4.12)
 - each capability has evidence
 - each requirement is atomic and testable
 - each requirement has a source reference or human-origin marker
@@ -512,7 +546,7 @@ A Design Analysis is ready for Business PR review only when:
 - **the document contains no commentary about its own revision history in its primary content** -- format changes, prior drafts, review-round corrections belong in this specification's own changelog (section 11), never repeated inside an instance
 - **the document contains no self-assessment of its own quality, honesty, or rigor** -- state the fact, not an appraisal of how well it was stated; and no filler intensifier (`genuinely`, `real` as emphasis, `actually`, `honest(ly)`) that carries no information a reader would lose if it were cut
 - **every requirement, capability, and business rule links upstream to its source reference and, once they exist, downstream to its Story, Epic, and Business PR** -- each a real, followable link, not just a fact stated in the metadata table (`BUSINESS-AGENT-WORKFLOW.md` section 4.4)
-- **every Journey, Capability, and Business Rule record file (not just the Design Analysis itself) holds to every check on this list** -- `BUSINESS-AGENT-WORKFLOW.md` section 4.3 governs this explicitly; these files are not a separate, ungoverned artifact type
+- **every Journey, Capability, and Business Rule record file (not just the Design Analysis itself) holds to every check on this list** -- `DESIGN-ANALYSIS-AGENT-WORKFLOW.md` section 4.1 governs this explicitly; these files are not a separate, ungoverned artifact type
 
 ## 8. Approval and Change Rules
 
@@ -578,7 +612,7 @@ The boundary between these questions must remain intact.
 
 ## 11. Reusable Template
 
-The concrete artifact format is defined in [DESIGN-ANALYSIS-TEMPLATE.md](../templates/DESIGN-ANALYSIS-TEMPLATE.md). Business Agent runs should use that template or produce an equivalent artifact containing every required section:
+The concrete artifact format is defined in [DESIGN-ANALYSIS-TEMPLATE.md](../templates/DESIGN-ANALYSIS-TEMPLATE.md). Design Analysis Agent runs should use that template or produce an equivalent artifact containing every required section:
 
 - source and design version metadata
 - a plain-language overview, before any ID appears
@@ -611,14 +645,14 @@ Each module must add evidence-backed detail without replacing the core actors, g
 - Define the required folder and file conventions for a Design Handoff Bundle.
 - Define the design version format and how a Story records the approved version.
 - Define the minimum evidence required for each source type, including screens, flows, assets, and design notes.
-- Define how the Business Agent handles conflicting information within one bundle or across design versions.
+- Define how the Design Analysis Agent handles conflicting information within one bundle or across design versions.
 - Define the confidence threshold for labeling an observation `Strongly Implied`.
 - Define which ambiguities require a formal Business Decision versus a visible assumption.
 - Define who owns and resolves each Decision Required item.
 - Define how missing or unreadable source files block or limit analysis.
 - Define the minimum completeness criteria for the Design Analysis before Business PR review.
 - Define how a new design version triggers impact analysis against existing requirements and Stories.
-- ~~Define the exact Business Agent output format and validation checks.~~ **Resolved** -- see section 11 and [DESIGN-ANALYSIS-TEMPLATE.md](../templates/DESIGN-ANALYSIS-TEMPLATE.md)'s own Quality Checklist, exercised for real against `DA-003`.
+- ~~Define the exact Design Analysis output format and validation checks.~~ **Resolved** -- see section 11 and [DESIGN-ANALYSIS-TEMPLATE.md](../templates/DESIGN-ANALYSIS-TEMPLATE.md)'s own Quality Checklist, exercised for real against `DA-003`.
 - Define whether the Business Owner approves the Design Analysis separately or only through the complete Business PR.
 
 ## 14. Revision History
@@ -627,6 +661,7 @@ Each module must add evidence-backed detail without replacing the core actors, g
 
 | Date | Section | Change |
 | --- | --- | --- |
+| 2026-10-05 | 1, 2, 4, 4.12, 4.17, 4.18, 7 | The Design Analysis is now produced by a dedicated Design Analysis Agent (`DESIGN-ANALYSIS-AGENT-WORKFLOW.md`), split out of the Business Agent -- ownership references updated throughout. Added section 4.17 (Information Analysis), section 4.18 (Existing vs. New Experience), and a three-tier scope classification in section 4.12, all adopted from a Design Analysis agent prompt the Business Owner supplied. Matching Quality Checks added. |
 | 2026-09-25 | 7 | Added Quality Checks for self-assessment/filler-intensifier language and for record-file coverage, mirroring `BUSINESS-AGENT-WORKFLOW.md` section 4.3's new step 3 -- a standing rule, not a one-time fix, after retrofitting `DA-003`'s own new content revealed the same voice failures the framework was meant to prevent. |
 | 2026-09-25 | 4.14-4.16, 7 | Added Problem/Goals/Success Metrics as required subsections, closing a real gap found reviewing `DA-003` as a lead product reader: the activity-1 checklist already asked the agent to extract "what feature or user problem it addresses" and "user or business goals," but the template gave neither a required place to land, so they never reliably surfaced in the published document. Numbered 4.14-4.16 (appended, not inserted in reading order) since existing subsection numbers are cited from 19 other files -- see 4.14's own note. Added the corresponding Quality Check. |
 | 2026-09-21 | 7, 11 | Split Business Requirement detail (Gherkin, Evidence, classification) out of the feature-area narrative into a dedicated `## Requirements` register section; repositioned Capabilities as reference material; added narrative-readability and upstream/downstream-traceability checks to Quality Checks. |
