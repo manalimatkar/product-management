@@ -8,7 +8,7 @@ A Journey is product-level, not feature-scoped: the same end-to-end goal can spa
 
 | Journey ID | Name | Actor | Platform / App | Uses Capabilities | From Analysis | Record |
 | --- | --- | --- | --- | --- | --- | --- |
-| `JRN-001` | Review and Correct a Low-Confidence Field Mapping | Workflow manager user (reviewer) | pdf-workflow / workflow-manager | `CAP-002`, `CAP-004` | `DA-003` | [pdf-workflow/workflow-manager/journeys/journey-review-correct-low-confidence-mapping-JRN-001.md](../pdf-workflow/workflow-manager/journeys/journey-review-correct-low-confidence-mapping-JRN-001.md) |
+| `JRN-001` | Review and Correct a Low-Confidence Field Mapping | Workflow manager user (reviewer) | pdf-workflow / workflow-manager | `CAP-002`, `CAP-004`, `CAP-009` | `DA-003` | [pdf-workflow/workflow-manager/journeys/journey-review-correct-low-confidence-mapping-JRN-001.md](../pdf-workflow/workflow-manager/journeys/journey-review-correct-low-confidence-mapping-JRN-001.md) |
 | `JRN-002` | Remove an Incorrectly Extracted Field | Workflow manager user (reviewer) | pdf-workflow / workflow-manager | `CAP-005` | `DA-003` | [pdf-workflow/workflow-manager/journeys/journey-remove-incorrectly-extracted-field-JRN-002.md](../pdf-workflow/workflow-manager/journeys/journey-remove-incorrectly-extracted-field-JRN-002.md) |
 | `JRN-003` | Add a Section the Extraction Missed | Workflow manager user (reviewer) | pdf-workflow / workflow-manager | `CAP-006` | `DA-003` | [pdf-workflow/workflow-manager/journeys/journey-add-section-extraction-missed-JRN-003.md](../pdf-workflow/workflow-manager/journeys/journey-add-section-extraction-missed-JRN-003.md) |
 
