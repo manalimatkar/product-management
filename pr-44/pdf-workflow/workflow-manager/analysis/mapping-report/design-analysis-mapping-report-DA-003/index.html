@@ -1,0 +1,5540 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Rendering POC only -- testing whether MkDocs can serve this repo's existing markdown, links, and ID-only-heading anchors as-is.">
+      
+      
+      
+      
+        <link rel="prev" href="../../../../..">
+      
+      
+        <link rel="next" href="../../../business-rules/business-rule-delete-only-when-empty-BRULE-003/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Design Analysis: Mapping Report (Workflow Manager) - Product Management (POC)</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../../assets/comment-widget.css">
+    
+    <script>__md_scope=new URL("../../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body data-source-file="pdf-workflow/workflow-manager/analysis/mapping-report/design-analysis-mapping-report-DA-003.md" data-comment-map-url="../../../../../comment-map.json" dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#design-analysis-mapping-report-workflow-manager" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../../.." title="Product Management (POC)" class="md-header__button md-logo" aria-label="Product Management (POC)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Product Management (POC)
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Design Analysis: Mapping Report (Workflow Manager)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../../.." title="Product Management (POC)" class="md-nav__button md-logo" aria-label="Product Management (POC)" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Product Management (POC)
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    pdf-workflow / workflow-manager
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pdf workflow
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Pdf workflow
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_1" id="__nav_2_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Workflow manager
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Workflow manager
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_1_1" id="__nav_2_1_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Analysis
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_1_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_1_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Analysis
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1_1_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_1_1_1" id="__nav_2_1_1_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mapping report
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_2_1_1_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_1_1_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Mapping report
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Analysis: Mapping Report (Workflow Manager)
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Analysis: Mapping Report (Workflow Manager)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-this-is" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What this is
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Problem
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#goals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Goals
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#success-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Success Metrics
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reviewing-the-mapping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reviewing the mapping
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#editing-what-the-extraction-got-wrong" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Editing what the extraction got wrong
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Editing what the extraction got wrong">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#jrn-001" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JRN-001
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deleting-a-mapped-field" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deleting a mapped field
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Deleting a mapped field">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#jrn-002" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JRN-002
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adding-structure-and-starting-a-new-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Adding structure, and starting a new workflow
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Adding structure, and starting a new workflow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#jrn-003" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JRN-003
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#removing-empty-structure-and-reordering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Removing empty structure, and reordering
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-the-screen-adapts-to-how-a-workflow-was-created" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How the screen adapts to how a workflow was created
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#who-sees-this" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Who sees this
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#information-users-see-or-provide" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Information users see or provide
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#existing-vs-new-experience" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Existing vs. new experience
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requirements
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Requirements">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#br-018" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BR-018
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#br-001" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BR-001
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#br-002" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BR-002
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#br-003" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BR-003
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#br-004" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BR-004
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#br-005" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BR-005
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#br-017" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BR-017
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#br-006" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BR-006
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#br-007" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BR-007
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#br-014" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BR-014
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#br-008" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BR-008
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#br-009" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BR-009
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#br-010" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BR-010
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#br-011" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BR-011
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#br-016" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BR-016
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#br-012" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BR-012
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#br-013" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BR-013
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#br-015" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BR-015
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open-decisions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Open Decisions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#not-built-yet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Not built yet
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#capabilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Capabilities
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Capabilities">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#serving-jrn-001-review-and-correct-a-low-confidence-field-mapping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Serving JRN-001 -- Review and correct a low-confidence field mapping
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Serving JRN-001 -- Review and correct a low-confidence field mapping">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cap-002" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CAP-002
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cap-009" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CAP-009
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cap-004" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CAP-004
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#serving-jrn-002-remove-an-incorrectly-extracted-field" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Serving JRN-002 -- Remove an incorrectly extracted field
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Serving JRN-002 -- Remove an incorrectly extracted field">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cap-005" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CAP-005
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#serving-jrn-003-add-a-section-the-extraction-missed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Serving JRN-003 -- Add a section the extraction missed
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Serving JRN-003 -- Add a section the extraction missed">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cap-006" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CAP-006
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#not-yet-tied-to-a-journey" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Not yet tied to a Journey
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Not yet tied to a Journey">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cap-001" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CAP-001
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cap-003" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CAP-003
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cap-007" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CAP-007
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cap-008" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CAP-008
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#evidence-and-traceability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evidence and Traceability
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Evidence and Traceability">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#source-reviewed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Source reviewed
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#observations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Observations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Observations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#obs-001" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-001
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-002" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-002
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-003" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-003
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-004" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-004
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-005" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-005
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-006" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-006
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-007" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-007
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-008" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-008
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-009" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-009
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-010" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-010
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-011" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-011
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-012" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-012
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-013" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-013
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-014" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-014
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-015" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-015
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-016" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-016
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-017" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-017
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-018" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-018
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-019" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-019
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-020" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-020
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-021" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-021
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-022" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-022
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-023" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-023
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-024" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-024
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-025" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-025
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-026" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-026
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-027" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-027
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-028" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-028
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-029" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-029
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-030" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-030
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-031" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-031
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-032" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-032
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-033" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-033
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-034" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-034
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-035" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-035
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#business-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Business Rules
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Business Rules">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#brule-001" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BRULE-001
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#brule-002" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BRULE-002
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#brule-003" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BRULE-003
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#brule-004" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BRULE-004
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#brule-005" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BRULE-005
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#brule-006" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BRULE-006
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#brule-007" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BRULE-007
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#brule-008" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BRULE-008
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#brule-009" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BRULE-009
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#assumptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Assumptions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Assumptions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#asm-001" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ASM-001
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#asm-002" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ASM-002
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decisions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decisions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Decisions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dec-001" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DEC-001
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dec-002" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DEC-002
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dec-003" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DEC-003
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dec-004" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DEC-004
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dec-005" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DEC-005
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dec-006" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DEC-006
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dec-007" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DEC-007
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dec-008" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DEC-008
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gaps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gaps
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Gaps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gap-001" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GAP-001
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gap-002" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GAP-002
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gap-003" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GAP-003
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gap-004" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GAP-004
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gap-005" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GAP-005
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gap-006" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GAP-006
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gap-007" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GAP-007
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gap-008" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GAP-008
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gap-009" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GAP-009
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#technical-unknowns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Technical Unknowns
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Technical Unknowns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tech-001" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TECH-001
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tech-002" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TECH-002
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tech-003" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TECH-003
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tech-004" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TECH-004
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quality-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quality Checklist
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#review-history" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Review history
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_1_2" id="__nav_2_1_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Business rules
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_1_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_1_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Business rules
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../business-rules/business-rule-delete-only-when-empty-BRULE-003/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Business Rule: Delete Only When Empty
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../business-rules/business-rule-hierarchical-filter-visibility-BRULE-004/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Business Rule: Hierarchical Filter Visibility
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../business-rules/business-rule-horizontal-scroll-mobile-BRULE-008/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Business Rule: Horizontal Scroll on Mobile
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../business-rules/business-rule-kind-constrains-remap-BRULE-001/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Business Rule: Kind Constrains Remap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../business-rules/business-rule-manual-workflow-source-manual-BRULE-009/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Business Rule: Manual Workflows Show Manual Source
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../business-rules/business-rule-no-confirmation-except-unlink-BRULE-007/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Business Rule: No Confirmation Except Unlink
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../business-rules/business-rule-one-edit-at-a-time-BRULE-002/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Business Rule: One Edit at a Time
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../business-rules/business-rule-pdf-path-only-BRULE-006/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Business Rule: Confidence Review Only for Extracted Workflows
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../business-rules/business-rule-table-card-parity-BRULE-005/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Business Rule: Table/Card Parity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_1_3" id="__nav_2_1_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capabilities
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_1_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_1_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Capabilities
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../capabilities/capability-edit-mapped-field-details-CAP-004/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capability: Edit a Mapped Field's Details
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../capabilities/capability-filter-and-search-mappings-CAP-002/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capability: Filter and Search Mappings
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../capabilities/capability-manually-add-structure-CAP-006/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capability: Manually Add Structure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../capabilities/capability-open-page-editor-from-report-CAP-009/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capability: Open the Workflow Page Editor from the Report
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../capabilities/capability-remove-empty-structure-CAP-007/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capability: Remove Empty Structure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../capabilities/capability-reorder-structure-CAP-008/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capability: Reorder Structure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../capabilities/capability-review-extraction-confidence-CAP-001/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capability: Review Extraction Confidence and Structure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../capabilities/capability-switch-table-card-views-CAP-003/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capability: Switch Between Table and Card Views
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../capabilities/capability-unlink-incorrect-mapping-CAP-005/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capability: Unlink an Incorrect Mapping
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_1_4" id="__nav_2_1_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Journeys
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_1_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_1_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Journeys
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../journeys/journey-add-section-extraction-missed-JRN-003/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Journey: Add a Section the Extraction Missed
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../journeys/journey-remove-incorrectly-extracted-field-JRN-002/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Journey: Remove an Incorrectly Extracted Field
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../journeys/journey-review-correct-low-confidence-mapping-JRN-001/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Journey: Review and Correct a Low-Confidence Field Mapping
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_1_5" id="__nav_2_1_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sources
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_2_1_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_1_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Sources
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1_5_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_1_5_1" id="__nav_2_1_5_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mapping report
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="4" aria-labelledby="__nav_2_1_5_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_1_5_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Mapping report
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sources/mapping-report/source-mapping-report-SRC-003/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Source: Mapping Report (Workflow Manager) -- Design Handoff v4
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Registries
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Registries
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../registries/BUSINESS-RULE-REGISTRY/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Business Rule Registry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../registries/CAPABILITY-REGISTRY/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capability Registry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../registries/JOURNEY-REGISTRY/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Journey Registry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../registries/SOURCE-REGISTRY/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Source Registry
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Relationships
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Relationships
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../relationships/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Journey → Capability → Business Rule Relationship Graph
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-this-is" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What this is
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Problem
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#goals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Goals
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#success-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Success Metrics
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reviewing-the-mapping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reviewing the mapping
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#editing-what-the-extraction-got-wrong" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Editing what the extraction got wrong
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Editing what the extraction got wrong">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#jrn-001" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JRN-001
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deleting-a-mapped-field" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deleting a mapped field
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Deleting a mapped field">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#jrn-002" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JRN-002
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adding-structure-and-starting-a-new-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Adding structure, and starting a new workflow
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Adding structure, and starting a new workflow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#jrn-003" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JRN-003
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#removing-empty-structure-and-reordering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Removing empty structure, and reordering
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-the-screen-adapts-to-how-a-workflow-was-created" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How the screen adapts to how a workflow was created
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#who-sees-this" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Who sees this
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#information-users-see-or-provide" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Information users see or provide
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#existing-vs-new-experience" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Existing vs. new experience
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requirements
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Requirements">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#br-018" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BR-018
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#br-001" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BR-001
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#br-002" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BR-002
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#br-003" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BR-003
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#br-004" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BR-004
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#br-005" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BR-005
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#br-017" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BR-017
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#br-006" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BR-006
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#br-007" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BR-007
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#br-014" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BR-014
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#br-008" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BR-008
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#br-009" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BR-009
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#br-010" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BR-010
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#br-011" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BR-011
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#br-016" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BR-016
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#br-012" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BR-012
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#br-013" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BR-013
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#br-015" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BR-015
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open-decisions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Open Decisions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#not-built-yet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Not built yet
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#capabilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Capabilities
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Capabilities">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#serving-jrn-001-review-and-correct-a-low-confidence-field-mapping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Serving JRN-001 -- Review and correct a low-confidence field mapping
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Serving JRN-001 -- Review and correct a low-confidence field mapping">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cap-002" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CAP-002
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cap-009" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CAP-009
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cap-004" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CAP-004
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#serving-jrn-002-remove-an-incorrectly-extracted-field" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Serving JRN-002 -- Remove an incorrectly extracted field
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Serving JRN-002 -- Remove an incorrectly extracted field">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cap-005" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CAP-005
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#serving-jrn-003-add-a-section-the-extraction-missed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Serving JRN-003 -- Add a section the extraction missed
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Serving JRN-003 -- Add a section the extraction missed">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cap-006" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CAP-006
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#not-yet-tied-to-a-journey" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Not yet tied to a Journey
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Not yet tied to a Journey">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cap-001" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CAP-001
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cap-003" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CAP-003
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cap-007" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CAP-007
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cap-008" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CAP-008
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#evidence-and-traceability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Evidence and Traceability
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Evidence and Traceability">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#source-reviewed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Source reviewed
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#observations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Observations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Observations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#obs-001" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-001
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-002" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-002
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-003" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-003
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-004" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-004
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-005" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-005
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-006" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-006
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-007" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-007
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-008" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-008
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-009" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-009
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-010" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-010
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-011" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-011
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-012" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-012
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-013" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-013
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-014" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-014
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-015" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-015
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-016" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-016
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-017" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-017
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-018" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-018
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-019" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-019
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-020" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-020
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-021" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-021
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-022" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-022
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-023" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-023
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-024" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-024
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-025" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-025
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-026" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-026
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-027" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-027
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-028" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-028
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-029" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-029
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-030" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-030
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-031" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-031
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-032" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-032
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-033" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-033
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-034" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-034
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obs-035" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OBS-035
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#business-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Business Rules
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Business Rules">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#brule-001" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BRULE-001
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#brule-002" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BRULE-002
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#brule-003" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BRULE-003
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#brule-004" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BRULE-004
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#brule-005" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BRULE-005
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#brule-006" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BRULE-006
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#brule-007" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BRULE-007
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#brule-008" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BRULE-008
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#brule-009" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BRULE-009
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#assumptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Assumptions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Assumptions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#asm-001" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ASM-001
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#asm-002" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ASM-002
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decisions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decisions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Decisions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dec-001" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DEC-001
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dec-002" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DEC-002
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dec-003" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DEC-003
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dec-004" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DEC-004
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dec-005" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DEC-005
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dec-006" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DEC-006
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dec-007" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DEC-007
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dec-008" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DEC-008
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gaps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gaps
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Gaps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gap-001" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GAP-001
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gap-002" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GAP-002
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gap-003" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GAP-003
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gap-004" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GAP-004
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gap-005" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GAP-005
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gap-006" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GAP-006
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gap-007" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GAP-007
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gap-008" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GAP-008
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gap-009" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GAP-009
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#technical-unknowns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Technical Unknowns
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Technical Unknowns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tech-001" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TECH-001
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tech-002" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TECH-002
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tech-003" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TECH-003
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tech-004" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TECH-004
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quality-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quality Checklist
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#review-history" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Review history
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="design-analysis-mapping-report-workflow-manager">Design Analysis: Mapping Report (Workflow Manager)<a class="headerlink" href="#design-analysis-mapping-report-workflow-manager" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>Describes what the Mapping Report feature does and why, based on its design source. It does not define technical implementation.</p>
+</blockquote>
+<hr />
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Analysis ID</td>
+<td><code>DA-003</code></td>
+</tr>
+<tr>
+<td>Feature</td>
+<td>Mapping Report (pdf-workflow / workflow-manager)</td>
+</tr>
+<tr>
+<td>Source Material</td>
+<td><code>SRC-003</code> -- <code>branch: design</code>, <code>path: pdf-workflow/workflow-manager/design/v4/</code>, <code>commit: f5de2a0fbdac4033b2a8aecf523d15948c6801f5</code> (native files unchanged at the <code>design</code> branch head; only <code>_cover-sheet.md</code> differs)</td>
+</tr>
+<tr>
+<td>Source Version</td>
+<td><code>4</code></td>
+</tr>
+<tr>
+<td>Analysis Version</td>
+<td><code>2.0</code></td>
+</tr>
+<tr>
+<td>Created By</td>
+<td>Business Agent workflow (v1.0-1.1); Design Analysis Agent (v2.0)</td>
+</tr>
+<tr>
+<td>Created At</td>
+<td>2026-09-08; revised 2026-10-06</td>
+</tr>
+<tr>
+<td>Status</td>
+<td><code>Draft</code></td>
+</tr>
+<tr>
+<td>Related Epic</td>
+<td>Pending -- created at the Business PR stage</td>
+</tr>
+<tr>
+<td>Related Stories</td>
+<td>Pending -- created at the Business PR stage</td>
+</tr>
+<tr>
+<td>Business Owner Approval</td>
+<td>Pending for v2.0. v1.1 was approved 2026-09-08 -- see <a href="#review-history">Review history</a></td>
+</tr>
+</tbody>
+</table>
+<p>Replaces <code>DA-002</code>, which was deleted rather than marked <code>Superseded</code> because it analyzed the <code>design</code> branch's v2 test drop instead of v4.</p>
+<h2 id="what-this-is">What this is<a class="headerlink" href="#what-this-is" title="Permanent link">&para;</a></h2>
+<p>When a workflow is created by uploading a PDF, the product extracts the PDF's pages, sections, and fields automatically and attaches a confidence score to each proposed mapping. The Mapping Report is where a reviewer checks that extraction: they see how confident it was overall, browse the result page by page, narrow it down to what looks wrong, delete what shouldn't be there, fix the order, and send anything that needs full field editing on to the Workflow Page Editor. A workflow created by hand uses the same screen to show its structure, without the confidence information.</p>
+<p>The design was drawn at desktop width only, and it shows no loading, failure, or permission states. Three questions about it are open: where new pages, sections, and fields get added; whether inline editing is part of this phase; and what deleting a field removes.</p>
+<h2 id="problem">Problem<a class="headerlink" href="#problem" title="Permanent link">&para;</a></h2>
+<p>Automatic extraction gives every proposed mapping a confidence score instead of treating extraction as reliable, and the source names extraction as carrying risk when it discusses the related LLM-based creation path ("same class of risk as PDF extraction -- the LLM can misread intent"). Without a review step, an incorrectly extracted or mapped field would carry through unchecked into a workflow used to collect submissions.</p>
+<p>Evidence: <a href="#obs-026">OBS-026</a>. Strongly Implied, Medium confidence.</p>
+<h2 id="goals">Goals<a class="headerlink" href="#goals" title="Permanent link">&para;</a></h2>
+<p>Catch and correct an incorrect or low-confidence field extraction before a workflow goes live to collect submissions.</p>
+<p>Evidence: <a href="#obs-026">OBS-026</a>. Strongly Implied, Medium confidence.</p>
+<h2 id="success-metrics">Success Metrics<a class="headerlink" href="#success-metrics" title="Permanent link">&para;</a></h2>
+<p>Not defined in source. <strong>Decision Required</strong> -- see <a href="#dec-005">DEC-005</a>, owner: Business Owner.</p>
+<h2 id="reviewing-the-mapping">Reviewing the mapping<a class="headerlink" href="#reviewing-the-mapping" title="Permanent link">&para;</a></h2>
+<p>The screen opens with a "Back to dashboard" link, the workflow's name, a one-line description ("How extracted PDF text was mapped to workflow fields and sections."), and a tag naming how the workflow was created: PDF conversion, LLM instructions, or Manually created.</p>
+<p>Before touching anything, the reviewer sees five stat tiles -- Total, High (80% or more), Medium (50-79%), Low (under 50%), and Average confidence -- each edged in its band's color, so they can judge at a glance how much attention this workflow needs. The tiles count every mapping in the workflow, not just the ones currently visible, so the summary stays put while the reviewer filters.</p>
+<p>Below that, the mapping is a collapsible three-level hierarchy: Page, then Section (a page can hold several), then the individual mapped rows. A page header reads like "Page 2 -- 2 sections · 5 fields". A section header shows its title, a short description if it has one, its field count, and -- when the section heading itself came from the PDF -- that heading's confidence. Section headings appear only in these headers, never as rows of their own. Everything starts expanded; a page or section the reviewer collapses stays collapsed while they change the search or filter. There is no pagination and no "expand all / collapse all" -- each page and section opens and closes on its own.</p>
+<p>Each row shows the PDF text (the column is titled after the creation method, e.g. "From PDF"), the element's Type (Heading, Text, Field, List, or Custom), its Target Type, what it Maps to, its confidence, and its Field source (llm or manual), with controls to move it up or down and to delete it.</p>
+<p>Search ("Search PDF text") narrows the list as the reviewer types, matching the extracted PDF text and ignoring case, with no submit button. A confidence control (All / High / Medium / Low) narrows the same list. Both work at the row level: a section stays visible only while it still has a matching row or its own heading matches, and a page stays visible only while it still has a visible section. When nothing matches, the screen says "No mappings match the current filter."</p>
+<p><strong>Table view only, for this phase.</strong> The design also includes a Card view -- the same data and the same search, filter, and edit state, laid out as cards -- but building it is deferred; see <a href="#br-003">BR-003</a> for the decision and <a href="#brule-005">BRULE-005</a> for the constraint that keeps it addable later. In the design, Card view is also the only place inline editing appears, which matters for the next section. Below roughly 900px the table scrolls sideways rather than reflowing into stacked cards; see <a href="#brule-008">BRULE-008</a>.</p>
+<h2 id="editing-what-the-extraction-got-wrong">Editing what the extraction got wrong<a class="headerlink" href="#editing-what-the-extraction-got-wrong" title="Permanent link">&para;</a></h2>
+<p>Every mapping has a kind -- what the PDF element is: a heading, a description, a single field, a field group (a repeating set such as several emergency contacts), or a custom element (such as a signature pad) -- and a target type it maps to in the workflow. The reviewer sees the target type as a compact label such as <code>Field-Date</code>, <code>Field-List-3x</code> (a list of three sub-fields), or <code>Custom-App-signature-pad</code>, so sub-cases are distinguishable without opening anything (exact label format: <a href="#br-005">BR-005</a>). The kind limits which target types a mapping may take (<a href="#brule-001">BRULE-001</a>), but this screen offers no control for changing a mapping's target at all.</p>
+<p>Fields and lists -- the rows that carry options, validation, and sub-fields -- are not edited on this screen. Every page header has a "Manage page fields" link that opens the Workflow Page Editor, which the source describes as the full editing surface; the report's own editing is deliberately lightweight (<a href="#br-017">BR-017</a>).</p>
+<p>That lightweight editing, in the design, appears only in Card view and only for descriptions (a text box holding the description) and custom elements (a single label box). Only one row can be open for editing at a time. Save (a check mark) keeps the change and shows "Changes saved"; Cancel closes the panel. If there are unsaved changes, switching to another row or pressing Cancel first asks "Discard unsaved changes?" with "Keep editing" and "Discard"; leaving the page triggers the browser's own leave-page warning. Because this phase builds Table view only, and the design's Table view rows have no edit control, whether this inline editing is part of this phase is open -- see <a href="#dec-007">DEC-007</a>.</p>
+<h5 id="jrn-001">JRN-001<a class="headerlink" href="#jrn-001" title="Permanent link">&para;</a></h5>
+<p><strong>Review and correct a low-confidence field mapping.</strong> A reviewer filters to Low confidence and finds "Anticipated Start Date" at 42%. It's a field, so the row offers no inline edit; they select "Manage page fields" on Page 2's header and make the correction in the Workflow Page Editor. Had the flagged row been a description or a custom element, they could have corrected it in place instead (pending <a href="#dec-007">DEC-007</a>). Uses <a href="#cap-002">CAP-002</a>, <a href="#cap-009">CAP-009</a>, and <a href="#cap-004">CAP-004</a>. Registry: <a href="../../../../../registries/JOURNEY-REGISTRY/">JOURNEY-REGISTRY.md</a> / <a href="../../../journeys/journey-review-correct-low-confidence-mapping-JRN-001/">full record</a>.</p>
+<h2 id="deleting-a-mapped-field">Deleting a mapped field<a class="headerlink" href="#deleting-a-mapped-field" title="Permanent link">&para;</a></h2>
+<p>Every row has a "Delete field" control. It opens a dialog titled "Delete this field?" that names the field, says it will be removed from the workflow, and warns that this can't be undone; for a list, it also says how many sub-fields go with it. Nothing is removed unless the reviewer selects Delete, and a "Field removed" message confirms it afterward.</p>
+<p>The README calls this "unlinking" a mapping -- removing the link between the PDF element and the workflow field -- while the dialog text says the field itself leaves the workflow. Which one is meant is open; see <a href="#dec-008">DEC-008</a>.</p>
+<h5 id="jrn-002">JRN-002<a class="headerlink" href="#jrn-002" title="Permanent link">&para;</a></h5>
+<p><strong>Remove an incorrectly extracted field.</strong> A reviewer decides the "Emergency contacts" list mapping is wrong, selects Delete field, reads that it and its 3 sub-fields will be removed from the workflow and that this can't be undone, and confirms -- the row disappears and "Field removed" appears. Uses <a href="#cap-005">CAP-005</a>. Registry: <a href="../../../../../registries/JOURNEY-REGISTRY/">JOURNEY-REGISTRY.md</a> / <a href="../../../journeys/journey-remove-incorrectly-extracted-field-JRN-002/">full record</a>.</p>
+<h2 id="adding-structure-and-starting-a-new-workflow">Adding structure, and starting a new workflow<a class="headerlink" href="#adding-structure-and-starting-a-new-workflow" title="Permanent link">&para;</a></h2>
+<p>The README describes three low-ceremony ways to add what the extraction missed: "+ Add page" appends a new, empty, numbered page; "+ Add section" opens a small inline form (title required, description optional); and "+ Add field" does the same for a field (label required, type chosen). In each, Add stays disabled until the required part is filled in, and nothing asks for confirmation. A section added by hand would sit in the hierarchy exactly like an extracted one.</p>
+<p>The Business Owner has described the same screen as the starting point for a brand-new workflow: after its Workflow Settings are saved, the user lands here and begins by adding a page (<a href="#br-016">BR-016</a>).</p>
+<p>The design file itself contains none of these add controls. With nothing to show, it displays only "No mappings match the current filter." Whether adding happens here, as the README and the Business Owner describe, or has moved to the Workflow Page Editor along with field editing, is open -- see <a href="#dec-006">DEC-006</a>. Until it's decided, the add requirements below are recorded as unconfirmed.</p>
+<h5 id="jrn-003">JRN-003<a class="headerlink" href="#jrn-003" title="Permanent link">&para;</a></h5>
+<p><strong>Add a section the extraction missed.</strong> As the README describes it: a reviewer expands a page, selects "+ Add section", enters a title, and selects Add -- the new section appears under that page like an extracted one. The design file does not contain this control, so this journey is unconfirmed until <a href="#dec-006">DEC-006</a> is decided. Uses <a href="#cap-006">CAP-006</a>. Registry: <a href="../../../../../registries/JOURNEY-REGISTRY/">JOURNEY-REGISTRY.md</a> / <a href="../../../journeys/journey-add-section-extraction-missed-JRN-003/">full record</a>.</p>
+<h2 id="removing-empty-structure-and-reordering">Removing empty structure, and reordering<a class="headerlink" href="#removing-empty-structure-and-reordering" title="Permanent link">&para;</a></h2>
+<p>A page or section shows a delete control only once it's empty -- a page with no sections, a section with no fields. There's nothing to lose, so there's no confirmation; the item disappears and "Page deleted" or "Section deleted" confirms it. A page or section that still has content can't be deleted; empty it first.</p>
+<p>Every page, section, and row has up and down controls that move it one place among its neighbors; the first item's "up" and the last item's "down" are disabled. The order is kept as a per-level list of overrides on top of the original order, so moving one item doesn't require restating the rest (how that's stored is a technical question -- see <a href="#tech-002">TECH-002</a>).</p>
+<h2 id="how-the-screen-adapts-to-how-a-workflow-was-created">How the screen adapts to how a workflow was created<a class="headerlink" href="#how-the-screen-adapts-to-how-a-workflow-was-created" title="Permanent link">&para;</a></h2>
+<p>How a workflow was created comes from the workflow itself, not from a control on this screen.</p>
+<ul>
+<li><strong>PDF conversion</strong> -- everything described above: the confidence tiles, the confidence filter, and a first column titled "From PDF".</li>
+<li><strong>Manually created</strong> -- the same structure on the same screen, without the stat tiles or the confidence filter; the first column reads "From manual entry", and every row's source shows "manual", since nothing in a hand-built workflow can come from the LLM (<a href="#brule-009">BRULE-009</a>).</li>
+<li><strong>LLM instructions</strong> -- the design shows the confidence elements and a "From LLM" column, but the README places this creation path outside this handoff; see "Not built yet" below.</li>
+</ul>
+<p>The README's scope note says manually created workflows need no report at all. The Business Owner's clarification that this screen is also where a new workflow starts, and the design file's own manual mode, both point the other way: only the confidence-review elements are specific to extraction (<a href="#br-015">BR-015</a>, <a href="#gap-003">GAP-003</a>).</p>
+<h2 id="who-sees-this">Who sees this<a class="headerlink" href="#who-sees-this" title="Permanent link">&para;</a></h2>
+<p>No permission or role distinction appears anywhere in the Mapping Report material -- one reviewer role covers everything described here. The shared header does show organization-level "Members" and "Billing" options, implying a multi-user organization, but whether reviewing or editing mappings is limited to some members has been deferred until a login capability exists (<a href="#dec-004">DEC-004</a>).</p>
+<p>Each mapping arrives already carrying a kind and a confidence score, extracted from the PDF before the reviewer sees the report. How that extraction works is a question for the technical stage (<a href="#tech-001">TECH-001</a>).</p>
+<h2 id="information-users-see-or-provide">Information users see or provide<a class="headerlink" href="#information-users-see-or-provide" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Concept</th>
+<th>Shown / entered</th>
+<th>Purpose to the user</th>
+<th>Required?</th>
+<th>Editable?</th>
+<th>Unknowns</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Workflow name</td>
+<td>Shown</td>
+<td>Which workflow is under review</td>
+<td>Not shown</td>
+<td>No, not on this screen</td>
+<td>--</td>
+</tr>
+<tr>
+<td>Creation method</td>
+<td>Shown, as a tag</td>
+<td>Whether there is an extraction to review</td>
+<td>Not shown</td>
+<td>No</td>
+<td>--</td>
+</tr>
+<tr>
+<td>Confidence summary (total, count per band, average)</td>
+<td>Shown, extraction-based workflows only</td>
+<td>How much attention this workflow needs</td>
+<td>--</td>
+<td>No</td>
+<td>How confidence is produced (<a href="#tech-001">TECH-001</a>); whether the 80% / 50% band limits are fixed</td>
+</tr>
+<tr>
+<td>Page number, with section and field counts</td>
+<td>Shown</td>
+<td>Orientation in a long document</td>
+<td>--</td>
+<td>Order only (reorder)</td>
+<td>No upper bound on pages stated</td>
+</tr>
+<tr>
+<td>Section title</td>
+<td>Shown</td>
+<td>What the section is</td>
+<td>Required when adding a section, per the README</td>
+<td>No, not on this screen</td>
+<td>Where sections are added (<a href="#dec-006">DEC-006</a>)</td>
+</tr>
+<tr>
+<td>Section description</td>
+<td>Shown when present</td>
+<td>A note for whoever reviews the mapping; the README says people filling in the form never see it</td>
+<td>Optional, per the README</td>
+<td>No, not on this screen</td>
+<td>Set when a section is added, per the README (<a href="#dec-006">DEC-006</a>)</td>
+</tr>
+<tr>
+<td>Heading confidence</td>
+<td>Shown in a section header, when the heading came from the PDF</td>
+<td>How sure the extraction was about the section itself</td>
+<td>--</td>
+<td>No</td>
+<td>--</td>
+</tr>
+<tr>
+<td>PDF text</td>
+<td>Shown -- shortened in Table view, in full in Card view</td>
+<td>What the extraction read</td>
+<td>--</td>
+<td>No</td>
+<td>--</td>
+</tr>
+<tr>
+<td>Type (kind)</td>
+<td>Shown</td>
+<td>What kind of element the PDF text is</td>
+<td>--</td>
+<td>No</td>
+<td>--</td>
+</tr>
+<tr>
+<td>Target type</td>
+<td>Shown, as a compact label</td>
+<td>What the element became in the workflow</td>
+<td>--</td>
+<td>No, not on this screen</td>
+<td>Where a remap happens is not shown on this screen</td>
+</tr>
+<tr>
+<td>Maps to</td>
+<td>Shown</td>
+<td>What the workflow calls the element</td>
+<td>--</td>
+<td>Description text and custom labels, inline (pending <a href="#dec-007">DEC-007</a>); fields and lists, in the Workflow Page Editor</td>
+<td>--</td>
+</tr>
+<tr>
+<td>Confidence</td>
+<td>Shown, per row</td>
+<td>How sure the extraction was</td>
+<td>--</td>
+<td>No</td>
+<td>--</td>
+</tr>
+<tr>
+<td>Field source</td>
+<td>Shown (llm or manual)</td>
+<td>Whether a person or the LLM produced the mapping</td>
+<td>--</td>
+<td>No</td>
+<td>--</td>
+</tr>
+<tr>
+<td>Number of sub-fields in a list</td>
+<td>Shown, in the target type label and the delete dialog</td>
+<td>What deleting a list would take with it</td>
+<td>--</td>
+<td>No, not on this screen</td>
+<td>--</td>
+</tr>
+<tr>
+<td>Search text</td>
+<td>Entered</td>
+<td>Find specific PDF text</td>
+<td>No</td>
+<td>Yes</td>
+<td>--</td>
+</tr>
+<tr>
+<td>Confidence filter</td>
+<td>Chosen (All / High / Medium / Low)</td>
+<td>Focus on one confidence band</td>
+<td>No -- defaults to All</td>
+<td>Yes</td>
+<td>Not offered for manually created workflows</td>
+</tr>
+<tr>
+<td>View (Table / Cards)</td>
+<td>Chosen</td>
+<td>Choose a layout</td>
+<td>--</td>
+<td>Yes</td>
+<td>Card view deferred (<a href="#br-003">BR-003</a>)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="existing-vs-new-experience">Existing vs. new experience<a class="headerlink" href="#existing-vs-new-experience" title="Permanent link">&para;</a></h2>
+<p><strong>Existing.</strong> The README describes today's Mapping Report as a flat table with pagination. The design file shows only the new screen, so this description can't be checked against it (<a href="#asm-002">ASM-002</a>).</p>
+<p><strong>New.</strong> The confidence summary; the Page / Section / row hierarchy with collapsible levels; search and confidence filtering that hide empty sections and pages; kind and target type labels; deleting a field behind a confirmation; deleting empty pages and sections; reordering at every level; the hand-off to the Workflow Page Editor; and adapting the screen to how the workflow was created.</p>
+<p><strong>Changed.</strong> Browsing moves from a paged flat list to the hierarchy, with everything reachable without paging.</p>
+<p><strong>Removed.</strong> Pagination. The README also says an "old" pattern of picking a different target from a dropdown was removed, without saying whether that pattern is in today's product or was only in an earlier design draft.</p>
+<h2 id="requirements">Requirements<a class="headerlink" href="#requirements" title="Permanent link">&para;</a></h2>
+<p><em>Every Business Requirement's full statement, acceptance criteria, and evidence classification -- in the same order the narrative above introduces them, not flat ID order. Click a <code>BR-XXX</code> reference from the narrative to jump straight here.</em></p>
+<h5 id="br-018">BR-018<a class="headerlink" href="#br-018" title="Permanent link">&para;</a></h5>
+<p><strong>Return to the dashboard.</strong></p>
+<p>The product must let the reviewer leave the Mapping Report for the Workflows dashboard.</p>
+<div class="highlight"><pre><span></span><code>Given the Mapping Report is open
+When the reviewer selects "Back to dashboard"
+Then the Workflows dashboard opens
+</code></pre></div>
+<p>Capability: <a href="#cap-001">CAP-001</a>. Evidence: <a href="#obs-032">OBS-032</a>. Explicit, High confidence.</p>
+<h5 id="br-001">BR-001<a class="headerlink" href="#br-001" title="Permanent link">&para;</a></h5>
+<p><strong>Show the extraction confidence summary.</strong></p>
+<p>The product must show the reviewer, before any interaction, how many mappings fall into each confidence band (High / Medium / Low), the total count, and the average confidence.</p>
+<div class="highlight"><pre><span></span><code>Given a workflow created by PDF conversion
+When its Mapping Report opens
+Then five tiles show Total, High (80% or more), Medium (50-79%), Low (under 50%), and Avg confidence
+And each tile's top edge is colored by its confidence band
+And the counts cover every mapping in the workflow, whatever search or filter is applied
+</code></pre></div>
+<p>Capability: <a href="#cap-001">CAP-001</a>. Evidence: <a href="#obs-001">OBS-001</a>. Explicit, High confidence.</p>
+<h5 id="br-002">BR-002<a class="headerlink" href="#br-002" title="Permanent link">&para;</a></h5>
+<p><strong>Browse mappings as a Page → Section → row hierarchy.</strong></p>
+<p>The product must let the reviewer browse mappings as a collapsible three-level hierarchy (Page, then Section, then the mapped rows), where a page may contain more than one section.</p>
+<div class="highlight"><pre><span></span><code>Given a workflow with several pages, one of which holds more than one section
+When the reviewer views the mapping
+Then pages, sections, and rows show as a collapsible three-level hierarchy, all expanded at first
+And each page header shows its page number and its section and field counts
+And each section header shows its title, its description if it has one, its field count, and its heading's confidence when the heading came from the PDF
+And each row shows the PDF text, Type, Target Type, Maps to, Confidence, and Field source
+
+Given the reviewer has collapsed a page or a section
+When the search or confidence filter changes
+Then that page or section stays collapsed
+</code></pre></div>
+<p>Capability: <a href="#cap-001">CAP-001</a>. Evidence: <a href="#obs-006">OBS-006</a>, <a href="#obs-007">OBS-007</a>. Explicit, High confidence.</p>
+<h5 id="br-003">BR-003<a class="headerlink" href="#br-003" title="Permanent link">&para;</a></h5>
+<p><strong>Table view, with state that would survive a future view toggle.</strong></p>
+<p>The product must provide the mapping review as a Table view, with search, confidence filter, and in-progress-edit state modeled independently of presentation -- so a Card view, if and when it's built, can be added without restructuring this state.</p>
+<p><div class="highlight"><pre><span></span><code>Given the reviewer has an active search term, a confidence filter, or a row open for editing
+Then that state is held independently of how it's rendered (not coupled to Table-view-specific markup)
+And Table view is the only rendering built and shown in this phase -- no Card view toggle is presented
+</code></pre></div>
+Note: the source's own criterion (switching Table↔Card without losing state) becomes the acceptance test for whenever Card view is picked up later. In the design, Table view rows carry no inline edit control -- see <a href="#dec-007">DEC-007</a>.</p>
+<p>Capability: <a href="#cap-003">CAP-003</a>. Evidence: <a href="#obs-003">OBS-003</a>, <a href="#obs-025">OBS-025</a>. Explicit (shared Table/Card state), narrowed by Human Provided input (Table only for now) -- see <a href="#gap-004">GAP-004</a>.</p>
+<p><strong>Narrowed 2026-09-08, not removed</strong> -- see <a href="#gap-004">GAP-004</a> for the full <code>PR #17</code> review history.</p>
+<h5 id="br-004">BR-004<a class="headerlink" href="#br-004" title="Permanent link">&para;</a></h5>
+<p><strong>Search and filter by confidence, with hierarchical visibility.</strong></p>
+<p>The product must let the reviewer search mappings by their PDF text and filter by confidence band, applying at the row level, with a Section shown only while it has a visible row or its heading matches, and a Page shown only while it has a visible Section.</p>
+<div class="highlight"><pre><span></span><code>Given rows at several confidence levels across several sections and pages
+When the reviewer selects the "Low" confidence filter
+Then only rows below 50% confidence remain visible
+And any Section with no remaining row, whose own heading doesn't match, is hidden
+And any Page with no remaining Section is hidden
+
+Given the reviewer types in "Search PDF text"
+Then the list narrows as they type, matching the extracted PDF text regardless of case, with no submit step
+
+Given nothing matches the current search and filter
+Then the screen shows "No mappings match the current filter."
+</code></pre></div>
+<p>Capability: <a href="#cap-002">CAP-002</a>. Evidence: <a href="#obs-002">OBS-002</a>, <a href="#obs-013">OBS-013</a>. Explicit, High confidence.</p>
+<h5 id="br-005">BR-005<a class="headerlink" href="#br-005" title="Permanent link">&para;</a></h5>
+<p><strong>Show a compound Target Type label; offer no remap control.</strong></p>
+<p>The product must show each mapping's target type as a compound label combining the display type and a kind-specific detail (field type, item count, or custom component name), and must not offer a control on this screen for changing a mapping's target type.</p>
+<div class="highlight"><pre><span></span><code>Given a list mapping with 3 sub-fields
+When the reviewer views its Target Type
+Then it reads "Field-List-3x"
+
+Given a description mapping
+When the reviewer views its Target Type
+Then it reads "Text", with no detail suffix
+
+Given any mapping row
+Then no dropdown or other control for changing its target type is offered
+</code></pre></div>
+<p>Capability: <a href="#cap-004">CAP-004</a>. Evidence: <a href="#obs-004">OBS-004</a>, <a href="#obs-005">OBS-005</a>, <a href="#obs-008">OBS-008</a>. Explicit, High confidence.</p>
+<h5 id="br-017">BR-017<a class="headerlink" href="#br-017" title="Permanent link">&para;</a></h5>
+<p><strong>Open the Workflow Page Editor to edit a page's fields.</strong></p>
+<p>The product must offer, on every page header, a way to open the Workflow Page Editor, where field and list mappings are edited.</p>
+<p><div class="highlight"><pre><span></span><code>Given a page in the Mapping Report
+When the reviewer selects "Manage page fields" on its header
+Then the Workflow Page Editor opens
+
+Given a field or list row
+Then the row itself offers no inline edit control
+</code></pre></div>
+Whether the Workflow Page Editor opens at that specific page is not shown in the design.</p>
+<p>Capability: <a href="#cap-009">CAP-009</a>. Evidence: <a href="#obs-027">OBS-027</a>, <a href="#obs-028">OBS-028</a>. Explicit, High confidence. See <a href="#gap-005">GAP-005</a>.</p>
+<h5 id="br-006">BR-006<a class="headerlink" href="#br-006" title="Permanent link">&para;</a></h5>
+<p><strong>Edit a description's text or a custom element's label in place.</strong></p>
+<p>The product must let the reviewer correct a description's text or a custom element's label in place, without leaving the Mapping Report.</p>
+<div class="highlight"><pre><span></span><code>Given a description mapping is opened for editing
+Then the edit panel shows a single text box holding the description's text, with Save and Cancel
+
+Given a custom mapping is opened for editing
+Then the edit panel shows a single label box, with Save and Cancel
+
+Given a field or list mapping
+Then no inline edit panel is offered (see BR-017)
+</code></pre></div>
+<p>Capability: <a href="#cap-004">CAP-004</a>. Evidence: <a href="#obs-010">OBS-010</a>, <a href="#obs-027">OBS-027</a>. Explicit, High confidence for the design. The design offers this only in Card view, so whether it is part of this Table-only phase is pending <a href="#dec-007">DEC-007</a>. See <a href="#gap-005">GAP-005</a>.</p>
+<h5 id="br-007">BR-007<a class="headerlink" href="#br-007" title="Permanent link">&para;</a></h5>
+<p><strong>One edit panel open at a time, with explicit Save/Cancel.</strong></p>
+<p>The product must allow only one row's edit panel to be open at a time, and every edit panel must end in an explicit Save or Cancel.</p>
+<div class="highlight"><pre><span></span><code>Given description row A is open for editing with no unsaved changes
+When the reviewer opens row B for editing
+Then row A closes without saving
+And row B opens with its own edit panel
+
+Given an edit panel is open
+When the reviewer selects Save
+Then the change is kept, the panel closes, and "Changes saved" confirms it
+
+Given an edit panel is open with no unsaved changes
+When the reviewer selects Cancel
+Then the panel closes and nothing changes
+</code></pre></div>
+<p>Capability: <a href="#cap-004">CAP-004</a>. Evidence: <a href="#obs-010">OBS-010</a>, <a href="#obs-035">OBS-035</a>. Explicit, High confidence. Pending <a href="#dec-007">DEC-007</a> for this phase, same as <a href="#br-006">BR-006</a>.</p>
+<h5 id="br-014">BR-014<a class="headerlink" href="#br-014" title="Permanent link">&para;</a></h5>
+<p><strong>Warn before discarding an unsaved edit.</strong></p>
+<p>The product must warn the reviewer before an unsaved edit is lost, whether by switching rows, cancelling, or leaving the page.</p>
+<div class="highlight"><pre><span></span><code>Given an edit panel is open with unsaved changes
+When the reviewer opens another row for editing, or selects Cancel
+Then a dialog titled "Discard unsaved changes?" says the edits haven't been saved and discarding will lose them
+And "Keep editing" returns to the open edit with the changes intact
+And "Discard" drops the changes (and opens the other row, if that's what was asked)
+
+Given an edit panel is open with unsaved changes
+When the reviewer tries to leave the page
+Then the browser's leave-page warning appears
+</code></pre></div>
+<p>Capability: <a href="#cap-004">CAP-004</a>. Evidence: <a href="#obs-011">OBS-011</a>, <a href="#obs-035">OBS-035</a>. Explicit, High confidence. Pending <a href="#dec-007">DEC-007</a> for this phase, same as <a href="#br-006">BR-006</a>.</p>
+<h5 id="br-008">BR-008<a class="headerlink" href="#br-008" title="Permanent link">&para;</a></h5>
+<p><strong>Delete a mapped field, with confirmation that states the cost.</strong></p>
+<p>The product must, when the reviewer deletes a mapped field, confirm first, state what will be lost (including, for a list, how many sub-fields), and remove it only on confirmation.</p>
+<div class="highlight"><pre><span></span><code>Given the list mapping "Emergency contacts" with 3 sub-fields
+When the reviewer selects Delete field
+Then a dialog titled "Delete this field?" says deleting "Emergency contacts" will remove it and its 3 sub-fields from the workflow, and that this can't be undone
+And the mapping is removed only if the reviewer selects Delete
+And "Field removed" confirms the removal
+
+Given the same dialog
+When the reviewer selects Cancel
+Then nothing is removed
+</code></pre></div>
+<p>Capability: <a href="#cap-005">CAP-005</a>. Evidence: <a href="#obs-029">OBS-029</a>, <a href="#obs-009">OBS-009</a>, <a href="#obs-011">OBS-011</a>. Explicit, High confidence for the confirmation. What exactly is removed -- the mapping or the workflow field -- is pending <a href="#dec-008">DEC-008</a>; see <a href="#gap-007">GAP-007</a>.</p>
+<h5 id="br-009">BR-009<a class="headerlink" href="#br-009" title="Permanent link">&para;</a></h5>
+<p><strong>Manually add a page.</strong></p>
+<p>The product must let the reviewer add a new, empty, auto-numbered page with no confirmation dialog, shown expanded and ready to receive a section.</p>
+<div class="highlight"><pre><span></span><code>Given the reviewer selects "+ Add page"
+Then a new page is added, numbered one higher than the highest existing page number
+And it shows expanded, with only a "+ Add section" prompt
+And no confirmation dialog is shown
+</code></pre></div>
+<p>Capability: <a href="#cap-006">CAP-006</a>. Evidence: <a href="#obs-014">OBS-014</a>, <a href="#obs-012">OBS-012</a>, <a href="#obs-022">OBS-022</a>, <a href="#obs-030">OBS-030</a>. <strong>Assumption, Medium confidence</strong> -- described in the README and consistent with the Business Owner's account of a new workflow, but absent from the design file. Unconfirmed until <a href="#dec-006">DEC-006</a>; see <a href="#gap-006">GAP-006</a>.</p>
+<h5 id="br-010">BR-010<a class="headerlink" href="#br-010" title="Permanent link">&para;</a></h5>
+<p><strong>Manually add a section.</strong></p>
+<p>The product must let the reviewer add a new section to a page via an inline form (title required, description optional), creating a section that groups with extracted sections in the same way.</p>
+<div class="highlight"><pre><span></span><code>Given a page with zero or more existing sections
+When the reviewer adds a section with a title and no description
+Then Add is available only once the title is not empty
+And the new section appears under that page in the same way as an extracted section, at 100% confidence
+</code></pre></div>
+<p>Capability: <a href="#cap-006">CAP-006</a>. Evidence: <a href="#obs-015">OBS-015</a>, <a href="#obs-030">OBS-030</a>. <strong>Assumption, Low confidence</strong> -- described in the README only; absent from the design file. Unconfirmed until <a href="#dec-006">DEC-006</a>; see <a href="#gap-006">GAP-006</a>.</p>
+<h5 id="br-011">BR-011<a class="headerlink" href="#br-011" title="Permanent link">&para;</a></h5>
+<p><strong>Manually add a field.</strong></p>
+<p>The product must let the reviewer add a new field to a section via an inline form (label required, type chosen), appearing straight away in the right place with no reload.</p>
+<div class="highlight"><pre><span></span><code>Given a section is expanded
+When the reviewer adds a field with a label and a type
+Then Add is available only once the label is not empty
+And the new field appears immediately after that section's existing fields, with no page reload
+</code></pre></div>
+<p>Capability: <a href="#cap-006">CAP-006</a>. Evidence: <a href="#obs-016">OBS-016</a>, <a href="#obs-030">OBS-030</a>. <strong>Assumption, Low confidence</strong> -- described in the README only; absent from the design file. Unconfirmed until <a href="#dec-006">DEC-006</a>; see <a href="#gap-006">GAP-006</a>.</p>
+<h5 id="br-016">BR-016<a class="headerlink" href="#br-016" title="Permanent link">&para;</a></h5>
+<p><strong>Provide this screen as the starting surface for a new workflow.</strong></p>
+<p>The product must, after a new workflow's settings are saved, take the user to this screen with no structure yet, so they can begin building it by adding a page -- whatever the workflow's creation path.</p>
+<div class="highlight"><pre><span></span><code>Given a new workflow's settings have just been saved
+When the user is returned to the workflow
+Then they land on the Mapping Report's structure view, with no pages yet
+And they begin by adding a page
+</code></pre></div>
+<p>Capability: <a href="#cap-006">CAP-006</a>. Evidence: <a href="#obs-021">OBS-021</a>, <a href="#obs-022">OBS-022</a>. Human Provided, High confidence, from direct clarification on <code>PR #17</code> -- see <a href="#gap-003">GAP-003</a>. How the "add a page" step appears depends on <a href="#dec-006">DEC-006</a>: the design file has no add control, and with no structure it shows only "No mappings match the current filter." (<a href="#obs-030">OBS-030</a>).</p>
+<h5 id="br-012">BR-012<a class="headerlink" href="#br-012" title="Permanent link">&para;</a></h5>
+<p><strong>Delete only empty structure.</strong></p>
+<p>The product must offer a delete action on a page or section only when it has no children, and must delete it without confirmation.</p>
+<div class="highlight"><pre><span></span><code>Given a page with no sections
+Then a delete control is shown on its header
+
+Given a page with at least one section
+Then no delete control is shown for that page
+
+Given an empty section
+When the reviewer deletes it
+Then it is removed immediately, with no confirmation dialog
+And "Section deleted" confirms it ("Page deleted" for a page)
+</code></pre></div>
+<p>Capability: <a href="#cap-007">CAP-007</a>. Evidence: <a href="#obs-017">OBS-017</a>. Explicit, High confidence.</p>
+<h5 id="br-013">BR-013<a class="headerlink" href="#br-013" title="Permanent link">&para;</a></h5>
+<p><strong>Reorder pages, sections, and rows.</strong></p>
+<p>The product must let the reviewer move a page, section, or row one position among its neighbors, without requiring every item at that level to be re-specified.</p>
+<div class="highlight"><pre><span></span><code>Given three rows in one section, in order A, B, C
+When the reviewer selects "Move down" on row A
+Then the order becomes B, A, C
+And rows not explicitly moved keep their original relative order
+
+Given the first item at any level
+Then its "Move up" control is disabled
+And the last item's "Move down" control is disabled
+</code></pre></div>
+<p>Capability: <a href="#cap-008">CAP-008</a>. Evidence: <a href="#obs-018">OBS-018</a>. Explicit, High confidence.</p>
+<h5 id="br-015">BR-015<a class="headerlink" href="#br-015" title="Permanent link">&para;</a></h5>
+<p><strong>Adapt the screen to how the workflow was created.</strong></p>
+<p>The product must name the workflow's creation method on screen, show the confidence-review elements (stat tiles and confidence filter) for a workflow created by PDF conversion, and hide them for a manually created workflow while still showing its structure.</p>
+<div class="highlight"><pre><span></span><code>Given a workflow created by PDF conversion
+Then a "PDF conversion" tag is shown, the first column reads "From PDF", and the stat tiles and confidence filter are shown
+
+Given a manually created workflow
+Then a "Manually created" tag is shown and the first column reads "From manual entry"
+And the stat tiles and confidence filter are not shown
+And every row's Field source shows "manual"
+And the page / section / row structure is still shown (see BR-016)
+</code></pre></div>
+<p>Capability: <a href="#cap-001">CAP-001</a>. Evidence: <a href="#obs-031">OBS-031</a>, <a href="#obs-019">OBS-019</a>. Explicit, High confidence. The design also shows a third mode, for workflows created from LLM instructions; the README places that path outside this handoff -- see "Not built yet".</p>
+<p><strong>Revised</strong> -- see <a href="#gap-003">GAP-003</a> and <a href="#gap-008">GAP-008</a>.</p>
+<h2 id="open-decisions">Open Decisions<a class="headerlink" href="#open-decisions" title="Permanent link">&para;</a></h2>
+<p><code>DEC-001</code>-<code>DEC-004</code> were resolved on <code>PR #17</code>'s review.</p>
+<ul>
+<li><a href="#dec-001">DEC-001</a>: how the reviewer reaches the Mapping Report -- <strong>Resolved</strong>, three entry paths (PDF conversion, reopening an existing mapping, starting a new workflow).</li>
+<li><a href="#dec-002">DEC-002</a>: empty state for a workflow with no mappings -- <strong>Resolved</strong>, via the new-workflow flow (<a href="#br-016">BR-016</a>).</li>
+<li><a href="#dec-003">DEC-003</a>: table layout on narrow screens -- <strong>Resolved</strong>, horizontal scroll, not stacked cards (<a href="#brule-008">BRULE-008</a>).</li>
+<li><a href="#dec-004">DEC-004</a>: org role/permission requirements -- <strong>Resolved (deferred)</strong>, no permission layer until login exists.</li>
+<li><a href="#dec-005">DEC-005</a>: success metric for this feature -- <strong>Open</strong>, owner: Business Owner.</li>
+<li><a href="#dec-006">DEC-006</a>: where pages, sections, and fields get added -- <strong>Open</strong>, owner: Business Owner. Blocks <a href="#br-009">BR-009</a>-<a href="#br-011">BR-011</a> and <a href="#jrn-003">JRN-003</a>.</li>
+<li><a href="#dec-007">DEC-007</a>: whether inline editing is part of this Table-only phase -- <strong>Open</strong>, owner: Business Owner. Affects <a href="#br-006">BR-006</a>, <a href="#br-007">BR-007</a>, <a href="#br-014">BR-014</a>.</li>
+<li><a href="#dec-008">DEC-008</a>: what "Delete field" removes -- <strong>Open</strong>, owner: Business Owner. Affects <a href="#br-008">BR-008</a>.</li>
+</ul>
+<p><a href="#dec-006">DEC-006</a>-<a href="#dec-008">DEC-008</a> change what gets built and need an answer before Business Requirements are drafted for the affected areas. <a href="#dec-005">DEC-005</a> affects how success is measured after launch, not what gets built. The Technical Unknowns (<a href="#tech-001">TECH-001</a>-<a href="#tech-004">TECH-004</a>) are for the Technical Agent stage and don't block Business Requirements.</p>
+<h2 id="not-built-yet">Not built yet<a class="headerlink" href="#not-built-yet" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Card view</strong> -- designed, deferred for this phase. See <a href="#br-003">BR-003</a>, <a href="#gap-004">GAP-004</a>.</li>
+<li><strong>Workflows created from LLM instructions</strong> -- the design shows how this screen would adapt, but the README places this path outside this handoff ("out of scope for this handoff"), to reuse this screen if it's built later.</li>
+<li><strong>Org-level permissions</strong> -- deferred until login exists. See <a href="#dec-004">DEC-004</a>.</li>
+<li><strong>Loading, error, and failure states</strong> for opening the report, saving, deleting, and reordering -- not represented in the source, not assumed.</li>
+<li><strong>Open UX issues the source itself lists as unresolved</strong> -- no reminder of which row is being edited after scrolling, no explanation of the compact target type labels, and no stronger signal for low-confidence rows. The source suggests remedies but designs none. See <a href="#gap-009">GAP-009</a>.</li>
+<li><strong>Limits</strong> -- no upper bound is stated for pages, sections, fields, or a list's sub-fields.</li>
+<li><strong>Technical questions for the Technical Agent</strong> -- the extraction mechanism, reorder storage, the README's framework and theme guidance, and its accessibility and responsive notes. See <a href="#tech-001">TECH-001</a>-<a href="#tech-004">TECH-004</a>.</li>
+<li>This analysis covers only the Mapping Report feature-slice of the v4 drop. The drop's other screens (Dashboard, Workflow Settings Dialog, Workflow Page Editor, the sign-in screens) are out of scope here and, per DESIGN-HANDOFF-BUNDLE-FORMAT-SPEC.md section 6.2, registered and analyzed separately if taken up.</li>
+</ul>
+<p><strong>Potentially related</strong> -- areas the design touches but doesn't define here; named, not analyzed.</p>
+<ul>
+<li><strong>Workflow Page Editor</strong> -- where field and list mappings are edited; every page header links to it (<a href="#br-017">BR-017</a>). It may also be where adding structure now happens (<a href="#dec-006">DEC-006</a>).</li>
+<li><strong>Workflows dashboard</strong> -- the "Back to dashboard" destination, and the source of each workflow's creation method.</li>
+<li><strong>Workflow Settings Dialog</strong> -- the step before a new workflow lands on this screen (<a href="#br-016">BR-016</a>).</li>
+<li><strong>Shared header menus</strong> -- account settings, log out, organization settings, Members, Billing; tied to the deferred permissions question (<a href="#dec-004">DEC-004</a>).</li>
+<li><strong>Light theme</strong> -- the source keeps a light variant of this screen under a parity rule (only colors may differ); the light file was not read for behavior.</li>
+</ul>
+<hr />
+<h2 id="capabilities">Capabilities<a class="headerlink" href="#capabilities" title="Permanent link">&para;</a></h2>
+<p><em>Grouped by the Journey that needs them, per <code>ARTIFACT-RELATIONSHIP-MODEL.md</code> section 3.1. Listed here as a stable entry point for the Business Requirements stage, which will reference these directly when grouping Stories. Full evidence for each lives in its own record, linked below.</em></p>
+<h3 id="serving-jrn-001-review-and-correct-a-low-confidence-field-mapping">Serving <a href="#jrn-001">JRN-001</a> -- Review and correct a low-confidence field mapping<a class="headerlink" href="#serving-jrn-001-review-and-correct-a-low-confidence-field-mapping" title="Permanent link">&para;</a></h3>
+<p>The reviewer narrows the list to what needs fixing, then corrects it -- in the Workflow Page Editor for fields and lists, or in place for descriptions and custom elements.</p>
+<h5 id="cap-002">CAP-002<a class="headerlink" href="#cap-002" title="Permanent link">&para;</a></h5>
+<p><strong>Filter and Search Mappings.</strong> Let the reviewer narrow a potentially large mapping down to what needs checking. <em>(↩ used by <a href="#br-004">BR-004</a>)</em> Registry: <a href="../../../../../registries/CAPABILITY-REGISTRY/">CAPABILITY-REGISTRY.md</a> / <a href="../../../capabilities/capability-filter-and-search-mappings-CAP-002/">full record</a>.</p>
+<h5 id="cap-009">CAP-009<a class="headerlink" href="#cap-009" title="Permanent link">&para;</a></h5>
+<p><strong>Open the Workflow Page Editor from the Report.</strong> Let the reviewer move from spotting a problem with a field or list to the screen where it can be fully edited. <em>(↩ used by <a href="#br-017">BR-017</a>)</em> Registry: <a href="../../../../../registries/CAPABILITY-REGISTRY/">CAPABILITY-REGISTRY.md</a> / <a href="../../../capabilities/capability-open-page-editor-from-report-CAP-009/">full record</a>.</p>
+<h5 id="cap-004">CAP-004<a class="headerlink" href="#cap-004" title="Permanent link">&para;</a></h5>
+<p><strong>Edit a Mapped Field's Details.</strong> Let the reviewer correct a description's text or a custom element's label in place, and see each mapping's target type without opening it. <em>(↩ used by <a href="#br-005">BR-005</a>, <a href="#br-006">BR-006</a>, <a href="#br-007">BR-007</a>, <a href="#br-014">BR-014</a>)</em> Registry: <a href="../../../../../registries/CAPABILITY-REGISTRY/">CAPABILITY-REGISTRY.md</a> / <a href="../../../capabilities/capability-edit-mapped-field-details-CAP-004/">full record</a>.</p>
+<h3 id="serving-jrn-002-remove-an-incorrectly-extracted-field">Serving <a href="#jrn-002">JRN-002</a> -- Remove an incorrectly extracted field<a class="headerlink" href="#serving-jrn-002-remove-an-incorrectly-extracted-field" title="Permanent link">&para;</a></h3>
+<h5 id="cap-005">CAP-005<a class="headerlink" href="#cap-005" title="Permanent link">&para;</a></h5>
+<p><strong>Unlink an Incorrect Mapping.</strong> Let the reviewer remove a wrong mapping while understanding its cost. <em>(↩ used by <a href="#br-008">BR-008</a>)</em> Registry: <a href="../../../../../registries/CAPABILITY-REGISTRY/">CAPABILITY-REGISTRY.md</a> / <a href="../../../capabilities/capability-unlink-incorrect-mapping-CAP-005/">full record</a>.</p>
+<h3 id="serving-jrn-003-add-a-section-the-extraction-missed">Serving <a href="#jrn-003">JRN-003</a> -- Add a section the extraction missed<a class="headerlink" href="#serving-jrn-003-add-a-section-the-extraction-missed" title="Permanent link">&para;</a></h3>
+<p>Unconfirmed until <a href="#dec-006">DEC-006</a> is decided.</p>
+<h5 id="cap-006">CAP-006<a class="headerlink" href="#cap-006" title="Permanent link">&para;</a></h5>
+<p><strong>Manually Add Structure.</strong> Let the reviewer fill in whatever the extraction missed, and let a new workflow begin from the same screen whatever its creation path. <em>(↩ used by <a href="#br-009">BR-009</a>, <a href="#br-010">BR-010</a>, <a href="#br-011">BR-011</a>, <a href="#br-016">BR-016</a>)</em> Registry: <a href="../../../../../registries/CAPABILITY-REGISTRY/">CAPABILITY-REGISTRY.md</a> / <a href="../../../capabilities/capability-manually-add-structure-CAP-006/">full record</a>.</p>
+<h3 id="not-yet-tied-to-a-journey">Not yet tied to a Journey<a class="headerlink" href="#not-yet-tied-to-a-journey" title="Permanent link">&para;</a></h3>
+<p>Identified from the source, but none of the three recorded journeys walks through them end to end.</p>
+<h5 id="cap-001">CAP-001<a class="headerlink" href="#cap-001" title="Permanent link">&para;</a></h5>
+<p><strong>Review Extraction Confidence and Structure.</strong> Let the reviewer judge how much attention a workflow's mapping needs, and browse it, before working through it in detail. <em>(↩ used by <a href="#br-018">BR-018</a>, <a href="#br-001">BR-001</a>, <a href="#br-002">BR-002</a>, <a href="#br-015">BR-015</a>)</em> Registry: <a href="../../../../../registries/CAPABILITY-REGISTRY/">CAPABILITY-REGISTRY.md</a> / <a href="../../../capabilities/capability-review-extraction-confidence-CAP-001/">full record</a>.</p>
+<h5 id="cap-003">CAP-003<a class="headerlink" href="#cap-003" title="Permanent link">&para;</a></h5>
+<p><strong>Switch Between Table and Card Views.</strong> Let the reviewer choose a layout without losing filter or edit state -- Table view only is built this phase, so no journey uses a view toggle. <em>(↩ used by <a href="#br-003">BR-003</a>)</em> Registry: <a href="../../../../../registries/CAPABILITY-REGISTRY/">CAPABILITY-REGISTRY.md</a> / <a href="../../../capabilities/capability-switch-table-card-views-CAP-003/">full record</a>.</p>
+<h5 id="cap-007">CAP-007<a class="headerlink" href="#cap-007" title="Permanent link">&para;</a></h5>
+<p><strong>Remove Empty Structure.</strong> Let the reviewer clean up structure that's no longer needed, without risking accidental data loss. <em>(↩ used by <a href="#br-012">BR-012</a>)</em> Registry: <a href="../../../../../registries/CAPABILITY-REGISTRY/">CAPABILITY-REGISTRY.md</a> / <a href="../../../capabilities/capability-remove-empty-structure-CAP-007/">full record</a>.</p>
+<h5 id="cap-008">CAP-008<a class="headerlink" href="#cap-008" title="Permanent link">&para;</a></h5>
+<p><strong>Reorder Structure.</strong> Let the reviewer fix the order pages, sections, or rows appear in. <em>(↩ used by <a href="#br-013">BR-013</a>)</em> Registry: <a href="../../../../../registries/CAPABILITY-REGISTRY/">CAPABILITY-REGISTRY.md</a> / <a href="../../../capabilities/capability-reorder-structure-CAP-008/">full record</a>.</p>
+<h2 id="evidence-and-traceability">Evidence and Traceability<a class="headerlink" href="#evidence-and-traceability" title="Permanent link">&para;</a></h2>
+<p><em>Reference material. Each entry below is what an "Evidence" link above jumps to -- not needed to understand the feature, needed to audit a specific claim. Every entry ends with a "used by" link back to whatever cited it.</em></p>
+<h3 id="source-reviewed">Source reviewed<a class="headerlink" href="#source-reviewed" title="Permanent link">&para;</a></h3>
+<p><code>SRC-003</code>, read directly from the <code>design</code> branch at the commit in the metadata table:</p>
+<ul>
+<li><code>designs/Mapping Report.dc.html</code> (dark) -- markup, the inline script, and its seed data (<code>SEED_TARGETS</code>, <code>SEED</code>: a "New Hire Onboarding" workflow, 3 pages, 15 mappings). Per CLAUDE-DESIGN-READING-SPEC.md section 4, this file is the source of truth for behavior.</li>
+<li><code>README.md</code> -- read in full; used for business framing, scope, and naming, with every behavioral claim checked against the dark file. Where the two disagree, the dark file is recorded as the behavior and the disagreement as a Gap.</li>
+<li><code>PARITY_RULE.md</code> and <code>_cover-sheet.md</code> (readiness <code>Ready with Limitations</code>; its listed limitations are the README's open UX issues -- see <a href="#obs-033">OBS-033</a>).</li>
+</ul>
+<p>Excluded: <code>designs/Mapping Report (Light).dc.html</code>, not read for behavior (CLAUDE-DESIGN-READING-SPEC.md section 4); shared infrastructure (<code>support.js</code>, <code>image-slot.js</code>, <code>_ds/</code>) checked for presence only; the README's framework-conversion, theming, and implementation-order guidance, recorded as Technical Unknowns (<a href="#tech-003">TECH-003</a>, <a href="#tech-004">TECH-004</a>); all other screens' files.</p>
+<h3 id="observations">Observations<a class="headerlink" href="#observations" title="Permanent link">&para;</a></h3>
+<h5 id="obs-001">OBS-001<a class="headerlink" href="#obs-001" title="Permanent link">&para;</a></h5>
+<p>Dark file: five tiles labeled "Total", "High ≥ 80%", "Medium 50–79%", "Low &lt; 50%", "Avg confidence", each with a 2px top border in its band's color. Counts and the rounded average are computed over every mapping in the workflow, not the filtered set. The tiles render only when the workflow was not manually created. Explicit, High. <em>(↩ used by <a href="#br-001">BR-001</a>)</em></p>
+<h5 id="obs-002">OBS-002<a class="headerlink" href="#obs-002" title="Permanent link">&para;</a></h5>
+<p>Dark file: the first filter row holds the "Search PDF text" input (placeholder "Search extracted text…") and the View control (Table / Cards); the second holds the Confidence control (All / High / Medium / Low), shown only when the workflow was not manually created. Search filters live as the user types, matches the extracted PDF text only, and ignores case. The dark file has no "Created from" control and no source filter (see <a href="#gap-008">GAP-008</a>). Explicit, High. <em>(↩ used by <a href="#br-004">BR-004</a>)</em></p>
+<h5 id="obs-003">OBS-003<a class="headerlink" href="#obs-003" title="Permanent link">&para;</a></h5>
+<p>Dark file: one shared set of state (search term, confidence filter, open edit, collapsed pages and sections) drives both the Table and the Card rendering; switching views changes only which rendering is shown. README: "switching views never resets anything." Explicit, High. <em>(↩ used by <a href="#br-003">BR-003</a>, <a href="#brule-005">BRULE-005</a>)</em></p>
+<h5 id="obs-004">OBS-004<a class="headerlink" href="#obs-004" title="Permanent link">&para;</a></h5>
+<p>README: each extracted element has a <code>kind</code> (<code>heading</code> | <code>description</code> | <code>field</code> | <code>field-group</code> | <code>custom</code>) and maps to a target whose <code>targetType</code> (<code>Section</code> | <code>Content</code> | <code>Field</code> | <code>FieldGroup</code> | <code>Custom</code>) is the discriminant; "<code>kind</code> determines which <code>targetType</code> a row can be reassigned to ... don't allow cross-kind remapping." Dark file: each kind maps to one target type, with the comment "kind = what the PDF element actually is; drives which SEED_TARGETS it can map to." The dark file offers no control for changing a mapping's target. Explicit, High. <em>(↩ used by <a href="#br-005">BR-005</a>, <a href="#brule-001">BRULE-001</a>)</em></p>
+<h5 id="obs-005">OBS-005<a class="headerlink" href="#obs-005" title="Permanent link">&para;</a></h5>
+<p>Dark file: the Target Type label is <code>{displayType}-{detail}</code> -- e.g. <code>Field-Text</code>, <code>Field-Date</code>, <code>Field-List-3x</code> (item count), <code>Custom-App-signature-pad</code>; description rows show <code>Text</code> with no suffix. Type labels shown per kind: Heading, Text, Field, List, Custom. Explicit, High. <em>(↩ used by <a href="#br-005">BR-005</a>)</em></p>
+<h5 id="obs-006">OBS-006<a class="headerlink" href="#obs-006" title="Permanent link">&para;</a></h5>
+<p>Dark file: Page header -- chevron, "Page N", "{n} sections · {m} fields" (visible counts). Section header -- chevron, "Section" tag, title, description line when present, "{n} fields", and the heading's confidence when a heading mapping exists. Headings are not listed as rows. Seed page 2 holds two sections (Employment Details, Compensation). Pages and sections start expanded; collapse state is held separately from search and filter, so changing a filter doesn't reset it. No pagination and no expand/collapse-all control. Explicit, High. <em>(↩ used by <a href="#br-002">BR-002</a>)</em></p>
+<h5 id="obs-007">OBS-007<a class="headerlink" href="#obs-007" title="Permanent link">&para;</a></h5>
+<p>Dark file, Table view columns: the creation-method column ("From PDF" / "From LLM" / "From manual entry", PDF text shortened to 60 characters) | Type | Target Type | Maps to | Confidence | Field source (llm or manual, with icon) | actions (Move up, Move down, Delete field). Card view shows the same data per row -- type → target type, source, confidence, full PDF text, and the mapped label. Explicit, High. <em>(↩ used by <a href="#br-002">BR-002</a>)</em></p>
+<h5 id="obs-008">OBS-008<a class="headerlink" href="#obs-008" title="Permanent link">&para;</a></h5>
+<p>README (Screens section): "No inline <code>&lt;select&gt;</code> remapping. The old 'pick a different target from a dropdown' pattern was removed." Dark file: no <code>&lt;select&gt;</code> anywhere on the screen. Explicit, High. <em>(↩ used by <a href="#br-005">BR-005</a>)</em></p>
+<h5 id="obs-009">OBS-009<a class="headerlink" href="#obs-009" title="Permanent link">&para;</a></h5>
+<p>README (Interactions &amp; behavior section): "clicking the pencil expands the row/card in place with kind-specific fields ... and Cancel/Save actions — there is no remap-via-dropdown; clicking unlink opens a confirm dialog (names the sub-field cost for FieldGroups) before removing the mapping." The dark file confirms the confirmation dialog and the absence of dropdown remapping; its edit behavior differs (see <a href="#obs-027">OBS-027</a>) and its dialog states a sub-field count rather than names (see <a href="#obs-029">OBS-029</a>). Explicit for the parts the dark file confirms, High. <em>(↩ used by <a href="#br-008">BR-008</a>)</em></p>
+<h5 id="obs-010">OBS-010<a class="headerlink" href="#obs-010" title="Permanent link">&para;</a></h5>
+<p>Dark file, Card view edit panel: a description gets a single text area holding its text; a custom element gets a single label input; each panel ends with Save (check mark) and Cancel (×) buttons. Only one row can be open for editing at a time -- opening another closes the first. Explicit, High. <em>(↩ used by <a href="#br-006">BR-006</a>, <a href="#br-007">BR-007</a>, <a href="#brule-002">BRULE-002</a>)</em></p>
+<h5 id="obs-011">OBS-011<a class="headerlink" href="#obs-011" title="Permanent link">&para;</a></h5>
+<p>README (Known UX issues section): "unlinking opens a confirm dialog (names the sub-field cost for FieldGroups), Save shows a toast, and navigating away from a dirty edit (row switch or <code>beforeunload</code>) prompts a discard-confirmation dialog." Confirmed by the dark file, with the differences noted in <a href="#obs-029">OBS-029</a> and <a href="#obs-035">OBS-035</a>. Explicit, High. <em>(↩ used by <a href="#br-008">BR-008</a>, <a href="#br-014">BR-014</a>)</em></p>
+<h5 id="obs-012">OBS-012<a class="headerlink" href="#obs-012" title="Permanent link">&para;</a></h5>
+<p>README (Interactions &amp; behavior section): "Add page/section/field, delete empty page/section, and reorder (page/section/field) ... all are optimistic, no confirmation except unlink." Dark file: deleting an empty page or section and reordering have no confirmation; deleting a field does. The add controls are absent from the dark file (<a href="#obs-030">OBS-030</a>). Explicit for delete and reorder, High. <em>(↩ used by <a href="#br-009">BR-009</a>, <a href="#brule-007">BRULE-007</a>)</em></p>
+<h5 id="obs-013">OBS-013<a class="headerlink" href="#obs-013" title="Permanent link">&para;</a></h5>
+<p>Dark file: search and the confidence filter apply to rows; a section is visible when it has a visible row or its heading matches; a page is visible when it has a visible section (or was added by hand); when no page is visible the screen shows "No mappings match the current filter." Explicit, High. <em>(↩ used by <a href="#br-004">BR-004</a>, <a href="#brule-004">BRULE-004</a>)</em></p>
+<h5 id="obs-014">OBS-014<a class="headerlink" href="#obs-014" title="Permanent link">&para;</a></h5>
+<p>README: "+ Add page" appends a new, empty, auto-numbered page (max existing + 1), shown expanded with just a "+ Add section" prompt, no confirmation dialog. Not present in the dark file (<a href="#obs-030">OBS-030</a>). README only -- Assumption, Medium. <em>(↩ used by <a href="#br-009">BR-009</a>)</em></p>
+<h5 id="obs-015">OBS-015<a class="headerlink" href="#obs-015" title="Permanent link">&para;</a></h5>
+<p>README: "+ Add section" opens an inline form (title required, description optional); Add is disabled until the title is filled; saving creates a <code>Section</code> target plus a synthetic heading mapping (<code>mappedBy: 'manual'</code>, confidence 100%). Not present in the dark file (<a href="#obs-030">OBS-030</a>). README only -- Assumption, Low. <em>(↩ used by <a href="#br-010">BR-010</a>)</em></p>
+<h5 id="obs-016">OBS-016<a class="headerlink" href="#obs-016" title="Permanent link">&para;</a></h5>
+<p>README: "+ Add field" opens an inline form (label required, field type chosen); Add is disabled until the label is filled; the new <code>Field</code> target is inserted right after that section's fields and appears without a reload. Not present in the dark file (<a href="#obs-030">OBS-030</a>). README only -- Assumption, Low. <em>(↩ used by <a href="#br-011">BR-011</a>)</em></p>
+<h5 id="obs-017">OBS-017<a class="headerlink" href="#obs-017" title="Permanent link">&para;</a></h5>
+<p>Dark file: a "Delete empty page" control shows only when a page has no sections; a "Delete empty section" control shows only when a section has no rows (counted before any filter). Deleting removes the item immediately with no dialog and shows "Page deleted" or "Section deleted". Explicit, High. <em>(↩ used by <a href="#br-012">BR-012</a>, <a href="#brule-003">BRULE-003</a>)</em></p>
+<h5 id="obs-018">OBS-018<a class="headerlink" href="#obs-018" title="Permanent link">&para;</a></h5>
+<p>Dark file: every page, section, and row has Move up / Move down controls; each move swaps one position; the first item's Move up and the last item's Move down are disabled. Order is held as an override list per level (page order; section order per page; row order per section), falling back to the original order for items not yet moved. Explicit, High. How the override lists are stored is a Technical Unknown -- see <a href="#tech-002">TECH-002</a>. <em>(↩ used by <a href="#br-013">BR-013</a>)</em></p>
+<h5 id="obs-019">OBS-019<a class="headerlink" href="#obs-019" title="Permanent link">&para;</a></h5>
+<p>README (Scope note): "this Mapping Report only applies to the <strong>PDF path</strong>"; "Manually-created workflows: no report needed ... Don't build one"; LLM-based workflows are "out of scope for this handoff", with a note to reuse this screen if built later. README, reference material; its manual-workflow statement is refined by <a href="#obs-021">OBS-021</a> and differs from the dark file (<a href="#obs-031">OBS-031</a>). <em>(↩ used by <a href="#br-015">BR-015</a>, <a href="#brule-006">BRULE-006</a>, <a href="#gap-003">GAP-003</a>)</em></p>
+<h5 id="obs-020">OBS-020<a class="headerlink" href="#obs-020" title="Permanent link">&para;</a></h5>
+<p>README (Responsive behavior section): the mapping table's narrow-screen behavior -- horizontal scroll or stacked cards -- is left open: "decide with the user ... Don't silently pick one." The dark file's mapping area already scrolls horizontally. Explicit, High -- a source-flagged open decision, not an omission. <em>(↩ used by <a href="#dec-003">DEC-003</a>, resolved by <a href="#obs-023">OBS-023</a>)</em></p>
+<h5 id="obs-021">OBS-021<a class="headerlink" href="#obs-021" title="Permanent link">&para;</a></h5>
+<p>Manali, <a href="https://github.com/manalimatkar/product-management/pull/17#discussion_r3960647709"><code>PR #17</code> review comment</a>, 2026-09-08: "Mapping Report is view used to see workflow-page structure. It can be triggered by [the] process of pdf to workflow conversion on pdf upload, or it can also load an existing mapping for review, or it can also act as a start from scratch for workflow creation." Human Provided, High. Refines the README's Scope note, which frames the report as PDF-path-only. <em>(↩ used by <a href="#br-016">BR-016</a>, <a href="#gap-003">GAP-003</a>, resolves <a href="#dec-001">DEC-001</a>)</em></p>
+<h5 id="obs-022">OBS-022<a class="headerlink" href="#obs-022" title="Permanent link">&para;</a></h5>
+<p>Manali, <a href="https://github.com/manalimatkar/product-management/pull/17#discussion_r3960657394"><code>PR #17</code> review comment</a>, 2026-09-08: "For [a] new workflow, [the] user experience is to first go to [the] workflow settings page, and then on save[,] user will land on [the] workflow mapping page where they start by adding [a] page." Human Provided, High. <em>(↩ used by <a href="#br-016">BR-016</a>, <a href="#br-009">BR-009</a>, resolves <a href="#dec-002">DEC-002</a>)</em></p>
+<h5 id="obs-023">OBS-023<a class="headerlink" href="#obs-023" title="Permanent link">&para;</a></h5>
+<p>Manali, <a href="https://github.com/manalimatkar/product-management/pull/17#discussion_r3960664130"><code>PR #17</code> review comment</a>, 2026-09-08: "Keep table horizontal scroll." Human Provided, High. <em>(↩ used by <a href="#brule-008">BRULE-008</a>, resolves <a href="#dec-003">DEC-003</a>)</em></p>
+<h5 id="obs-024">OBS-024<a class="headerlink" href="#obs-024" title="Permanent link">&para;</a></h5>
+<p>Manali, <a href="https://github.com/manalimatkar/product-management/pull/17#discussion_r3960668770"><code>PR #17</code> review comment</a>, 2026-09-08: "This is deferred for later when login capability is enabled." (re: org role/permission distinctions for reviewing or editing mappings) Human Provided, High. <em>(↩ resolves <a href="#dec-004">DEC-004</a>)</em></p>
+<h5 id="obs-025">OBS-025<a class="headerlink" href="#obs-025" title="Permanent link">&para;</a></h5>
+<p>Manali, <a href="https://github.com/manalimatkar/product-management/pull/17#issuecomment-5589857757"><code>PR #17</code> review comment</a> (Review Outcome, <code>BR-003</code> left unchecked), 2026-09-08: "For now work on table view." Human Provided, High. Card view is deferred for this phase, not rejected. <em>(↩ used by <a href="#br-003">BR-003</a>, <a href="#gap-004">GAP-004</a>)</em></p>
+<h5 id="obs-026">OBS-026<a class="headerlink" href="#obs-026" title="Permanent link">&para;</a></h5>
+<p>README (Scope note) and dark file: every proposed mapping carries a confidence score rather than being treated as reliable, and the screen describes itself as showing "How extracted PDF text was mapped to workflow fields and sections." Discussing the LLM-based creation path, the README says it carries "the same class of risk as PDF extraction -- the LLM can misread intent." No single sentence states the resulting problem or goal -- synthesized across these passages. Strongly Implied, Medium. <em>(↩ used by <a href="#problem">Problem</a>, <a href="#goals">Goals</a>)</em></p>
+<h5 id="obs-027">OBS-027<a class="headerlink" href="#obs-027" title="Permanent link">&para;</a></h5>
+<p>Dark file: field and list rows are not editable inline -- the script's comment reads "Field and field-group rows now edit exclusively in the Workflow Page Editor (they carry too much associated data — options, validation, sub-fields — for this report's simple inline label/type switch)." The edit (pencil) control appears only in Card view, and only on description and custom rows; Table view rows have no edit control. Explicit, High. <em>(↩ used by <a href="#br-017">BR-017</a>, <a href="#br-006">BR-006</a>, <a href="#gap-005">GAP-005</a>, <a href="#dec-007">DEC-007</a>)</em></p>
+<h5 id="obs-028">OBS-028<a class="headerlink" href="#obs-028" title="Permanent link">&para;</a></h5>
+<p>Dark file: every page header has a "Manage page fields" link that opens <code>Workflow Page Editor.dc.html</code>. README: "the Mapping Report's inline edit panel deliberately only exposes a lightweight subset and links here for anything more." Explicit, High. <em>(↩ used by <a href="#br-017">BR-017</a>)</em></p>
+<h5 id="obs-029">OBS-029<a class="headerlink" href="#obs-029" title="Permanent link">&para;</a></h5>
+<p>Dark file: every row (both views) has a "Delete field" control (trash icon). It opens a dialog titled "Delete this field?" with, for a list, <code>Deleting "&lt;label&gt;" will remove it and its &lt;N&gt; sub-fields from the workflow. This can't be undone.</code> and otherwise <code>Deleting "&lt;label&gt;" will remove this field from the workflow. This can't be undone.</code>; buttons Cancel and Delete. Confirming removes the row and shows "Field removed". Explicit, High. <em>(↩ used by <a href="#br-008">BR-008</a>, <a href="#gap-007">GAP-007</a>)</em></p>
+<h5 id="obs-030">OBS-030<a class="headerlink" href="#obs-030" title="Permanent link">&para;</a></h5>
+<p>Dark file: no "+ Add page", "+ Add section", or "+ Add field" control and no logic to add anything. The script keeps a list of hand-added pages and can display a section description, but nothing on the screen fills either. When no page is visible -- including when a workflow has no mappings -- the screen shows only "No mappings match the current filter." Explicit, High. <em>(↩ used by <a href="#br-009">BR-009</a>, <a href="#br-010">BR-010</a>, <a href="#br-011">BR-011</a>, <a href="#br-016">BR-016</a>, <a href="#gap-002">GAP-002</a>, <a href="#gap-006">GAP-006</a>)</em></p>
+<h5 id="obs-031">OBS-031<a class="headerlink" href="#obs-031" title="Permanent link">&para;</a></h5>
+<p>Dark file: the creation method is read from the workflow (<code>pdf</code>, <code>instructions</code>, or <code>manual</code>; the README's demo note says to "drive it from the workflow's actual creation method"). It shows as a tag -- "PDF conversion", "LLM instructions", "Manually created" -- and titles the first column "From PDF", "From LLM", or "From manual entry". The stat tiles and confidence filter show unless the workflow was created manually. In a manually created workflow every row's Field source shows "manual"; the README's Files section states the same ("there's no LLM in a manually-created workflow, so a field can never be LLM-sourced there"). Explicit, High. <em>(↩ used by <a href="#br-015">BR-015</a>, <a href="#brule-006">BRULE-006</a>, <a href="#brule-009">BRULE-009</a>, <a href="#gap-003">GAP-003</a>, <a href="#gap-008">GAP-008</a>)</em></p>
+<h5 id="obs-032">OBS-032<a class="headerlink" href="#obs-032" title="Permanent link">&para;</a></h5>
+<p>Dark file: above the title, a "Back to dashboard" link to <code>Workflow Dashboard.dc.html</code>; then the workflow name, the line "How extracted PDF text was mapped to workflow fields and sections.", and the creation-method tag. Explicit, High. <em>(↩ used by <a href="#br-018">BR-018</a>, <a href="#gap-001">GAP-001</a>)</em></p>
+<h5 id="obs-033">OBS-033<a class="headerlink" href="#obs-033" title="Permanent link">&para;</a></h5>
+<p>README (Known UX issues, "Remaining open items") and <code>_cover-sheet.md</code> (<code>knownLimitations</code>): (1) no breadcrumb reminding the user which field or section they're editing after they scroll; (4) compound type tags "need onboarding ... consider a tooltip or one-time legend"; (5) low-confidence rows don't visually escalate -- "consider a stronger cue or default-sorting low-confidence to the top"; (6) Table/Card edit-panel markup duplication (technical -- see <a href="#tech-003">TECH-003</a>). Explicit, High. <em>(↩ used by <a href="#gap-009">GAP-009</a>)</em></p>
+<h5 id="obs-034">OBS-034<a class="headerlink" href="#obs-034" title="Permanent link">&para;</a></h5>
+<p>README: the accordion "differs from the current flat Material table"; implementation step 4: "Rebuild <code>mapping-report.component.ts</code>'s table as the 3-level accordion ... the biggest structural change from what exists today (a flat Material table with pagination)." README only; the dark file shows only the new screen. <em>(↩ used by <a href="#asm-002">ASM-002</a>)</em></p>
+<h5 id="obs-035">OBS-035<a class="headerlink" href="#obs-035" title="Permanent link">&para;</a></h5>
+<p>Dark file: Save shows "Changes saved". With unsaved changes, opening another row's edit or selecting Cancel opens a dialog titled "Discard unsaved changes?" -- "Your edits to this field haven't been saved. Discarding will lose them." -- with "Keep editing" and "Discard"; Discard drops the changes and, if another row was requested, opens it. Leaving the page with unsaved changes triggers the browser's standard leave-page warning, not this dialog. Explicit, High. <em>(↩ used by <a href="#br-007">BR-007</a>, <a href="#br-014">BR-014</a>)</em></p>
+<h3 id="business-rules">Business Rules<a class="headerlink" href="#business-rules" title="Permanent link">&para;</a></h3>
+<h5 id="brule-001">BRULE-001<a class="headerlink" href="#brule-001" title="Permanent link">&para;</a></h5>
+<p>A mapping's <code>kind</code> constrains which <code>targetType</code>s it may be remapped to (e.g. <code>field</code> → <code>Field</code> only, <code>field-group</code> → <code>FieldGroup</code> only). This screen offers no remap control at all. Explicit, High. Source: <a href="#obs-004">OBS-004</a>. <em>(↩ used by <a href="#br-005">BR-005</a>)</em> Registry: <a href="../../../../../registries/BUSINESS-RULE-REGISTRY/">BUSINESS-RULE-REGISTRY.md</a> / <a href="../../../business-rules/business-rule-kind-constrains-remap-BRULE-001/">full record</a>.</p>
+<h5 id="brule-002">BRULE-002<a class="headerlink" href="#brule-002" title="Permanent link">&para;</a></h5>
+<p>Only one row may be in edit mode at a time. Explicit, High. Source: <a href="#obs-010">OBS-010</a>. <em>(↩ used by <a href="#br-007">BR-007</a>)</em> Registry: <a href="../../../../../registries/BUSINESS-RULE-REGISTRY/">BUSINESS-RULE-REGISTRY.md</a> / <a href="../../../business-rules/business-rule-one-edit-at-a-time-BRULE-002/">full record</a>.</p>
+<h5 id="brule-003">BRULE-003<a class="headerlink" href="#brule-003" title="Permanent link">&para;</a></h5>
+<p>A page or section may be deleted only when it has no children. Explicit, High. Source: <a href="#obs-017">OBS-017</a>. <em>(↩ used by <a href="#br-012">BR-012</a>)</em> Registry: <a href="../../../../../registries/BUSINESS-RULE-REGISTRY/">BUSINESS-RULE-REGISTRY.md</a> / <a href="../../../business-rules/business-rule-delete-only-when-empty-BRULE-003/">full record</a>.</p>
+<h5 id="brule-004">BRULE-004<a class="headerlink" href="#brule-004" title="Permanent link">&para;</a></h5>
+<p>A Section is visible only if it has a matching row or its own heading matches; a Page is visible only if it has a visible Section. Explicit, High. Source: <a href="#obs-013">OBS-013</a>. <em>(↩ used by <a href="#br-004">BR-004</a>)</em> Registry: <a href="../../../../../registries/BUSINESS-RULE-REGISTRY/">BUSINESS-RULE-REGISTRY.md</a> / <a href="../../../business-rules/business-rule-hierarchical-filter-visibility-BRULE-004/">full record</a>.</p>
+<h5 id="brule-005">BRULE-005<a class="headerlink" href="#brule-005" title="Permanent link">&para;</a></h5>
+<p>Table view and Card view must show identical filtered/grouped data and share all state. Explicit, High. Source: <a href="#obs-003">OBS-003</a>. <em>(↩ used by <a href="#br-003">BR-003</a> -- kept as the modeling constraint for whenever Card view is built)</em> Registry: <a href="../../../../../registries/BUSINESS-RULE-REGISTRY/">BUSINESS-RULE-REGISTRY.md</a> / <a href="../../../business-rules/business-rule-table-card-parity-BRULE-005/">full record</a>.</p>
+<h5 id="brule-006">BRULE-006<a class="headerlink" href="#brule-006" title="Permanent link">&para;</a></h5>
+<p>The confidence-review elements (stat tiles and confidence filter) appear only for a workflow whose structure came from an extraction step -- PDF conversion in this phase. A manually created workflow uses the same screen without them. Explicit, High. Source: <a href="#obs-031">OBS-031</a>, <a href="#obs-019">OBS-019</a>, <a href="#obs-021">OBS-021</a>. <em>(↩ used by <a href="#br-015">BR-015</a>)</em> Registry: <a href="../../../../../registries/BUSINESS-RULE-REGISTRY/">BUSINESS-RULE-REGISTRY.md</a> / <a href="../../../business-rules/business-rule-pdf-path-only-BRULE-006/">full record</a>.</p>
+<h5 id="brule-007">BRULE-007<a class="headerlink" href="#brule-007" title="Permanent link">&para;</a></h5>
+<p>Structural edits (add page/section/field, delete empty page/section, reorder) never require confirmation; deleting a mapped field is the one exception. The add part applies only if adding happens on this screen (<a href="#dec-006">DEC-006</a>). Explicit, High. Source: <a href="#obs-012">OBS-012</a>, <a href="#obs-017">OBS-017</a>, <a href="#obs-029">OBS-029</a>. <em>(↩ used by <a href="#br-008">BR-008</a>, <a href="#br-009">BR-009</a>, <a href="#br-010">BR-010</a>, <a href="#br-011">BR-011</a>, <a href="#br-012">BR-012</a>, <a href="#br-013">BR-013</a>)</em> Registry: <a href="../../../../../registries/BUSINESS-RULE-REGISTRY/">BUSINESS-RULE-REGISTRY.md</a> / <a href="../../../business-rules/business-rule-no-confirmation-except-unlink-BRULE-007/">full record</a>.</p>
+<h5 id="brule-008">BRULE-008<a class="headerlink" href="#brule-008" title="Permanent link">&para;</a></h5>
+<p>Below roughly 900px, the mapping table uses horizontal scroll -- never a stacked-card row layout. Human Provided, High. Source: <a href="#obs-020">OBS-020</a>, <a href="#obs-023">OBS-023</a>. <em>(↩ used by <a href="#br-002">BR-002</a>, <a href="#br-004">BR-004</a>, <a href="#br-006">BR-006</a>)</em> Registry: <a href="../../../../../registries/BUSINESS-RULE-REGISTRY/">BUSINESS-RULE-REGISTRY.md</a> / <a href="../../../business-rules/business-rule-horizontal-scroll-mobile-BRULE-008/">full record</a>.</p>
+<h5 id="brule-009">BRULE-009<a class="headerlink" href="#brule-009" title="Permanent link">&para;</a></h5>
+<p>In a manually created workflow, every row's source is shown as "manual" -- no field in it can be LLM-sourced. Explicit, High. Source: <a href="#obs-031">OBS-031</a>. <em>(↩ used by <a href="#br-015">BR-015</a>)</em> Registry: <a href="../../../../../registries/BUSINESS-RULE-REGISTRY/">BUSINESS-RULE-REGISTRY.md</a> / <a href="../../../business-rules/business-rule-manual-workflow-source-manual-BRULE-009/">full record</a>.</p>
+<h3 id="assumptions">Assumptions<a class="headerlink" href="#assumptions" title="Permanent link">&para;</a></h3>
+<h5 id="asm-001">ASM-001<a class="headerlink" href="#asm-001" title="Permanent link">&para;</a></h5>
+<p>The Mapping Report is entered from the Dashboard's workflow list by opening a workflow whose creation source is PDF. Inferred from the README's Dashboard section; confirmed in substance by <a href="#obs-021">OBS-021</a> -- the PDF-conversion entry path exists, alongside two others (reopening an existing mapping; starting a new workflow from scratch). Status: <strong>Confirmed</strong>. Impact if false: N/A, confirmed. Owner: Business Owner.</p>
+<h5 id="asm-002">ASM-002<a class="headerlink" href="#asm-002" title="Permanent link">&para;</a></h5>
+<p>Today's Mapping Report is a flat table with pagination, so the hierarchy replaces it rather than arriving as a new screen. Basis: README only (<a href="#obs-034">OBS-034</a>); the design file shows only the new screen. Impact if false: "Existing vs. new experience" misdescribes what changes for current users. Owner: Business Owner. Status: <strong>Open</strong>.</p>
+<h3 id="decisions">Decisions<a class="headerlink" href="#decisions" title="Permanent link">&para;</a></h3>
+<h5 id="dec-001">DEC-001<a class="headerlink" href="#dec-001" title="Permanent link">&para;</a></h5>
+<p>What is the navigation trigger into the Mapping Report from elsewhere in the product? Raised as <a href="#gap-001">GAP-001</a> (the README never states this). <strong>Resolved 2026-09-08</strong> -- see <a href="#obs-021">OBS-021</a>. Three entry paths: PDF conversion, reopening an existing mapping for review, and starting a new workflow from scratch.</p>
+<h5 id="dec-002">DEC-002<a class="headerlink" href="#dec-002" title="Permanent link">&para;</a></h5>
+<p>Is there a defined empty state for a workflow with no mappings at all (as opposed to an individual empty page or section)? Raised as <a href="#gap-002">GAP-002</a>. <strong>Resolved 2026-09-08</strong> -- see <a href="#obs-022">OBS-022</a>, <a href="#br-016">BR-016</a>. New workflow: Workflow Settings → Save → lands on this screen with no structure, starts by adding a page. How the add step appears depends on <a href="#dec-006">DEC-006</a>.</p>
+<h5 id="dec-003">DEC-003<a class="headerlink" href="#dec-003" title="Permanent link">&para;</a></h5>
+<p>Should the mapping table, below roughly 900px, scroll horizontally (matches desktop, simpler) or collapse each row into a stacked card (better mobile UX, more work)? The source deferred this explicitly (<a href="#obs-020">OBS-020</a>). <strong>Resolved 2026-09-08</strong> -- see <a href="#obs-023">OBS-023</a>, <a href="#brule-008">BRULE-008</a>. Horizontal scroll.</p>
+<h5 id="dec-004">DEC-004<a class="headerlink" href="#dec-004" title="Permanent link">&para;</a></h5>
+<p>Does reviewing or editing a workflow's mapping require a specific org role or permission, given the shared header shows org-level Members/Billing controls? <strong>Resolved (deferred) 2026-09-08</strong> -- see <a href="#obs-024">OBS-024</a>. No permission layer now; revisit when a login capability is scoped.</p>
+<h5 id="dec-005">DEC-005<a class="headerlink" href="#dec-005" title="Permanent link">&para;</a></h5>
+<p>What measurable signal would tell the team this feature is working (e.g. less time spent correcting extractions, or fewer downstream data-quality issues traced to a bad mapping)? The source states no success criteria for this feature. <strong>Open</strong>, owner: Business Owner.</p>
+<h5 id="dec-006">DEC-006<a class="headerlink" href="#dec-006" title="Permanent link">&para;</a></h5>
+<p>Where does the reviewer add pages, sections, and fields -- on the Mapping Report, or elsewhere (for example the Workflow Page Editor, where field editing now happens)? Why it matters: it decides whether <a href="#br-009">BR-009</a>-<a href="#br-011">BR-011</a> exist for this screen, how a new workflow starts here (<a href="#br-016">BR-016</a>), and whether <a href="#jrn-003">JRN-003</a> is a journey on this screen. Affected: <a href="#cap-006">CAP-006</a>, <a href="#br-009">BR-009</a>, <a href="#br-010">BR-010</a>, <a href="#br-011">BR-011</a>, <a href="#br-016">BR-016</a>, <a href="#brule-007">BRULE-007</a>. Evidence: the README describes add controls here (<a href="#obs-014">OBS-014</a>-<a href="#obs-016">OBS-016</a>) and the Business Owner described starting a new workflow here by adding a page (<a href="#obs-022">OBS-022</a>); the dark design file has no add controls (<a href="#obs-030">OBS-030</a>). See <a href="#gap-006">GAP-006</a>. Proposed owner: Business Owner, with the Producing Designer. <strong>Open</strong>.</p>
+<h5 id="dec-007">DEC-007<a class="headerlink" href="#dec-007" title="Permanent link">&para;</a></h5>
+<p>Is inline editing of descriptions and custom labels part of this phase? Why it matters: the design offers it only in Card view (<a href="#obs-027">OBS-027</a>), and this phase builds Table view only (<a href="#obs-025">OBS-025</a>), whose rows have no edit control in the design -- so as designed, nothing on this screen is editable inline this phase. Affected: <a href="#cap-004">CAP-004</a>, <a href="#br-006">BR-006</a>, <a href="#br-007">BR-007</a>, <a href="#br-014">BR-014</a>. Possible directions, none chosen here: leave inline editing out until Card view is built; or carry it into Table view, which the design doesn't show. Proposed owner: Business Owner. <strong>Open</strong>.</p>
+<h5 id="dec-008">DEC-008<a class="headerlink" href="#dec-008" title="Permanent link">&para;</a></h5>
+<p>What does "Delete field" remove: only the link between the PDF element and its workflow field, or the field itself from the workflow? Why it matters: deleting a workflow field is a larger and, per the dialog, irreversible change. Affected: <a href="#cap-005">CAP-005</a>, <a href="#br-008">BR-008</a>, <a href="#jrn-002">JRN-002</a>. Evidence: the README calls the action "unlink" and describes "removing the mapping" (<a href="#obs-009">OBS-009</a>); the dark file labels it "Delete field" and its dialog says the field will be removed "from the workflow" (<a href="#obs-029">OBS-029</a>). See <a href="#gap-007">GAP-007</a>. Proposed owner: Business Owner. <strong>Open</strong>.</p>
+<h3 id="gaps">Gaps<a class="headerlink" href="#gaps" title="Permanent link">&para;</a></h3>
+<h5 id="gap-001">GAP-001<a class="headerlink" href="#gap-001" title="Permanent link">&para;</a></h5>
+<p>Unclear Behavior. The README never states how the reviewer reaches the Mapping Report or leaves it. Leaving: the design file shows a "Back to dashboard" link (<a href="#obs-032">OBS-032</a>). Entering: inferred as <a href="#asm-001">ASM-001</a>; <strong>Resolved 2026-09-08</strong> via <a href="#dec-001">DEC-001</a> -- Human Provided evidence (<a href="#obs-021">OBS-021</a>).</p>
+<h5 id="gap-002">GAP-002<a class="headerlink" href="#gap-002" title="Permanent link">&para;</a></h5>
+<p>Missing Source. The README describes no state for a workflow with no mappings at all (only per-page and per-section empty states); the design file shows only its generic "No mappings match the current filter." message (<a href="#obs-030">OBS-030</a>). <strong>Resolved 2026-09-08</strong> via <a href="#dec-002">DEC-002</a> -- Human Provided evidence (<a href="#obs-022">OBS-022</a>).</p>
+<h5 id="gap-003">GAP-003<a class="headerlink" href="#gap-003" title="Permanent link">&para;</a></h5>
+<p>Conflict, Human Provided evidence vs. README. The README's Scope note says manually created workflows get no report at all ("Don't build one"); <a href="#obs-021">OBS-021</a> describes this screen as also the starting point for building a workflow from scratch. <strong>Resolved 2026-09-08</strong> -- per PRODUCT-SOURCE-MATERIAL-SPEC.md section 6, a direct Business Owner clarification on product behavior takes precedence over the design document's own scope text. The dark design file agrees: a manually created workflow renders this screen without the stat tiles or confidence filter (<a href="#obs-031">OBS-031</a>). <a href="#br-015">BR-015</a> covers the confidence elements only; <a href="#br-016">BR-016</a> covers the new-workflow start.</p>
+<h5 id="gap-004">GAP-004<a class="headerlink" href="#gap-004" title="Permanent link">&para;</a></h5>
+<p>Scope narrowing, Human Provided evidence vs. design source. The design presents Card view (<a href="#obs-003">OBS-003</a>, <a href="#obs-007">OBS-007</a>) as a second rendering on equal footing with Table view; <a href="#obs-025">OBS-025</a> scopes the <em>build</em> to Table view only for this phase. <strong>Resolved 2026-09-08</strong> -- same authority basis as <a href="#gap-003">GAP-003</a>. Card view is deferred, not rejected; <a href="#br-003">BR-003</a> narrowed rather than removed; <a href="#brule-005">BRULE-005</a> kept as the modeling constraint for whenever Card view is picked up.</p>
+<h5 id="gap-005">GAP-005<a class="headerlink" href="#gap-005" title="Permanent link">&para;</a></h5>
+<p>Conflict, README vs. design file -- editing. The README puts an edit control on every row in both views, with a Label and Field type editor for a field and a Label, per-item list, and Min/Max items editor for a list. The dark file has no edit control in Table view; in Card view it offers editing only for descriptions and custom elements, and sends field and list editing to the Workflow Page Editor (<a href="#obs-027">OBS-027</a>, <a href="#obs-028">OBS-028</a>). <strong>Resolved</strong> -- per CLAUDE-DESIGN-READING-SPEC.md section 4 the dark design file is the source of truth for behavior, so the README's field and list editors are not recorded as requirements. The consequence for this Table-only phase is <a href="#dec-007">DEC-007</a>. <em>(↩ used by <a href="#br-017">BR-017</a>, <a href="#br-006">BR-006</a>)</em></p>
+<h5 id="gap-006">GAP-006<a class="headerlink" href="#gap-006" title="Permanent link">&para;</a></h5>
+<p>Conflict, README and Human Provided evidence vs. design file -- adding structure. The README describes add-page, add-section, and add-field controls on this screen (<a href="#obs-014">OBS-014</a>-<a href="#obs-016">OBS-016</a>), and the Business Owner described a new workflow starting here by adding a page (<a href="#obs-022">OBS-022</a>); the dark file contains no add controls (<a href="#obs-030">OBS-030</a>). Not resolved by source authority, since Business Owner input supports the README's account -- recorded as <a href="#dec-006">DEC-006</a>. <strong>Open</strong>. <em>(↩ used by <a href="#br-009">BR-009</a>, <a href="#br-010">BR-010</a>, <a href="#br-011">BR-011</a>)</em></p>
+<h5 id="gap-007">GAP-007<a class="headerlink" href="#gap-007" title="Permanent link">&para;</a></h5>
+<p>Conflict, README vs. design file -- deleting a field. The README calls the action "unlink" and says its dialog "names the sub-field cost"; the dark file calls it "Delete field", says the field will be removed "from the workflow", and states a sub-field count rather than names (<a href="#obs-009">OBS-009</a>, <a href="#obs-029">OBS-029</a>). The dialog content follows the dark file. What is removed is recorded as <a href="#dec-008">DEC-008</a>. <strong>Open</strong>. <em>(↩ used by <a href="#br-008">BR-008</a>)</em></p>
+<h5 id="gap-008">GAP-008<a class="headerlink" href="#gap-008" title="Permanent link">&para;</a></h5>
+<p>Conflict, README vs. design file -- creation method. The README describes a demo "Created from" control (PDF / LLM / Manual) in the first filter row, and filters that share a "source filter"; the dark file has neither -- the creation method comes from the workflow and shows as a tag (<a href="#obs-002">OBS-002</a>, <a href="#obs-031">OBS-031</a>). The README itself calls its toggle illustrative. <strong>Resolved</strong> -- recorded as the dark file shows. <em>(↩ used by <a href="#br-015">BR-015</a>)</em></p>
+<h5 id="gap-009">GAP-009<a class="headerlink" href="#gap-009" title="Permanent link">&para;</a></h5>
+<p>Known limitation, flagged by the source. Three user-facing issues are listed as unresolved in the design: no reminder of which field or section is being edited after the reviewer scrolls; compact target type labels with no explanation for first-time users; and low-confidence rows that don't stand out beyond a muted color (<a href="#obs-033">OBS-033</a>). The source suggests possible remedies but designs none, so none is recorded as a requirement. Owner: Business Owner, with the Producing Designer. <strong>Open</strong>.</p>
+<h3 id="technical-unknowns">Technical Unknowns<a class="headerlink" href="#technical-unknowns" title="Permanent link">&para;</a></h3>
+<h5 id="tech-001">TECH-001<a class="headerlink" href="#tech-001" title="Permanent link">&para;</a></h5>
+<p>Business behavior known: each mapping arrives with a <code>kind</code> and a confidence score, extracted from the PDF before the reviewer sees the report. Technical question: what extraction mechanism produces <code>kind</code> and confidence, and where does that processing happen? Related: <a href="#cap-001">CAP-001</a>. For the Technical Agent stage -- not a business decision.</p>
+<h5 id="tech-002">TECH-002<a class="headerlink" href="#tech-002" title="Permanent link">&para;</a></h5>
+<p>Business behavior known: reordering keeps an explicit per-level override list, falling back to the original order for unmoved items (<a href="#obs-018">OBS-018</a>). Technical question: how are these override lists stored and kept in sync, and how do they interact with items added or deleted later? Related: <a href="#br-013">BR-013</a>. For the Technical Agent stage -- not a business decision.</p>
+<h5 id="tech-003">TECH-003<a class="headerlink" href="#tech-003" title="Permanent link">&para;</a></h5>
+<p>Business behavior known: the screen's content and behavior as recorded above. The README adds framework and repository guidance, preserved here because it cites facts about the target engineering repository:
+- "I looked at your repo (<code>pdf-workflow/workflow-manager</code>) and found matching real components already scaffolded: <code>src/app/features/dashboard/dashboard.component.ts</code>, <code>src/app/features/mapping-report/mapping-report.component.ts</code>."
+- "<strong>Important mismatch to resolve first:</strong> the existing Angular components are built with <strong>Angular Material + Tailwind, light theme</strong> ... These new designs are in <strong>Nocturne</strong>, a dense dark UI system ... Decide up front whether: 1. Nocturne becomes the new global theme ... or 2. These are just references for a future restyle and current Material components stay as-is for now."
+- State management: "<code>mappings: MappingEntry[]</code> (already exists per <code>ApiService</code>/<code>MappingEntry</code>) — group client-side into Page → Section → Field for render; don't refetch per level."
+- "Section→Field ownership: ... each field is owned by the nearest preceding Section in the target list ... confirm this matches how sections/fields are actually modeled in <code>WorkflowStore</code> before implementing."
+- Known UX issue 6: the Table and Card edit panels are duplicated in the reference -- "extract this once ... so future edits to the edit panel don't need to land twice."
+- Theming architecture, component architecture, testing, and the suggested implementation order (step 4: rebuild the existing component's table as the accordion).</p>
+<p>Technical question: how to apply this guidance, including the theme decision, which the README asks to settle before anything else. For the Technical Agent stage.</p>
+<h5 id="tech-004">TECH-004<a class="headerlink" href="#tech-004" title="Permanent link">&para;</a></h5>
+<p>Business behavior known: the screen's layout and interactions as recorded above, drawn at desktop width. The README lists additions it says a production build needs: accordion toggles exposing their expanded state to screen readers, "Changes saved"-style messages announced to assistive technology, visible focus on every control, labels on icon-only buttons, contrast checked to WCAG AA in both themes, and reduced-motion support; and responsive guidance for this screen -- stat tiles wrapping to two per row below about 900px and one per row below about 480px, the search field going full width below about 640px, and a suggested breakpoint scale. Technical question: how these are met, and which become acceptance criteria. For the Technical Agent stage.</p>
+<hr />
+<h2 id="quality-checklist">Quality Checklist<a class="headerlink" href="#quality-checklist" title="Permanent link">&para;</a></h2>
+<ul>
+<li>[x] Exact source path, branch/commit, and version are recorded.</li>
+<li>[x] <code>## Problem</code>, <code>## Goals</code>, and <code>## Success Metrics</code> are each present and either grounded in the source or recorded as a Decision Required.</li>
+<li>[x] <code>## Information users see or provide</code> and <code>## Existing vs. new experience</code> are filled in, each saying what the source doesn't describe.</li>
+<li>[x] <code>## Not built yet</code> separates out-of-scope items from <strong>Potentially related</strong> areas.</li>
+<li>[x] The narrative reads without resolving an evidence link, classification tag, or Gherkin block; "What this is" has zero IDs.</li>
+<li>[x] No commentary about this document's own revision history appears in its content -- that lives in <a href="#review-history">Review history</a>.</li>
+<li>[x] Every requirement has evidence, a classification, and a confidence level -- linked, not just named.</li>
+<li>[x] Every Requirement links to its Capability and source Observations; every Business Rule links to its source Observations; Capability records carry their own evidence. <code>Related Epic</code> / <code>Related Stories</code> read <code>Pending</code> until the Business Agent stage.</li>
+<li>[x] Acceptance criteria live with their requirement in <code>## Requirements</code>.</li>
+<li>[x] The feature-area narrative contains no <code>##### BR-XXX</code> headings.</li>
+<li>[x] Strong inferences are labeled <code>Strongly Implied</code>; human-supplied answers are labeled <code>Human Provided</code>; README-only claims the design file doesn't confirm are labeled <code>Assumption</code>.</li>
+<li>[x] Every open Decision is visible near the top; resolved ones say how and on what evidence.</li>
+<li>[x] "Not built yet" is present, and nothing is silently dropped.</li>
+<li>[x] Technical implementation choices are excluded or recorded as Technical Unknowns.</li>
+<li>[x] Every ID-only heading in the Evidence section has at least one "used by" back-link, and every "Evidence:" link resolves.</li>
+</ul>
+<h2 id="review-history">Review history<a class="headerlink" href="#review-history" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Review Item</th>
+<th>Outcome</th>
+<th>Reviewer</th>
+<th>Date</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Design Analysis v2.0</td>
+<td>Draft, awaiting review</td>
+<td>Design Analysis Agent</td>
+<td>2026-10-06</td>
+<td>Re-read <code>SRC-003</code> directly, treating the dark <code>Mapping Report.dc.html</code> as the source of truth per CLAUDE-DESIGN-READING-SPEC.md, and brought the document up to the current DESIGN-ANALYSIS-SPEC.md and template. Major revision (REQUIREMENTS-VERSIONING-SPEC.md section 9) -- the v1.1 approval no longer applies. Added the "Information users see or provide" and "Existing vs. new experience" sections, "How the screen adapts to how a workflow was created", "Potentially related" scope, and a Source reviewed list. Corrected requirements the dark file contradicts: <a href="#br-006">BR-006</a> (field and list editing moved to the Workflow Page Editor; inline editing only in Card view), <a href="#br-008">BR-008</a> (dialog states a sub-field count and says the field leaves the workflow), <a href="#br-015">BR-015</a> (confidence elements hidden only for manual workflows), <a href="#br-005">BR-005</a> (no remap control on this screen). Reclassified <a href="#br-009">BR-009</a>-<a href="#br-011">BR-011</a> as Assumptions, absent from the dark file. Added <a href="#br-017">BR-017</a>, <a href="#br-018">BR-018</a>, <a href="#obs-027">OBS-027</a>-<a href="#obs-035">OBS-035</a>, <a href="#asm-002">ASM-002</a>, <a href="#dec-006">DEC-006</a>-<a href="#dec-008">DEC-008</a>, <a href="#gap-005">GAP-005</a>-<a href="#gap-009">GAP-009</a>, <a href="#tech-003">TECH-003</a>, <a href="#tech-004">TECH-004</a>, <a href="#cap-009">CAP-009</a>, and <a href="#brule-009">BRULE-009</a>; restated <a href="#brule-006">BRULE-006</a>. Analysis Version <code>1.1</code> → <code>2.0</code>; Status <code>Approved</code> → <code>Draft</code>.</td>
+</tr>
+<tr>
+<td>Problem/Goals/Success Metrics added</td>
+<td>Editorial addition</td>
+<td>Business Agent</td>
+<td>2026-09-25</td>
+<td><code>DESIGN-ANALYSIS-SPEC.md</code> sections 4.14-4.16 added these as required sections. Problem and Goals grounded in <a href="#obs-026">OBS-026</a> (Strongly Implied -- the source never states either directly); Success Metrics has no source basis, recorded as <a href="#dec-005">DEC-005</a>, Open, owner Business Owner. Analysis Version <code>1.0</code> → <code>1.1</code>; no existing requirement changed.</td>
+</tr>
+<tr>
+<td>Design Analysis v1.0</td>
+<td>Approved -- 16/16 requirements, after one revision</td>
+<td>Manali</td>
+<td>2026-09-08</td>
+<td><code>PR #17</code> merged with 15/16 requirements checked directly; <code>BR-003</code> was left unchecked with an inline note ("For now work on table view") -- incorporated as <a href="#obs-025">OBS-025</a>, <code>BR-003</code> narrowed to Table view only (<a href="#gap-004">GAP-004</a>), Card view kept as deferred, not rejected. <a href="#dec-001">DEC-001</a>-<a href="#dec-004">DEC-004</a> were resolved via <code>PR #17</code>'s review comments, incorporated as Human Provided evidence. v1.0 was produced from the README's Mapping Report sections; the 2026-09-10 reading rules (dark <code>.dc.html</code> as source of truth) post-date it.</td>
+</tr>
+<tr>
+<td>Business Requirements</td>
+<td>Not started</td>
+<td>--</td>
+<td>--</td>
+<td>Awaiting this Design Analysis's review outcome.</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../../..", "features": [], "search": "../../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../../../../../assets/comment-widget.js"></script>
+      
+    
+  </body>
+</html>
