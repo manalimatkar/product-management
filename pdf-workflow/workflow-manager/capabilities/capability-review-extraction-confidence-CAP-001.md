@@ -8,20 +8,29 @@
 
 ## Business purpose
 
-Let the reviewer gauge how much attention a workflow's mapping needs before working through it in detail -- an at-a-glance summary (Total / High / Medium / Low / Average confidence) plus a collapsible Page → Section → Field hierarchy to browse.
+Let the reviewer judge how much attention a workflow's mapping needs, and browse it, before working through it in detail -- an at-a-glance summary (Total / High / Medium / Low / Average confidence), a collapsible Page → Section → row hierarchy, and a screen that names how the workflow was created and leaves out the confidence elements for a workflow built by hand.
 
 ## Used by journeys
 
-None yet. `DA-003`'s three recorded journeys (`JRN-001`-`003`) all start mid-task rather than narrating the initial stat-tile glance -- see [CAPABILITY-REGISTRY.md](../../../registries/CAPABILITY-REGISTRY.md)'s note on this. Worth a Journey covering the "does this workflow need my attention" moment if this feature-slice is revisited.
+None yet. The three recorded journeys (`JRN-001`-`003`) start mid-task rather than walking through the initial summary -- see [CAPABILITY-REGISTRY.md](../../../registries/CAPABILITY-REGISTRY.md).
 
 ## Evidence
 
-Five confidence-banded stat tiles are visible before any interaction; the mapping itself is browsable as a collapsible Page → Section → Field hierarchy; a page can contain multiple sections. Explicit, High confidence -- `SRC-003` (`pdf-workflow/workflow-manager/design/v4/README.md`).
+In the dark `designs/Mapping Report.dc.html`: five confidence-banded stat tiles, counted over every mapping; a collapsible Page → Section → row hierarchy, all expanded at first, where a page can hold several sections; a "Back to dashboard" link; a creation-method tag; and, for a manually created workflow, no stat tiles or confidence filter. Explicit, High confidence -- `SRC-003`.
 
 ## Governed by
 
+- [BRULE-006](../business-rules/business-rule-pdf-path-only-BRULE-006.md) -- confidence-review elements only for extraction-based workflows.
 - [BRULE-008](../business-rules/business-rule-horizontal-scroll-mobile-BRULE-008.md) -- responsive behavior below ~900px.
+- [BRULE-009](../business-rules/business-rule-manual-workflow-source-manual-BRULE-009.md) -- manual workflows show every row's source as manual.
 
 ## Appears in
 
-- [DA-003](../analysis/mapping-report/design-analysis-mapping-report-DA-003.md) -- introduced here, feeds `BR-001` and `BR-002`.
+- [DA-003](../analysis/mapping-report/design-analysis-mapping-report-DA-003.md) -- introduced here, feeds `BR-001`, `BR-002`, `BR-015`, and `BR-018`.
+
+## Revision history
+
+| Date | Change |
+| --- | --- |
+| 2026-10-06 | Evidence re-sourced to the dark design file; scope extended to the creation-method adaptation and the return link; now governed by `BRULE-006` and `BRULE-009` (`DA-003` v2.0). |
+| 2026-09-10 | Registered from `DA-003`. |
